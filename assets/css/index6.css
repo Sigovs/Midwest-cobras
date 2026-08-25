@@ -22,3 +22,29 @@
      starts below it rather than pretending the first 72px are free */
   padding-block-start: var(--header-h);
 }
+
+/* The field. Still and canvas share one box, so the scene replaces the image
+   without the composition moving under anything placed on top of it later. */
+.f-hero__field {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.f-hero__still,
+.f-hero__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.f-hero__still {
+  object-fit: cover;
+  object-position: 76% 62%;
+  transition: opacity var(--dur-4) var(--ease-out);
+}
+
+.f-hero__still[data-hidden] { opacity: 0; }
+
+.f-hero__canvas { display: block; }

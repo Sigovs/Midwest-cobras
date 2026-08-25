@@ -93,6 +93,13 @@
   -->
   <section class="f-hero" data-ground="dark" aria-labelledby="f-hero-title">
     <h1 class="sr-only" id="f-hero-title">Midwest Cobras</h1>
+
+    <!-- The field. The car is in it; nothing else is yet. The still underneath
+         is what the page shows before the scene draws and if it never does. -->
+    <div class="f-hero__field" data-scene-mount data-model="assets/model/shelby-cobra-427.glb" aria-hidden="true">
+      <img class="f-hero__still" data-scene-still src="assets/img/hero-still-placeholder.jpg" alt="" width="2000" height="1125">
+      <canvas class="f-hero__canvas" data-scene></canvas>
+    </div>
   </section>
 
 </main>
@@ -147,10 +154,9 @@
 </div>
 </div><!-- /#smooth-wrapper -->
 
-<!-- main.js only. It carries the nav, the header's relationship to the hero,
-     the motion roles and the page's ScrollSmoother. No scene module yet: this
-     direction has not decided whether it has one, and a stub that boots and
-     finds nothing is indistinguishable from a scene that silently failed. -->
 <script type="module" src="assets/js/main.js"></script>
+<!-- The scene decides for itself whether to run. Every exit leaves this page
+     readable — see assets/js/scene/index6.js. -->
+<script type="module" src="assets/js/scene/index6.js"></script>
 </body>
 </html>

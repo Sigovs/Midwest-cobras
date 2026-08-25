@@ -64,9 +64,18 @@ async function boot() {
   const quality = narrow ? 'lite' : 'full';
 
   try {
+    /* WHICH DIRECTOR. Two of them exist and they are not variants of each
+       other: choreography.js turns the car and holds one temporal idea;
+       cinema.js travels the camera and treats movement, light and type as one
+       event. The page says which it wants, because it is a directorial
+       decision and not a property of this loader. */
+    const director = mount.dataset.director === 'cinema'
+      ? './cinema.js'
+      : './choreography.js';
+
     const [{ createHeroScene }, { mountChoreography }] = await Promise.all([
       import('./hero-scene.js'),
-      import('./choreography.js'),
+      import(director),
     ]);
 
     const scene = createHeroScene({

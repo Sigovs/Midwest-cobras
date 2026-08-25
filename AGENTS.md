@@ -96,14 +96,6 @@ same rhythm, same components. It is a split by **role**, never by section.
 | **GSAP + ScrollTrigger** | the choreography | Binds scroll position to the camera and to the callout sequence. ScrollTrigger drives; it never takes the scroll |
 | **CSS transitions from `tokens.css`** | the interface | Hover, focus, press, panel, crossfade. GSAP does not animate a button — a documented duration scale does |
 
-**No smooth-scroll library — except on index3, and it is named here rather than
-discovered.** `index3.html` runs GSAP ScrollSmoother at `smooth: 1.35`. It does
-take the transport, which is exactly what MJ6 forbids. The reason it stands: the
-camera work is the page in that direction, and a scrubbed seven-shot film driven
-off raw wheel deltas reads as mechanical however the easing is written. Kept low
-on purpose, and off entirely on touch. index.html and index2.html scroll
-natively and always will.
-
 **No smooth-scroll library.** Not Lenis, not Locomotive, nothing that replaces the
 native transport. `MJ6` — the scrollbar is the one control every visitor already
 owns, and a page does not get to re-implement it for the sake of its own timing.

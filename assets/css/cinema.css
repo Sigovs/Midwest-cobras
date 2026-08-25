@@ -1,0 +1,244 @@
+/* ============================================================================
+   cinema.css — direction C, the pinned title sequence. index3.html only.
+   ----------------------------------------------------------------------------
+   THE LAYER ORDER IS THE WHOLE IDEA, so it is stated once, here, and every
+   z-index below refers back to it:
+
+       0   atmosphere        a seamless field. No floor, no wall, no horizon.
+       1   giant typography  behind the car
+       2   the WebGL canvas  transparent, so 0 and 1 show through it
+       3   route + callouts  drawn over the car, under the reading copy
+       4   foreground copy   headline, labels, CTAs
+
+   The car covering parts of the letters is not a trick — the renderer is
+   created with alpha and scene.background is null, so layer 1 is simply
+   visible through the parts of the canvas the car does not occupy. Nothing is
+   composited twice and nothing is drawn to the DOM from the scene.
+   ========================================================================== */
+
+/* ── ScrollSmoother's wrapper ──────────────────────────────────────────────
+   Required structure. Note what it does to sticky: the content element is
+   transformed, and a transform makes a containing block, so `position: sticky`
+   inside it has nothing left to stick to. That is why this direction pins with
+   ScrollTrigger instead of the sticky mount the other two use — not a taste
+   difference, an incompatibility.                                           */
+
+#smooth-wrapper { overflow: hidden; }
+
+/* ── THE STAGE ────────────────────────────────────────────────────────────── */
+
+.cinema {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--ground);
+  isolation: isolate;              /* keeps the film's z-order to itself */
+}
+
+/* 0 · the atmosphere. Two very wide radial pools and nothing else — no edges,
+   nothing that ends anywhere the eye can find. */
+.cinema__air {
+  position: absolute;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 48% at 52% 62%,
+      rgb(var(--graphite-900-rgb) / 0) 0%,
+      rgb(var(--graphite-900-rgb) / 0) 38%,
+      rgb(var(--graphite-950-rgb) / 0.55) 74%,
+      rgb(var(--graphite-950-rgb) / 0.92) 100%),
+    radial-gradient(42% 34% at 50% 58%,
+      rgb(58 68 80 / 0.30) 0%,
+      rgb(38 45 54 / 0.14) 46%,
+      rgb(0 0 0 / 0) 78%);
+}
+
+/* 1 · the giant typography. It sits under the canvas and it is allowed out of
+   the page measure on purpose: a word that stops politely at the container is
+   a heading, and this is a title card. */
+.cinema__type {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+.cine-word {
+  position: absolute;
+  inset-inline: -30vw;
+  display: flex;
+  justify-content: center;
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+
+.cine-word__text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.045em;
+  line-height: 0.8;
+  font-size: clamp(140px, 20vw, 380px);
+  white-space: nowrap;
+}
+
+/* Solid where the word is the event; outlined where it is the backdrop the car
+   crosses. Both are the same component — only the fill changes. */
+.cine-word--ghost .cine-word__text {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(var(--bone-050-rgb, 242 241 238) / 0.16);
+}
+
+.cine-word--solid .cine-word__text { color: rgb(236 237 238 / 0.92); }
+.cine-word--dim .cine-word__text { color: rgb(236 237 238 / 0.10); }
+
+.cine-word[data-y="top"] { inset-block-start: 6vh; }
+.cine-word[data-y="mid"] { inset-block-start: 50%; translate: 0 -50%; }
+.cine-word[data-y="low"] { inset-block-end: 6vh; }
+
+/* SplitText writes these. Each character is masked by its own box so it can be
+   pushed out of frame and pulled back in rather than faded. */
+.cine-char {
+  display: inline-block;
+  will-change: transform;
+}
+
+.cine-word__text > div,
+.cine-word__text > span { overflow: hidden; }
+
+/* 2 · the canvas */
+.cinema__mount {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.cinema__mount canvas { width: 100%; height: 100%; display: block; }
+
+.cinema__still {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* 3 · the route and the callouts, over the car */
+.cinema__route {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.cinema__route path {
+  fill: none;
+  stroke: var(--text-muted);
+  stroke-opacity: 0.34;
+  stroke-width: 1;
+}
+
+.cinema__route circle { fill: var(--text); opacity: 0.7; }
+
+.callouts {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+
+.callouts.is-on { opacity: 1; }
+.callouts__line { fill: none; stroke: var(--text-muted); stroke-width: 1; stroke-opacity: 0.55; }
+.callouts__ring { fill: none; stroke: var(--text); stroke-width: 1; stroke-opacity: 0.7; }
+.callouts__dot { fill: var(--text); }
+
+.cine-callout {
+  position: absolute;
+  z-index: 3;
+  max-width: 20rem;
+  pointer-events: none;
+}
+
+.cine-callout[data-at="left"] { inset-inline-start: 0; inset-block-start: 30%; }
+.cine-callout[data-at="right"] { inset-inline-end: 0; inset-block-start: 26%; text-align: end; }
+.cine-callout[data-at="low-left"] { inset-inline-start: 0; inset-block-end: 16%; }
+.cine-callout[data-at="low-right"] { inset-inline-end: 0; inset-block-end: 18%; text-align: end; }
+
+.cine-callout__body { display: grid; gap: var(--sp-2, 0.4rem); }
+
+/* One mask per line, so the line arrives from under its own edge. A 12px slide
+   is below the threshold at which anything reads as movement; a full line
+   height is not. */
+.cine-callout__mask { overflow: hidden; display: block; }
+.cine-callout__line { display: block; will-change: transform; }
+
+/* 4 · the reading copy */
+.cinema__fore {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  align-content: end;
+  pointer-events: none;
+  padding-block-end: clamp(var(--sp-6), 6vh, var(--sp-8));
+}
+
+.cinema__fore .page { pointer-events: none; }
+.cinema__fore a, .cinema__fore button { pointer-events: auto; }
+
+.cinema__lede { max-width: 34rem; }
+.cinema__lede .t-h1 { text-wrap: balance; }
+
+.cinema__cta { display: flex; flex-wrap: wrap; gap: var(--sp-4); margin-block-start: var(--sp-6); }
+
+.cinema__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(var(--sp-5), 4vw, var(--sp-8));
+  margin-block-start: var(--sp-6);
+  border-block-start: 1px solid var(--rule);
+  padding-block-start: var(--sp-4);
+}
+
+.cinema__meta div { display: grid; gap: 0.15rem; }
+
+/* The bridge into the page below, revealed by the last shot. */
+.cinema__bridge {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: clamp(var(--sp-6), 8vh, var(--sp-9));
+  z-index: 4;
+  text-align: center;
+  pointer-events: none;
+}
+
+.cinema__bridge > * { margin-inline: auto; }
+
+/* ── NARROW ───────────────────────────────────────────────────────────────
+   Desktop is the priority and the phone is not asked to hold the same
+   composition. The film stays; the type comes down to something that fits, the
+   callouts lose their leader lines because there is no side to run them into,
+   and the sequence is shorter.                                             */
+
+@media (max-width: 61.99rem) {
+  .cine-word__text { font-size: clamp(72px, 22vw, 190px); }
+  .cine-callout { max-width: none; inset-inline: 0; text-align: start; }
+  .cine-callout[data-at="right"],
+  .cine-callout[data-at="low-right"] { text-align: start; }
+  .callouts { display: none; }
+  .cinema__lede { max-width: none; }
+}

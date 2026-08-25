@@ -11,17 +11,32 @@
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/system.css">
 <link rel="stylesheet" href="assets/css/main.css">
-<!-- Direction C only. The three stylesheets above are untouched and load in the
-     same order they do everywhere else; cine.css sits after them and re-composes
-     the film and the lower half. Same tokens, same type, same components. -->
+<!-- Direction C. The three above are untouched and load in the same order they
+     do everywhere else. cine.css composes the lower half; cinema.css composes
+     the film. -->
 <link rel="stylesheet" href="assets/css/cine.css">
+<link rel="stylesheet" href="assets/css/cinema.css">
+
+<!-- GSAP is imported as modules here, not loaded as UMD globals the way
+     index.html and index2.html do. Both cannot be true on one page — two GSAP
+     instances means two plugin registries and two tickers — so this page has no
+     <script src="gsap"> tags at all. The bare specifiers resolve through the
+     map below, which is what a project with no build step has instead of a
+     bundler. -->
 <script type="importmap">
-{"imports":{"three":"./assets/js/vendor/three.module.js"}}
+{
+  "imports": {
+    "three": "./assets/js/vendor/three.module.js",
+    "gsap": "./assets/js/vendor/gsap/index.js",
+    "gsap/ScrollTrigger": "./assets/js/vendor/gsap/ScrollTrigger.js",
+    "gsap/ScrollSmoother": "./assets/js/vendor/gsap/ScrollSmoother.js",
+    "gsap/SplitText": "./assets/js/vendor/gsap/SplitText.js",
+    "gsap/MotionPathPlugin": "./assets/js/vendor/gsap/MotionPathPlugin.js"
+  }
+}
 </script>
-<script src="assets/js/vendor/gsap.min.js" defer></script>
-<script src="assets/js/vendor/ScrollTrigger.min.js" defer></script>
 </head>
-<body class="cine">
+<body class="cine cinema-page">
 
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -56,197 +71,146 @@
   </div>
 </header>
 
+<!-- ScrollSmoother's required structure. Everything that scrolls lives inside
+     #smooth-content; the header above is outside it and stays put. -->
+<div id="smooth-wrapper">
+<div id="smooth-content">
+
 <main id="main">
 
 <!-- ════ THE FILM ══════════════════════════════════════════════════════════
-     SIX SHOTS, NOT SIX ROTATIONS.
+     Seven shots on one pinned, scrubbed master timeline. The camera travels on
+     its own curve and the lens travels on another, so the car is passed rather
+     than orbited, and no two shots share an angle, a crop or a scale.
 
-     data-sequence="shots" tells choreography.js this is a set of composed
-     frames rather than one continuous turn, and it changes two things: the
-     interpolation eases out of each frame and settles into the next instead of
-     running linearly through them, and the even-step check is turned off,
-     because even steps are exactly what a shot list must NOT have.
+     LAYERS, bottom to top: atmosphere · giant type · canvas · route and
+     callouts · reading copy. The canvas is transparent and the scene has no
+     background, so the type genuinely sits behind the car and the car
+     genuinely covers it. There is no floor plane anywhere in the scene, which
+     is why there is no horizon to find.
 
-     Every scene differs from the one before it in angle, crop, scale and
-     subject — and each declares where its text sits, so no screen repeats the
-     last one's arrangement.
-
-     The ground under the car is not a floor: no plane, no rim, no horizon.
-     A shadow catcher, an elliptical pool of light and a reflection field that
-     fades before it could reach an edge. See assets/js/scene/hero-scene.js.
+     assets/js/scene/cinema.js holds the shot list and the reasoning.
 -->
-<div class="scene-scope" data-scene-scope>
+<section class="cinema" data-scene-scope data-motion-role="hero" aria-labelledby="film-title">
+  <h2 class="sr-only" id="film-title">The Cobra, in seven shots</h2>
 
-  <!-- SHOT 1 opens close on the front-left quarter; the first scroll segment
-       is what pulls the camera back off it. -->
-  <div class="scene-mount" data-scene-mount
+  <div class="cinema__air" aria-hidden="true"></div>
+
+  <div class="cinema__type" aria-hidden="true">
+      <div class="cine-word cine-word--solid" data-word="heroReveal" data-from="left" data-y="top" data-lead="0.95" data-hold="1.15">
+        <span class="cine-word__text">BUILT</span>
+      </div>
+      <div class="cine-word cine-word--solid" data-word="heroReveal" data-from="right" data-y="low" data-lead="0.55" data-hold="1.15">
+        <span class="cine-word__text">DIFFERENT.</span>
+      </div>
+      <div class="cine-word cine-word--ghost" data-word="classicProfile" data-from="left" data-y="mid" data-lead="0.85" data-hold="1.05">
+        <span class="cine-word__text">HAND BUILT</span>
+      </div>
+      <div class="cine-word cine-word--dim" data-word="classicProfile" data-from="up" data-y="low" data-lead="0.45" data-hold="0.95">
+        <span class="cine-word__text">427</span>
+      </div>
+      <div class="cine-word cine-word--solid" data-word="sidePipe" data-from="right" data-y="top" data-lead="0.9" data-hold="1.2">
+        <span class="cine-word__text">YOU HEAR IT FIRST.</span>
+      </div>
+      <div class="cine-word cine-word--ghost" data-word="wheelDive" data-from="scale" data-y="mid" data-lead="0.7" data-hold="1">
+        <span class="cine-word__text">18&quot;</span>
+      </div>
+      <div class="cine-word cine-word--ghost" data-word="rearReveal" data-from="left" data-y="mid" data-lead="0.95" data-hold="1.25">
+        <span class="cine-word__text">THE OTHER ONE</span>
+      </div>
+      <div class="cine-word cine-word--solid" data-word="typeInterruption" data-from="left" data-y="top" data-lead="0.85" data-hold="1">
+        <span class="cine-word__text">ONE CAR.</span>
+      </div>
+      <div class="cine-word cine-word--solid" data-word="typeInterruption" data-from="right" data-y="low" data-lead="0.55" data-hold="1">
+        <span class="cine-word__text">THOUSANDS OF DECISIONS.</span>
+      </div>
+      <div class="cine-word cine-word--ghost" data-word="finalRelease" data-from="up" data-y="top" data-lead="0.9" data-hold="1.15">
+        <span class="cine-word__text">NO TWO ALIKE</span>
+      </div>
+      <div class="cine-word cine-word--solid" data-word="finalRelease" data-from="left" data-y="low" data-lead="0.5" data-hold="1.15">
+        <span class="cine-word__text">2–4 AT A TIME</span>
+      </div>
+  </div>
+
+  <div class="cinema__mount" data-scene-mount
+       data-director="cinema"
        data-model="assets/model/ac-cobra-427.glb"
-       data-sequence="shots"
-       data-rot="28" data-cam="0.60,0.86,6.90" data-target="-0.62,0.46,0.10" data-fov="27"
-       data-rot-mobile="26" data-cam-mobile="0.10,0.92,6.60" data-target-mobile="-0.05,0.48,0.10" data-fov-mobile="36"
        aria-hidden="true">
     <canvas data-scene></canvas>
   </div>
 
-<!-- ── SHOT 1 · THE REVEAL ────────────────────────────────────────────────── -->
-<section class="hero" data-ground="dark" data-motion-role="hero" aria-labelledby="hero-title">
-  <div class="hero__field">
-    <picture>
-      <source media="(max-width: 55.99rem)" srcset="assets/img/hero-still-placeholder-mobile.jpg">
-      <img class="hero__still" src="assets/img/hero-still-placeholder.jpg"
-           alt="A Cobra roadster standing in a dark hall, three-quarter view from the front"
-           width="3000" height="1691" fetchpriority="high">
-    </picture>
-  </div>
+  <img class="cinema__still hero__still" src="assets/img/hero-still-placeholder.jpg"
+       alt="A Cobra roadster standing in a dark hall, three-quarter view from the front"
+       width="3000" height="1691" fetchpriority="high">
 
-  <div class="page hero__inner">
-    <div class="hero__identity">
-      <p class="t-label hero__eyebrow">Backdraft Cobras · built to order</p>
-      <h1 class="t-h1 hero__title" id="hero-title">Nobody buys one of these off a lot.</h1>
-      <p class="t-lead hero__claim">
-        Every car leaves here as the sum of deliberate decisions — body, engine,
-        interior, stance, sound. Start with a finished one, or start with a
-        blank sheet.
-      </p>
+  <!-- The route. Under the canvas in paint order it would be invisible under
+       the car; over it, the car crosses it and it reads as a drawing laid on
+       the scene. Kept faint on purpose — this is an engineering line, not a
+       heads-up display. -->
+  <svg class="cinema__route" data-route viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <path d="M -40 690 C 260 690, 400 520, 690 508 S 1120 560, 1360 402 S 1600 300, 1680 286" />
+    <circle data-route-node r="3" cx="0" cy="0" />
+  </svg>
+
+    <div class="cine-callout" data-callout="classicProfile" data-at="left" data-anchor="0.88,0.58,-0.10">
+      <div class="cine-callout__body">
+        <span class="cine-callout__mask"><span class="cine-callout__line t-label">01 · the starting point</span></span>
+        <span class="cine-callout__mask"><span class="cine-callout__line t-h3">Classic profile</span></span>
+        <span class="cine-callout__mask"><span class="cine-callout__line t-body-s t-muted">Balanced body. Simple lines.</span></span>
+      </div>
+    </div>
+    <div class="cine-callout" data-callout="sidePipe" data-at="low-right" data-anchor="0.85,0.27,0.05">
+      <div class="cine-callout__body">
+        <span class="cine-callout__mask"><span class="cine-callout__line t-label">02 · the sound</span></span>
+        <span class="cine-callout__mask"><span class="cine-callout__line t-h3">Side exit</span></span>
+        <span class="cine-callout__mask"><span class="cine-callout__line t-body-s t-muted">427 V8 · side-exit exhaust</span></span>
+      </div>
+    </div>
+    <div class="cine-callout" data-callout="wheelDive" data-at="low-left" data-anchor="0.78,0.33,1.32">
+      <div class="cine-callout__body">
+        <span class="cine-callout__mask"><span class="cine-callout__line t-label">03 · under the arch</span></span>
+        <span class="cine-callout__mask"><span class="cine-callout__line t-h3">Eighteen inch</span></span>
+        <span class="cine-callout__mask"><span class="cine-callout__line t-body-s t-muted">Matte black. The last thing chosen.</span></span>
+      </div>
+    </div>
+    <div class="cine-callout" data-callout="rearReveal" data-at="right" data-anchor="0.80,0.66,-1.35">
+      <div class="cine-callout__body">
+        <span class="cine-callout__mask"><span class="cine-callout__line t-label">04 · the other one</span></span>
+        <span class="cine-callout__mask"><span class="cine-callout__line t-h3">Rear haunch</span></span>
+        <span class="cine-callout__mask"><span class="cine-callout__line t-body-s t-muted">Tension over the rear axle.</span></span>
+      </div>
     </div>
 
-    <div class="hero__foot">
-      <div class="hero__cta">
-        <a class="btn btn--primary" href="build.html">Configure yours</a>
-        <a class="btn" href="inventory.html">See what is finished <span class="btn__chev" aria-hidden="true">→</span></a>
-      </div>
-
-      <div class="hero__spec">
-        <div class="spec-strip">
-          <div class="spec-strip__item">
-            <span class="t-label">Models</span>
-            <span class="spec-strip__val">RT4 · RT4B</span>
-          </div>
-          <div class="spec-strip__item">
-            <!-- ledger: backdraftracing.com, read 2026-08-24 -->
-            <span class="t-label">From</span>
-            <span class="spec-strip__val">$66,900</span>
-          </div>
-          <div class="spec-strip__item">
-            <span class="t-label">Built by</span>
-            <span class="spec-strip__val">Backdraft</span>
-          </div>
+  <div class="cinema__fore">
+    <div class="page">
+      <div class="cinema__lede">
+        <p class="t-label">Backdraft Cobras · built to order</p>
+        <h1 class="t-h1" style="margin-block:var(--sp-4) var(--sp-5)">Nobody buys one of these off a lot.</h1>
+        <p class="t-lead t-muted">
+          Every car leaves here as the sum of deliberate decisions — body,
+          engine, interior, stance, sound.
+        </p>
+        <div class="cinema__cta">
+          <a class="btn btn--primary" href="build.html">Configure yours</a>
+          <a class="btn" href="inventory.html">See what is finished <span class="btn__chev" aria-hidden="true">→</span></a>
+        </div>
+        <div class="cinema__meta">
+          <div><span class="t-label">Models</span><span class="t-num">RT4 · RT4B</span></div>
+          <!-- ledger: backdraftracing.com, read 2026-08-24 -->
+          <div><span class="t-label">From</span><span class="t-num">$66,900</span></div>
+          <div><span class="t-label">Built by</span><span class="t-num">Backdraft</span></div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- The release. It arrives while the camera is still pulling out, so the
+       film hands over to the page instead of being switched off. -->
+  <div class="cinema__bridge" data-bridge>
+    <p class="t-label">Featured inventory</p>
+    <h2 class="t-h2" style="margin-block-start:var(--sp-3)">Two to four at a time.</h2>
+  </div>
 </section>
-
-<!-- ── SHOTS 2–6 ──────────────────────────────────────────────────────────
-     data-anchor is the point ON THE CAR the callout line runs to, in metres in
-     the model's own frame, so it turns with the car and hides itself when the
-     part faces away. One callout per screen, never two.
--->
-<section class="reveal" data-reveal data-ground="dark" aria-labelledby="reveal-title">
-  <h2 class="sr-only" id="reveal-title">The car, in six frames</h2>
-
-  <!-- SHOT 2 · profile. The camera pulls back and swings to the flank: this is
-       the frame where the body shape reads, so nothing crops it. -->
-  <article class="reveal__note" data-note data-place="left"
-           data-anchor="0.88,0.60,-0.10"
-           data-rot="96" data-cam="0.18,0.60,8.20" data-target="-0.55,0.42,0" data-fov="24"
-           data-rot-mobile="96" data-cam-mobile="0,0.66,7.40" data-target-mobile="0,0.44,0" data-fov-mobile="34">
-    <div class="page">
-      <div class="note__body">
-        <p class="t-label note__index">01 · the starting point</p>
-        <h3 class="t-h2">RT4 Classic Edition</h3>
-        <p class="t-lead t-muted">The car the rest of the decisions happen to. Everything below follows from this one choice.</p>
-        <p class="note__fact">
-          <!-- ledger: backdraftracing.com, read 2026-08-24 -->
-          <span class="t-label">From</span>
-          <span class="note__figure">$66,900</span>
-        </p>
-      </div>
-    </div>
-  </article>
-
-  <!-- SHOT 3 · the sound. The pattern breaks here: low, close, mechanical, and
-       the car is no longer a silhouette but a surface. -->
-  <article class="reveal__note" data-note data-place="high"
-           data-anchor="0.85,0.27,0.05"
-           data-rot="108" data-cam="0.60,0.32,3.10" data-target="-0.25,0.22,0.10" data-fov="30"
-           data-rot-mobile="108" data-cam-mobile="0.20,0.36,3.40" data-target-mobile="0,0.24,0.10" data-fov-mobile="40">
-    <div class="page">
-      <div class="note__body">
-        <p class="t-label note__index">02 · the sound</p>
-        <h3 class="t-h2">Side-exit exhaust</h3>
-        <p class="t-lead t-muted">The note arrives before the rest of the car does.</p>
-        <p class="note__fact">
-          <!-- ledger: backdraftracing.com, read 2026-08-24 -->
-          <span class="t-label">Option</span>
-          <span class="note__figure">Ceramic-coated</span>
-        </p>
-      </div>
-    </div>
-  </article>
-
-  <!-- SHOT 4 · the rear. The camera orbits behind and the lamps begin to come
-       up, so the silhouette is cut out of the dark rather than lit out of it. -->
-  <article class="reveal__note" data-note data-place="right"
-           data-anchor="0.80,0.66,-1.35"
-           data-rot="212" data-cam="0.70,0.98,6.90" data-target="-0.62,0.48,0" data-fov="26" data-lights="0.3"
-           data-rot-mobile="212" data-cam-mobile="0.10,1.02,6.60" data-target-mobile="0,0.50,0" data-fov-mobile="36">
-    <div class="page">
-      <div class="note__body">
-        <p class="t-label note__index">03 · the other one</p>
-        <h3 class="t-h2">RT4B Black Edition</h3>
-        <p class="t-lead t-muted">Same car underneath, finished darker, with the options that change how it looks and how it lands.</p>
-        <p class="note__fact">
-          <!-- ledger: backdraftracing.com, read 2026-08-24 -->
-          <span class="t-label">From</span>
-          <span class="note__figure">$70,500</span>
-        </p>
-      </div>
-    </div>
-  </article>
-
-  <!-- SHOT 5 · under the arch. The tightest frame on the page: the wheel is the
-       subject and the body is the backdrop. -->
-  <article class="reveal__note" data-note data-place="low"
-           data-anchor="0.78,0.33,1.32"
-           data-rot="306" data-cam="0.05,0.32,2.95" data-target="-0.30,0.28,0.40" data-fov="30" data-lights="0.7"
-           data-rot-mobile="306" data-cam-mobile="0,0.34,3.30" data-target-mobile="0,0.28,0.35" data-fov-mobile="40">
-    <div class="page">
-      <div class="note__body">
-        <p class="t-label note__index">04 · under the arch</p>
-        <h3 class="t-h2">Eighteen-inch rims, matte black</h3>
-        <p class="t-lead t-muted">The last thing chosen and the first thing seen from ten feet away.</p>
-        <p class="note__fact">
-          <!-- ledger: backdraftracing.com, read 2026-08-24 -->
-          <span class="t-label">Diameter</span>
-          <span class="note__figure">18 in</span>
-        </p>
-      </div>
-    </div>
-  </article>
-
-  <!-- SHOT 6 · the release. The camera pulls all the way out, the car goes
-       small and moves left, and the copy stops being a caption and becomes the
-       opening of the section underneath. No callout here: the film is handing
-       over, and a line pointing at a part would hold it back. -->
-  <article class="reveal__note" data-note data-place="bridge"
-           data-rot="352" data-cam="1.15,1.45,12.00" data-target="-1.55,0.30,0" data-fov="21" data-lights="1"
-           data-rot-mobile="352" data-cam-mobile="0.20,1.40,10.60" data-target-mobile="-0.20,0.34,0" data-fov-mobile="30">
-    <div class="page">
-      <div class="note__body">
-        <p class="t-label note__index">Featured inventory</p>
-        <h3 class="t-h2">Two to four at a time.</h3>
-        <p class="t-lead t-muted">
-          Which is why each one gets a proper measure of room rather than a wall
-          of tiles. When a car is gone it is gone, and nothing is reduced to a
-          look-alike box to keep the grid full.
-        </p>
-      </div>
-    </div>
-  </article>
-</section>
-
-</div><!-- /.scene-scope -->
 
 <div class="thread" aria-hidden="true"></div>
 
@@ -555,6 +519,8 @@
     </div>
   </div>
 </footer>
+</div>
+</div><!-- /#smooth-wrapper -->
 
 <script type="module" src="assets/js/main.js"></script>
 <script type="module" src="assets/js/scene/index.js"></script>

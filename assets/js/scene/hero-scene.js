@@ -19,6 +19,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from '../vendor/jsm/loaders/GLTFLoader.js';
 import { Reflector } from '../vendor/jsm/objects/Reflector.js';
+import { createLamps } from './lamps.js';
 
 /* A 427 Cobra is about 156 in nose to tail. Every camera position, every focal
    length and every pose in the markup is expressed in metres against this, so a
@@ -220,11 +221,19 @@ function normalise(root, THREEns, lengthM) {
 }
 
 export function createHeroScene({ canvas, modelUrl, quality = 'full' }) {
+  /* alpha: true is not cosmetic here. Without it the drawing buffer is
+     composited as opaque and NOTHING behind the canvas is visible — which is
+     why the comment on scene.background below used to claim the CSS ground
+     showed through when it did not. It went unnoticed because the ground
+     behind it was the same colour. Direction C puts giant typography back
+     there, and that only works if the canvas is genuinely transparent. */
   const renderer = new THREE.WebGLRenderer({
     canvas,
+    alpha: true,
     antialias: quality === 'full',
     powerPreference: 'high-performance',
   });
+  renderer.setClearColor(0x000000, 0);
 
   // Device pixel ratio is capped rather than trusted. A 3× phone renders nine
   // times the pixels of a 1× one for a difference nobody can see on a car
@@ -243,7 +252,11 @@ export function createHeroScene({ canvas, modelUrl, quality = 'full' }) {
   /* With no floor plane there is nothing left for fog to hide, so it is here
      for depth alone: the far end of the car and anything behind it fall away
      into the same colour the CSS paints, and the scene has no boundary at all. */
-  scene.fog = new THREE.Fog(ground, 9, 26);
+  /* Exponential rather than linear. Linear fog is a distance ramp between
+     two planes; exponential is a medium, and a lamp needs a medium to be
+     embedded in rather than floating on. Density is low enough that the car
+     itself is never veiled — this is for the space around it. */
+  scene.fog = new THREE.FogExp2(ground, 0.026);
 
   /* ── THE ROOM ───────────────────────────────────────────────────────────
      A CAR IS A MIRROR. What reads as its shape is almost entirely the shape of
@@ -292,8 +305,10 @@ export function createHeroScene({ canvas, modelUrl, quality = 'full' }) {
   /* The blur is the anti-aliasing. A sharp environment on paint this smooth
      sparkles pixel by pixel and MSAA cannot help — it samples geometry edges,
      not the reflection. Softening the room is what removes the noise, and it
-     costs nothing at runtime because it is baked once. */
-  scene.environment = pmrem.fromScene(room, 0.06).texture;
+     costs nothing at runtime because it is baked once. 0.04 rather than more:
+     PMREM caps its blur at 20 samples and anything above about 0.045 asks for
+     more than that, gets clipped, and warns. */
+  scene.environment = pmrem.fromScene(room, 0.04).texture;
   room.traverse((o) => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
 
   /* ── THE LIGHTS THAT CAST ────────────────────────────────────────────────
@@ -319,6 +334,23 @@ export function createHeroScene({ canvas, modelUrl, quality = 'full' }) {
   const rim = new THREE.DirectionalLight(0xa8c2dc, 1.15);
   rim.position.set(6.5, 2.2, -6.5);
   scene.add(rim);
+
+  /* THE SWEEP. A narrow light the sequence can walk along the flank, so the
+     highlight that travels down the side pipe is the real material catching
+     a real moving source. Painting a white gradient over the canvas would be
+     cheaper and would read as exactly what it is. Off by default: it costs
+     nothing at zero intensity and only the detail shots turn it up. */
+  const sweep = new THREE.PointLight(0xffe6bd, 0, 7, 2);
+  sweep.position.set(0, 0.5, 3);
+  scene.add(sweep);
+
+  function setSweep(o) {
+    if (!o) return;
+    if (o.position) sweep.position.set(o.position[0], o.position[1], o.position[2]);
+    if (o.intensity !== undefined) sweep.intensity = o.intensity;
+    if (o.distance !== undefined) sweep.distance = o.distance;
+    dirty = true;
+  }
 
   /* ── THE GROUND, AND WHY IT IS NOT A FLOOR ───────────────────────────────
      A floor plane always ends somewhere, and where it ends it draws a line
@@ -458,12 +490,50 @@ export function createHeroScene({ canvas, modelUrl, quality = 'full' }) {
 
   /* The single input this module takes. Choreography computes a pose; the
      scene draws it. Nothing here decides when. */
-  /* One value, 0 to 1, for everything that lights up. The choreography decides
-     WHEN; this only knows how bright. */
+  /* THE LAMPS.
+
+     The work is in scene/lamps.js, which cuts the single lamp mesh into four
+     corners so the left headlamp can strike before the right and the tail
+     lights can be red. A model whose lamps are named something the module
+     does not recognise — LUZES, in the client's own SketchUp export — finds
+     nothing there, and falls back to the one shared material collected in
+     prepareModel. Dimmer, undivided, and still better than nothing. */
+  let lampsRig = null;
   let lamps = [];
+
   function setLights(v) {
-    const k = Math.max(0, Math.min(1, v || 0));
+    if (lampsRig && lampsRig.found) { lampsRig.setLights(v); dirty = true; return; }
+    const k = typeof v === 'number' || v == null
+      ? Math.max(0, Math.min(1, v || 0))
+      : Math.max(v.head || 0, v.tail || 0, v.headL || 0, v.headR || 0, v.tailL || 0, v.tailR || 0);
     for (const m of lamps) m.emissiveIntensity = k * (/glow/i.test(m.name) ? 1.6 : 2.4);
+    dirty = true;
+  }
+
+  /* THE LIGHT CHANGES WITH THE SHOT. A car lit identically from every angle is
+     the single loudest tell of a model viewer, so the key and the rim are
+     addressable and the sequence moves them. Interpolated by the timeline, not
+     switched, so nothing ever jumps. */
+  function setKey(o) {
+    if (!o) return;
+    if (o.position) key.position.set(o.position[0], o.position[1], o.position[2]);
+    if (o.intensity !== undefined) key.intensity = o.intensity;
+    if (o.color !== undefined) key.color.setHex(o.color);
+    dirty = true;
+  }
+
+  function setRim(o) {
+    if (!o) return;
+    if (o.position) rim.position.set(o.position[0], o.position[1], o.position[2]);
+    if (o.intensity !== undefined) rim.intensity = o.intensity;
+    if (o.color !== undefined) rim.color.setHex(o.color);
+    dirty = true;
+  }
+
+  /* The car can leave the frame without the camera having to chase it, which is
+     what the typographic interruption needs. */
+  function setModelOffset(x, y, z) {
+    pivot.position.set(x || 0, y || 0, z || 0);
     dirty = true;
   }
 
@@ -550,6 +620,12 @@ export function createHeroScene({ canvas, modelUrl, quality = 'full' }) {
         car = gltf.scene;
         lamps = prepareModel(car, renderer).lamps;
         normalise(car, THREE, LENGTH_M);
+
+        /* After normalise, so the split reads the car at the size and in the
+           place every pose is written against. */
+        lampsRig = createLamps(car, THREE);
+        setLights(0);
+
         pivot.add(car);
         resize();
         resolve({ car });
@@ -561,6 +637,7 @@ export function createHeroScene({ canvas, modelUrl, quality = 'full' }) {
 
   window.addEventListener('resize', resize, { passive: true });
 
-  return { renderer, scene, camera, pivot, ready, setPose, setLights, project, resize, start, stop, dispose,
-           get car() { return car; } };
+  return { renderer, scene, camera, pivot, ready, setPose, setLights, setKey, setRim, setSweep, setModelOffset,
+           project, resize, start, stop, dispose,
+           get car() { return car; }, get lampRig() { return lampRig; } };
 }

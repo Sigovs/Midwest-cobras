@@ -96,10 +96,23 @@
 
     <!-- The field. The car is in it; nothing else is yet. The still underneath
          is what the page shows before the scene draws and if it never does. -->
-    <div class="f-hero__field" data-scene-mount data-model="assets/model/shelby-cobra-427.glb" aria-hidden="true">
-      <img class="f-hero__still" data-scene-still src="assets/img/hero-still-placeholder.jpg" alt="" width="2000" height="1125">
-      <canvas class="f-hero__canvas" data-scene></canvas>
+    <div class="f-hero__field" data-scene-mount
+         data-model="assets/model/shelby-cobra-427.glb"
+         data-env="assets/env/parking_garage_1k.hdr">
+      <!-- The still is this car, at this camera, so the handover is invisible.
+           A placeholder showing a DIFFERENT car for one second is worse than no
+           placeholder at all — it is the page contradicting itself on arrival. -->
+      <picture>
+        <source media="(max-width: 55.99rem)" srcset="assets/img/f-hero-still-mobile.jpg">
+      <img class="f-hero__still" data-scene-still src="assets/img/f-hero-still.jpg"
+           alt="A Shelby Cobra standing in a workshop, three-quarter view from the front"
+           width="2000" height="1125" fetchpriority="high">
+      </picture>
+      <canvas class="f-hero__canvas" data-scene aria-label="The car. Drag to turn it, or use the left and right arrow keys."></canvas>
     </div>
+
+    <!-- Shown only once the car is there, gone the moment it has been used. -->
+    <p class="f-hero__hint t-label" data-turn-hint hidden>Drag to turn</p>
   </section>
 
 </main>

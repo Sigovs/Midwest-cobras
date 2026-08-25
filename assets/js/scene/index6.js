@@ -65,6 +65,7 @@ async function boot() {
     const scene = createFScene({
       canvas,
       modelUrl: mount.dataset.model,
+      envUrl: mount.dataset.env,
       quality: narrow ? 'lite' : 'full',
     });
 
@@ -77,11 +78,21 @@ async function boot() {
     document.documentElement.setAttribute('data-scene-state', 'live');
     window.__fscene = scene;   // the framing is being decided; this is the handle
 
-    /* Nothing here moves yet. The car standing still is the honest first state:
-       whether this direction has motion at all is a decision that has not been
-       taken, and a turntable added because a canvas felt static is exactly the
-       second idea the other five directions were careful not to add. */
-    if (reduced) console.info('[scene F] reduced motion — nothing animates here yet, so nothing to disable');
+    /* The turn is real, so it has to be discoverable — an affordance nobody can
+       see is not an affordance, and one that has to be guessed costs the
+       visitor an attempt and the page its credibility. The hint appears once
+       the car is actually there and leaves the moment it has been used. */
+    const hint = document.querySelector('[data-turn-hint]');
+    scene.bindTurn(() => { if (hint) hint.setAttribute('data-used', ''); });
+    if (hint) hint.removeAttribute('hidden');
+
+    /* Nothing turns on its own. Under reduced motion the difference is only
+       the inertia after a drag — the car itself is still turnable, because
+       taking a control away from someone is not an accommodation. */
+    if (reduced) {
+      scene.turn.damping = 0;
+      console.info('[scene F] reduced motion — the turn stays, its glide does not');
+    }
 
   } catch (err) {
     stayStatic(`failed to initialise — ${err && err.message ? err.message : err}`);

@@ -48,3 +48,29 @@
 .f-hero__still[data-hidden] { opacity: 0; }
 
 .f-hero__canvas { display: block; }
+
+/* The turn's affordance. Present only once the car is, gone once it has been
+   used — a hint that stays after the visitor has understood it is clutter, and
+   one that never appears is a control nobody finds. */
+.f-hero__hint {
+  position: absolute;
+  inset-block-end: var(--sp-7);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-5);
+  border: var(--hairline) solid var(--rule);
+  border-radius: var(--radius);
+  background: rgb(var(--graphite-950-rgb) / 0.55);
+  backdrop-filter: blur(6px);
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+
+.f-hero__hint[data-used] { opacity: 0; }
+
+.f-hero__canvas { touch-action: pan-y; cursor: grab; }
+.f-hero__canvas:active { cursor: grabbing; }

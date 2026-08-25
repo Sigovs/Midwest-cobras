@@ -344,6 +344,29 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
       const m = o.material;
       if (!m) return;
 
+      /* The headlamp lenses, separated out of `Interior` by dev/prep_shelby.py.
+         Before that surgery they were four thousand faces inside a forty
+         thousand vertex object, mapped to a ten-pixel patch of leather grain
+         that magnified into what looked exactly like tyre tread. There was
+         nothing to address, so there was no material fix — only a geometry
+         one. Now there is a node, and it can simply be given glass. */
+      if (/^lens/i.test(o.name)) {
+        o.material = new THREE.MeshPhysicalMaterial({
+          color: 0xdfe6ea,
+          roughness: 0.07,
+          metalness: 0.0,
+          transmission: 0.55,     // enough to show the reflector, not so much
+          thickness: 0.02,        // that the lens stops being a surface
+          ior: 1.52,
+          clearcoat: 1.0,
+          clearcoatRoughness: 0.03,
+          envMapIntensity: 1.6,
+          side: THREE.DoubleSide,
+        });
+        o.castShadow = false;
+        return;
+      }
+
       if (/glass|windscreen/i.test(o.name)) {
         const dark = /dark/i.test(o.name);
         o.material = new THREE.MeshPhysicalMaterial({

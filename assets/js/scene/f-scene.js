@@ -40,7 +40,7 @@ export function createFScene({ canvas, modelUrl, quality = 'full' }) {
   });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, quality === 'full' ? 2 : 1.5));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.0;
+  renderer.toneMappingExposure = 1.25;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.shadowMap.enabled = quality === 'full';
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -135,13 +135,30 @@ export function createFScene({ canvas, modelUrl, quality = 'full' }) {
         A windscreen is transmission, not opacity, and the difference is
         whether the cockpit behind it exists.
 
-     3. Car paint has no clearcoat, because the source had no slot for one —
-        V-Ray builds that lacquer out of Reflection, Fresnel and IOR maps, and
-        metallic-roughness has nowhere to put them. Converted straight, the
-        body reads as primer: the colour is right and the surface is dead.
-        Clearcoat is added back on the PANELS ONLY, cloned off the shared
-        atlas, because this model carries the whole exterior on one material
-        and lacquering the tyres with it would make them look wet.           */
+     3. The paint is not metal, and the conversion says it is. This is the one
+        that mattered: the car rendered dark navy against a preview that is
+        light Gulf blue, and the cause is not the lighting.
+
+        glTF's metallic-roughness packs metal in the blue channel of one
+        texture. Converting a V-Ray set, that channel is written from the
+        REFLECTION map — and for car paint a reflection map is bright
+        everywhere, because lacquer reflects. Multiplied by a metallicFactor of
+        1.0 the exporter also wrote, every painted panel becomes metal, and a
+        metal's base colour stops being its colour and starts being its
+        reflectance. Blue paint turns into blue-tinted chrome, which reads as
+        near-black in a dark room.
+
+        So the panels drop the metal map entirely and take metalness 0. They
+        are dielectric, which is what automotive lacquer is, and the colour in
+        the base texture becomes the colour again.
+
+     4. And then they get the clearcoat back. V-Ray builds lacquer out of
+        Reflection, Fresnel and IOR and metallic-roughness has nowhere to put
+        them, so converted straight the surface is dead even once the colour is
+        right. Clearcoat is added on the PANELS ONLY, cloned off the shared
+        atlas, because this model carries the whole exterior on one material —
+        the wheels and bumpers keep their metal map, and lacquering the tyres
+        would make them look wet.                                            */
 
   const PANEL = /^(body|doar|trunk)/i;   // shell, doors, boot lid — what is painted
   function correctMaterials(root) {
@@ -184,10 +201,12 @@ export function createFScene({ canvas, modelUrl, quality = 'full' }) {
                   name: m.name,
                 });
             paint.name = m.name + '__lacquer';
+            paint.metalness = 0.0;
+            paint.metalnessMap = null;      // see correction 3 — this is the one
             paint.clearcoat = 1.0;
             paint.clearcoatRoughness = 0.045;
-            paint.roughness = Math.min(m.roughness ?? 1, 0.34);
-            paint.envMapIntensity = 1.25;
+            paint.roughness = 0.28;
+            paint.envMapIntensity = 1.6;
             paint.side = THREE.FrontSide;
             paint.shadowSide = THREE.FrontSide;
             if (paint.map) paint.map.anisotropy = 8;

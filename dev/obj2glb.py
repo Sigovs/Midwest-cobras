@@ -115,10 +115,26 @@ def main():
     cur = 'default'
 
     def vert_index(prim, token):
-        m = prim['map']
-        i = m.get(token)
-        if i is not None:
-            return i
+        """Resolve an OBJ face token to a welded vertex.
+
+        THE KEY IS THE RESOLVED TRIPLE, NEVER THE TOKEN TEXT. An OBJ index may
+        be negative, and a negative index is RELATIVE to how many v/vt/vn lines
+        have been read so far — so the same string means a different vertex
+        every time it appears. Caching on the text silently hands back the
+        first position that string ever resolved to.
+
+        This is not hypothetical. The supplied COBRA.obj writes all 83,951 of
+        its faces relatively:
+
+            f -4404/-4404/-4404 -4403/-4403/-4403 -4402/-4402/-4402
+
+        251,853 face-vertex references across only 14,847 distinct strings.
+        Keyed on the text, three quarters of the car collapsed onto the first
+        instance of each component: four wheels became one, the far side of the
+        chassis vanished, one headlight of two survived. The face COUNT came out
+        exactly right, which is why nothing looked broken until the geometry was
+        counted rather than viewed.
+        """
         bits = token.split('/')
         vi = int(bits[0]); vi = vi - 1 if vi > 0 else len(V) + vi
         ti = None
@@ -127,12 +143,19 @@ def main():
             ti = int(bits[1]); ti = ti - 1 if ti > 0 else len(VT) + ti
         if len(bits) > 2 and bits[2]:
             ni = int(bits[2]); ni = ni - 1 if ni > 0 else len(VN) + ni
+
+        key = (vi, ti, ni)
+        m = prim['map']
+        i = m.get(key)
+        if i is not None:
+            return i
+
         pos = V[vi]
         nrm = None  # recomputed below — see smooth_normals()
         uv = VT[ti] if ti is not None and ti < len(VT) else (0.0, 0.0)
         i = len(prim['verts'])
         prim['verts'].append([pos, nrm, uv, vi])
-        m[token] = i
+        m[key] = i
         return i
 
     with open(src, 'r', errors='ignore') as fh:

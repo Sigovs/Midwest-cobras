@@ -38,19 +38,19 @@ const DEG = Math.PI / 180;
    frame, which is what lets the canvas replace the still without the
    composition moving under the headline. */
 export const HERO_POSE = {
-  rotY: 152 * DEG,
-  cam: [3.6, 0.95, 4.2],
-  target: [0.45, 0.55, 0],
-  fov: 34,
+  rotY: 38 * DEG,
+  cam: [0.90, 0.92, 7.90],
+  target: [-1.15, 0.46, 0],
+  fov: 27,
 };
 
 /* Where the car arrives from. Far, high and turned away — so the entrance is a
    car coming to a stop in a room, not an object being flown in. */
 const ARRIVAL_POSE = {
-  rotY: 118 * DEG,
-  cam: [8.6, 3.1, 9.4],
-  target: [0.45, 0.55, 0],
-  fov: 30,
+  rotY: 4 * DEG,
+  cam: [2.20, 3.20, 13.50],
+  target: [-1.15, 0.46, 0],
+  fov: 24,
 };
 
 function readPose(el, isNarrow) {
@@ -65,7 +65,7 @@ function readPose(el, isNarrow) {
     return parts.length === 3 && parts.every((n) => !Number.isNaN(n)) ? parts : fallback;
   };
   return {
-    rotY: parseFloat(attr('rot', 152)) * DEG,
+    rotY: parseFloat(attr('rot', 38)) * DEG,
     cam: nums(attr('cam'), HERO_POSE.cam),
     target: nums(attr('target'), HERO_POSE.target),
     fov: parseFloat(attr('fov', HERO_POSE.fov)),
@@ -73,7 +73,20 @@ function readPose(el, isNarrow) {
 }
 
 export function mountChoreography({ scene, mount, still, scope, reveal, isNarrow }) {
-  const state = { ...HERO_POSE, cam: [...HERO_POSE.cam], target: [...HERO_POSE.target] };
+  /* GSAP tweens scalars, so the camera position and the aim point each carry a
+     flat mirror of the vector above them. Both mirrors are seeded HERE rather
+     than left to appear on their first tween: GSAP reads the start value off
+     the object, a property it has never seen reads as 0, and an aim point
+     starting at the origin swings the camera through the floor on the way into
+     the first note. cx/cy/cz were covered by the arrival tween; tx/ty/tz were
+     not, and that is the one the reader saw. */
+  const state = {
+    ...HERO_POSE,
+    cam: [...HERO_POSE.cam],
+    target: [...HERO_POSE.target],
+    cx: HERO_POSE.cam[0], cy: HERO_POSE.cam[1], cz: HERO_POSE.cam[2],
+    tx: HERO_POSE.target[0], ty: HERO_POSE.target[1], tz: HERO_POSE.target[2],
+  };
   const push = () => scene.setPose(state);
 
   /* ── The handover ───────────────────────────────────────────────────────
@@ -139,6 +152,31 @@ export function mountChoreography({ scene, mount, still, scope, reveal, isNarrow
   const notes = Array.from(reveal.querySelectorAll('[data-note]'))
     .filter((el) => getComputedStyle(el).display !== 'none');
 
+  /* EVEN STEPS ARE NOT A PREFERENCE HERE, THEY ARE THE MECHANISM.
+     Every segment below is given the same duration and the reveal gives every
+     note the same screen, so the ANGLE BETWEEN CONSECUTIVE POSES *IS* THE TURN
+     RATE. A sweep of 38 / 46 / 152 / 258 steps by 8, 106, 106 — the car sits
+     almost still through the first screen and then snaps twice, which reads as
+     a broken animation rather than a slow one. The poses in the markup step by
+     a near-constant 66, so a constant scroll turns the car at a constant rate.
+
+     Add a note and the whole sweep gets re-spaced; it is not a list you append
+     to. The two checks below say that out loud instead of leaving it to be
+     rediscovered from the symptom. */
+  if (notes.length > 1) {
+    const rots = [HERO_POSE.rotY, ...notes.map((n) => readPose(n, isNarrow).rotY)];
+    const steps = rots.slice(1).map((r, i) => (r - rots[i]) / DEG);
+    const mag = steps.map(Math.abs);
+    const spread = Math.max(...mag) / Math.max(Math.min(...mag), 0.001);
+    if (spread > 3) {
+      console.warn('[choreography] uneven turn: steps of ' + mag.map(Math.round).join(', ') +
+        ' degrees across equal screens. The car will stall and then snap. Re-space the data-rot values.');
+    }
+    if (steps.some((v, i) => i > 0 && Math.sign(v) !== Math.sign(steps[i - 1]))) {
+      console.warn('[choreography] the sweep reverses direction. One continuous turn reads as choreography; a back-and-forth reads as a bug.');
+    }
+  }
+
   if (!notes.length) {
     console.warn('[choreography] reveal present but no visible [data-note] — the sequence is a no-op here.');
     return;
@@ -153,8 +191,6 @@ export function mountChoreography({ scene, mount, still, scope, reveal, isNarrow
       invalidateOnRefresh: true,
     },
   });
-
-  let from = { ...HERO_POSE, cam: [...HERO_POSE.cam], target: [...HERO_POSE.target] };
 
   notes.forEach((note) => {
     const to = readPose(note, isNarrow);
@@ -175,7 +211,6 @@ export function mountChoreography({ scene, mount, still, scope, reveal, isNarrow
         push();
       },
     });
-    from = to;
   });
 
   /* ── The notes themselves ───────────────────────────────────────────────

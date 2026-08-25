@@ -480,10 +480,20 @@
   position: sticky;
   inset-block-start: 0;
   height: 100svh;
-  margin-block-end: -100svh;
   z-index: 0;
   pointer-events: none;      /* the scene is not draggable, so it must not look it */
 }
+
+/* The hero is pulled back OVER the mount. The mount used to carry
+   `margin-block-end: -100svh` instead, and that is a different thing than it
+   looks: a negative bottom margin equal to the height collapses the sticky
+   element to a zero-height margin box, and a sticky box is held inside its
+   containing block by its MARGIN box. With nothing to hold, the canvas kept
+   travelling a full viewport past the end of .scene-scope and hung over the
+   first screen of Inventory — invisible only for as long as the scene happened
+   to render mostly transparent. Pulling the following section up instead leaves
+   the mount a real 100svh margin box, so it stops where its scope does. */
+.scene-scope > .hero { margin-block-start: -100svh; }
 
 .scene-mount canvas { width: 100%; height: 100%; display: block; }
 

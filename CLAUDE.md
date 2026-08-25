@@ -105,8 +105,20 @@ aesthetic family; the family came from the brief and is recorded in the Design
 Read.
 
 **JS budget:** GSAP core + ScrollTrigger ≈ 110 KB gzipped, counted separately from
-the **3.5 MB scene payload ceiling** declared in the Motion Read. Both are hard.
+the **5 MB scene payload ceiling** declared in the Motion Read. Both are hard.
 Exceeded means the scope is cut, not the budget.
+
+**The ceiling was 3.5 MB and Alex raised it to 5 MB on 2026-08-24**, ahead of
+knowing what the replacement model would weigh — the supplied SketchUp export was
+one wheel and half a chassis, so the scene either got a real car or got cut.
+
+**It then did not need the room.** `ac-cobra-427.glb` ships at **3.27 MB**, under
+the ceiling it replaced, because `gltf-transform prune` removed six UV sets no
+material referenced and a vertex-colour attribute nothing read — 1.8 MB of the
+5.14 MB the conversion first produced. The raise stands as headroom for the
+configurator, and it is recorded here rather than quietly reused: a budget only
+works while something is willing to refuse it, and this one has now been widened
+once without being spent.
 
 ## Content ledger — the rule, and its one authorised exception
 
@@ -128,11 +140,19 @@ confirm`. The gate is yielded, out loud; it is not absent.
 
 ## Open — do not resolve these by guessing
 
-1. **The 3D asset.** `COBRA.obj` is a SketchUp export — 83,951 faces, 199,375
-   unshared vertices, 37 default SketchUp materials, no PBR — and it is a
-   **generic Cobra, not a Backdraft RT4**. Presenting it as their car is a claim
-   the geometry does not support. Three honest outcomes are listed in
-   [docs/design-read.md](docs/design-read.md) §8; Alex chooses.
+1. **The hero model's licence — and the choice it forces.** The hero now uses
+   `assets/model/ac-cobra-427.glb`, a 1965 AC Shelby 427 with 30 authored PBR
+   maps. It is **CC BY-NC-SA**: NonCommercial excludes a dealer's own website, so
+   it stands in the client mock and does not ship. A commercially licensed
+   equivalent is $30–150.
+
+   There is now a second route, and it exists because the reason we abandoned the
+   client's own model was **our bug, not their file** — `dev/obj2glb.py` was
+   collapsing relative OBJ indices and turning four wheels into one. Fixed
+   2026-08-25. Re-converted, `COBRA.obj` is a whole symmetric car, and it is
+   licence-clean because it is the client's own. It is also visibly coarser, has
+   **no textures whatsoever**, and is still a generic Cobra rather than an RT4.
+   Alex chooses: pay for a good model, or use theirs and accept the grade.
 2. **Inventory vs Car Collection vs Gallery.** Three separate nav items about
    cars. Working assumption until told otherwise: Inventory = for sale now
    (2–4 cars, shown large); Car Collection = the owner's own cars, not for sale;

@@ -20,6 +20,12 @@ import * as THREE from 'three';
 import { GLTFLoader } from '../vendor/jsm/loaders/GLTFLoader.js';
 import { RoomEnvironment } from '../vendor/jsm/environments/RoomEnvironment.js';
 
+/* A 427 Cobra is about 156 in nose to tail. Every camera position, every focal
+   length and every pose in the markup is expressed in metres against this, so a
+   model that arrives in inches, centimetres or Sketchfab units still lands the
+   same size in frame. */
+const LENGTH_M = 3.96;
+
 /* The ground the scene sits in. Read from the stylesheet rather than repeated
    here, so the canvas and the CSS behind it can never disagree about what
    colour the page is. */
@@ -29,49 +35,87 @@ function groundColour() {
   return new THREE.Color(v || '#1a1d21');
 }
 
-/* The material system. The supplied model carries SketchUp's default library —
-   "Glass Basic White #1", "Magnesium Rough #1" — which is not PBR and renders
-   as plastic. Every mesh is re-assigned here by what the group actually is.
-   The names are Portuguese/Spanish because the model is; that is the export we
-   were given, not a choice. */
-function applyMaterials(root, THREEns) {
-  const T = THREEns;
-  const body = new T.MeshPhysicalMaterial({
-    color: 0x2a3037, roughness: 0.26, metalness: 0.5,
-    clearcoat: 1.0, clearcoatRoughness: 0.08,
-  });
-  const chrome = new T.MeshStandardMaterial({ color: 0xdcdfe3, roughness: 0.14, metalness: 1.0 });
-  const hide = new T.MeshStandardMaterial({ color: 0x121417, roughness: 0.78, metalness: 0.0 });
-  const glass = new T.MeshPhysicalMaterial({
-    color: 0xc9d4da, roughness: 0.06, metalness: 0.0,
-    transmission: 0.86, thickness: 0.01, side: T.DoubleSide,
-  });
-  const lamp = new T.MeshStandardMaterial({
-    color: 0xf3f1ea, roughness: 0.12, metalness: 0.2,
-    emissive: 0x201f1b, emissiveIntensity: 0.5,
-  });
-  const trim = new T.MeshStandardMaterial({ color: 0x1b1e22, roughness: 0.5, metalness: 0.3 });
+/* The model prep, and the rule it exists to keep: THE AUTHORED MATERIALS STAY.
+   ---------------------------------------------------------------------------
+   The first model here was a SketchUp export with no PBR and no textures, so
+   the scene had to invent a material for every group. This one arrives with 30
+   authored maps — base colour, metallic-roughness, normals — and re-assigning
+   anything would throw them away and hand back the grey plastic we started
+   with. So nothing is replaced. Only three things are touched, and each is a
+   property of THIS SCENE rather than of the asset:
 
-  const pick = (name) => {
-    const n = name.toLowerCase();
-    if (n.includes('glass')) return glass;
-    if (n.includes('luz')) return lamp;
-    if (/cromado|steel|chrome|magnesium|iron|exaustor/.test(n)) return chrome;
-    if (/cuero|bancos|costura|carpete|fabric/.test(n)) return hide;
-    if (/painel|botao/.test(n)) return trim;
-    return body;
-  };
+     envMapIntensity  how hard the room reflects, which is lighting, not paint
+     anisotropy       tyre tread and carpet at a grazing angle, which is a
+                      sampler setting the author cannot know our camera for
+     castShadow       whether a part throws, which depends on our one key
+
+   NOTE ON THE FORMAT. The download is written in KHR_materials_pbrSpecularGlossiness,
+   and three.js removed that extension in r160 — the version vendored here. A
+   loader that does not know the extension falls back to the glTF default:
+   white, metallic 1, roughness 1, every texture ignored. It does not error; it
+   just renders a chrome blob, which reads as a bad model rather than a bad
+   pipeline. So the committed asset is converted to metallic-roughness first.
+   dev/README.md carries the command. */
+function prepareModel(root, renderer) {
+  const maxAniso = renderer.capabilities.getMaxAnisotropy();
+  const seen = new Set();
+  let textured = 0, meshes = 0;
 
   root.traverse((o) => {
     if (!o.isMesh) return;
-    const name = (o.material && o.material.name) || '';
-    const m = pick(name);
-    o.material = m;
-    o.castShadow = m !== glass;
+    meshes++;
+    const list = Array.isArray(o.material) ? o.material : [o.material];
+
+    list.forEach((m) => {
+      if (!m || seen.has(m)) return;
+      seen.add(m);
+      if (m.map) textured++;
+
+      m.envMapIntensity = 0.85;
+
+      [m.map, m.normalMap, m.roughnessMap, m.metalnessMap, m.aoMap, m.emissiveMap]
+        .forEach((t) => { if (t) { t.anisotropy = maxAniso; t.needsUpdate = true; } });
+    });
+
+    /* Transmissive parts throw a shadow shaped like the pane, not like the
+       light through it, so they are left out of the map. */
+    const first = list[0];
+    o.castShadow = !(first && (first.transmission > 0 || first.transparent));
     o.receiveShadow = false;
   });
 
-  return { body, chrome, hide, glass, lamp, trim };
+  /* Absence raises no alarm. A model that lost its maps in conversion loads
+     without an error and renders as untextured plastic, which is exactly what
+     this scene existed to stop being. */
+  if (textured === 0) {
+    console.warn(`[scene] ${meshes} meshes and not one carries a base map — the model is loading untextured. If it is a Sketchfab download, it is probably still spec-gloss; see dev/README.md.`);
+  }
+
+  return { meshes, textured };
+}
+
+/* Put the car where the scene expects it, whatever unit it was drawn in.
+   ---------------------------------------------------------------------------
+   obj2glb.py used to do this at export. A downloaded model cannot be asked to,
+   and this one arrives 4 cm long — so the scale is read off the model rather
+   than typed in, and the car is centred on X/Z and stood on y = 0. A scene that
+   has to guess where the floor is guesses wrong at every camera angle. */
+function normalise(root, THREEns, lengthM) {
+  const T = THREEns;
+  let box = new T.Box3().setFromObject(root);
+  const size = box.getSize(new T.Vector3());
+  const longest = Math.max(size.x, size.y, size.z);
+  if (!longest || !isFinite(longest)) return null;
+
+  root.scale.setScalar(lengthM / longest);
+  root.updateMatrixWorld(true);
+
+  box = new T.Box3().setFromObject(root);
+  const c = box.getCenter(new T.Vector3());
+  root.position.set(-c.x, -box.min.y, -c.z);
+  root.updateMatrixWorld(true);
+
+  return new T.Box3().setFromObject(root);
 }
 
 export function createHeroScene({ canvas, modelUrl, quality = 'full' }) {
@@ -95,7 +139,12 @@ export function createHeroScene({ canvas, modelUrl, quality = 'full' }) {
   const ground = groundColour();
   const scene = new THREE.Scene();
   scene.background = null;                 // the CSS ground shows through
-  scene.fog = new THREE.Fog(ground, 13, 34);
+  /* Fog far has to sit INSIDE the floor, not past it. The floor used to end at
+     30 with fog reaching 34, so its rim was still legible and drew a hard line
+     across the frame at roughly the height of the car. Now the ground runs well
+     beyond the fog, which means the plane fades to exactly the colour the CSS
+     paints behind the canvas and no edge is left to see. */
+  scene.fog = new THREE.Fog(ground, 14, 40);
 
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.03).texture;
@@ -122,7 +171,7 @@ export function createHeroScene({ canvas, modelUrl, quality = 'full' }) {
   scene.add(new THREE.HemisphereLight(0x3a4048, 0x0d0f11, 0.5));
 
   const floor = new THREE.Mesh(
-    new THREE.CircleGeometry(30, 64).rotateX(-Math.PI / 2),
+    new THREE.CircleGeometry(140, 96).rotateX(-Math.PI / 2),
     new THREE.MeshStandardMaterial({ color: 0x1d2126, roughness: 0.62, metalness: 0.0 })
   );
   floor.receiveShadow = quality === 'full';
@@ -201,10 +250,8 @@ export function createHeroScene({ canvas, modelUrl, quality = 'full' }) {
       modelUrl,
       (gltf) => {
         car = gltf.scene;
-        applyMaterials(car, THREE);
-        // The glb is already centred on X/Z and sitting on y = 0 — obj2glb.py
-        // does that at export, because a scene that has to guess where the
-        // floor is guesses wrong at every camera angle.
+        prepareModel(car, renderer);
+        normalise(car, THREE, LENGTH_M);
         pivot.add(car);
         resize();
         resolve({ car });

@@ -289,33 +289,83 @@ Cut              — the page-load fly-in as a gate. It plays, but the first rea
 |---|---|
 | Target | 60 fps desktop (M1 / mid discrete GPU) |
 | Floor | 30 fps on iPhone 12 and a mid-range 2022 Android |
-| Scene payload ceiling | **3.5 MB** — geometry + textures + loader, compressed |
+| Scene payload ceiling | **5 MB** — geometry + textures + loader, compressed. Raised from 3.5 MB by Alex, 2026-08-24: the supplied model cannot carry the hero, and a car that can arrives with authored PBR maps |
 | Load order | the scene is fetched **after** first paint and after the fallback still is on screen |
 
 Exceeded means scope is cut. Not the budget.
 
-## 8 · The asset problem, stated rather than discovered later
+## 8 · The asset problem — resolved 2026-08-25, and what replaced it
 
-`COBRA.obj` is a SketchUp export: **83,951 faces, 199,375 vertices with no
-sharing, 37 materials** whose names are the SketchUp defaults —
-`Glass Basic White #1`, `Magnesium Rough #1`, `Iron Rough #2`. There is no PBR
-material in it. Untouched, it renders as the exact plastic that
-`anti-patterns` D8 bans.
+### What we thought the supplied model was, and what it actually is
 
-Second, and larger: **it is a generic Cobra, not a Backdraft.** Midwest Cobras
-sells Backdraft RT4 and RT4B, which have their own side pipes, roll bars, wheels
-and interior. A scene that presents this geometry as *their* car is a claim about
-a real product that the geometry does not support.
+For a day this section said the client's export was half a car. **That was our
+bug, not their file, and the correction matters more than the original finding.**
 
-Three honest outcomes, and the choice is Alex's:
+What was true: `assets/model/cobra.glb` was lopsided. A census across its
+centreline gave 43,687 vertices on one side against 7,980 on the other, with one
+wheel, one headlight and one side of the tube frame. Of 37 groups, only the
+painted shell existed on both sides.
 
-1. Re-material and re-detail the model toward the RT4 — real cost, real result.
-2. Keep it, and label the scene as an illustration of the type, not the car.
-3. Build the hero on the client's own footage and let 3D live only inside the
-   configurator, where the geometry is a diagram and nobody reads it as a photograph.
+What was false: the conclusion that the OBJ arrived that way. `COBRA.obj` is
+**89.6% symmetric** and carries four wheels — `Magnesium Rough #1` spans
+`X[-1.69..1.40] Z[-1.11..1.11]`, both ends of the car and both sides.
 
-Until one is chosen, the hero's **asset suitability** field above stays
-unresolved, and no gate can pass on it.
+**`dev/obj2glb.py` destroyed it, and the mechanism is worth writing down because
+nothing about it looks like a failure.** Every one of the 83,951 face lines in
+that OBJ uses relative indices:
+
+```
+f -4404/-4404/-4404 -4403/-4403/-4403 -4402/-4402/-4402
+```
+
+A negative OBJ index counts back from however many `v` lines have been read so
+far, so the same text means a different vertex each time it appears — 251,853
+references across only 14,847 distinct strings. The converter cached welded
+vertices **keyed on the token text**, so every repeat silently returned the first
+position that string had ever resolved to. Four wheels collapsed onto one. The
+face *count* came out exactly right, which is why the file passed every check
+that asks whether something is missing.
+
+Fixed 2026-08-25: the cache is keyed on the resolved `(v, vt, vn)` triple. Re-run
+against the client OBJ it now yields a whole, symmetric car — tyres 11,520 /
+11,520, wheels 7,200 / 7,200.
+
+**`docs/evidence/` was measuring the bug.** Frames 01–03 are still valid about
+the inverted normals, which is a real and separate defect in the export. Frame 04
+and its "diagram-grade, not hero-grade" verdict were formed on a car missing
+three quarters of itself, and that verdict has not been re-taken.
+
+What remains true of the client asset, independent of the bug: it carries **no
+textures at all** — `COBRA.mtl` has zero `map_` lines — its UVs are SketchUp box
+projections unusable for baking, its stored normals are inverted, and it is a
+generic Cobra rather than a Backdraft RT4.
+
+### What replaced it
+
+`assets/model/ac-cobra-427.glb` — a **1965 AC Shelby 427**, 44,568 triangles,
+30 authored PBR maps, symmetric to the vertex (rim 2,584/2,584, tyre 480/480),
+one-sided only where a car is: steering wheel, gauges, gauge glass.
+
+Two things about it are still claims rather than facts, and both are logged in
+`docs/content-ledger.md`:
+
+- **Licence.** CC BY-NC-SA. NonCommercial excludes the client's own site. This
+  asset stands in the mock and is replaced by a commercially licensed 427 before
+  anything ships. It is the cheapest open item on the project and the only one
+  that is a legal exposure rather than a quality one.
+- **Specificity.** It is the car the RT4 is a replica *of*, so the silhouette is
+  honest. The blue-with-white-stripes paint is one particular car and is not in
+  the client's catalogue.
+
+### The outcome that was chosen, of the three that stood here
+
+Outcome 1 — a model good enough to carry the hero — turned out to be reachable by
+substitution rather than by re-detailing, so the hero keeps its 3D. Outcome 3 is
+still the better answer the day the client's own footage arrives: a photograph of
+a car they actually built outranks a licensed render of a car they did not.
+
+**The asset suitability field above now reads: resolved for the mock, blocked on
+licence for the build.**
 
 ## 9 · Content ledger status
 

@@ -66,18 +66,28 @@
      The governing event: subject (the car in the field), identity mass,
      supporting spec strip, CTA cluster, and the reserved air upper-left.
 
-     ASSET NOTE — read before replacing this image. The still is rendered from
-     the supplied SketchUp model and is a DECLARED PLACEHOLDER: that model is a
-     generic Cobra, not a Backdraft RT4, and its body is low-polygon enough that
-     the faceting shows at hero scale. The composition is the deliverable here;
-     the asset is not. docs/design-read.md §8 holds the three honest outcomes.
+     ASSET NOTE — read before replacing this image. The still is a render of
+     assets/model/ac-cobra-427.glb at HERO_POSE, frame for frame. That is what
+     lets the canvas cross over it without the composition moving under the
+     headline, so a new pose means a new still, not just a new number.
+
+     It is no longer the SketchUp export. That model was one wheel, half a
+     chassis and an eight-triangle radiator grille; docs/evidence/ holds the
+     measurement rather than the opinion.
+
+     WHAT THIS ASSET IS, AND WHAT IT IS NOT. A 1965 AC Shelby 427 — the car the
+     Backdraft RT4 is a replica of, so the silhouette is right — licensed
+     CC BY-NC-SA. NonCommercial is not a licence a dealer's site can ship on,
+     and the paint is one specific blue-and-white car rather than the client's
+     catalogue. Both are logged in docs/content-ledger.md with what replaces
+     them. docs/design-read.md §8 carries the reasoning.
 -->
 <!-- The scene's scope: the hero and the reveal, and nothing else. The canvas is
      sticky inside it, so the sequence begins and ends exactly where this
      wrapper does. -->
 <div class="scene-scope" data-scene-scope>
 
-  <div class="scene-mount" data-scene-mount data-model="assets/model/cobra.glb" aria-hidden="true">
+  <div class="scene-mount" data-scene-mount data-model="assets/model/ac-cobra-427.glb" aria-hidden="true">
     <canvas data-scene></canvas>
   </div>
 
@@ -87,7 +97,7 @@
       <source media="(max-width: 55.99rem)" srcset="assets/img/hero-still-placeholder-mobile.jpg">
       <img class="hero__still" src="assets/img/hero-still-placeholder.jpg"
            alt="A Cobra roadster standing on a lit workshop floor, three-quarter view from the front"
-           width="2000" height="1125" fetchpriority="high">
+           width="3000" height="1691" fetchpriority="high">
     </picture>
   </div>
 
@@ -144,8 +154,8 @@
   <h2 class="sr-only" id="reveal-title">What you are choosing between</h2>
 
   <article class="reveal__note" data-note
-           data-rot="168" data-cam="3.2,1.05,4.4" data-target="0.35,0.55,0" data-fov="34"
-           data-rot-mobile="164" data-cam-mobile="2.9,1.15,3.9" data-fov-mobile="42">
+           data-rot="104" data-cam="0.70,0.85,7.40" data-target="-1.05,0.44,0" data-fov="26"
+           data-rot-mobile="104" data-cam-mobile="0.10,0.95,6.60" data-target-mobile="-0.15,0.46,0" data-fov-mobile="36">
     <div class="page">
       <div class="note__body">
         <p class="t-label note__index">01 · the starting point</p>
@@ -160,8 +170,8 @@
   </article>
 
   <article class="reveal__note" data-note
-           data-rot="205" data-cam="3.6,1.2,3.6" data-target="0.3,0.55,0" data-fov="34"
-           data-rot-mobile="200" data-cam-mobile="3.1,1.25,3.4" data-fov-mobile="42">
+           data-rot="166" data-cam="0.60,0.80,7.30" data-target="-0.50,0.42,0" data-fov="25"
+           data-rot-mobile="166" data-cam-mobile="0.10,0.90,6.40" data-target-mobile="-0.10,0.44,0" data-fov-mobile="35">
     <div class="page">
       <div class="note__body">
         <p class="t-label note__index">02 · the other one</p>
@@ -176,8 +186,8 @@
   </article>
 
   <article class="reveal__note" data-note
-           data-rot="250" data-cam="4.1,0.75,2.4" data-target="0.1,0.42,0" data-fov="32"
-           data-rot-mobile="246" data-cam-mobile="3.4,0.8,2.3" data-fov-mobile="44">
+           data-rot="232" data-cam="0.45,0.70,6.40" data-target="-1.00,0.40,0" data-fov="23"
+           data-rot-mobile="232" data-cam-mobile="0.10,0.78,5.80" data-target-mobile="-0.15,0.42,0" data-fov-mobile="33">
     <div class="page">
       <div class="note__body">
         <p class="t-label note__index">03 · down the side</p>
@@ -192,7 +202,7 @@
   </article>
 
   <article class="reveal__note" data-note data-narrow-drop
-           data-rot="292" data-cam="2.6,0.7,3.4" data-target="0.9,0.4,0" data-fov="30">
+           data-rot="298" data-cam="0.20,0.50,5.50" data-target="-1.15,0.34,0" data-fov="20">
     <div class="page">
       <div class="note__body">
         <p class="t-label note__index">04 · under the arch</p>

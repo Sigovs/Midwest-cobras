@@ -1,5 +1,12 @@
 # Evidence — the 3D asset, in the order it was found
 
+> **Read this first, added 2026-08-25.** Every frame below was rendered from a
+> GLB produced by `dev/obj2glb.py` *before* its relative-index bug was found. The
+> car in them is missing roughly three quarters of itself — four wheels collapsed
+> onto one — and that is our converter, not the client's file. The normals
+> finding in frames 01–03 stands on its own. The suitability verdict under frame
+> 04 does not, and has not been re-taken. See `docs/design-read.md` §8.
+
 Four frames, because the verdict in `docs/design-read.md` §8 is a measurement
 rather than an opinion and the measurement should be visible.
 

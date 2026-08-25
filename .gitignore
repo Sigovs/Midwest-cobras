@@ -37,3 +37,11 @@ dist/
 .playwright-mcp/
 *-before.jpeg
 *-after.jpeg
+
+# Client masters. 48 MB of .skp / .obj / .stl — the derived glb under
+# assets/model/ is what ships, and it is the only version that should be here.
+cobra2/
+
+# Model conversion scratch: downloads and the intermediate stages between
+# spec-gloss and the committed asset. dev/README.md carries the commands.
+glb/

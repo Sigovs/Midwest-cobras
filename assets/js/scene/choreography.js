@@ -19,16 +19,12 @@
    without anyone touching this file.
    ========================================================================== */
 
-/* GSAP ships as UMD and is loaded by a classic <script> in the document head,
-   which runs before any module. Reading it off the window here — rather than
-   vendoring a second ESM copy of the same library — keeps one file on disk and
-   one version in play. If it is missing, this module says so and does nothing;
-   the page is already complete without it. */
-const { gsap, ScrollTrigger } = window;
-
-if (!gsap || !ScrollTrigger) {
-  throw new Error('[choreography] gsap/ScrollTrigger not on window — load assets/js/vendor/gsap.min.js and ScrollTrigger.min.js before the module.');
-}
+/* GSAP resolves through the page's import map, the same way three does. It used
+   to be read off the window because this direction loaded the UMD build; every
+   direction is on the ESM path now, so there is one instance, one plugin
+   registry and one ticker per page. */
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 

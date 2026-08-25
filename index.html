@@ -11,16 +11,19 @@
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/system.css">
 <link rel="stylesheet" href="assets/css/main.css">
-<!-- GSAP is UMD and must be on window before the scene module runs. Classic
-     scripts execute before deferred modules, so this order is the contract. -->
 <!-- three.js and its loaders resolve the bare specifier "three" between
      themselves; the map points it at the one local copy, so the scene and the
      GLTF loader share a single instance rather than shipping two. -->
 <script type="importmap">
-{"imports":{"three":"./assets/js/vendor/three.module.js"}}
+{
+  "imports": {
+    "three": "./assets/js/vendor/three.module.js",
+    "gsap": "./assets/js/vendor/gsap/index.js",
+    "gsap/ScrollTrigger": "./assets/js/vendor/gsap/ScrollTrigger.js",
+    "gsap/ScrollSmoother": "./assets/js/vendor/gsap/ScrollSmoother.js"
+  }
+}
 </script>
-<script src="assets/js/vendor/gsap.min.js" defer></script>
-<script src="assets/js/vendor/ScrollTrigger.min.js" defer></script>
 </head>
 <body>
 
@@ -59,6 +62,12 @@
     </nav>
   </div>
 </header>
+
+<!-- ScrollSmoother's required structure. Everything that scrolls lives inside
+     #smooth-content; the header above is outside it and stays put. Present on
+     every direction now — the smoother itself decides whether to use it. -->
+<div id="smooth-wrapper">
+<div id="smooth-content">
 
 <main id="main">
 
@@ -534,6 +543,8 @@
     </div>
   </div>
 </footer>
+</div>
+</div><!-- /#smooth-wrapper -->
 
 <script type="module" src="assets/js/main.js"></script>
 <!-- The scene decides for itself whether to run at all. Every path out of it

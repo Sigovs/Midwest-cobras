@@ -33,14 +33,13 @@
    ========================================================================== */
 
 import { gsap } from "gsap";
+import { createSmoother } from './smoother.js';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { SplitText } from "gsap/SplitText";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
 gsap.registerPlugin(
   ScrollTrigger,
-  ScrollSmoother,
   SplitText,
   MotionPathPlugin
 );
@@ -161,28 +160,12 @@ export function mountCinema({ scene, mount, still, scope, reveal, isNarrow }) {
   const smoothWrapper = document.querySelector('#smooth-wrapper');
 
   /* ── ScrollSmoother ─────────────────────────────────────────────────────
-     ONE instance, for the page, created before any ScrollTrigger that pins.
-
-     This is a departure from a written rule. CLAUDE.md says: no smooth-scroll
-     library, MJ6, the scrollbar is the one control every visitor already owns.
-     ScrollSmoother does take the transport — that is what it is for. It is
-     here because the camera work in this direction is the point of the page and
-     scrubbing it off raw wheel deltas reads as mechanical no matter how the
-     easing is written. Smoothing is kept low for the same reason: 1.35, not
-     the floaty 2+ that makes a page feel like it is on ice.
-
-     Recorded as a yielded rule, not an oversight. It applies to index3 alone;
-     index.html and index2.html still scroll natively. */
-  let smoother = ScrollSmoother.get();
-  if (!smoother && smoothWrapper) {
-    smoother = ScrollSmoother.create({
-      wrapper: '#smooth-wrapper',
-      content: '#smooth-content',
-      smooth: 1.35,
-      effects: true,
-      smoothTouch: 0,          // never on touch: it fights the platform scroll
-    });
-  }
+     Created here because this page pins, and a pin has to measure against the
+     smoothed scroller rather than the raw one. The numbers, the reduced-motion
+     floor and the anchor patch all live in scene/smoother.js now — this was an
+     inline exception for one direction, and it is a shared module for all of
+     them since the ban was lifted. */
+  createSmoother();
 
   /* ── curves ────────────────────────────────────────────────────────────
      Two per segment. Built once, never inside the render loop. */

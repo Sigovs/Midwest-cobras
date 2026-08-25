@@ -24,7 +24,8 @@
   "imports": {
     "three": "./assets/js/vendor/three.module.js",
     "gsap": "./assets/js/vendor/gsap/index.js",
-    "gsap/ScrollTrigger": "./assets/js/vendor/gsap/ScrollTrigger.js"
+    "gsap/ScrollTrigger": "./assets/js/vendor/gsap/ScrollTrigger.js",
+    "gsap/ScrollSmoother": "./assets/js/vendor/gsap/ScrollSmoother.js"
   }
 }
 </script>
@@ -63,6 +64,12 @@
     </nav>
   </div>
 </header>
+
+<!-- ScrollSmoother's required structure. Everything that scrolls lives inside
+     #smooth-content; the header above is outside it and stays put. Present on
+     every direction now — the smoother itself decides whether to use it. -->
+<div id="smooth-wrapper">
+<div id="smooth-content">
 
 <main id="main">
 
@@ -456,6 +463,8 @@
     </div>
   </div>
 </footer>
+</div>
+</div><!-- /#smooth-wrapper -->
 
 
 <script type="module" src="assets/js/main.js"></script>

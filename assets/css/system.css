@@ -30,6 +30,13 @@ input, button, textarea, select { font: inherit; color: inherit; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
+/* ScrollSmoother's required structure. Present on every direction; the module
+   in scene/smoother.js decides whether it is used. The header is deliberately
+   outside it — a fixed element inside a transformed ancestor stops being fixed
+   to the viewport and starts being fixed to the transform, which is how a
+   sticky header silently becomes a scrolling one. */
+#smooth-wrapper { overflow: hidden; }
+
 body {
   background: var(--ground);
   color: var(--text);

@@ -23,7 +23,6 @@
    ScrollTrigger instead of the sticky mount the other two use — not a taste
    difference, an incompatibility.                                           */
 
-#smooth-wrapper { overflow: hidden; }
 
 /* ── THE STAGE ────────────────────────────────────────────────────────────── */
 

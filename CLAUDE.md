@@ -96,17 +96,28 @@ same rhythm, same components. It is a split by **role**, never by section.
 | **GSAP + ScrollTrigger** | the choreography | Binds scroll position to the camera and to the callout sequence. ScrollTrigger drives; it never takes the scroll |
 | **CSS transitions from `tokens.css`** | the interface | Hover, focus, press, panel, crossfade. GSAP does not animate a button — a documented duration scale does |
 
-**No smooth-scroll library — except on index3, and it is named here rather than
-discovered.** `index3.html` runs GSAP ScrollSmoother at `smooth: 1.35`. It does
-take the transport, which is exactly what MJ6 forbids. The reason it stands: the
-camera work is the page in that direction, and a scrubbed seven-shot film driven
-off raw wheel deltas reads as mechanical however the easing is written. Kept low
-on purpose, and off entirely on touch. index.html and index2.html scroll
-natively and always will.
+**Scroll smoothing is allowed, and it is one shared module.**
+`assets/js/scene/smoother.js` — `smooth: 1.2`, `smoothTouch: 0.1`, one instance
+per page, created before any ScrollTrigger that pins. The blanket ban that used
+to sit here was lifted on Alex's instruction, 2026-08-25; the direction-C block
+that was written as a yield to it is gone with it.
 
-**No smooth-scroll library.** Not Lenis, not Locomotive, nothing that replaces the
-native transport. `MJ6` — the scrollbar is the one control every visitor already
-owns, and a page does not get to re-implement it for the sake of its own timing.
+What the ban was standing in front of has not moved. MJ6 owns whether the
+visitor still controls the transport, and these bind on every page, smoothed or
+not: no pin the reader cannot scroll out of · no sequence that must be watched
+to the end · a real, draggable scrollbar that lands where it says · in-page
+anchors and the skip link going where they point, which is why the module
+patches them rather than leaving them to be discovered by someone using them.
+
+**Under `prefers-reduced-motion` there is no smoothing.** Kept deliberately and
+it is not a taste position: smoothing is motion applied to the visitor's own
+scrolling, which is the last place someone with a vestibular condition can get
+away from it. It is one line in `smoother.js` if it is ever genuinely wanted,
+and it should be argued rather than typed.
+
+**1.2 is a judgement, not a rule.** Latency on the reader's own input is a real
+cost; the number is low for that reason, and it is worth re-taking on any page
+whose job is dense reading rather than a camera move.
 
 **A tool is never a direction.** "A Three.js site" names an implementation, not an
 aesthetic family; the family came from the brief and is recorded in the Design

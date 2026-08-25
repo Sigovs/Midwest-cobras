@@ -6,6 +6,15 @@
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+/* ── SCROLL SMOOTHING ──────────────────────────────────────────────────────
+   Every page, one instance, and it happens here because main.js is the first
+   module every direction loads — a pin has to measure against the smoothed
+   scroller, so the smoother cannot be created after the scene it shares a page
+   with. The module itself decides whether this page has the markup for it and
+   whether the visitor wants motion at all. */
+import { createSmoother } from './scene/smoother.js';
+createSmoother();
+
 /* ── NAV ───────────────────────────────────────────────────────────────────
    The Service dropdown opens on click, not on hover: a route that can only be
    found by hovering cannot be found on a phone, and cannot be found by anyone

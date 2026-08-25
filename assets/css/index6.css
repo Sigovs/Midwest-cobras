@@ -1,0 +1,24 @@
+/* ============================================================================
+   index6.css — direction F.
+   ----------------------------------------------------------------------------
+   Nearly empty on purpose. tokens.css, system.css and main.css are the system
+   and are not touched from here; this file holds only what direction F composes
+   differently, and right now that is one stage with nothing in it.
+
+   No raw values below tokens.css — that rule does not relax for a new
+   direction.
+   ========================================================================== */
+
+/* The stage. It owns the first screen and it is a scene rather than a box with
+   a picture in it, which is why it declares its ground and its own field and
+   nothing else yet. */
+.f-hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  background: var(--graphite-900);
+  isolation: isolate;
+  /* the header is persistent and is part of the composition, so the stage
+     starts below it rather than pretending the first 72px are free */
+  padding-block-start: var(--header-h);
+}

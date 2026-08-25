@@ -17,8 +17,10 @@
      rhythm values and the motion vocabulary the page below runs on. -->
 <link rel="stylesheet" href="assets/css/stage.css">
 
-<!-- No ScrollSmoother on this direction. E pins with ScrollTrigger and leaves
-     the transport alone, which is what MJ6 asks for; only C yields that rule. -->
+<!-- Scroll smoothing is on here like everywhere else — main.js creates the
+     page's one instance from scene/smoother.js, before this page's pin. The
+     comment that used to sit here said the opposite and was left behind when
+     the ban was lifted. -->
 <script type="importmap">
 {
   "imports": {

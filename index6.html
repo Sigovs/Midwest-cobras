@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Midwest Cobras — hand-built Backdraft Cobras (direction F)</title>
+<meta name="description" content="Backdraft Cobras built to order, serviced, transported and consigned. Specify yours, or take one that is already finished.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/system.css">
+<link rel="stylesheet" href="assets/css/main.css">
+<!-- Direction F. The three above are the system and are untouched. index6.css
+     is this direction's own layer and starts nearly empty on purpose — the
+     hero is composed first, and nothing is written into it before that. -->
+<link rel="stylesheet" href="assets/css/index6.css">
+
+<!-- Every direction resolves gsap and three the same way: ESM through the map.
+     ScrollSmoother is listed because main.js creates the page's smoother, and
+     it is created before any pin regardless of what this page ends up pinning. -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./assets/js/vendor/three.module.js",
+    "gsap": "./assets/js/vendor/gsap/index.js",
+    "gsap/ScrollTrigger": "./assets/js/vendor/gsap/ScrollTrigger.js",
+    "gsap/ScrollSmoother": "./assets/js/vendor/gsap/ScrollSmoother.js"
+  }
+}
+</script>
+</head>
+<body class="dir-f">
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" data-header>
+  <div class="page site-header__inner">
+    <a class="site-header__mark" href="/" aria-label="Midwest Cobras — home">
+      <img src="assets/img/logo.svg" alt="Midwest Cobras" width="1496" height="1031">
+    </a>
+
+    <nav class="nav" data-nav aria-label="Main">
+      <button class="nav-toggle-mobile" type="button" data-nav-toggle aria-expanded="false" aria-controls="navlist">Menu</button>
+
+      <ul class="nav__list" id="navlist">
+        <li><a class="nav__link" href="/" aria-current="page">Home</a></li>
+        <li><a class="nav__link" href="inventory.html">Inventory</a></li>
+        <li><a class="nav__link" href="build.html">Build</a></li>
+        <li class="nav__group" data-nav-group>
+          <button class="nav__toggle" type="button" data-nav-sub aria-expanded="false" aria-controls="submenu-service">
+            Service <span aria-hidden="true">▾</span>
+          </button>
+          <ul class="nav__menu" id="submenu-service" hidden>
+            <li><a class="nav__link" href="service.html">Tune-Up / Service</a></li>
+            <li><a class="nav__link" href="transportation.html">Transportation</a></li>
+          </ul>
+        </li>
+        <li><a class="nav__link" href="collection.html">Car Collection</a></li>
+        <li><a class="nav__link" href="consignment.html">Consignment</a></li>
+        <li><a class="nav__link" href="finance.html">Finance</a></li>
+        <li><a class="nav__link" href="gallery.html">Gallery</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- ScrollSmoother's required structure. Everything that scrolls lives inside
+     #smooth-content; the header above is outside it and stays put. -->
+<div id="smooth-wrapper">
+<div id="smooth-content">
+
+<main id="main">
+
+  <!-- ════ HERO ════════════════════════════════════════════════════════════
+       EMPTY ON PURPOSE. This is the stage and nothing has been composed into
+       it yet.
+
+       Before anything is written here, the hero declaration is the step that
+       comes first — viewport ownership, scene treatment, object scale, focal
+       point, the negative-space region and what work it does, the text safe
+       zone, the desktop crop, the mobile crop decided separately, and whether
+       the asset can carry the frame at all. Then the governing event as named
+       components: subject, identity mass, supporting record, CTA cluster,
+       active field, reserved space, and what is explicitly excluded.
+
+       A single full-viewport wrapper is not a declaration of anything, which is
+       why this one carries no classes beyond the stage and no content it has
+       not earned.
+
+       Full-screen scene, not full-frame object: what fills the first screen is
+       the field, never the scale of the car inside it.
+  -->
+  <section class="f-hero" data-ground="dark" aria-labelledby="f-hero-title">
+    <h1 class="sr-only" id="f-hero-title">Midwest Cobras</h1>
+  </section>
+
+</main>
+
+<!-- ════ FOOTER ════════════════════════════════════════════════════════════
+     Present from the start rather than added last, because the page has to end
+     somewhere and an ending designed after everything else is an ending nobody
+     designed. -->
+<footer class="site-footer">
+  <div class="page">
+    <div class="site-footer__top">
+      <div>
+        <div class="site-footer__mark">
+          <img src="assets/img/logo.svg" alt="Midwest Cobras" width="1496" height="1031">
+        </div>
+        <p class="t-body-s t-muted" style="margin-block-start:var(--sp-5);max-width:34ch">
+          Backdraft Cobras built, sold, serviced and moved.
+        </p>
+        <p class="badge-mfr" style="margin-block-start:var(--sp-5)">
+          <span class="t-label">Built by</span>
+          <span class="t-num" style="font-size:var(--fs-body-s)">Backdraft Racing</span>
+        </p>
+      </div>
+
+      <nav aria-label="Footer — cars">
+        <p class="t-label" style="margin-block-end:var(--sp-4)">Cars</p>
+        <ul class="footer-list" role="list">
+          <li><a href="inventory.html">Inventory</a></li>
+          <li><a href="build.html">Build</a></li>
+          <li><a href="collection.html">Car Collection</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Footer — services">
+        <p class="t-label" style="margin-block-end:var(--sp-4)">Services</p>
+        <ul class="footer-list" role="list">
+          <li><a href="service.html">Tune-Up / Service</a></li>
+          <li><a href="transportation.html">Transportation</a></li>
+          <li><a href="consignment.html">Consignment</a></li>
+          <li><a href="finance.html">Finance</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p class="t-label">© 2026 Midwest Cobras, LLC</p>
+      <p class="t-label">Address and phone — to be supplied</p>
+    </div>
+  </div>
+</footer>
+</div>
+</div><!-- /#smooth-wrapper -->
+
+<!-- main.js only. It carries the nav, the header's relationship to the hero,
+     the motion roles and the page's ScrollSmoother. No scene module yet: this
+     direction has not decided whether it has one, and a stub that boots and
+     finds nothing is indistinguishable from a scene that silently failed. -->
+<script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

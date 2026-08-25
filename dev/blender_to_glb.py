@@ -30,6 +30,7 @@ if len(argv) < 2:
     sys.exit(2)
 
 src, dst = os.path.abspath(argv[0]), os.path.abspath(argv[1])
+tex_dir = os.path.abspath(argv[2]) if len(argv) > 2 else None
 ext = os.path.splitext(src)[1].lower()
 
 # ── load ────────────────────────────────────────────────────────────────────
@@ -53,6 +54,29 @@ else:
     else:
         print(f'unsupported input: {ext}')
         sys.exit(2)
+
+# ── missing textures ────────────────────────────────────────────────────────
+# A bought .blend references its maps by the author's own absolute paths, so on
+# any other machine every image is missing and the export comes out untextured
+# with no error — the materials simply arrive as flat defaults. Blender can
+# repoint them if it is told where to look.
+if tex_dir:
+    missing = [i for i in bpy.data.images
+               if i.source == 'FILE' and not os.path.exists(bpy.path.abspath(i.filepath))]
+    print(f'[tex] images missing before remap: {len(missing)} of {len(bpy.data.images)}')
+    if missing:
+        bpy.ops.file.find_missing_files(directory=tex_dir)
+        still = [i for i in bpy.data.images
+                 if i.source == 'FILE' and not os.path.exists(bpy.path.abspath(i.filepath))]
+        print(f'[tex] still missing after remap: {len(still)}')
+        for i in still[:10]:
+            print(f'       ! {i.name}  ->  {i.filepath}')
+    # pack them, or the exporter has nothing to embed in a GLB
+    try:
+        bpy.ops.file.pack_all()
+        print('[tex] packed into the blend for export')
+    except Exception as e:
+        print(f'[tex] pack_all failed: {e}')
 
 # ── report what arrived, before touching anything ───────────────────────────
 meshes = [o for o in bpy.data.objects if o.type == 'MESH']
@@ -87,10 +111,13 @@ if meshes:
     size = [round(hi[i] - lo[i], 4) for i in range(3)]
     print(f'[in ] world bbox     {size}   (units as authored, NOT normalised)')
 
-print('[in ] top-level names, first 40:')
-for o in sorted([o for o in bpy.data.objects if o.parent is None], key=lambda x: x.name)[:40]:
-    kids = len(o.children_recursive) if hasattr(o, 'children_recursive') else len(o.children)
-    print(f'       {o.type:6s} {o.name}   (+{kids} below)')
+# Every name, not a sample. parts.js is written against these and a prefix that
+# matches nothing produces a part that never arrives, with no error.
+print(f'[in ] all object names ({len(bpy.data.objects)}):')
+for o in sorted(bpy.data.objects, key=lambda x: (x.parent.name if x.parent else '', x.name)):
+    par = f'  < {o.parent.name}' if o.parent else ''
+    verts = len(o.data.vertices) if o.type == 'MESH' else 0
+    print(f'       {o.type:6s} {o.name:44.44s} {verts:8d}v{par}')
 
 # ── export ──────────────────────────────────────────────────────────────────
 # Options are filtered against the operator's own properties, so this script

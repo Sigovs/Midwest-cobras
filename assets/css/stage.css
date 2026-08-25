@@ -122,7 +122,7 @@
 .stage-note__mask { display: block; overflow: hidden; }
 .stage-note__line { display: block; will-change: transform; }
 
-/* Mono for data and part numbers, sans for prose. IBM Plex Mono is already in
+/* Mono for data and part numbers, sans for prose. JetBrains Mono is already in
    the document head and was carrying almost nothing; that split is information,
    not decoration. */
 .stage-note__index {

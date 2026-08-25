@@ -62,14 +62,25 @@
 
   /* ── TYPE ─────────────────────────────────────────────────────────────────
      Three voices, three jobs, and the jobs are what make them three.
-     Instrument Sans announces. IBM Plex Sans informs. IBM Plex Mono records —
-     it carries figures, units, labels and nothing that reads as prose.
-     Plex Sans and Plex Mono are one family, which is why the spec strip aligns
-     with the paragraph beside it without being nudged.                       */
 
-  --font-display: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
-  --font-body:    'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+     Familjen Grotesk announces. Tight apertures and an 'a' and 'g' that read as
+     drawn rather than defaulted — it has character at 82px without wearing a
+     costume, which is the line a display face on a marque page has to hold.
+
+     Source Sans 3 informs. Deliberately unfashionable: a body face's job is to
+     be forgotten while it is being read, and this one is excellent at 17px over
+     two hundred words.
+
+     JetBrains Mono records. Figures, units, labels — never prose. Tabular by
+     default, and it stays legible at the 14px functional floor where most
+     monos go spindly.
+
+     Replaced 2026-08-25 at Alex's request. The previous pair was Instrument
+     Sans + IBM Plex; the jobs did not change, only the voices doing them.     */
+
+  --font-display: 'Familjen Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-body:    'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
   /* Scale. Fluid where the mass matters, fixed where the reading matters.
      14px is the functional floor and nothing operational goes under it —

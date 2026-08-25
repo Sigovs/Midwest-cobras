@@ -73,8 +73,8 @@ same rhythm, same components. It is a split by **role**, never by section.
   and 2.18:1 on graphite. On the dark ground it is a filled mark with a
   `--bone-050` label at 10.76:1, and it is never a text colour there. This is a
   measurement, not a preference.
-- **Three voices, three jobs.** Instrument Sans announces, IBM Plex Sans informs,
-  IBM Plex Mono records. Mono carries figures, units and labels — never prose. A
+- **Three voices, three jobs.** Familjen Grotesk announces, Source Sans 3 informs,
+  JetBrains Mono records. Mono carries figures, units and labels — never prose. A
   fourth voice has to state the systemic job the three cannot do.
 - **Every number carries its unit and has a source.** A spec row whose value is a
   marketing phrase does not belong in a spec plate. See the ledger rule below.

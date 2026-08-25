@@ -16,6 +16,11 @@ assets/model/_src/
 # Pre-optimisation originals
 .orig/
 
+# Pipeline intermediates. dev/model-pipeline.sh keeps the un-optimised export
+# next to the shipped one so a bad result can be diagnosed without re-running
+# Blender — the Shelby raw is 93 MB and has no business in git.
+assets/model/_raw-*.glb
+
 # Gate artefacts are computed against a build and are not sources.
 # declare.json IS a source — it states what the build committed to — so it stays.
 .gates/*

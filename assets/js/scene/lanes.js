@@ -109,12 +109,31 @@ export function applyLane(note, vw) {
 
 export function makeOverlapAssert(scene, THREE) {
   const box = new THREE.Box3();
+  const part = new THREE.Box3();
   const corners = Array.from({ length: 8 }, () => new THREE.Vector3());
   let warned = 0;
 
   return function assertNoOverlap(notes) {
     if (!scene.car || warned > 6) return;
-    box.setFromObject(scene.car);
+
+    /* VISIBLE GEOMETRY ONLY. Box3.setFromObject traverses hidden children as
+       well as shown ones, so on an assembly sequence it was measuring parts
+       parked at their flight offsets — a box far larger than anything on the
+       plate — and reporting an overlap against a car that was not there yet.
+       An assertion that cries wolf is worse than none, because the first thing
+       anyone does with it is stop reading it. */
+    box.makeEmpty();
+    scene.car.updateMatrixWorld(true);
+    scene.car.traverse((o) => {
+      if (!o.isMesh || !o.visible || !o.geometry) return;
+      let p = o;
+      while (p && p !== scene.car) { if (!p.visible) return; p = p.parent; }
+      if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
+      part.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld);
+      box.union(part);
+    });
+    if (box.isEmpty()) return;
+
     let k = 0;
     for (const x of [box.min.x, box.max.x])
       for (const y of [box.min.y, box.max.y])

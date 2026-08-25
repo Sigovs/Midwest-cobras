@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Midwest Cobras — hand-built Backdraft Cobras (direction E)</title>
+<meta name="description" content="Backdraft Cobras built to order, serviced, transported and consigned. Specify yours, or take one that is already finished.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/system.css">
+<link rel="stylesheet" href="assets/css/main.css">
+<link rel="stylesheet" href="assets/css/cine.css">
+<!-- Direction E. Same stage.css as D: cine.css above still composes the lower half; stage.css
+     replaces the film with the assembly stage and adds the lane system, the
+     rhythm values and the motion vocabulary the page below runs on. -->
+<link rel="stylesheet" href="assets/css/stage.css">
+
+<!-- No ScrollSmoother on this direction. E pins with ScrollTrigger and leaves
+     the transport alone, which is what MJ6 asks for; only C yields that rule. -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./assets/js/vendor/three.module.js",
+    "gsap": "./assets/js/vendor/gsap/index.js",
+    "gsap/ScrollTrigger": "./assets/js/vendor/gsap/ScrollTrigger.js"
+  }
+}
+</script>
+</head>
+<body class="cine stage-page">
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" data-header>
+  <div class="page site-header__inner">
+    <a class="site-header__mark" href="/" aria-label="Midwest Cobras — home">
+      <img src="assets/img/logo.svg" alt="Midwest Cobras" width="1496" height="1031">
+    </a>
+
+    <nav class="nav" data-nav aria-label="Main">
+      <button class="nav-toggle-mobile" type="button" data-nav-toggle aria-expanded="false" aria-controls="navlist">Menu</button>
+
+      <ul class="nav__list" id="navlist">
+        <li><a class="nav__link" href="/" aria-current="page">Home</a></li>
+        <li><a class="nav__link" href="inventory.html">Inventory</a></li>
+        <li><a class="nav__link" href="build.html">Build</a></li>
+        <li class="nav__group" data-nav-group>
+          <button class="nav__toggle" type="button" data-nav-sub aria-expanded="false" aria-controls="submenu-service">
+            Service <span aria-hidden="true">▾</span>
+          </button>
+          <ul class="nav__menu" id="submenu-service" hidden>
+            <li><a class="nav__link" href="service.html">Tune-Up / Service</a></li>
+            <li><a class="nav__link" href="transportation.html">Transportation</a></li>
+          </ul>
+        </li>
+        <li><a class="nav__link" href="collection.html">Car Collection</a></li>
+        <li><a class="nav__link" href="consignment.html">Consignment</a></li>
+        <li><a class="nav__link" href="finance.html">Finance</a></li>
+        <li><a class="nav__link" href="gallery.html">Gallery</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ════ THE STAGE ═════════════════════════════════════════════════════════
+     THE CAR DOES NOT EXIST YET. SCROLLING BUILDS IT.
+
+     Direction E. Ten parts arrive in the order a shop would actually fit them,
+     each along the axis it would be fitted along — brakes and wheels outboard,
+     body and panels lowered on, controls in from the front, boot in from
+     behind. What the car is made of lives in assets/js/scene/parts.js, in a
+     table, so re-ordering the build does not mean touching a timeline.
+
+     The tenth part is the lamps, and once they are on the car they are switched
+     on. That is the event the sequence has been walking toward, so it gets its
+     own stretch of scroll rather than firing on a threshold at the end.
+
+     The camera holds one frame for the whole page — a front three-quarter. The
+     only motion it is allowed is a lateral shift of the aim so the subject
+     changes lane when the caption does, and that shift happens twice, not ten
+     times: ten swaps would turn a held frame into a pendulum.
+
+     Caption and car are placed from ONE declaration, data-lane, by
+     scene/lanes.js — it computes both the CSS custom property that positions
+     the text and the camera offset that pushes the car into the other lane.
+     They cannot disagree, and an assertion says so on every refresh.
+-->
+<section class="stage" data-stage data-scene-scope data-ground="dark" aria-labelledby="stage-title">
+  <h2 class="sr-only" id="stage-title">The Cobra, assembled</h2>
+
+  <div class="stage__air" aria-hidden="true"></div>
+
+  <div class="stage__mount" data-scene-mount
+       data-model="assets/model/ac-cobra-427.glb"
+       aria-hidden="true">
+    <canvas data-scene></canvas>
+  </div>
+
+  <img class="stage__still" src="assets/img/hero-still-placeholder.jpg"
+       alt="A Cobra roadster standing in a dark hall, three-quarter view from the front"
+       width="3000" height="1691" fetchpriority="high">
+
+  <article class="stage-note" data-step="chassis" data-lane="text-left">
+    <div class="stage-note__body">
+      <span class="stage-note__mask"><span class="stage-note__line t-label stage-note__index">01 · Chassis</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line stage-note__title">Chassis</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line t-body stage-note__prose">Tube frame, four-wheel independent. Everything after this happens to it.</span></span>
+    </div>
+  </article>
+  <article class="stage-note" data-step="brakes" data-lane="text-left">
+    <div class="stage-note__body">
+      <span class="stage-note__mask"><span class="stage-note__line t-label stage-note__index">02 · Discs and calipers</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line stage-note__title">Discs and calipers</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line t-body stage-note__prose">Four corners, fitted outboard before anything covers them.</span></span>
+    </div>
+  </article>
+  <article class="stage-note" data-step="wheels" data-lane="text-left">
+    <div class="stage-note__body">
+      <span class="stage-note__mask"><span class="stage-note__line t-label stage-note__index">03 · Wheels and tyres</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line stage-note__title">Wheels and tyres</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line t-body stage-note__prose">Eighteen inch. The first thing seen from ten feet away and the last thing chosen.</span></span>
+    </div>
+  </article>
+  <article class="stage-note" data-step="body" data-lane="text-left">
+    <div class="stage-note__body">
+      <span class="stage-note__mask"><span class="stage-note__line t-label stage-note__index">04 · Body</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line stage-note__title">Body</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line t-body stage-note__prose">Lowered on in one piece, the way it goes on at the factory.</span></span>
+    </div>
+  </article>
+  <article class="stage-note" data-step="interior" data-lane="text-right">
+    <div class="stage-note__body">
+      <span class="stage-note__mask"><span class="stage-note__line t-label stage-note__index">05 · Interior</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line stage-note__title">Interior</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line t-body stage-note__prose">Upholstery, carpet and the shifter, in before the panels close over them.</span></span>
+    </div>
+  </article>
+  <article class="stage-note" data-step="controls" data-lane="text-right">
+    <div class="stage-note__body">
+      <span class="stage-note__mask"><span class="stage-note__line t-label stage-note__index">06 · Controls</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line stage-note__title">Controls</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line t-body stage-note__prose">Wheel, gauges, needles. The part of the car you spend the drive looking at.</span></span>
+    </div>
+  </article>
+  <article class="stage-note" data-step="bonnet" data-lane="text-right">
+    <div class="stage-note__body">
+      <span class="stage-note__mask"><span class="stage-note__line t-label stage-note__index">07 · Bonnet</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line stage-note__title">Bonnet</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line t-body stage-note__prose">Over the engine bay. Last panel on the front, and the one that gets opened most.</span></span>
+    </div>
+  </article>
+  <article class="stage-note" data-step="boot" data-lane="text-left">
+    <div class="stage-note__body">
+      <span class="stage-note__mask"><span class="stage-note__line t-label stage-note__index">08 · Boot</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line stage-note__title">Boot</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line t-body stage-note__prose">In from behind. What there is of it.</span></span>
+    </div>
+  </article>
+  <article class="stage-note" data-step="glass" data-lane="text-left">
+    <div class="stage-note__body">
+      <span class="stage-note__mask"><span class="stage-note__line t-label stage-note__index">09 · Glass and mirror</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line stage-note__title">Glass and mirror</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line t-body stage-note__prose">A screen, and the single mirror this car is built with.</span></span>
+    </div>
+  </article>
+  <article class="stage-note" data-step="lights" data-lane="text-left">
+    <div class="stage-note__body">
+      <span class="stage-note__mask"><span class="stage-note__line t-label stage-note__index">10 · Lamps</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line stage-note__title">Lamps</span></span>
+      <span class="stage-note__mask"><span class="stage-note__line t-body stage-note__prose">The last part fitted, and the only one that does anything once it is on.</span></span>
+    </div>
+  </article>
+
+
+  <!-- The one display-size element on the page. It arrives when the car does,
+       and it is a figure rather than a slogan: the largest voice in the type
+       system saying the thing the reader actually came to find out.
+       ledger: backdraftracing.com, read 2026-08-24 -->
+  <div class="stage__price" data-stage-price>
+    <span class="t-label">RT4 Classic Edition · from</span>
+    <span class="t-display t-num">$66,900</span>
+  </div>
+</section>
+
+<div class="thread" data-lower="rule" aria-hidden="true"></div>
+
+<!-- ════ A · FEATURED INVENTORY ════════════════════════════════════════════
+     Two records, staggered and inverted, each on a full measure.
+-->
+<section class="section after-stage" id="inventory" data-ground="dark" aria-labelledby="inv-title">
+  <div class="page">
+    <h2 class="sr-only" id="inv-title">Featured inventory</h2>
+
+    <article class="feature" data-lower="rise">
+      <div class="feature__media" data-lower="hold">
+        <p class="t-label feature__index">Lot 01 · available</p>
+        <img src="assets/img/photo-workshop.jpg" alt="A Cobra beside a bare chassis on a workshop floor — stand-in photography, see docs/content-ledger.md" loading="lazy">
+      </div>
+      <div class="feature__body">
+        <h3 class="t-h2"><span class="plate">RT4 Classic Edition</span></h3>
+        <div class="feature__spec" data-lower="stagger">
+          <div><span class="t-label">Model</span><span class="t-num">RT4 Classic</span></div>
+          <!-- ledger: backdraftracing.com, read 2026-08-24 -->
+          <div><span class="t-label">From</span><span class="t-num">$66,900</span></div>
+          <div><span class="t-label">Wheels</span><span class="t-num">18 in</span></div>
+          <div><span class="t-label">Side pipes</span><span class="t-num">Ceramic-coated</span></div>
+        </div>
+        <a class="btn" href="inventory.html">Full specification <span class="btn__chev" aria-hidden="true">→</span></a>
+      </div>
+    </article>
+
+    <article class="feature" data-lower="rise">
+      <div class="feature__media" data-lower="hold">
+        <p class="t-label feature__index">Lot 02 · available</p>
+        <img src="assets/img/photo-cobra-black.jpg" alt="A black Cobra, front three-quarter — stand-in photography, see docs/content-ledger.md" loading="lazy">
+      </div>
+      <div class="feature__body">
+        <h3 class="t-h2"><span class="plate">RT4B Black Edition</span></h3>
+        <div class="feature__spec" data-lower="stagger">
+          <div><span class="t-label">Model</span><span class="t-num">RT4B Black</span></div>
+          <!-- ledger: backdraftracing.com, read 2026-08-24 -->
+          <div><span class="t-label">From</span><span class="t-num">$70,500</span></div>
+          <div><span class="t-label">Rims</span><span class="t-num">Matte black, 18 in</span></div>
+          <div><span class="t-label">Roll bars</span><span class="t-num">Ceramic-coated</span></div>
+        </div>
+        <a class="btn" href="inventory.html">Full specification <span class="btn__chev" aria-hidden="true">→</span></a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<div class="thread" data-lower="rule" aria-hidden="true"></div>
+
+<!-- ════ B · BUILD ═════════════════════════════════════════════════════════
+     THE ONE LIGHT GROUND ON THE PAGE, and it is the structural decision this
+     project made at the start: the car lives in the dark, its specification
+     lives in the light. [data-ground='light'] re-points the semantic colour
+     aliases and changes nothing else — same type, same hairlines, same rhythm.
+-->
+<section class="section" id="build" data-ground="light" aria-labelledby="build-title">
+  <div class="page">
+    <div class="build-grid">
+      <div class="section-head" data-lower="rise">
+        <p class="t-label">Build</p>
+        <h2 class="t-h2" id="build-title">Specify it to the last bolt.</h2>
+        <p class="t-lead t-muted">
+          The factory takes these decisions over the phone. Here you can see
+          them, one at a time, with the car turning to face whichever one you
+          are making.
+        </p>
+        <div style="margin-block-start:var(--sp-6)">
+          <a class="btn btn--primary" href="build.html">Open the configurator</a>
+        </div>
+      </div>
+
+      <div class="build-list" data-lower="stagger">
+        <div class="build-row">
+          <span class="t-num build-row__n">01</span>
+          <span class="t-h3">Model</span>
+          <span class="t-body-s build-row__opts">RT4 · RT4B</span>
+        </div>
+        <div class="build-row">
+          <span class="t-num build-row__n">02</span>
+          <span class="t-h3">Body and colour</span>
+          <span class="t-body-s build-row__opts">Paint · stripes</span>
+        </div>
+        <div class="build-row">
+          <span class="t-num build-row__n">03</span>
+          <span class="t-h3">Wheels and stance</span>
+          <span class="t-body-s build-row__opts">18 in</span>
+        </div>
+        <div class="build-row">
+          <span class="t-num build-row__n">04</span>
+          <span class="t-h3">Pipes and roll bars</span>
+          <span class="t-body-s build-row__opts">Ceramic-coated</span>
+        </div>
+        <div class="build-row">
+          <span class="t-num build-row__n">05</span>
+          <span class="t-h3">Interior</span>
+          <span class="t-body-s build-row__opts">Upholstery · gauges</span>
+        </div>
+        <div class="build-row">
+          <span class="t-num build-row__n">06</span>
+          <span class="t-h3">Trim and details</span>
+          <span class="t-body-s build-row__opts">Badging · stitching</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="thread" data-lower="rule" aria-hidden="true"></div>
+
+<!-- ════ C · WHO WE ARE ════════════════════════════════════════════════════ -->
+<section class="section" id="about" data-ground="dark" aria-labelledby="about-title">
+  <div class="page">
+    <div class="story">
+      <div class="section-head" data-lower="rise">
+        <p class="t-label">Who we are</p>
+        <!-- ledger: "40 years" is UNVERIFIED — client to confirm. Authorised to
+             stand as ordinary copy in this mock; it does not ship without a
+             source. docs/content-ledger.md row 7. -->
+        <h2 class="t-h2" id="about-title">Forty years of putting people in cars that should not exist.</h2>
+        <p class="t-lead t-muted">
+          Midwest Cobras builds, sells, services and moves Backdraft Cobras. The
+          work is the same work it has always been: a car arrives as parts and
+          leaves as somebody's.
+        </p>
+        <div style="margin-block-start:var(--sp-6)">
+          <a class="btn" href="about.html">About us <span class="btn__chev" aria-hidden="true">→</span></a>
+        </div>
+
+        <div class="story__stats" data-lower="stagger">
+          <div>
+            <span class="t-num stat__n">40</span>
+            <span class="t-label">years, to confirm</span>
+          </div>
+          <div>
+            <span class="t-num stat__n">2</span>
+            <span class="t-label">models built</span>
+          </div>
+          <div>
+            <span class="t-num stat__n">1</span>
+            <span class="t-label">car at a time</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="story__figure" data-lower="hold">
+        <img src="assets/img/photo-engine.jpg" alt="A 427 induction stack under an open bonnet — stand-in photography, see docs/content-ledger.md" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="thread" data-lower="rule" aria-hidden="true"></div>
+
+<!-- ════ D · SERVICES ══════════════════════════════════════════════════════ -->
+<section class="section" id="services" data-ground="dark" aria-labelledby="svc-title">
+  <div class="page">
+    <div class="section-head" data-lower="rise">
+      <p class="t-label">Services</p>
+      <h2 class="t-h2" id="svc-title">After it is yours</h2>
+    </div>
+
+    <div class="panels" data-lower="stagger" style="margin-block-start:var(--sp-7)">
+      <article class="panel">
+        <p class="t-label">01</p>
+        <h3 class="t-h3">Tune-up and service</h3>
+        <p class="t-body panel__body">
+          These are not cars a general workshop sees twice a year. Setup,
+          carburetion, cooling, brakes and the annual going-over, done by people
+          who have the car's own build sheet in front of them.
+        </p>
+        <div class="panel__cta">
+          <a class="btn btn--ghost" href="service.html">Book service <span class="btn__chev" aria-hidden="true">→</span></a>
+        </div>
+      </article>
+
+      <article class="panel">
+        <p class="t-label">02</p>
+        <h3 class="t-h3">Transportation</h3>
+        <p class="t-body panel__body">
+          Enclosed transport to and from the shop, to an event, or to a new
+          owner. The car does not arrive on an open trailer behind somebody's
+          pickup.
+        </p>
+        <div class="panel__cta">
+          <a class="btn btn--ghost" href="transportation.html">Arrange transport <span class="btn__chev" aria-hidden="true">→</span></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ════ E · CONSIGNMENT ═══════════════════════════════════════════════════
+     PENDING CLIENT APPROVAL. The brief places it in the navigation but low on
+     the homepage until approved. If it is cut, this block and its copy stay in
+     the tree with this comment: what goes with it is the page's only section
+     addressed to an owner rather than a buyer.
+-->
+<section class="section" id="consignment" data-ground="dark" aria-labelledby="consign-title">
+  <div class="page">
+    <div class="band" data-lower="rise">
+      <div>
+        <p class="t-label">Consignment</p>
+        <h2 class="t-h2" id="consign-title" style="margin-block:var(--sp-3) var(--sp-4)">Already have one?</h2>
+        <p class="t-body t-muted" style="max-width:44ch">Let us find its next garage.</p>
+      </div>
+      <a class="btn btn--primary" href="consignment.html">Consign your Cobra</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════ F · PROOF ═════════════════════════════════════════════════════════ -->
+<section class="section" id="community" data-ground="dark" aria-labelledby="comm-title">
+  <div class="page">
+    <div class="section-head" data-lower="rise">
+      <p class="t-label">Owners</p>
+      <h2 class="t-h2" id="comm-title">Where the cars end up</h2>
+    </div>
+
+    <div class="proof" data-lower="stagger" style="margin-block-start:var(--sp-7)">
+      <div class="proof__col">
+        <p class="t-label">Reviews</p>
+        <figure class="quote">
+          <p class="t-body">Placeholder — customer review to be supplied. Nothing invented sits here.</p>
+          <figcaption class="t-label">Name · city</figcaption>
+        </figure>
+        <figure class="quote">
+          <p class="t-body">Placeholder — customer review to be supplied.</p>
+          <figcaption class="t-label">Name · city</figcaption>
+        </figure>
+      </div>
+
+      <div class="proof__col">
+        <p class="t-label">Social</p>
+        <p class="t-body-s t-muted">
+          The feed goes here once the account is connected. Until then this
+          column holds its space rather than being filled with stock.
+        </p>
+        <div>
+          <a class="btn btn--ghost" href="gallery.html">Gallery <span class="btn__chev" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+
+      <div class="proof__col">
+        <p class="t-label">Events</p>
+        <div class="event">
+          <span class="t-num event__date">TBC</span>
+          <span class="t-body-s">Event listing — dates to be supplied by the client.</span>
+        </div>
+        <div class="event">
+          <span class="t-num event__date">TBC</span>
+          <span class="t-body-s">Event listing — dates to be supplied by the client.</span>
+        </div>
+        <div class="event">
+          <span class="t-num event__date">TBC</span>
+          <span class="t-body-s">Event listing — dates to be supplied by the client.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ════ FOOTER ════════════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="page">
+    <div class="site-footer__top">
+      <div>
+        <div class="site-footer__mark">
+          <img src="assets/img/logo.svg" alt="Midwest Cobras" width="1496" height="1031">
+        </div>
+        <p class="t-body-s t-muted" style="margin-block-start:var(--sp-5);max-width:34ch">
+          Backdraft Cobras built, sold, serviced and moved.
+        </p>
+        <p class="badge-mfr" style="margin-block-start:var(--sp-5)">
+          <span class="t-label">Built by</span>
+          <span class="t-num" style="font-size:var(--fs-body-s)">Backdraft Racing</span>
+        </p>
+      </div>
+
+      <nav aria-label="Footer — cars">
+        <p class="t-label" style="margin-block-end:var(--sp-4)">Cars</p>
+        <ul class="footer-list" role="list">
+          <li><a href="inventory.html">Inventory</a></li>
+          <li><a href="build.html">Build</a></li>
+          <li><a href="collection.html">Car Collection</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Footer — services">
+        <p class="t-label" style="margin-block-end:var(--sp-4)">Services</p>
+        <ul class="footer-list" role="list">
+          <li><a href="service.html">Tune-Up / Service</a></li>
+          <li><a href="transportation.html">Transportation</a></li>
+          <li><a href="consignment.html">Consignment</a></li>
+          <li><a href="finance.html">Finance</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p class="t-label">© 2026 Midwest Cobras, LLC</p>
+      <p class="t-label">Address and phone — to be supplied</p>
+    </div>
+  </div>
+</footer>
+
+
+<script type="module" src="assets/js/main.js"></script>
+<script type="module" src="assets/js/lower.js"></script>
+<script type="module" src="assets/js/scene/index5.js"></script>
+</body>
+</html>

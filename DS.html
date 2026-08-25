@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design system — Midwest Cobras</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/system.css">
+<link rel="stylesheet" href="assets/css/ds.css">
+</head>
+<body>
+
+<a class="skip-link" href="#ds-main">Skip to content</a>
+
+<header class="ds-head">
+  <div class="page">
+    <img class="ds-head__mark" src="assets/img/wordmark-light.png" alt="Midwest Cobras">
+    <p class="t-label">Design system · v0.1 · 24 Aug 2026</p>
+    <h1 class="t-h1" style="margin-block-start:var(--sp-4)">The contract</h1>
+    <p class="t-lead t-muted" style="margin-block-start:var(--sp-5)">
+      This page is rendered by the site's own stylesheets, so it cannot drift.
+      Everything below is downstream of <code>docs/design-read.md</code>. If a
+      change makes this page wrong, the change is not finished.
+    </p>
+    <nav class="ds-nav" aria-label="Design system sections">
+      <a href="#direction">Direction</a>
+      <a href="#colour">Colour</a>
+      <a href="#type">Type</a>
+      <a href="#space">Space</a>
+      <a href="#geometry">Geometry</a>
+      <a href="#motion">Motion</a>
+      <a href="#components">Components</a>
+      <a href="#rules">Rules</a>
+      <a href="#absent">Not in the system</a>
+    </nav>
+  </div>
+</header>
+
+<main id="ds-main">
+
+<!-- ── DIRECTION ────────────────────────────────────────────────────────── -->
+<section class="ds-section" id="direction">
+  <div class="page">
+    <h2 class="t-h2">Direction</h2>
+    <p class="t-body t-muted">Three lines that settle most arguments before they start.</p>
+
+    <div class="ds-note stack">
+      <p class="t-body"><strong>Anchor — technical-luxury (~70%).</strong>
+        Specification is content, not an appendix. Evidence outranks adjectives:
+        where a claim can be made with a figure or a photograph of the real part,
+        it is made that way. It owns composition, grid, hierarchy, type, spacing,
+        colour, geometry, information and interface motion.</p>
+      <p class="t-body"><strong>Contrast — cinematic-industrial (~30%).</strong>
+        Light, depth, material, camera. It owns the canvas and stops at its edge:
+        no type, no grid, no control, no spacing value.</p>
+      <p class="t-body"><strong>dimensionality: MAIN.</strong> The scene carries
+        the dominant, which is why DM1–DM10 bind at full weight rather than as
+        aspirations.</p>
+      <p class="t-lead">The structural decision specific to this content:
+        <strong>the car lives in the dark; its specification lives in the light.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── COLOUR ───────────────────────────────────────────────────────────── -->
+<section class="ds-section" id="colour">
+  <div class="page">
+    <h2 class="t-h2">Colour</h2>
+    <p class="t-body t-muted">
+      Material-derived, two grounds, one accent. Every ratio below was measured
+      against the ground it sits on, not estimated. AA needs 4.5:1 for text.
+    </p>
+
+    <p class="t-label" style="margin-block-end:var(--sp-4)">Dark family — the scene</p>
+    <div class="ds-grid">
+      <div class="ds-swatch">
+        <div class="ds-swatch__chip" style="background:var(--graphite-950)"></div>
+        <div class="ds-swatch__meta">
+          <span class="ds-swatch__name">--graphite-950</span>
+          <span class="ds-swatch__value">#101215</span>
+          <span class="ds-swatch__ratio">scene falloff, footer well</span>
+        </div>
+      </div>
+      <div class="ds-swatch">
+        <div class="ds-swatch__chip" style="background:var(--graphite-900)"></div>
+        <div class="ds-swatch__meta">
+          <span class="ds-swatch__name">--graphite-900</span>
+          <span class="ds-swatch__value">#1a1d21</span>
+          <span class="ds-swatch__ratio">the dark ground</span>
+        </div>
+      </div>
+      <div class="ds-swatch">
+        <div class="ds-swatch__chip" style="background:var(--graphite-800)"></div>
+        <div class="ds-swatch__meta">
+          <span class="ds-swatch__name">--graphite-800</span>
+          <span class="ds-swatch__value">#22262b</span>
+          <span class="ds-swatch__ratio">raised surface</span>
+        </div>
+      </div>
+      <div class="ds-swatch">
+        <div class="ds-swatch__chip" style="background:var(--graphite-700)"></div>
+        <div class="ds-swatch__meta">
+          <span class="ds-swatch__name">--graphite-700</span>
+          <span class="ds-swatch__value">#2c3138</span>
+          <span class="ds-swatch__ratio">hairline, pressed state</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="t-label" style="margin-block:var(--sp-7) var(--sp-4)">Light family — the record</p>
+    <div class="ds-grid">
+      <div class="ds-swatch">
+        <div class="ds-swatch__chip" style="background:var(--bone-050)"></div>
+        <div class="ds-swatch__meta">
+          <span class="ds-swatch__name">--bone-050</span>
+          <span class="ds-swatch__value">#f2f1ee</span>
+          <span class="ds-swatch__ratio">raised surface</span>
+        </div>
+      </div>
+      <div class="ds-swatch">
+        <div class="ds-swatch__chip" style="background:var(--bone-100)"></div>
+        <div class="ds-swatch__meta">
+          <span class="ds-swatch__name">--bone-100</span>
+          <span class="ds-swatch__value">#e7e5e1</span>
+          <span class="ds-swatch__ratio">the light ground</span>
+        </div>
+      </div>
+      <div class="ds-swatch">
+        <div class="ds-swatch__chip" style="background:var(--bone-200)"></div>
+        <div class="ds-swatch__meta">
+          <span class="ds-swatch__name">--bone-200</span>
+          <span class="ds-swatch__value">#d9d6d1</span>
+          <span class="ds-swatch__ratio">hairline on light</span>
+        </div>
+      </div>
+      <div class="ds-swatch">
+        <div class="ds-swatch__chip" style="background:var(--bone-300)"></div>
+        <div class="ds-swatch__meta">
+          <span class="ds-swatch__name">--bone-300</span>
+          <span class="ds-swatch__value">#c3bfb8</span>
+          <span class="ds-swatch__ratio">disabled ink on light</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="t-label" style="margin-block:var(--sp-7) var(--sp-4)">Ink, measured</p>
+    <div class="ds-grid">
+      <div class="ds-swatch">
+        <div class="ds-swatch__chip" style="background:var(--graphite-900);display:grid;place-items:center;color:var(--ink-on-dark);font-family:var(--font-display);font-size:var(--fs-h3)">Aa</div>
+        <div class="ds-swatch__meta">
+          <span class="ds-swatch__name">--ink-on-dark</span>
+          <span class="ds-swatch__value">#ecedee</span>
+          <span class="ds-swatch__ratio t-num">14.43:1 — AAA</span>
+        </div>
+      </div>
+      <div class="ds-swatch">
+        <div class="ds-swatch__chip" style="background:var(--graphite-900);display:grid;place-items:center;color:var(--ink-on-dark-muted);font-family:var(--font-display);font-size:var(--fs-h3)">Aa</div>
+        <div class="ds-swatch__meta">
+          <span class="ds-swatch__name">--ink-on-dark-muted</span>
+          <span class="ds-swatch__value">#9aa0a6</span>
+          <span class="ds-swatch__ratio t-num">6.41:1 — AA</span>
+        </div>
+      </div>
+      <div class="ds-swatch">
+        <div class="ds-swatch__chip" style="background:var(--bone-100);display:grid;place-items:center;color:var(--ink-on-light);font-family:var(--font-display);font-size:var(--fs-h3)">Aa</div>
+        <div class="ds-swatch__meta">
+          <span class="ds-swatch__name">--ink-on-light</span>
+          <span class="ds-swatch__value">#16181b</span>
+          <span class="ds-swatch__ratio t-num">14.14:1 — AAA</span>
+        </div>
+      </div>
+      <div class="ds-swatch">
+        <div class="ds-swatch__chip" style="background:var(--bone-100);display:grid;place-items:center;color:var(--ink-on-light-muted);font-family:var(--font-display);font-size:var(--fs-h3)">Aa</div>
+        <div class="ds-swatch__meta">
+          <span class="ds-swatch__name">--ink-on-light-muted</span>
+          <span class="ds-swatch__value">#5b6169</span>
+          <span class="ds-swatch__ratio t-num">4.97:1 — AA</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="t-label" style="margin-block:var(--sp-7) var(--sp-4)">The accent, and the rule attached to it</p>
+    <div class="ds-grid ds-grid--wide">
+      <div class="ds-swatch">
+        <div class="ds-swatch__chip" style="background:var(--oxblood);display:grid;place-items:center;color:var(--bone-050);font-family:var(--font-mono);font-size:var(--fs-label);letter-spacing:var(--ls-label)">CONFIGURE</div>
+        <div class="ds-swatch__meta">
+          <span class="ds-swatch__name">--oxblood</span>
+          <span class="ds-swatch__value">#820007</span>
+          <span class="ds-swatch__ratio t-num">label on it: 10.76:1 — AAA</span>
+        </div>
+      </div>
+      <div class="ds-note">
+        <p class="t-body-s">
+          Sampled from the client's own wordmark, not chosen. When the mark goes
+          silver, the colour does not leave the brand — it moves from the mark
+          into the system.
+        </p>
+        <p class="t-body-s" style="margin-block-start:var(--sp-4)">
+          <strong>Oxblood is text on light and fill on dark.</strong> It measures
+          8.55:1 on bone and <strong>2.18:1 on graphite</strong>. On the dark ground it is
+          a filled mark carrying a <code>--bone-050</code> label, and it is never a
+          text colour there. That is a measurement, not a preference.
+        </p>
+        <p class="t-body-s" style="margin-block-start:var(--sp-4)">
+          Remove the accent entirely. If the information stops being classified,
+          the accent was decorating rather than signalling, and the section is wrong.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TYPE ─────────────────────────────────────────────────────────────── -->
+<section class="ds-section" id="type">
+  <div class="page">
+    <h2 class="t-h2">Type</h2>
+    <p class="t-body t-muted">
+      Three voices, three jobs, and the jobs are what make them three rather than
+      a collection. A fourth has to state the systemic job these cannot do.
+    </p>
+
+    <div class="ds-grid ds-grid--wide" style="margin-block-end:var(--sp-8)">
+      <div class="ds-note">
+        <p class="t-label">Instrument Sans — announces</p>
+        <p class="t-body-s t-muted">Display only. Headlines, the price when it is the headline, section titles.</p>
+      </div>
+      <div class="ds-note">
+        <p class="t-label">IBM Plex Sans — informs</p>
+        <p class="t-body-s t-muted">All prose. Drawn for technical documentation, which is what most of this site is.</p>
+      </div>
+      <div class="ds-note">
+        <p class="t-label">IBM Plex Mono — records</p>
+        <p class="t-body-s t-muted">Figures, units, labels, spec rows. Never prose. Metrically related to Plex Sans, so a spec strip aligns with the paragraph beside it without nudging.</p>
+      </div>
+    </div>
+
+    <div class="ds-type">
+      <p class="ds-type__meta t-label">t-display · Instrument Sans 700 · clamp 56→132 · lh .92 · ls −.03em</p>
+      <p class="t-display">Built, not bought</p>
+    </div>
+
+    <div class="ds-type">
+      <p class="ds-type__meta t-label">t-h1 · clamp 40→82</p>
+      <p class="t-h1">Specify it to the last bolt</p>
+    </div>
+
+    <div class="ds-type">
+      <p class="ds-type__meta t-label">t-h2 · clamp 28→44</p>
+      <p class="t-h2">Two to four cars at a time</p>
+    </div>
+
+    <div class="ds-type">
+      <p class="ds-type__meta t-label">t-h3 · clamp 20→24</p>
+      <p class="t-h3">Tune-up and service</p>
+    </div>
+
+    <div class="ds-type">
+      <p class="ds-type__meta t-label">t-lead · clamp 19→22 · measure 46ch</p>
+      <p class="t-lead">A Backdraft is assembled to an order, not selected from a row. What arrives is the sum of decisions someone made on purpose.</p>
+    </div>
+
+    <div class="ds-type">
+      <p class="ds-type__meta t-label">t-body · 17px · lh 1.55 · measure 66ch</p>
+      <p class="t-body">Body text is set for sustained reading rather than for the screenshot: seventeen pixels, a line height that survives two hundred words, and a measure that stops before the eye loses the return. Prose links inside it stay <a href="#type">underlined</a>, which is the opposite rule from navigation.</p>
+    </div>
+
+    <div class="ds-type">
+      <p class="ds-type__meta t-label">t-label · 14px mono · the functional floor</p>
+      <p class="t-label">Rolling chassis · five words at most</p>
+      <p class="t-body-s t-muted" style="margin-block-start:var(--sp-3)">Fourteen pixels is the floor and mono runs optically smaller at the same size, so this is as small as an operational label goes. Below the floor, type is decoration and carries nothing.</p>
+    </div>
+
+    <div class="ds-type">
+      <p class="ds-type__meta t-label">t-num · tabular figures</p>
+      <p class="t-num" style="font-size:var(--fs-h3);line-height:1.6">
+        66,900<br>70,500<br>1,148
+      </p>
+      <p class="t-body-s t-muted" style="margin-block-start:var(--sp-3)">Every figure that sits above or below another figure is tabular. A price column that shuffles by a few pixels per row is the detail that tells a buyer nobody was paying attention.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── SPACE ────────────────────────────────────────────────────────────── -->
+<section class="ds-section" id="space">
+  <div class="page">
+    <h2 class="t-h2">Space</h2>
+    <p class="t-body t-muted">
+      A fine scale, used exactly. Internal gaps are always smaller than the gap
+      around the group they sit in — that relationship is what makes a group read
+      as one thing.
+    </p>
+
+    <div class="ds-space">
+      <div class="ds-space__row"><span class="ds-space__name">--sp-1 · 4</span><span class="ds-space__bar" style="width:var(--sp-1)"></span></div>
+      <div class="ds-space__row"><span class="ds-space__name">--sp-2 · 8</span><span class="ds-space__bar" style="width:var(--sp-2)"></span></div>
+      <div class="ds-space__row"><span class="ds-space__name">--sp-3 · 12</span><span class="ds-space__bar" style="width:var(--sp-3)"></span></div>
+      <div class="ds-space__row"><span class="ds-space__name">--sp-4 · 16</span><span class="ds-space__bar" style="width:var(--sp-4)"></span></div>
+      <div class="ds-space__row"><span class="ds-space__name">--sp-5 · 24</span><span class="ds-space__bar" style="width:var(--sp-5)"></span></div>
+      <div class="ds-space__row"><span class="ds-space__name">--sp-6 · 32</span><span class="ds-space__bar" style="width:var(--sp-6)"></span></div>
+      <div class="ds-space__row"><span class="ds-space__name">--sp-7 · 48</span><span class="ds-space__bar" style="width:var(--sp-7)"></span></div>
+      <div class="ds-space__row"><span class="ds-space__name">--sp-8 · 64</span><span class="ds-space__bar" style="width:var(--sp-8)"></span></div>
+      <div class="ds-space__row"><span class="ds-space__name">--sp-9 · 96</span><span class="ds-space__bar" style="width:var(--sp-9)"></span></div>
+      <div class="ds-space__row"><span class="ds-space__name">--sp-10 · 128</span><span class="ds-space__bar" style="width:var(--sp-10)"></span></div>
+      <div class="ds-space__row"><span class="ds-space__name">--sp-11 · 192</span><span class="ds-space__bar" style="width:var(--sp-11)"></span></div>
+    </div>
+
+    <div class="ds-note" style="margin-block-start:var(--sp-7)">
+      <p class="t-body-s">
+        <strong>Section rhythm is deliberately bottom-heavy.</strong>
+        <code>--section-pt</code> clamps 64→128, <code>--section-pb</code> clamps
+        96→192. Reading runs downward, so a mass leans into the space beneath it;
+        a deeper field below gives each section a clean ending, which is what
+        makes a long page read as chapters instead of as a stack.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── GEOMETRY ─────────────────────────────────────────────────────────── -->
+<section class="ds-section" id="geometry">
+  <div class="page">
+    <h2 class="t-h2">Geometry</h2>
+    <p class="t-body t-muted">
+      Hairlines and machined edges. A container marks a system boundary, never a
+      decorative frame.
+    </p>
+
+    <div class="ds-grid ds-grid--wide">
+      <div class="ds-note">
+        <p class="t-label">--hairline · 1px · --radius · 2px</p>
+        <p class="t-body-s t-muted" style="margin-block-start:var(--sp-3)">
+          One rule weight in the whole system. One radius, and it is small enough
+          to read as a machined corner rather than as a rounded card.
+        </p>
+      </div>
+      <div class="ds-note">
+        <p class="t-label">--lift · the only shadow</p>
+        <p class="t-body-s t-muted" style="margin-block-start:var(--sp-3)">
+          Reserved for layers that genuinely float — the nav dropdown, the
+          lightbox. A shadow is a claim about elevation; on something that never
+          rises, the eye reads it as mush.
+        </p>
+      </div>
+    </div>
+
+    <hr class="rule" style="margin-block:var(--sp-7)">
+    <p class="t-label">Order of separation, before a box is considered</p>
+    <ol class="ds-list t-body-s stack-s" style="margin-block-start:var(--sp-4)">
+      <li>1 — whitespace alone</li>
+      <li>2 — a hairline</li>
+      <li>3 — a background shift with no border</li>
+      <li>4 — an actual bordered container, and only then</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ── MOTION ───────────────────────────────────────────────────────────── -->
+<section class="ds-section" id="motion">
+  <div class="page">
+    <h2 class="t-h2">Motion</h2>
+    <p class="t-body t-muted">
+      Interface motion is precise and short: it confirms a state or reveals a
+      measurement, and then stops. Scene motion is scroll-driven and has no
+      duration of its own — it lives in the scene module, not here.
+    </p>
+
+    <div class="ds-grid">
+      <div class="ds-note"><p class="t-label">--dur-1 · 120ms</p><p class="t-body-s t-muted">press, check, focus</p></div>
+      <div class="ds-note"><p class="t-label">--dur-2 · 200ms</p><p class="t-body-s t-muted">hover, small reveal</p></div>
+      <div class="ds-note"><p class="t-label">--dur-3 · 320ms</p><p class="t-body-s t-muted">crossfade, panel</p></div>
+      <div class="ds-note"><p class="t-label">--dur-4 · 520ms</p><p class="t-body-s t-muted">a mass entering</p></div>
+    </div>
+
+    <div class="ds-note" style="margin-block-start:var(--sp-7)">
+      <p class="t-body-s"><strong>--travel is 8px and it is a ceiling.</strong>
+        Content swaps crossfade; they do not slide in from off-screen. Anything
+        that moves further than eight pixels in an interface transition is
+        performing.</p>
+      <p class="t-body-s" style="margin-block-start:var(--sp-4)"><strong>Motion binds to roles.</strong>
+        <code>[data-motion='rise']</code> describes what a mass <em>is</em>. A selector
+        naming a specific section animates nothing on the next page and raises no
+        error while doing it — a silent no-op looks exactly like a page where
+        motion was never designed.</p>
+      <p class="t-body-s" style="margin-block-start:var(--sp-4)"><strong>Reduced motion is an authored path.</strong>
+        Durations collapse, travel goes to zero, every state change still arrives.
+        The hero's reduced-motion answer is a composed still, not the animation
+        stopped on a frame.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMPONENTS ───────────────────────────────────────────────────────── -->
+<section class="ds-section" id="components">
+  <div class="page">
+    <h2 class="t-h2">Components</h2>
+    <p class="t-body t-muted">
+      Every component is shown on both grounds, because a two-ground system that
+      is only ever checked on one of them is a system with a hole in it.
+    </p>
+
+    <p class="t-label" style="margin-block-end:var(--sp-4)">Controls · one primary per view</p>
+
+    <div class="ds-demo">
+      <div class="ds-row">
+        <a class="btn btn--primary" href="#components">Configure yours</a>
+        <a class="btn" href="#components">View inventory <span class="btn__chev">→</span></a>
+        <a class="btn btn--ghost" href="#components">Learn more</a>
+        <span class="btn" aria-disabled="true">Sold</span>
+      </div>
+    </div>
+
+    <div class="ds-demo" data-ground="light">
+      <div class="ds-row">
+        <a class="btn btn--primary" href="#components">Configure yours</a>
+        <a class="btn" href="#components">View inventory <span class="btn__chev">→</span></a>
+        <a class="btn btn--ghost" href="#components">Learn more</a>
+        <span class="btn" aria-disabled="true">Sold</span>
+      </div>
+    </div>
+
+    <p class="t-label" style="margin-block:var(--sp-8) var(--sp-4)">Spec plate · facts as a designed object</p>
+
+    <div class="ds-demo" data-ground="light">
+      <div class="spec" style="max-width:34rem">
+        <div class="spec__row"><div class="spec__key">Model</div><div class="spec__val">RT4 Classic Edition</div></div>
+        <div class="spec__row"><div class="spec__key">From</div><div class="spec__val">$66,900</div></div>
+        <div class="spec__row"><div class="spec__key">Body</div><div class="spec__val">Hand-laid composite</div></div>
+        <div class="spec__row"><div class="spec__key">Side pipes</div><div class="spec__val">Ceramic-coated <span class="spec__unit">opt.</span></div></div>
+        <div class="spec__row"><div class="spec__key">Wheels</div><div class="spec__val">18 <span class="spec__unit">in</span></div></div>
+      </div>
+      <p class="t-body-s t-muted" style="margin-block-start:var(--sp-5);max-width:34rem">
+        A row whose value is a marketing phrase does not belong in a spec plate.
+        Every figure carries its unit; every claim carries a ledger entry.
+      </p>
+    </div>
+
+    <p class="t-label" style="margin-block:var(--sp-8) var(--sp-4)">Spec strip · three facts beside the car, not a table under it</p>
+
+    <div class="ds-demo">
+      <div class="spec-strip">
+        <div class="spec-strip__item">
+          <span class="t-label">Model</span>
+          <span class="spec-strip__val">RT4B</span>
+        </div>
+        <div class="spec-strip__item">
+          <span class="t-label">From</span>
+          <span class="spec-strip__val">$70,500</span>
+        </div>
+        <div class="spec-strip__item">
+          <span class="t-label">Built by</span>
+          <span class="spec-strip__val">Backdraft</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="t-label" style="margin-block:var(--sp-8) var(--sp-4)">Section head · one shape, every page</p>
+
+    <div class="ds-demo">
+      <div class="section-head">
+        <p class="t-label">Inventory</p>
+        <h3 class="t-h2">Two to four at a time</h3>
+        <p class="t-lead t-muted">Which is why each one gets a page's worth of room rather than a cell in a grid.</p>
+      </div>
+    </div>
+
+    <p class="t-label" style="margin-block:var(--sp-8) var(--sp-4)">Manufacturer badge · not a second brand voice</p>
+
+    <div class="ds-demo">
+      <span class="badge-mfr">
+        <span class="t-label">Built by</span>
+        <span class="t-num" style="font-size:var(--fs-body-s)">Backdraft Racing</span>
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ── RULES ────────────────────────────────────────────────────────────── -->
+<section class="ds-section" id="rules">
+  <div class="page">
+    <h2 class="t-h2">Five rules a change has to keep</h2>
+    <p class="t-body t-muted">If a change breaks one of these, the change is wrong — not the rule.</p>
+
+    <ol class="ds-list ds-list--rules" style="margin-block-start:var(--sp-6)">
+      <li><p class="t-body">Every value resolves to a token in <code>tokens.css</code>. No hex, no px, no duration below that file. Alpha comes from a channel token, never from a new colour.</p></li>
+      <li><p class="t-body">Oxblood is text on light and fill on dark. 8.55:1 and 2.18:1 respectively — the second number is why the rule exists.</p></li>
+      <li><p class="t-body">Ground is set by role, not by section. <code>[data-ground='light']</code> where facts are read; graphite where the car is looked at. Nothing else changes with it.</p></li>
+      <li><p class="t-body">Motion binds to <code>[data-motion]</code> roles. The page-load arrival is the one legitimate exception, because a page arrives once.</p></li>
+      <li><p class="t-body">Every number carries a unit and a ledger entry. A spec row that cannot be sourced is copy, and copy does not go in a spec plate.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ── ABSENT ───────────────────────────────────────────────────────────── -->
+<section class="ds-section" id="absent">
+  <div class="page">
+    <h2 class="t-h2">What this system does not have</h2>
+    <p class="t-body t-muted">
+      Listed rather than discovered later. An honest gap is cheaper than a
+      surprise.
+    </p>
+
+    <ul class="ds-list t-body" style="margin-block-start:var(--sp-6)">
+      <li><strong>No card.</strong> Inventory shows two to four cars; four cards would be one module shown four times. Separation is whitespace, then a hairline, then a ground shift.</li>
+      <li><strong>No icon set yet.</strong> None has been earned by repetition. When one is, it is one set, stroke matched to its neighbouring type, and never the only carrier of meaning.</li>
+      <li><strong>No self-hosted fonts yet.</strong> Instrument Sans and IBM Plex load from Google Fonts. Before ship they are self-hosted as woff2 — a third-party request in the critical path is a dependency nobody chose.</li>
+      <li><strong>No form styling.</strong> The configurator's controls arrive with the configurator, designed against real option data rather than invented ahead of it.</li>
+      <li><strong>No dark/light toggle.</strong> The two grounds are a compositional decision about role, not a user preference, and exposing them as one would make the decision meaningless.</li>
+      <li><strong>No hero asset that can carry the hero.</strong> The supplied 3D model is a generic Cobra with SketchUp default materials and a low-polygon body whose faceting shows under any specular light. It is diagram-grade, not hero-grade. See <code>docs/design-read.md</code> §8 — the three honest outcomes, and Alex chooses between them.</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer class="section" style="--ground:var(--graphite-950);padding-block:var(--sp-8)">
+  <div class="page">
+    <p class="t-label">Midwest Cobras, LLC · design system v0.1</p>
+    <p class="t-body-s t-muted" style="margin-block-start:var(--sp-3)">
+      Rendered by <code>tokens.css</code> and <code>system.css</code> — the same
+      two files every page loads. That is the only reason this document can be
+      trusted.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

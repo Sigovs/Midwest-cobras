@@ -1,0 +1,128 @@
+/* ============================================================================
+   DS.css — layout for DS.html only. Never loaded by a page.
+   It arranges the specimens; it does not style them. Everything a specimen
+   looks like comes from tokens.css and system.css, which is what makes this
+   page incapable of drifting from the site.
+   ========================================================================== */
+
+.ds-head {
+  padding-block: var(--sp-8) var(--sp-7);
+  border-bottom: var(--hairline) solid var(--rule);
+}
+
+.ds-head__mark { max-width: 15rem; margin-block-end: var(--sp-6); }
+
+.ds-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-5);
+  margin-block-start: var(--sp-6);
+}
+
+.ds-nav a {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.ds-nav a:hover { color: var(--text); }
+
+.ds-section {
+  padding-block: var(--sp-8);
+  border-bottom: var(--hairline) solid var(--rule);
+}
+
+.ds-section .page > .t-h2 { margin-block-end: var(--sp-3); }
+.ds-section .page > .t-body { margin-block-end: var(--sp-7); }
+
+.ds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: var(--sp-5);
+}
+
+.ds-grid--wide {
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: var(--sp-7);
+}
+
+/* A colour specimen: the swatch, then its token, value and measured ratio. */
+.ds-swatch__chip {
+  height: 5rem;
+  border: var(--hairline) solid var(--rule);
+  border-radius: var(--radius);
+  margin-block-end: var(--sp-3);
+}
+
+.ds-swatch__meta { display: grid; gap: var(--sp-1); }
+
+.ds-swatch__name,
+.ds-swatch__value,
+.ds-swatch__ratio {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+}
+
+.ds-swatch__name  { color: var(--text); }
+.ds-swatch__value { color: var(--text-muted); text-transform: uppercase; }
+.ds-swatch__ratio { color: var(--text-muted); }
+
+/* A type specimen: the label, then the setting at its real size. */
+.ds-type + .ds-type { margin-block-start: var(--sp-7); }
+.ds-type__meta { margin-block-end: var(--sp-3); }
+
+/* A space specimen: a bar whose width is the token. */
+.ds-space { display: grid; gap: var(--sp-3); }
+.ds-space__row { display: flex; align-items: center; gap: var(--sp-4); }
+.ds-space__bar { height: var(--sp-3); background: var(--text-muted); }
+.ds-space__name {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--text-muted);
+  min-width: 7rem;
+}
+
+/* A demonstration panel. It exists to show a component on the ground it
+   actually lives on — which is the only way the two-ground system can be
+   checked at all. */
+.ds-demo {
+  background: var(--ground);
+  color: var(--text);
+  border: var(--hairline) solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--sp-6);
+}
+
+.ds-demo + .ds-demo { margin-block-start: var(--sp-5); }
+
+.ds-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.ds-note {
+  border-left: var(--hairline) solid var(--rule);
+  padding-left: var(--sp-5);
+  max-width: var(--measure);
+}
+
+.ds-list { max-width: var(--measure); }
+.ds-list li + li { margin-block-start: var(--sp-3); }
+.ds-list li { list-style: none; }
+
+.ds-list--rules { counter-reset: rule; }
+.ds-list--rules li { display: grid; grid-template-columns: 2.5rem 1fr; gap: var(--sp-3); }
+.ds-list--rules li::before {
+  counter-increment: rule;
+  content: counter(rule, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--text-muted);
+  padding-block-start: 0.35em;
+}

@@ -1,0 +1,39 @@
+# ─── Client hand-off folder — never committed ────────────────────────────────
+# 284 MB of camera masters, a 20 MB OBJ and a 16 MB SketchUp file. The folder
+# name is the client's own instruction. Optimised derivatives under assets/ are
+# what ship; the masters stay on disk.
+donot git_from client/
+
+# Media masters anywhere else in the tree
+assets/video/_src/
+assets/model/_src/
+*.MOV
+*.mov
+*.obj
+*.skp
+*.mtl
+
+# Pre-optimisation originals
+.orig/
+
+# Gate artefacts are computed against a build and are not sources.
+# declare.json IS a source — it states what the build committed to — so it stays.
+.gates/*
+!.gates/declare.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Deps & build output (none yet — here so the first person to add them doesn't forget)
+node_modules/
+dist/
+*.log
+
+# Browser-automation scratch
+.playwright-mcp/
+*-before.jpeg
+*-after.jpeg

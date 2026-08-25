@@ -1,0 +1,192 @@
+/* ============================================================================
+   TOKENS — Midwest Cobras, LLC
+   ----------------------------------------------------------------------------
+   The only file in this project allowed to contain a raw value. Below this
+   file there is no hex, no rgb(), no px length, no unitless line-height and no
+   duration. Alpha comes from a channel token — rgb(var(--ink-900-rgb) / .55) —
+   never from a new colour.
+
+   A token nothing uses gets deleted, not kept for later.
+
+   Every decision here is downstream of docs/design-read.md. Anchor is
+   technical-luxury: the palette is material-derived, the scale is fine and used
+   exactly, and colour classifies rather than decorates.
+   ========================================================================== */
+
+:root {
+  /* ── COLOUR ───────────────────────────────────────────────────────────────
+     Two grounds, one system. The car lives in the dark; its specification
+     lives in the light. Graphite is deliberately lighter and cooler than a
+     near-black — see design-read.md §4, the self-repetition check.
+     Every pair below was measured, not estimated; ratios are in DS.html.     */
+
+  /* Dark family — the scene, the hero, the marque surfaces */
+  --graphite-950: #101215;   /* deepest — scene falloff, footer well          */
+  --graphite-900: #1a1d21;   /* the dark ground                              */
+  --graphite-800: #22262b;   /* raised surface on dark                       */
+  --graphite-700: #2c3138;   /* hairline on dark, pressed state              */
+  --graphite-600: #3a4048;   /* disabled ink on dark                         */
+
+  --graphite-900-rgb: 26 29 33;
+  --graphite-950-rgb: 16 18 21;
+
+  /* Light family — the record: configurator, spec, finance, service */
+  --bone-050: #f2f1ee;       /* raised surface on light                      */
+  --bone-100: #e7e5e1;       /* the light ground                             */
+  --bone-200: #d9d6d1;       /* hairline on light                            */
+  --bone-300: #c3bfb8;       /* disabled ink on light                        */
+  --bone-100-rgb: 231 229 225;
+
+  /* Ink */
+  --ink-on-dark:        #ecedee;   /* 14.43:1 on --graphite-900              */
+  --ink-on-dark-muted:  #9aa0a6;   /*  6.41:1 on --graphite-900              */
+  --ink-on-light:       #16181b;   /* 14.14:1 on --bone-100                  */
+  --ink-on-light-muted: #5b6169;   /*  4.97:1 on --bone-100                  */
+
+  /* Accent — sampled from the client's own wordmark, not chosen.
+     RULE, and it is not a preference: oxblood is TEXT on light only
+     (8.55:1 on bone). On dark it is a FILL only, and any label sitting on it
+     is --bone-050 (10.76:1). Oxblood is never text on graphite — it measures
+     2.18:1 there, which is a fail, not a mood. */
+  --oxblood:     #820007;
+  --oxblood-rgb: 130 0 7;
+
+  /* Semantic aliases — components reference these, never the ramps above */
+  --ground:            var(--graphite-900);
+  --ground-deep:       var(--graphite-950);
+  --surface:           var(--graphite-800);
+  --rule:              var(--graphite-700);
+  --text:              var(--ink-on-dark);
+  --text-muted:        var(--ink-on-dark-muted);
+  --text-disabled:     var(--graphite-600);
+
+  /* ── TYPE ─────────────────────────────────────────────────────────────────
+     Three voices, three jobs, and the jobs are what make them three.
+     Instrument Sans announces. IBM Plex Sans informs. IBM Plex Mono records —
+     it carries figures, units, labels and nothing that reads as prose.
+     Plex Sans and Plex Mono are one family, which is why the spec strip aligns
+     with the paragraph beside it without being nudged.                       */
+
+  --font-display: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-body:    'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Scale. Fluid where the mass matters, fixed where the reading matters.
+     14px is the functional floor and nothing operational goes under it —
+     mono runs optically smaller at the same px, so the floor is a floor
+     for it too.                                                              */
+  --fs-display: clamp(3.5rem, 8.5vw, 8.25rem);   /*  56 → 132                 */
+  --fs-h1:      clamp(2.5rem, 5.6vw, 5.125rem);  /*  40 →  82                 */
+  --fs-h2:      clamp(1.75rem, 3.2vw, 2.75rem);  /*  28 →  44                 */
+  --fs-h3:      clamp(1.25rem, 1.8vw, 1.5rem);   /*  20 →  24                 */
+  --fs-lead:    clamp(1.1875rem, 1.5vw, 1.375rem);/* 19 →  22                 */
+  --fs-body:    1.0625rem;                        /*  17                      */
+  --fs-body-s:  0.9375rem;                        /*  15                      */
+  --fs-label:   0.875rem;                         /*  14 — the floor          */
+
+  --lh-display: 0.92;
+  --lh-tight:   1.06;
+  --lh-heading: 1.14;
+  --lh-body:    1.55;
+  --lh-label:   1.2;
+
+  --ls-display: -0.03em;
+  --ls-heading: -0.015em;
+  --ls-body:     0em;
+  --ls-label:    0.14em;   /* uppercase mono micro-labels, ≤5 words          */
+
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  --measure:      66ch;   /* body-length text, built for sustained reading    */
+  --measure-lead: 46ch;
+
+  /* ── SPACE ────────────────────────────────────────────────────────────────
+     A fine scale, used exactly. Repeated intervals inside spec groups; larger,
+     calm intervals between them. Internal gaps are always smaller than the
+     external gap around the group they sit in.                               */
+
+  --sp-1:  0.25rem;   /*   4 */
+  --sp-2:  0.5rem;    /*   8 */
+  --sp-3:  0.75rem;   /*  12 */
+  --sp-4:  1rem;      /*  16 */
+  --sp-5:  1.5rem;    /*  24 */
+  --sp-6:  2rem;      /*  32 */
+  --sp-7:  3rem;      /*  48 */
+  --sp-8:  4rem;      /*  64 */
+  --sp-9:  6rem;      /*  96 */
+  --sp-10: 8rem;      /* 128 */
+  --sp-11: 12rem;     /* 192 */
+
+  /* Section rhythm — bottom-heavier than top, so each mass exhales downward
+     and a long page reads as chapters rather than as a stack.                */
+  --section-pt: clamp(var(--sp-8), 9vw, var(--sp-10));
+  --section-pb: clamp(var(--sp-9), 12vw, var(--sp-11));
+
+  /* ── LAYOUT ───────────────────────────────────────────────────────────── */
+  --page-max:    82.5rem;   /* 1320 */
+  --page-narrow: 46rem;     /*  736 */
+  --gutter:      clamp(var(--sp-5), 5vw, var(--sp-8));
+  --col-gap:     var(--sp-6);
+  --header-h:    4.5rem;    /*  72 — counted in the mass scheme, not "chrome" */
+
+  /* ── GEOMETRY ─────────────────────────────────────────────────────────────
+     Hairlines and machined edges. Radii small, single-valued or absent —
+     a container marks a system boundary, not a decorative frame.             */
+  --hairline: 1px;
+  --radius:   2px;
+  --radius-control: 2px;
+
+  /* ── ELEVATION ────────────────────────────────────────────────────────────
+     One value, and it is only for layers that genuinely float: the nav
+     dropdown, the lightbox. Nothing static gets a shadow.                    */
+  --lift: 0 8px 24px -8px rgb(var(--graphite-950-rgb) / 0.55);
+
+  /* ── MOTION ───────────────────────────────────────────────────────────────
+     Interface motion is technical-luxury's: precise, short, mechanical.
+     Scene camera motion is cinematic-industrial's and lives in the scene
+     module — it is scroll-driven and has no duration of its own.             */
+  --dur-1: 120ms;   /* state flip: press, check, focus                        */
+  --dur-2: 200ms;   /* hover, small reveal                                    */
+  --dur-3: 320ms;   /* content crossfade, panel                               */
+  --dur-4: 520ms;   /* entrance of a mass                                     */
+
+  --ease-out:   cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-inout: cubic-bezier(0.65, 0.05, 0.36, 1);
+
+  --travel: 8px;    /* the ceiling on translate in any interface transition   */
+
+  /* ── FOCUS ────────────────────────────────────────────────────────────────
+     Visible on both grounds without depending on the accent, because a focus
+     ring that is only a colour fails the person it exists for.               */
+  --focus-w:      2px;
+  --focus-offset: 3px;
+}
+
+/* The record surfaces. Applied to a section or a page, it re-points the
+   semantic aliases at the light family. Nothing else changes: same type, same
+   hairlines, same rhythm, same components. */
+[data-ground='light'] {
+  --ground:        var(--bone-100);
+  --ground-deep:   var(--bone-200);
+  --surface:       var(--bone-050);
+  --rule:          var(--bone-200);
+  --text:          var(--ink-on-light);
+  --text-muted:    var(--ink-on-light-muted);
+  --text-disabled: var(--bone-300);
+}
+
+/* Reduced motion is an authored path, not a disabled interface: durations
+   collapse, travel goes to zero, and every state change still arrives. What
+   the scene does instead is authored in the scene module, not here. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-1: 1ms;
+    --dur-2: 1ms;
+    --dur-3: 1ms;
+    --dur-4: 1ms;
+    --travel: 0px;
+  }
+}

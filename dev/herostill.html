@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>hero still</title>
+<style>html,body{margin:0;background:#1a1d21;overflow:hidden}canvas{display:block}</style>
+</head>
+<body>
+<script type="importmap">
+{"imports":{"three":"../assets/js/vendor/three.module.js"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from '../assets/js/vendor/jsm/loaders/GLTFLoader.js';
+import { RoomEnvironment } from '../assets/js/vendor/jsm/environments/RoomEnvironment.js';
+
+// The composed frame, not a screenshot of a viewer. The car sits right of the
+// optical centre and low; the upper-left third is reserved for the identity
+// mass and stays empty here on purpose — that air is part of the event, not
+// space left over.
+const W = 2560, H = 1440;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+renderer.setSize(W, H);
+renderer.setPixelRatio(1);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.95;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x1a1d21);
+scene.fog = new THREE.Fog(0x1a1d21, 12, 30);
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.03).texture;
+
+// One key, one falloff. A workshop after hours, not a photographic studio.
+const key = new THREE.DirectionalLight(0xfff4e6, 3.1);
+key.position.set(-5.5, 7.5, 6.5);
+key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+key.shadow.camera.left = -6; key.shadow.camera.right = 6;
+key.shadow.camera.top = 6; key.shadow.camera.bottom = -6;
+key.shadow.camera.far = 30;
+key.shadow.bias = -0.0006;
+scene.add(key);
+
+const rim = new THREE.DirectionalLight(0x9fb6cc, 1.1);
+rim.position.set(6, 2.4, -6);
+scene.add(rim);
+
+const bounce = new THREE.HemisphereLight(0x3a4048, 0x0d0f11, 0.5);
+scene.add(bounce);
+
+const floor = new THREE.Mesh(
+  new THREE.CircleGeometry(30, 96).rotateX(-Math.PI / 2),
+  new THREE.MeshStandardMaterial({ color: 0x1d2126, roughness: 0.62, metalness: 0.0 })
+);
+floor.receiveShadow = true;
+scene.add(floor);
+
+const camera = new THREE.PerspectiveCamera(38, W / H, 0.1, 120);
+
+const loader = new GLTFLoader();
+loader.load('../assets/model/cobra.glb', (g) => {
+  const car = g.scene;
+  car.traverse((o) => {
+    if (!o.isMesh) return;
+    o.castShadow = true;
+    const n = (o.material && o.material.name || '').toLowerCase();
+    if (n.includes('glass')) {
+      o.material = new THREE.MeshPhysicalMaterial({ color: 0xc9d4da, roughness: 0.06, metalness: 0, transmission: 0.86, thickness: 0.01, side: THREE.DoubleSide });
+      o.castShadow = false;
+    } else if (n.includes('cromado') || n.includes('steel') || n.includes('chrome') || n.includes('magnesium') || n.includes('iron') || n.includes('exaustor')) {
+      o.material = new THREE.MeshStandardMaterial({ color: 0xdcdfe3, roughness: 0.14, metalness: 1.0 });
+    } else if (n.includes('cuero') || n.includes('bancos') || n.includes('costura') || n.includes('carpete') || n.includes('fabric')) {
+      o.material = new THREE.MeshStandardMaterial({ color: 0x121417, roughness: 0.78, metalness: 0 });
+    } else if (n.includes('luz')) {
+      o.material = new THREE.MeshStandardMaterial({ color: 0xf3f1ea, roughness: 0.12, metalness: 0.2, emissive: 0x1a1a18, emissiveIntensity: 0.4 });
+    } else if (n.includes('painel') || n.includes('botao')) {
+      o.material = new THREE.MeshStandardMaterial({ color: 0x1b1e22, roughness: 0.5, metalness: 0.3 });
+    } else {
+      // the body. Deep graphite with a clearcoat: dark enough that the mesh's
+      // faceting reads as reflection rather than as geometry.
+      o.material = new THREE.MeshPhysicalMaterial({
+        color: 0x20242a, roughness: 0.26, metalness: 0.55,
+        clearcoat: 1.0, clearcoatRoughness: 0.08,
+      });
+    }
+  });
+  scene.add(car);
+  window.__car = car;
+  window.__THREE = THREE;
+  window.__key = key;
+  window.__rim = rim;
+
+  window.__frame = (opts) => {
+    const o = opts || {};
+    if (o.rot !== undefined) car.rotation.y = THREE.MathUtils.degToRad(o.rot);
+    if (o.fov !== undefined) camera.fov = o.fov;
+    if (o.exp !== undefined) renderer.toneMappingExposure = o.exp;
+    if (o.body !== undefined) {
+      car.traverse((m) => {
+        if (m.isMesh && m.material && m.material.isMeshPhysicalMaterial && m.material.clearcoat === 1.0) {
+          m.material.color.setHex(o.body);
+        }
+      });
+    }
+    camera.position.set(o.x ?? 5.4, o.y ?? 1.15, o.z ?? 5.9);
+    camera.lookAt(o.tx ?? 0.55, o.ty ?? 0.52, o.tz ?? 0);
+    camera.updateProjectionMatrix();
+    renderer.render(scene, camera);
+  };
+  window.__frame();
+  window.__ready = true;
+}, undefined, (e) => { window.__error = String(e); window.__ready = true; });
+</script>
+</body>
+</html>

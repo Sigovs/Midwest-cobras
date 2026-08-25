@@ -669,3 +669,29 @@
 @media (max-width: 47.99rem) {
   .callouts { display: none; }
 }
+
+
+/* ── PLATE ────────────────────────────────────────────────────────────────
+   A model name set as a filled mark rather than a coloured word.
+
+   This is the ONLY sanctioned use of oxblood on the dark ground, and the reason
+   is a measurement, not a preference: #820007 is 2.18:1 as text on graphite —
+   unreadable — and 10.76:1 as a fill with --bone-050 on it. So it is a plate
+   with a label, never a red heading.                                        */
+
+.plate {
+  display: inline-block;
+  background: var(--oxblood);
+  color: var(--bone-050);
+  padding: 0.18em 0.5em 0.24em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* On the light ground the same name is oxblood TEXT, because there it measures
+   8.55:1 and a filled plate would be the louder of the two. */
+[data-ground="light"] .plate {
+  background: none;
+  color: var(--oxblood);
+  padding: 0;
+}

@@ -27,7 +27,7 @@ before the final build needs it. The gate is yielded out loud; it is not absent.
 | Item | Note |
 |---|---|
 | The hero still | Re-rendered 2026-08-25 from `assets/model/ac-cobra-427.glb`. The model it replaced rendered as one wheel out of four — but that was `dev/obj2glb.py` collapsing relative OBJ indices, not the client's file, which is 89.6% symmetric and has four wheels. Converter fixed the same day; see `docs/design-read.md` §8. The frames in `docs/evidence/` were taken before the fix and show the bug. |
-| Lot and shop photography | The same placeholder stands in. Alt text says so. |
+| Lot and shop photography | **Borrowed, and it does not ship.** The four photographs now on the page — `photo-workshop`, `photo-cobra-black`, `photo-engine`, `photo-backdraft-mark` — are Hinderer Cobras' own photography, taken from `c:/____WORK/HINDERER COBRAS`. They are real Cobras and they read correctly, which is the point of using them in a mock; they are also a different dealer's cars and a different dealer's pictures. Every alt attribute says stand-in. They are replaced by Midwest's own shoot before anything is published. |
 | The hero 3D model | A **1965 AC Shelby 427**, not a Backdraft RT4. The RT4 is a replica of exactly this car, so the silhouette is honest; the paint is not — a specific blue-with-white-stripes car rather than anything in the client's catalogue. |
 
 ## What has to happen before this ledger can pass Gate 4
@@ -40,6 +40,9 @@ before the final build needs it. The gate is yielded out loud; it is not absent.
    $30–150 on the Sketchfab Store, TurboSquid or CGTrader — the cheapest open
    item on this list, and the only one that is a legal exposure rather than a
    quality one.
+0b. **The photography is Midwest's own.** Four borrowed images stand in. This
+   is the same class of item as the model licence: it is not a quality problem,
+   it is somebody else's property on a page that sells cars.
 1. Row 7 gets a source or the sentence changes.
 2. Rows 8–10 get real content or their sections are cut — and a cut section
    leaves its component and a comment saying what went with it.

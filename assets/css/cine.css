@@ -59,6 +59,13 @@
   padding-block-start: 44vh;
 }
 
+/* CENTRING THE BLOCK IS NOT CENTRING THE TEXT. Every child here carries its own
+   max-width from main.css — a measure, set for a left-aligned column — and a
+   narrower box inside a centred one still sits against that box's leading edge.
+   Centre the text and leave the boxes alone and the heading and the paragraph
+   end up on two different axes, which is what this rule exists to stop. */
+.cine [data-place="bridge"] .note__body > * { margin-inline: auto; }
+
 .cine .note__index { color: var(--text-muted); }
 
 .cine .note__body .t-h2 {

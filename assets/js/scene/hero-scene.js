@@ -78,6 +78,16 @@ function prepareModel(root, renderer) {
 
       m.envMapIntensity = 0.85;
 
+      /* A dark scene on an 8-bit buffer bands, and banding that moves reads as
+         grain. This is the one line that fixes it. */
+      m.dithering = true;
+
+      /* A roughness floor, not a roughness override. The author set 0.047 on
+         the paint, which is glass — correct for an offline render with many
+         samples per pixel, and a shimmer in real time with one. Anything below
+         the floor is lifted to it; everything else is left exactly as authored. */
+      if (typeof m.roughness === 'number' && m.roughness < 0.085) m.roughness = 0.085;
+
       [m.map, m.normalMap, m.roughnessMap, m.metalnessMap, m.aoMap, m.emissiveMap]
         .forEach((t) => { if (t) { t.anisotropy = maxAniso; t.needsUpdate = true; } });
 
@@ -279,7 +289,11 @@ export function createHeroScene({ canvas, modelUrl, quality = 'full' }) {
 
   const pmrem = new THREE.PMREMGenerator(renderer);
   const room = buildRoom(THREE);
-  scene.environment = pmrem.fromScene(room, 0.018).texture;
+  /* The blur is the anti-aliasing. A sharp environment on paint this smooth
+     sparkles pixel by pixel and MSAA cannot help — it samples geometry edges,
+     not the reflection. Softening the room is what removes the noise, and it
+     costs nothing at runtime because it is baked once. */
+  scene.environment = pmrem.fromScene(room, 0.06).texture;
   room.traverse((o) => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
 
   /* ── THE LIGHTS THAT CAST ────────────────────────────────────────────────

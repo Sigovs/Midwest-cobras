@@ -62,6 +62,21 @@ const CORNERS = ['headL', 'headR', 'tailL', 'tailR'];
  * @param THREE the three namespace
  */
 export function createLamps(root, THREE) {
+  /* THE SPRITES INHERIT THE MODEL'S SCALE, AND THE MODEL IS NOT AT SCALE 1.
+
+     normalise() sizes the car by whatever its native units happen to be — for
+     this asset that is a factor of about 98. A sprite parented to the car and
+     given scale 0.85 therefore ends up 83 metres across, which fills the whole
+     frame with white the moment the lamps come up and the camera is far enough
+     back to see it. It looks like the renderer has broken; it is a unit error.
+
+     So the size is divided by the root's world scale, and the sprites stay the
+     size they are written as, in metres, wherever the model came from. */
+  const worldScale = new THREE.Vector3();
+  root.updateMatrixWorld(true);
+  root.getWorldScale(worldScale);
+  const unit = 1 / (worldScale.x || 1);
+
   const bucket = {};
   for (const k of CORNERS) bucket[k] = { mats: [], halos: [] };
   const halo = haloTexture(THREE);
@@ -152,7 +167,7 @@ export function createLamps(root, THREE) {
         depthWrite: false,
         toneMapped: false,
       }));
-      s.scale.setScalar(front ? 0.85 : 0.55);
+      s.scale.setScalar((front ? 0.85 : 0.55) * unit);
       o.localToWorld(p);
       root.worldToLocal(p);
       s.position.copy(p);

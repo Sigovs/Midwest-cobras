@@ -154,7 +154,13 @@ def main():
         nrm = None  # recomputed below — see smooth_normals()
         uv = VT[ti] if ti is not None and ti < len(VT) else (0.0, 0.0)
         i = len(prim['verts'])
-        prim['verts'].append([pos, nrm, uv, vi])
+        # The fourth slot is what smooth_normals() averages ON, and it is the
+        # POSITION, not the index. SketchUp declares the same point once per
+        # face it touches — 199,375 declarations for 46,378 distinct points in
+        # COBRA.obj, 77% duplicates — so copies keyed by index never meet, every
+        # face keeps its own normal, and a smooth wing renders as facets.
+        key = (round(pos[0], 5), round(pos[1], 5), round(pos[2], 5))
+        prim['verts'].append([pos, nrm, uv, key])
         m[key] = i
         return i
 

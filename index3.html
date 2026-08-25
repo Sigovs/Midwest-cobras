@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Midwest Cobras — hand-built Backdraft Cobras (direction C)</title>
+<meta name="description" content="Backdraft Cobras built to order, serviced, transported and consigned. Specify yours, or take one that is already finished.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/system.css">
+<link rel="stylesheet" href="assets/css/main.css">
+<!-- Direction C only. The three stylesheets above are untouched and load in the
+     same order they do everywhere else; cine.css sits after them and re-composes
+     the film and the lower half. Same tokens, same type, same components. -->
+<link rel="stylesheet" href="assets/css/cine.css">
+<script type="importmap">
+{"imports":{"three":"./assets/js/vendor/three.module.js"}}
+</script>
+<script src="assets/js/vendor/gsap.min.js" defer></script>
+<script src="assets/js/vendor/ScrollTrigger.min.js" defer></script>
+</head>
+<body class="cine">
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" data-header>
+  <div class="page site-header__inner">
+    <a class="site-header__mark" href="/" aria-label="Midwest Cobras — home">
+      <img src="assets/img/logo.svg" alt="Midwest Cobras" width="1496" height="1031">
+    </a>
+
+    <nav class="nav" data-nav aria-label="Main">
+      <button class="nav-toggle-mobile" type="button" data-nav-toggle aria-expanded="false" aria-controls="navlist">Menu</button>
+
+      <ul class="nav__list" id="navlist">
+        <li><a class="nav__link" href="/" aria-current="page">Home</a></li>
+        <li><a class="nav__link" href="inventory.html">Inventory</a></li>
+        <li><a class="nav__link" href="build.html">Build</a></li>
+        <li class="nav__group" data-nav-group>
+          <button class="nav__toggle" type="button" data-nav-sub aria-expanded="false" aria-controls="submenu-service">
+            Service <span aria-hidden="true">▾</span>
+          </button>
+          <ul class="nav__menu" id="submenu-service" hidden>
+            <li><a class="nav__link" href="service.html">Tune-Up / Service</a></li>
+            <li><a class="nav__link" href="transportation.html">Transportation</a></li>
+          </ul>
+        </li>
+        <li><a class="nav__link" href="collection.html">Car Collection</a></li>
+        <li><a class="nav__link" href="consignment.html">Consignment</a></li>
+        <li><a class="nav__link" href="finance.html">Finance</a></li>
+        <li><a class="nav__link" href="gallery.html">Gallery</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ════ THE FILM ══════════════════════════════════════════════════════════
+     SIX SHOTS, NOT SIX ROTATIONS.
+
+     data-sequence="shots" tells choreography.js this is a set of composed
+     frames rather than one continuous turn, and it changes two things: the
+     interpolation eases out of each frame and settles into the next instead of
+     running linearly through them, and the even-step check is turned off,
+     because even steps are exactly what a shot list must NOT have.
+
+     Every scene differs from the one before it in angle, crop, scale and
+     subject — and each declares where its text sits, so no screen repeats the
+     last one's arrangement.
+
+     The ground under the car is not a floor: no plane, no rim, no horizon.
+     A shadow catcher, an elliptical pool of light and a reflection field that
+     fades before it could reach an edge. See assets/js/scene/hero-scene.js.
+-->
+<div class="scene-scope" data-scene-scope>
+
+  <!-- SHOT 1 opens close on the front-left quarter; the first scroll segment
+       is what pulls the camera back off it. -->
+  <div class="scene-mount" data-scene-mount
+       data-model="assets/model/ac-cobra-427.glb"
+       data-sequence="shots"
+       data-rot="24" data-cam="0.34,0.70,4.40" data-target="-0.28,0.44,0.55" data-fov="32"
+       data-rot-mobile="20" data-cam-mobile="0.10,0.78,4.90" data-target-mobile="-0.05,0.46,0.45" data-fov-mobile="40"
+       aria-hidden="true">
+    <canvas data-scene></canvas>
+  </div>
+
+<!-- ── SHOT 1 · THE REVEAL ────────────────────────────────────────────────── -->
+<section class="hero" data-ground="dark" data-motion-role="hero" aria-labelledby="hero-title">
+  <div class="hero__field">
+    <picture>
+      <source media="(max-width: 55.99rem)" srcset="assets/img/hero-still-placeholder-mobile.jpg">
+      <img class="hero__still" src="assets/img/hero-still-placeholder.jpg"
+           alt="A Cobra roadster standing in a dark hall, three-quarter view from the front"
+           width="3000" height="1691" fetchpriority="high">
+    </picture>
+  </div>
+
+  <div class="page hero__inner">
+    <div class="hero__identity">
+      <p class="t-label hero__eyebrow">Backdraft Cobras · built to order</p>
+      <h1 class="t-h1 hero__title" id="hero-title">Nobody buys one of these off a lot.</h1>
+      <p class="t-lead hero__claim">
+        Every car leaves here as the sum of deliberate decisions — body, engine,
+        interior, stance, sound. Start with a finished one, or start with a
+        blank sheet.
+      </p>
+    </div>
+
+    <div class="hero__foot">
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="build.html">Configure yours</a>
+        <a class="btn" href="inventory.html">See what is finished <span class="btn__chev" aria-hidden="true">→</span></a>
+      </div>
+
+      <div class="hero__spec">
+        <div class="spec-strip">
+          <div class="spec-strip__item">
+            <span class="t-label">Models</span>
+            <span class="spec-strip__val">RT4 · RT4B</span>
+          </div>
+          <div class="spec-strip__item">
+            <!-- ledger: backdraftracing.com, read 2026-08-24 -->
+            <span class="t-label">From</span>
+            <span class="spec-strip__val">$66,900</span>
+          </div>
+          <div class="spec-strip__item">
+            <span class="t-label">Built by</span>
+            <span class="spec-strip__val">Backdraft</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SHOTS 2–6 ──────────────────────────────────────────────────────────
+     data-anchor is the point ON THE CAR the callout line runs to, in metres in
+     the model's own frame, so it turns with the car and hides itself when the
+     part faces away. One callout per screen, never two.
+-->
+<section class="reveal" data-reveal data-ground="dark" aria-labelledby="reveal-title">
+  <h2 class="sr-only" id="reveal-title">The car, in six frames</h2>
+
+  <!-- SHOT 2 · profile. The camera pulls back and swings to the flank: this is
+       the frame where the body shape reads, so nothing crops it. -->
+  <article class="reveal__note" data-note data-place="left"
+           data-anchor="0.88,0.60,-0.10"
+           data-rot="96" data-cam="0.18,0.60,8.20" data-target="-0.55,0.42,0" data-fov="24"
+           data-rot-mobile="96" data-cam-mobile="0,0.66,7.40" data-target-mobile="0,0.44,0" data-fov-mobile="34">
+    <div class="page">
+      <div class="note__body">
+        <p class="t-label note__index">01 · the starting point</p>
+        <h3 class="t-h2">RT4 Classic Edition</h3>
+        <p class="t-lead t-muted">The car the rest of the decisions happen to. Everything below follows from this one choice.</p>
+        <p class="note__fact">
+          <!-- ledger: backdraftracing.com, read 2026-08-24 -->
+          <span class="t-label">From</span>
+          <span class="note__figure">$66,900</span>
+        </p>
+      </div>
+    </div>
+  </article>
+
+  <!-- SHOT 3 · the sound. The pattern breaks here: low, close, mechanical, and
+       the car is no longer a silhouette but a surface. -->
+  <article class="reveal__note" data-note data-place="high"
+           data-anchor="0.85,0.27,0.05"
+           data-rot="108" data-cam="0.60,0.32,3.10" data-target="-0.25,0.22,0.10" data-fov="30"
+           data-rot-mobile="108" data-cam-mobile="0.20,0.36,3.40" data-target-mobile="0,0.24,0.10" data-fov-mobile="40">
+    <div class="page">
+      <div class="note__body">
+        <p class="t-label note__index">02 · the sound</p>
+        <h3 class="t-h2">Side-exit exhaust</h3>
+        <p class="t-lead t-muted">The note arrives before the rest of the car does.</p>
+        <p class="note__fact">
+          <!-- ledger: backdraftracing.com, read 2026-08-24 -->
+          <span class="t-label">Option</span>
+          <span class="note__figure">Ceramic-coated</span>
+        </p>
+      </div>
+    </div>
+  </article>
+
+  <!-- SHOT 4 · the rear. The camera orbits behind and the lamps begin to come
+       up, so the silhouette is cut out of the dark rather than lit out of it. -->
+  <article class="reveal__note" data-note data-place="right"
+           data-anchor="0.80,0.66,-1.35"
+           data-rot="212" data-cam="0.70,0.98,6.90" data-target="-0.62,0.48,0" data-fov="26" data-lights="0.3"
+           data-rot-mobile="212" data-cam-mobile="0.10,1.02,6.60" data-target-mobile="0,0.50,0" data-fov-mobile="36">
+    <div class="page">
+      <div class="note__body">
+        <p class="t-label note__index">03 · the other one</p>
+        <h3 class="t-h2">RT4B Black Edition</h3>
+        <p class="t-lead t-muted">Same car underneath, finished darker, with the options that change how it looks and how it lands.</p>
+        <p class="note__fact">
+          <!-- ledger: backdraftracing.com, read 2026-08-24 -->
+          <span class="t-label">From</span>
+          <span class="note__figure">$70,500</span>
+        </p>
+      </div>
+    </div>
+  </article>
+
+  <!-- SHOT 5 · under the arch. The tightest frame on the page: the wheel is the
+       subject and the body is the backdrop. -->
+  <article class="reveal__note" data-note data-place="low"
+           data-anchor="0.78,0.33,1.32"
+           data-rot="306" data-cam="0.05,0.32,2.95" data-target="-0.30,0.28,0.40" data-fov="30" data-lights="0.7"
+           data-rot-mobile="306" data-cam-mobile="0,0.34,3.30" data-target-mobile="0,0.28,0.35" data-fov-mobile="40">
+    <div class="page">
+      <div class="note__body">
+        <p class="t-label note__index">04 · under the arch</p>
+        <h3 class="t-h2">Eighteen-inch rims, matte black</h3>
+        <p class="t-lead t-muted">The last thing chosen and the first thing seen from ten feet away.</p>
+        <p class="note__fact">
+          <!-- ledger: backdraftracing.com, read 2026-08-24 -->
+          <span class="t-label">Diameter</span>
+          <span class="note__figure">18 in</span>
+        </p>
+      </div>
+    </div>
+  </article>
+
+  <!-- SHOT 6 · the release. The camera pulls all the way out, the car goes
+       small and moves left, and the copy stops being a caption and becomes the
+       opening of the section underneath. No callout here: the film is handing
+       over, and a line pointing at a part would hold it back. -->
+  <article class="reveal__note" data-note data-place="bridge"
+           data-rot="352" data-cam="1.15,1.45,12.00" data-target="-1.55,0.30,0" data-fov="21" data-lights="1"
+           data-rot-mobile="352" data-cam-mobile="0.20,1.40,10.60" data-target-mobile="-0.20,0.34,0" data-fov-mobile="30">
+    <div class="page">
+      <div class="note__body">
+        <p class="t-label note__index">Featured inventory</p>
+        <h3 class="t-h2">Two to four at a time.</h3>
+        <p class="t-lead t-muted">
+          Which is why each one gets a proper measure of room rather than a wall
+          of tiles. When a car is gone it is gone, and nothing is reduced to a
+          look-alike box to keep the grid full.
+        </p>
+      </div>
+    </div>
+  </article>
+</section>
+
+</div><!-- /.scene-scope -->
+
+<div class="thread" aria-hidden="true"></div>
+
+<!-- ════ A · FEATURED INVENTORY ════════════════════════════════════════════
+     Two records, staggered and inverted, each on a full measure.
+-->
+<section class="section" id="inventory" data-ground="dark" aria-labelledby="inv-title">
+  <div class="page">
+    <h2 class="sr-only" id="inv-title">Featured inventory</h2>
+
+    <article class="feature" data-motion="rise">
+      <div class="feature__media">
+        <p class="t-label feature__index">Lot 01 · available</p>
+        <img src="assets/img/hero-still-placeholder.jpg" alt="Placeholder — vehicle photography to be supplied by the client" width="3000" height="1691" loading="lazy">
+      </div>
+      <div class="feature__body">
+        <h3 class="t-h2">RT4 Classic Edition</h3>
+        <div class="feature__spec">
+          <div><span class="t-label">Model</span><span class="t-num">RT4 Classic</span></div>
+          <!-- ledger: backdraftracing.com, read 2026-08-24 -->
+          <div><span class="t-label">From</span><span class="t-num">$66,900</span></div>
+          <div><span class="t-label">Wheels</span><span class="t-num">18 in</span></div>
+          <div><span class="t-label">Side pipes</span><span class="t-num">Ceramic-coated</span></div>
+        </div>
+        <a class="btn" href="inventory.html">Full specification <span class="btn__chev" aria-hidden="true">→</span></a>
+      </div>
+    </article>
+
+    <article class="feature" data-motion="rise">
+      <div class="feature__media">
+        <p class="t-label feature__index">Lot 02 · available</p>
+        <img src="assets/img/hero-still-placeholder.jpg" alt="Placeholder — vehicle photography to be supplied by the client" width="3000" height="1691" loading="lazy">
+      </div>
+      <div class="feature__body">
+        <h3 class="t-h2">RT4B Black Edition</h3>
+        <div class="feature__spec">
+          <div><span class="t-label">Model</span><span class="t-num">RT4B Black</span></div>
+          <!-- ledger: backdraftracing.com, read 2026-08-24 -->
+          <div><span class="t-label">From</span><span class="t-num">$70,500</span></div>
+          <div><span class="t-label">Rims</span><span class="t-num">Matte black, 18 in</span></div>
+          <div><span class="t-label">Roll bars</span><span class="t-num">Ceramic-coated</span></div>
+        </div>
+        <a class="btn" href="inventory.html">Full specification <span class="btn__chev" aria-hidden="true">→</span></a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<div class="thread" aria-hidden="true"></div>
+
+<!-- ════ B · BUILD ═════════════════════════════════════════════════════════
+     THE ONE LIGHT GROUND ON THE PAGE, and it is the structural decision this
+     project made at the start: the car lives in the dark, its specification
+     lives in the light. [data-ground='light'] re-points the semantic colour
+     aliases and changes nothing else — same type, same hairlines, same rhythm.
+-->
+<section class="section" id="build" data-ground="light" aria-labelledby="build-title">
+  <div class="page">
+    <div class="build-grid">
+      <div class="section-head" data-motion="rise">
+        <p class="t-label">Build</p>
+        <h2 class="t-h2" id="build-title">Specify it to the last bolt.</h2>
+        <p class="t-lead t-muted">
+          The factory takes these decisions over the phone. Here you can see
+          them, one at a time, with the car turning to face whichever one you
+          are making.
+        </p>
+        <div style="margin-block-start:var(--sp-6)">
+          <a class="btn btn--primary" href="build.html">Open the configurator</a>
+        </div>
+      </div>
+
+      <div class="build-list" data-motion="rise">
+        <div class="build-row">
+          <span class="t-num build-row__n">01</span>
+          <span class="t-h3">Model</span>
+          <span class="t-body-s build-row__opts">RT4 · RT4B</span>
+        </div>
+        <div class="build-row">
+          <span class="t-num build-row__n">02</span>
+          <span class="t-h3">Body and colour</span>
+          <span class="t-body-s build-row__opts">Paint · stripes</span>
+        </div>
+        <div class="build-row">
+          <span class="t-num build-row__n">03</span>
+          <span class="t-h3">Wheels and stance</span>
+          <span class="t-body-s build-row__opts">18 in</span>
+        </div>
+        <div class="build-row">
+          <span class="t-num build-row__n">04</span>
+          <span class="t-h3">Pipes and roll bars</span>
+          <span class="t-body-s build-row__opts">Ceramic-coated</span>
+        </div>
+        <div class="build-row">
+          <span class="t-num build-row__n">05</span>
+          <span class="t-h3">Interior</span>
+          <span class="t-body-s build-row__opts">Upholstery · gauges</span>
+        </div>
+        <div class="build-row">
+          <span class="t-num build-row__n">06</span>
+          <span class="t-h3">Trim and details</span>
+          <span class="t-body-s build-row__opts">Badging · stitching</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="thread" aria-hidden="true"></div>
+
+<!-- ════ C · WHO WE ARE ════════════════════════════════════════════════════ -->
+<section class="section" id="about" data-ground="dark" aria-labelledby="about-title">
+  <div class="page">
+    <div class="story">
+      <div class="section-head" data-motion="rise">
+        <p class="t-label">Who we are</p>
+        <!-- ledger: "40 years" is UNVERIFIED — client to confirm. Authorised to
+             stand as ordinary copy in this mock; it does not ship without a
+             source. docs/content-ledger.md row 7. -->
+        <h2 class="t-h2" id="about-title">Forty years of putting people in cars that should not exist.</h2>
+        <p class="t-lead t-muted">
+          Midwest Cobras builds, sells, services and moves Backdraft Cobras. The
+          work is the same work it has always been: a car arrives as parts and
+          leaves as somebody's.
+        </p>
+        <div style="margin-block-start:var(--sp-6)">
+          <a class="btn" href="about.html">About us <span class="btn__chev" aria-hidden="true">→</span></a>
+        </div>
+
+        <div class="story__stats">
+          <div>
+            <span class="t-num stat__n">40</span>
+            <span class="t-label">years, to confirm</span>
+          </div>
+          <div>
+            <span class="t-num stat__n">2</span>
+            <span class="t-label">models built</span>
+          </div>
+          <div>
+            <span class="t-num stat__n">1</span>
+            <span class="t-label">car at a time</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="story__figure" data-motion="rise">
+        <img src="assets/img/hero-still-placeholder.jpg" alt="Placeholder — shop photography to be supplied by the client" width="3000" height="1691" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="thread" aria-hidden="true"></div>
+
+<!-- ════ D · SERVICES ══════════════════════════════════════════════════════ -->
+<section class="section" id="services" data-ground="dark" aria-labelledby="svc-title">
+  <div class="page">
+    <div class="section-head" data-motion="rise">
+      <p class="t-label">Services</p>
+      <h2 class="t-h2" id="svc-title">After it is yours</h2>
+    </div>
+
+    <div class="panels" style="margin-block-start:var(--sp-7)" data-motion="rise">
+      <article class="panel">
+        <p class="t-label">01</p>
+        <h3 class="t-h3">Tune-up and service</h3>
+        <p class="t-body panel__body">
+          These are not cars a general workshop sees twice a year. Setup,
+          carburetion, cooling, brakes and the annual going-over, done by people
+          who have the car's own build sheet in front of them.
+        </p>
+        <div class="panel__cta">
+          <a class="btn btn--ghost" href="service.html">Book service <span class="btn__chev" aria-hidden="true">→</span></a>
+        </div>
+      </article>
+
+      <article class="panel">
+        <p class="t-label">02</p>
+        <h3 class="t-h3">Transportation</h3>
+        <p class="t-body panel__body">
+          Enclosed transport to and from the shop, to an event, or to a new
+          owner. The car does not arrive on an open trailer behind somebody's
+          pickup.
+        </p>
+        <div class="panel__cta">
+          <a class="btn btn--ghost" href="transportation.html">Arrange transport <span class="btn__chev" aria-hidden="true">→</span></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ════ E · CONSIGNMENT ═══════════════════════════════════════════════════
+     PENDING CLIENT APPROVAL. The brief places it in the navigation but low on
+     the homepage until approved. If it is cut, this block and its copy stay in
+     the tree with this comment: what goes with it is the page's only section
+     addressed to an owner rather than a buyer.
+-->
+<section class="section" id="consignment" data-ground="dark" aria-labelledby="consign-title">
+  <div class="page">
+    <div class="band" data-motion="rise">
+      <div>
+        <p class="t-label">Consignment</p>
+        <h2 class="t-h2" id="consign-title" style="margin-block:var(--sp-3) var(--sp-4)">Already have one?</h2>
+        <p class="t-body t-muted" style="max-width:44ch">Let us find its next garage.</p>
+      </div>
+      <a class="btn btn--primary" href="consignment.html">Consign your Cobra</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════ F · PROOF ═════════════════════════════════════════════════════════ -->
+<section class="section" id="community" data-ground="dark" aria-labelledby="comm-title">
+  <div class="page">
+    <div class="section-head" data-motion="rise">
+      <p class="t-label">Owners</p>
+      <h2 class="t-h2" id="comm-title">Where the cars end up</h2>
+    </div>
+
+    <div class="proof" style="margin-block-start:var(--sp-7)" data-motion="rise">
+      <div class="proof__col">
+        <p class="t-label">Reviews</p>
+        <figure class="quote">
+          <p class="t-body">Placeholder — customer review to be supplied. Nothing invented sits here.</p>
+          <figcaption class="t-label">Name · city</figcaption>
+        </figure>
+        <figure class="quote">
+          <p class="t-body">Placeholder — customer review to be supplied.</p>
+          <figcaption class="t-label">Name · city</figcaption>
+        </figure>
+      </div>
+
+      <div class="proof__col">
+        <p class="t-label">Social</p>
+        <p class="t-body-s t-muted">
+          The feed goes here once the account is connected. Until then this
+          column holds its space rather than being filled with stock.
+        </p>
+        <div>
+          <a class="btn btn--ghost" href="gallery.html">Gallery <span class="btn__chev" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+
+      <div class="proof__col">
+        <p class="t-label">Events</p>
+        <div class="event">
+          <span class="t-num event__date">TBC</span>
+          <span class="t-body-s">Event listing — dates to be supplied by the client.</span>
+        </div>
+        <div class="event">
+          <span class="t-num event__date">TBC</span>
+          <span class="t-body-s">Event listing — dates to be supplied by the client.</span>
+        </div>
+        <div class="event">
+          <span class="t-num event__date">TBC</span>
+          <span class="t-body-s">Event listing — dates to be supplied by the client.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ════ FOOTER ════════════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="page">
+    <div class="site-footer__top">
+      <div>
+        <div class="site-footer__mark">
+          <img src="assets/img/logo.svg" alt="Midwest Cobras" width="1496" height="1031">
+        </div>
+        <p class="t-body-s t-muted" style="margin-block-start:var(--sp-5);max-width:34ch">
+          Backdraft Cobras built, sold, serviced and moved.
+        </p>
+        <p class="badge-mfr" style="margin-block-start:var(--sp-5)">
+          <span class="t-label">Built by</span>
+          <span class="t-num" style="font-size:var(--fs-body-s)">Backdraft Racing</span>
+        </p>
+      </div>
+
+      <nav aria-label="Footer — cars">
+        <p class="t-label" style="margin-block-end:var(--sp-4)">Cars</p>
+        <ul class="footer-list" role="list">
+          <li><a href="inventory.html">Inventory</a></li>
+          <li><a href="build.html">Build</a></li>
+          <li><a href="collection.html">Car Collection</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Footer — services">
+        <p class="t-label" style="margin-block-end:var(--sp-4)">Services</p>
+        <ul class="footer-list" role="list">
+          <li><a href="service.html">Tune-Up / Service</a></li>
+          <li><a href="transportation.html">Transportation</a></li>
+          <li><a href="consignment.html">Consignment</a></li>
+          <li><a href="finance.html">Finance</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p class="t-label">© 2026 Midwest Cobras, LLC</p>
+      <p class="t-label">Address and phone — to be supplied</p>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="assets/js/main.js"></script>
+<script type="module" src="assets/js/scene/index.js"></script>
+</body>
+</html>

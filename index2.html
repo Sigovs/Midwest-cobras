@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Midwest Cobras — hand-built Backdraft Cobras</title>
+<title>Midwest Cobras — hand-built Backdraft Cobras (direction B)</title>
 <meta name="description" content="Backdraft Cobras built to order, serviced, transported and consigned. Specify yours, or take one that is already finished.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,6 +11,9 @@
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/system.css">
 <link rel="stylesheet" href="assets/css/main.css">
+<!-- Direction B only. main.css is untouched: alt.css sits after it and
+     re-composes three blocks. Same tokens, same type, same components. -->
+<link rel="stylesheet" href="assets/css/alt.css">
 <!-- GSAP is UMD and must be on window before the scene module runs. Classic
      scripts execute before deferred modules, so this order is the contract. -->
 <!-- three.js and its loaders resolve the bare specifier "three" between
@@ -22,7 +25,7 @@
 <script src="assets/js/vendor/gsap.min.js" defer></script>
 <script src="assets/js/vendor/ScrollTrigger.min.js" defer></script>
 </head>
-<body>
+<body class="alt">
 
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -87,7 +90,18 @@
      wrapper does. -->
 <div class="scene-scope" data-scene-scope>
 
-  <div class="scene-mount" data-scene-mount data-model="assets/model/ac-cobra-427.glb" aria-hidden="true">
+  <!-- THE OTHER MODEL, AND WHY THE POSE IS DECLARED HERE.
+       This is the client's own SketchUp export, re-converted after the relative-
+       index bug in dev/obj2glb.py was fixed. It carries no textures at all, so
+       the scene dresses it by material name; and its nose points at -X where the
+       Sketchfab car's points at +Z, so every rotation on this page is the other
+       page's plus 90. A shared zero would have been wrong on one of the two and
+       said nothing about it. -->
+  <div class="scene-mount" data-scene-mount
+       data-model="assets/model/cobra-client.glb"
+       data-rot="128" data-cam="0,1.72,11.40" data-target="0,-0.34,0" data-fov="21"
+       data-rot-mobile="128" data-cam-mobile="0,1.70,9.40" data-target-mobile="0,-0.30,0" data-fov-mobile="30"
+       aria-hidden="true">
     <canvas data-scene></canvas>
   </div>
 
@@ -154,8 +168,8 @@
   <h2 class="sr-only" id="reveal-title">What you are choosing between</h2>
 
   <article class="reveal__note" data-note
-           data-anchor="0,0.86,0.90" data-rot="114" data-cam="0.70,0.85,7.40" data-target="-1.05,0.44,0" data-fov="26"
-           data-rot-mobile="114" data-cam-mobile="0.10,0.95,6.60" data-target-mobile="-0.15,0.46,0" data-fov-mobile="36">
+           data-anchor="-0.90,0.86,0" data-rot="204" data-cam="0.10,0.90,8.20" data-target="0.45,0.48,0" data-fov="25"
+           data-rot-mobile="204" data-cam-mobile="0,0.95,7.10" data-target-mobile="0,0.50,0" data-fov-mobile="36">
     <div class="page">
       <div class="note__body">
         <p class="t-label note__index">01 · the starting point</p>
@@ -170,8 +184,8 @@
   </article>
 
   <article class="reveal__note" data-note
-           data-anchor="0,0.80,-1.65" data-rot="190" data-cam="0.60,0.80,7.10" data-target="-0.60,0.42,0" data-fov="25"
-           data-rot-mobile="190" data-cam-mobile="0.10,0.90,6.40" data-target-mobile="-0.10,0.44,0" data-fov-mobile="35">
+           data-anchor="1.65,0.78,0" data-rot="280" data-cam="0.10,0.85,7.90" data-target="0.45,0.46,0" data-fov="25"
+           data-rot-mobile="280" data-cam-mobile="0,0.92,6.90" data-target-mobile="0,0.48,0" data-fov-mobile="35">
     <div class="page">
       <div class="note__body">
         <p class="t-label note__index">02 · the other one</p>
@@ -186,8 +200,8 @@
   </article>
 
   <article class="reveal__note" data-note
-           data-anchor="-0.85,0.28,0.05" data-rot="267" data-cam="0.45,0.70,6.50" data-target="-1.00,0.40,0" data-fov="23" data-lights="0.3"
-           data-rot-mobile="267" data-cam-mobile="0.10,0.78,5.90" data-target-mobile="-0.15,0.42,0" data-fov-mobile="33">
+           data-anchor="0,0.28,0.85" data-rot="357" data-cam="0.10,0.62,7.10" data-target="0.40,0.40,0" data-fov="24" data-lights="0.3"
+           data-rot-mobile="357" data-cam-mobile="0,0.70,6.30" data-target-mobile="0,0.42,0" data-fov-mobile="34">
     <div class="page">
       <div class="note__body">
         <p class="t-label note__index">03 · down the side</p>
@@ -202,7 +216,7 @@
   </article>
 
   <article class="reveal__note" data-note data-narrow-drop
-           data-anchor="0.78,0.33,1.32" data-rot="344" data-cam="0.55,0.60,6.10" data-target="-0.85,0.40,0" data-fov="25" data-lights="1">
+           data-anchor="-1.40,0.33,0.80" data-rot="434" data-cam="0.10,0.58,6.60" data-target="0.40,0.40,0" data-fov="25" data-lights="1">
     <div class="page">
       <div class="note__body">
         <p class="t-label note__index">04 · under the arch</p>
@@ -236,7 +250,7 @@
       </p>
     </div>
 
-    <div style="margin-block-start:var(--sp-8)">
+    <div class="lots" style="margin-block-start:var(--sp-8)">
 
       <article class="lot" data-motion="rise">
         <div class="lot__media">

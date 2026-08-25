@@ -1,0 +1,131 @@
+/* ============================================================================
+   alt.css — the second direction, loaded ONLY by index2.html.
+   ----------------------------------------------------------------------------
+   index.html is the sterile master and its stylesheet order is a contract, so
+   this file never edits system.css or main.css. It sits after them and does one
+   thing: re-composes the three blocks where the two directions actually differ.
+
+   THE DIFFERENCE, IN ONE LINE.
+   index  — the car stands to the right of a block of type. Asymmetric, the
+            identity mass counterweights high-left, air reserved upper-left.
+   index2 — the car IS the frame, centred, and the type is a band beneath it.
+            Symmetric, and the reserved air is overhead instead of to one side.
+
+   Same tokens, same type, same components, same two grounds. Only the
+   composition moves — which is the point of showing two.
+   ========================================================================== */
+
+/* ── HERO — centre stage ─────────────────────────────────────────────────── */
+
+.alt .hero__inner {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  text-align: center;
+  gap: 0;
+}
+
+.alt .hero__identity {
+  order: 2;                    /* the car is read first, the claim second */
+  max-width: 46rem;
+  margin-block-start: auto;
+  padding-block-start: clamp(var(--sp-7), 18vh, var(--sp-9));
+}
+
+/* NOTE: the eyebrow is inside .hero__identity, not a child of the grid, so
+   ordering it here would do nothing. It stays with the headline it belongs to
+   and the whole block moves together. */
+
+.alt .hero__title { text-wrap: balance; }
+
+.alt .hero__claim {
+  margin-inline: auto;
+  max-width: 40rem;
+}
+
+.alt .hero__foot {
+  order: 3;
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-6);
+  width: 100%;
+  padding-block-end: var(--sp-8);
+}
+
+.alt .hero__cta { justify-content: center; }
+
+/* The spec strip stops being a corner detail and becomes a rule across the
+   whole measure — the one place this direction lets a component grow. */
+.alt .hero__spec { width: 100%; }
+
+.alt .spec-strip {
+  justify-content: center;
+  gap: clamp(var(--sp-6), 6vw, var(--sp-9));
+  border-block-start: 1px solid var(--rule);
+  padding-block-start: var(--sp-5);
+}
+
+/* The scrim runs top and bottom here rather than to one side, because that
+   is where this composition puts its air and its type. The lower half carries
+   most of it: the headline sits in it, and a headline over a lit wing is a
+   headline nobody reads. */
+.alt .scene-mount::after {
+  background:
+    linear-gradient(to bottom,
+      rgb(var(--graphite-900-rgb) / 0.86) 0%,
+      rgb(var(--graphite-900-rgb) / 0.24) 20%,
+      rgb(var(--graphite-900-rgb) / 0) 38%),
+    linear-gradient(to top,
+      rgb(var(--graphite-900-rgb) / 0.97) 0%,
+      rgb(var(--graphite-900-rgb) / 0.92) 26%,
+      rgb(var(--graphite-900-rgb) / 0.55) 42%,
+      rgb(var(--graphite-900-rgb) / 0) 58%);
+}
+
+/* ── REVEAL — the notes leave the middle and become a rail ───────────────── */
+
+.alt .reveal__note .page {
+  display: grid;
+  grid-template-columns: 1fr min(24rem, 34vw);
+  align-items: end;
+}
+
+.alt .note__body {
+  grid-column: 2;
+  max-width: none;
+  padding-block-end: var(--sp-8);
+  border-inline-start: 1px solid var(--rule);
+  padding-inline-start: var(--sp-6);
+}
+
+.alt .note__body .t-h2 { font-size: var(--fs-h3); }
+
+/* ── INVENTORY — a pair, not a stack ─────────────────────────────────────── */
+
+.alt .lots {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-8) var(--sp-7);
+}
+
+.alt .lot {
+  display: block;                      /* the two-column record collapses */
+  border-block-start: 1px solid var(--rule);
+  padding-block-start: var(--sp-5);
+}
+
+.alt .lot__media { margin-block-end: var(--sp-5); }
+.alt .lot__body { max-width: none; }
+
+@media (max-width: 55.99rem) {
+  .alt .lots { grid-template-columns: 1fr; }
+  .alt .reveal__note .page { grid-template-columns: 1fr; }
+  .alt .note__body {
+    grid-column: 1;
+    border-inline-start: 0;
+    padding-inline-start: 0;
+    border-block-start: 1px solid var(--rule);
+    padding-block-start: var(--sp-5);
+  }
+  .alt .hero__eyebrow { margin-block-start: var(--sp-6); }
+}

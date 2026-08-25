@@ -42,16 +42,24 @@ export const HERO_POSE = {
   cam: [0.90, 0.92, 7.90],
   target: [-1.15, 0.46, 0],
   fov: 27,
+  lights: 0,          // the car is standing in a lit room; nobody has switched it on
 };
 
-/* Where the car arrives from. Far, high and turned away — so the entrance is a
-   car coming to a stop in a room, not an object being flown in. */
-const ARRIVAL_POSE = {
-  rotY: 4 * DEG,
-  cam: [2.20, 3.20, 13.50],
-  target: [-1.15, 0.46, 0],
-  fov: 24,
-};
+/* Where the car arrives from: far, high and turned away, so the entrance is a
+   car coming to a stop in a room rather than an object being flown in.
+
+   DERIVED from the hero pose, never typed beside it. Two directions on two
+   models do not share a zero — the Sketchfab car points its nose at +Z, the
+   client's SketchUp export at -X — and an arrival written as absolute numbers
+   silently means something different on the second page while raising nothing. */
+function arrivalFrom(hero) {
+  return {
+    rotY: hero.rotY - 34 * DEG,
+    cam: [hero.cam[0] * 2.4 + 0.3, hero.cam[1] + 2.3, hero.cam[2] * 1.7],
+    target: [...hero.target],
+    fov: hero.fov - 3,
+  };
+}
 
 function readPose(el, isNarrow) {
   const attr = (n, fallback) => {
@@ -69,10 +77,69 @@ function readPose(el, isNarrow) {
     cam: nums(attr('cam'), HERO_POSE.cam),
     target: nums(attr('target'), HERO_POSE.target),
     fov: parseFloat(attr('fov', HERO_POSE.fov)),
+    /* data-lights, 0 to 1. In the markup with the pose, for the same reason the
+       pose is: a note that wants the lamps on says so where an editor can see
+       it, and adding one costs nothing here. */
+    lights: parseFloat(attr('lights', 0)) || 0,
+    /* data-anchor: the point ON THE CAR this note is about, in metres in the
+       model's own frame. The leader line is drawn to it, so it turns with the
+       car instead of sitting at a fixed place on the screen. */
+    anchor: nums(attr('anchor'), null),
   };
 }
 
+/* ── THE CALLOUTS ──────────────────────────────────────────────────────────
+   A label with a line to the part it names. The brief asked for these and the
+   rule that came with them was explicit: ONE AT A TIME, ON SCROLL. Six of them
+   fanned out at once is a diagram of a car, not a reading of one, and every
+   one of the six then has to be a slogan because there is no room for a fact.
+
+   So: the active note owns the only callout on screen, its line is redrawn
+   every time the pose changes, and it disappears the moment its anchor turns
+   away from the camera. A line to a part you cannot see is worse than no line. */
+const SVGNS = 'http://www.w3.org/2000/svg';
+
+function makeCalloutLayer(mount) {
+  const svg = document.createElementNS(SVGNS, 'svg');
+  svg.setAttribute('class', 'callouts');
+  svg.setAttribute('aria-hidden', 'true');
+  const path = document.createElementNS(SVGNS, 'polyline');
+  path.setAttribute('class', 'callouts__line');
+  const ring = document.createElementNS(SVGNS, 'circle');
+  ring.setAttribute('class', 'callouts__ring');
+  ring.setAttribute('r', '5');
+  const dot = document.createElementNS(SVGNS, 'circle');
+  dot.setAttribute('class', 'callouts__dot');
+  dot.setAttribute('r', '1.75');
+  svg.append(path, ring, dot);
+  mount.appendChild(svg);
+  return { svg, path, ring, dot };
+}
+
 export function mountChoreography({ scene, mount, still, scope, reveal, isNarrow }) {
+  /* The hero pose may be declared on the mount, exactly the way a note declares
+     its own. A second direction, on a second model, needs a different zero and
+     a different frame; that is a property of the page, not of this module. With
+     no attributes the exported HERO_POSE stands, so index.html is unchanged. */
+  const hero = mount.dataset.rot ? readPose(mount, isNarrow) : HERO_POSE;
+  const ARRIVAL_POSE = arrivalFrom(hero);
+
+  /* TWO CHOREOGRAPHIES, AND THEY ARE NOT THE SAME THING.
+
+     'turn'  — one continuous rotation. The car is the subject and the scroll
+               is the turntable, so the steps between poses must be even and
+               the interpolation linear, or it stalls and snaps.
+
+     'shots' — a sequence of composed frames. Each pose is a camera SET UP
+               somewhere else: different angle, crop, scale, subject. Even
+               steps would be wrong here, and linear interpolation would whip
+               between them; each move eases out of one frame and settles into
+               the next, the way a camera actually moves.
+
+     The page says which it is, because it is a directorial decision and not a
+     property of this file. */
+  const mode = mount.dataset.sequence === 'shots' ? 'shots' : 'turn';
+  const segmentEase = mode === 'shots' ? 'power2.inOut' : 'none';
   /* GSAP tweens scalars, so the camera position and the aim point each carry a
      flat mirror of the vector above them. Both mirrors are seeded HERE rather
      than left to appear on their first tween: GSAP reads the start value off
@@ -81,19 +148,51 @@ export function mountChoreography({ scene, mount, still, scope, reveal, isNarrow
      the first note. cx/cy/cz were covered by the arrival tween; tx/ty/tz were
      not, and that is the one the reader saw. */
   const state = {
-    ...HERO_POSE,
-    cam: [...HERO_POSE.cam],
-    target: [...HERO_POSE.target],
-    cx: HERO_POSE.cam[0], cy: HERO_POSE.cam[1], cz: HERO_POSE.cam[2],
-    tx: HERO_POSE.target[0], ty: HERO_POSE.target[1], tz: HERO_POSE.target[2],
+    ...hero,
+    cam: [...hero.cam],
+    target: [...hero.target],
+    cx: hero.cam[0], cy: hero.cam[1], cz: hero.cam[2],
+    tx: hero.target[0], ty: hero.target[1], tz: hero.target[2],
+    lights: hero.lights,
   };
-  const push = () => scene.setPose(state);
+  const layer = makeCalloutLayer(mount);
+  let activeNote = null;
+
+  function drawCallout() {
+    const note = activeNote;
+    const pose = note && note.__pose;
+    if (!note || !pose || !pose.anchor) { layer.svg.classList.remove('is-on'); return; }
+
+    const p = scene.project(pose.anchor);
+    const body = note.querySelector('.note__body');
+    if (!p || !p.onPlate || !body) { layer.svg.classList.remove('is-on'); return; }
+
+    const m = mount.getBoundingClientRect();
+    const r = body.getBoundingClientRect();
+    /* leave from whichever edge of the label faces the part, so the line never
+       crosses back over its own text */
+    const fromRight = p.x > (r.left - m.left) + r.width / 2;
+    const fx = (fromRight ? r.right : r.left) - m.left;
+    /* Leave from the label's first line, and never from outside the plate:
+       a note that is still sliding in sits below the fold, and a line drawn to
+       a point nobody can see reads as a rendering fault. */
+    const fy = Math.max(28, Math.min(m.height - 28, r.top - m.top + 22));
+    /* one elbow, not a curve: this is a technical drawing, not a swoosh */
+    const ex = fx + (fromRight ? 1 : -1) * Math.min(56, Math.abs(p.x - fx) * 0.35);
+
+    layer.path.setAttribute('points', `${fx},${fy} ${ex},${fy} ${p.x},${p.y}`);
+    layer.ring.setAttribute('cx', p.x); layer.ring.setAttribute('cy', p.y);
+    layer.dot.setAttribute('cx', p.x); layer.dot.setAttribute('cy', p.y);
+    layer.svg.classList.add('is-on');
+  }
+
+  const push = () => { scene.setPose(state); drawCallout(); };
 
   /* ── The handover ───────────────────────────────────────────────────────
      The still is on screen from the first paint and stays until the scene can
      actually draw the same frame. Only then do they cross. Nothing waits on
      this: if it never happens, the still is the design. */
-  scene.setPose(HERO_POSE);
+  scene.setPose(hero);
   scene.start();
 
   gsap.set(mount, { autoAlpha: 0 });
@@ -113,9 +212,9 @@ export function mountChoreography({ scene, mount, still, scope, reveal, isNarrow
       cx: ARRIVAL_POSE.cam[0], cy: ARRIVAL_POSE.cam[1], cz: ARRIVAL_POSE.cam[2],
     },
     {
-      rotY: HERO_POSE.rotY,
-      fov: HERO_POSE.fov,
-      cx: HERO_POSE.cam[0], cy: HERO_POSE.cam[1], cz: HERO_POSE.cam[2],
+      rotY: hero.rotY,
+      fov: hero.fov,
+      cx: hero.cam[0], cy: hero.cam[1], cz: hero.cam[2],
       duration: 1.9,
       ease: 'power3.out',
       onUpdate() {
@@ -163,8 +262,8 @@ export function mountChoreography({ scene, mount, still, scope, reveal, isNarrow
      Add a note and the whole sweep gets re-spaced; it is not a list you append
      to. The two checks below say that out loud instead of leaving it to be
      rediscovered from the symptom. */
-  if (notes.length > 1) {
-    const rots = [HERO_POSE.rotY, ...notes.map((n) => readPose(n, isNarrow).rotY)];
+  if (mode === 'turn' && notes.length > 1) {
+    const rots = [hero.rotY, ...notes.map((n) => readPose(n, isNarrow).rotY)];
     const steps = rots.slice(1).map((r, i) => (r - rots[i]) / DEG);
     const mag = steps.map(Math.abs);
     const spread = Math.max(...mag) / Math.max(Math.min(...mag), 0.001);
@@ -194,12 +293,17 @@ export function mountChoreography({ scene, mount, still, scope, reveal, isNarrow
 
   notes.forEach((note) => {
     const to = readPose(note, isNarrow);
+    note.__pose = to;
     tl.to(state, {
       rotY: to.rotY,
       fov: to.fov,
       cx: to.cam[0], cy: to.cam[1], cz: to.cam[2],
       tx: to.target[0], ty: to.target[1], tz: to.target[2],
-      ease: 'none',
+      /* Scrubbed with everything else, deliberately. The lamps coming up as the
+         nose swings round is ONE event with the turn, not a second idea running
+         beside it — scroll back and the car turns away and goes dark again. */
+      lights: to.lights,
+      ease: segmentEase,
       duration: 1,
       onUpdate() {
         state.cam[0] = state.cx ?? state.cam[0];
@@ -225,16 +329,17 @@ export function mountChoreography({ scene, mount, still, scope, reveal, isNarrow
       start: 'top 58%',
       end: 'bottom 42%',   // tight enough that two notes are never both up:
                            // an overlap is a stoppable frame with two claims on it
-      onEnter:     () => gsap.to(note, { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out' }),
-      onEnterBack: () => gsap.to(note, { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out' }),
-      onLeave:     () => gsap.to(note, { autoAlpha: 0, y: -12, duration: 0.3, ease: 'power2.in' }),
-      onLeaveBack: () => gsap.to(note, { autoAlpha: 0, y: 12, duration: 0.3, ease: 'power2.in' }),
+      onEnter:     () => { activeNote = note; gsap.to(note, { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out', onUpdate: drawCallout }); },
+      onEnterBack: () => { activeNote = note; gsap.to(note, { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out', onUpdate: drawCallout }); },
+      onLeave:     () => { if (activeNote === note) activeNote = null; gsap.to(note, { autoAlpha: 0, y: -12, duration: 0.3, ease: 'power2.in', onUpdate: drawCallout }); },
+      onLeaveBack: () => { if (activeNote === note) activeNote = null; gsap.to(note, { autoAlpha: 0, y: 12, duration: 0.3, ease: 'power2.in', onUpdate: drawCallout }); },
     });
   });
 
   /* A resize can change which notes are displayed at all — the narrow build
      shows fewer — so the timeline is rebuilt rather than stretched. */
-  ScrollTrigger.addEventListener('refreshInit', () => scene.resize());
+  ScrollTrigger.addEventListener('refreshInit', () => { scene.resize(); drawCallout(); });
+  window.addEventListener('resize', drawCallout, { passive: true });
 
   return () => { tl.kill(); ScrollTrigger.getAll().forEach((t) => t.kill()); };
 }

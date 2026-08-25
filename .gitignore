@@ -45,3 +45,6 @@ cobra2/
 # Model conversion scratch: downloads and the intermediate stages between
 # spec-gloss and the committed asset. dev/README.md carries the commands.
 glb/
+
+# Anything the folder name already says to keep out.
+donot git/

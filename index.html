@@ -11,6 +11,16 @@
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/system.css">
 <link rel="stylesheet" href="assets/css/main.css">
+<!-- GSAP is UMD and must be on window before the scene module runs. Classic
+     scripts execute before deferred modules, so this order is the contract. -->
+<!-- three.js and its loaders resolve the bare specifier "three" between
+     themselves; the map points it at the one local copy, so the scene and the
+     GLTF loader share a single instance rather than shipping two. -->
+<script type="importmap">
+{"imports":{"three":"./assets/js/vendor/three.module.js"}}
+</script>
+<script src="assets/js/vendor/gsap.min.js" defer></script>
+<script src="assets/js/vendor/ScrollTrigger.min.js" defer></script>
 </head>
 <body>
 
@@ -62,6 +72,15 @@
      the faceting shows at hero scale. The composition is the deliverable here;
      the asset is not. docs/design-read.md §8 holds the three honest outcomes.
 -->
+<!-- The scene's scope: the hero and the reveal, and nothing else. The canvas is
+     sticky inside it, so the sequence begins and ends exactly where this
+     wrapper does. -->
+<div class="scene-scope" data-scene-scope>
+
+  <div class="scene-mount" data-scene-mount data-model="assets/model/cobra.glb" aria-hidden="true">
+    <canvas data-scene></canvas>
+  </div>
+
 <section class="hero" data-ground="dark" data-motion-role="hero" aria-labelledby="hero-title">
   <div class="hero__field">
     <picture>
@@ -70,9 +89,6 @@
            alt="A Cobra roadster standing on a lit workshop floor, three-quarter view from the front"
            width="2000" height="1125" fetchpriority="high">
     </picture>
-    <!-- the scene mounts here, over the still, once it has loaded. The first
-         read never waits for it. -->
-    <canvas class="hero__canvas" data-scene hidden></canvas>
   </div>
 
   <div class="page hero__inner">
@@ -112,6 +128,86 @@
     </div>
   </div>
 </section>
+
+<!-- ════ 1b · REVEAL — the scroll sequence ═════════════════════════════════
+     One screen per note, one fact per screen, and the car turns to face
+     whichever part is being talked about. Four stages, each delivering
+     something the previous one did not — the list of notes is the first thing
+     this sequence would be cut down to, so nothing here is a slogan.
+
+     Every figure is sourced. docs/content-ledger.md rows 1–5.
+     Poses live in the markup, not in the timeline: data-rot is degrees,
+     data-cam and data-target are x,y,z in metres, and the -mobile variants are
+     the separately authored narrow camera.
+-->
+<section class="reveal" data-reveal data-ground="dark" aria-labelledby="reveal-title">
+  <h2 class="sr-only" id="reveal-title">What you are choosing between</h2>
+
+  <article class="reveal__note" data-note
+           data-rot="168" data-cam="3.2,1.05,4.4" data-target="0.35,0.55,0" data-fov="34"
+           data-rot-mobile="164" data-cam-mobile="2.9,1.15,3.9" data-fov-mobile="42">
+    <div class="page">
+      <div class="note__body">
+        <p class="t-label note__index">01 · the starting point</p>
+        <h3 class="t-h2">RT4 Classic Edition</h3>
+        <p class="t-lead t-muted">The car the rest of the decisions happen to. Everything below follows from this one choice.</p>
+        <p class="note__fact">
+          <span class="t-label">From</span>
+          <span class="note__figure">$66,900</span>
+        </p>
+      </div>
+    </div>
+  </article>
+
+  <article class="reveal__note" data-note
+           data-rot="205" data-cam="3.6,1.2,3.6" data-target="0.3,0.55,0" data-fov="34"
+           data-rot-mobile="200" data-cam-mobile="3.1,1.25,3.4" data-fov-mobile="42">
+    <div class="page">
+      <div class="note__body">
+        <p class="t-label note__index">02 · the other one</p>
+        <h3 class="t-h2">RT4B Black Edition</h3>
+        <p class="t-lead t-muted">Same car underneath, finished dark, and the options that come with it are the ones you can hear and grab.</p>
+        <p class="note__fact">
+          <span class="t-label">From</span>
+          <span class="note__figure">$70,500</span>
+        </p>
+      </div>
+    </div>
+  </article>
+
+  <article class="reveal__note" data-note
+           data-rot="250" data-cam="4.1,0.75,2.4" data-target="0.1,0.42,0" data-fov="32"
+           data-rot-mobile="246" data-cam-mobile="3.4,0.8,2.3" data-fov-mobile="44">
+    <div class="page">
+      <div class="note__body">
+        <p class="t-label note__index">03 · down the side</p>
+        <h3 class="t-h2">Ceramic-coated side pipes and roll bars</h3>
+        <p class="t-lead t-muted">The two parts you hear and the two you grab getting in. Coated black, at build time, not afterwards.</p>
+        <p class="note__fact">
+          <span class="t-label">Option</span>
+          <span class="note__figure">Ceramic-coated</span>
+        </p>
+      </div>
+    </div>
+  </article>
+
+  <article class="reveal__note" data-note data-narrow-drop
+           data-rot="292" data-cam="2.6,0.7,3.4" data-target="0.9,0.4,0" data-fov="30">
+    <div class="page">
+      <div class="note__body">
+        <p class="t-label note__index">04 · under the arch</p>
+        <h3 class="t-h2">Eighteen-inch rims, matte black</h3>
+        <p class="t-lead t-muted">The last thing chosen and the first thing seen from ten feet away.</p>
+        <p class="note__fact">
+          <span class="t-label">Diameter</span>
+          <span class="note__figure">18 in</span>
+        </p>
+      </div>
+    </div>
+  </article>
+</section>
+
+</div><!-- /.scene-scope -->
 
 <!-- ════ 2 · INVENTORY ═════════════════════════════════════════════════════
      The brief: typically only 2–4 vehicles, displayed large and prominently
@@ -430,5 +526,8 @@
 </footer>
 
 <script type="module" src="assets/js/main.js"></script>
+<!-- The scene decides for itself whether to run at all. Every path out of it
+     leaves this page complete — see assets/js/scene/index.js. -->
+<script type="module" src="assets/js/scene/index.js"></script>
 </body>
 </html>

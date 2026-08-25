@@ -143,8 +143,7 @@
   z-index: -1;
 }
 
-.hero__still,
-.hero__canvas {
+.hero__still {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -172,7 +171,6 @@
       rgb(var(--graphite-900-rgb) / 0) 42%);
   pointer-events: none;
 }
-.hero__canvas { display: block; }
 
 /* The reserved region. It is bounded by the identity mass and the field, and
    its job is to be the air the subject is seen in — it is not spare room. */
@@ -464,4 +462,141 @@
   .hero__spec { min-width: 0; }
   .hero__spec .spec-strip { justify-content: flex-start; gap: var(--sp-5); }
   .hero__cta .btn { flex: 1 1 auto; justify-content: center; }
+}
+
+/* ── SCENE SCOPE ──────────────────────────────────────────────────────────
+   The canvas is sticky inside a scope that spans the hero and the reveal, with
+   a negative bottom margin pulling the content back over it. Sticky rather
+   than fixed on purpose: the scene then starts and stops exactly where its
+   scope does, with no scroll listener deciding when it should be visible and
+   no chance of it surviving into a section it does not belong to.            */
+
+.scene-scope {
+  position: relative;
+  background: var(--graphite-900);
+}
+
+.scene-mount {
+  position: sticky;
+  inset-block-start: 0;
+  height: 100svh;
+  margin-block-end: -100svh;
+  z-index: 0;
+  pointer-events: none;      /* the scene is not draggable, so it must not look it */
+}
+
+.scene-mount canvas { width: 100%; height: 100%; display: block; }
+
+/* The scrim travels with the canvas, so the reserved left third holds through
+   the whole sequence rather than only over the hero's own still. */
+.scene-mount::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg,
+      rgb(var(--graphite-900-rgb) / 0.94) 0%,
+      rgb(var(--graphite-900-rgb) / 0.86) 26%,
+      rgb(var(--graphite-900-rgb) / 0.34) 52%,
+      rgb(var(--graphite-900-rgb) / 0.06) 72%),
+    linear-gradient(to top,
+      rgb(var(--graphite-900-rgb) / 0.72) 0%,
+      rgb(var(--graphite-900-rgb) / 0) 40%);
+  pointer-events: none;
+}
+
+/* Two scrims would be one too many, so the still's own goes when the scene
+   takes over. */
+[data-scene-state='live'] .hero__field::after { opacity: 0; }
+
+.scene-scope .hero,
+.scene-scope .reveal {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+/* ── REVEAL — the scroll sequence ─────────────────────────────────────────
+   One screen per note. The text is what the visitor came for, so it is real
+   HTML in the flow and it reads with the scene switched off; the car turning
+   underneath is what binds each fact to the part it is about.                */
+
+.reveal { position: relative; }
+
+.reveal__note {
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  padding-block: var(--sp-8);
+}
+
+.reveal__note .page { width: 100%; }
+
+.note__body { max-width: 34rem; }
+
+.note__index { margin-block-end: var(--sp-4); }
+
+.note__fact {
+  margin-block-start: var(--sp-5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp-3) var(--sp-5);
+  padding-block-start: var(--sp-4);
+  border-top: var(--hairline) solid var(--rule);
+}
+
+.note__figure {
+  font-family: var(--font-mono);
+  font-size: var(--fs-h3);
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+/* The static path. Not the animation stopped — the same facts, composed as one
+   plate, arriving together. Every note is present, readable and in order. */
+.reveal[data-static] .reveal__note {
+  min-height: 0;
+  padding-block: var(--sp-6);
+  border-top: var(--hairline) solid var(--rule);
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+.reveal[data-static] { padding-block-start: var(--sp-7); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal__note {
+    min-height: 0;
+    padding-block: var(--sp-6);
+    border-top: var(--hairline) solid var(--rule);
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+}
+
+/* ── NARROW ───────────────────────────────────────────────────────────────
+   The mobile sequence is authored, not inherited: fewer stages, a nearer
+   camera declared per note in the markup, and a scrim graded top-to-bottom
+   because the type sits above the car rather than beside it.                 */
+
+@media (max-width: 55.99rem) {
+  .scene-mount::after {
+    background:
+      linear-gradient(to bottom,
+        rgb(var(--graphite-900-rgb) / 0.9) 0%,
+        rgb(var(--graphite-900-rgb) / 0.6) 30%,
+        rgb(var(--graphite-900-rgb) / 0.08) 54%),
+      linear-gradient(to top,
+        rgb(var(--graphite-900-rgb) / 0.86) 0%,
+        rgb(var(--graphite-900-rgb) / 0) 38%);
+  }
+
+  .reveal__note { align-content: start; padding-block-start: var(--sp-9); }
+
+  /* dropped on narrow — the two model notes and the pipes carry the sequence;
+     a fourth stage on a phone is scroll spent for a detail nobody can see */
+  .reveal__note[data-narrow-drop] { display: none; }
 }

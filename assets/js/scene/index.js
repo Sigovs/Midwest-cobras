@@ -69,9 +69,14 @@ async function boot() {
        cinema.js travels the camera and treats movement, light and type as one
        event. The page says which it wants, because it is a directorial
        decision and not a property of this loader. */
-    const director = mount.dataset.director === 'cinema'
-      ? './cinema.js'
-      : './choreography.js';
+    /* A whitelist, not a template. mount.dataset.director reaches this from
+       the document, and turning attacker-controllable text into a module path
+       is how a page ends up importing something nobody wrote. */
+    const DIRECTORS = {
+      cinema: './cinema.js',
+      cinema4: './cinema4.js',
+    };
+    const director = DIRECTORS[mount.dataset.director] || './choreography.js';
 
     const [{ createHeroScene }, { mountChoreography }] = await Promise.all([
       import('./hero-scene.js'),

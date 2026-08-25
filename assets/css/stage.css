@@ -1,0 +1,222 @@
+/* ============================================================================
+   stage.css — direction D. index4.html only, after cine.css.
+   ----------------------------------------------------------------------------
+   Three things this file is responsible for, and they are one problem:
+
+   1. LANES. The caption and the car are placed by the same declaration. CSS
+      reads only the custom properties scene/lanes.js writes; it never decides
+      where anything goes on its own. That is the whole fix for the caption
+      landing on the bodywork — not a darker scrim, which treats a layout fault
+      as a contrast fault.
+
+   2. TYPE THAT HAS A RANGE. tokens.css defines --fs-display, system.css binds
+      it to .t-display, and the page used it zero times. The largest voice in
+      the system had never spoken. It speaks once here.
+
+   3. RHYTHM. system.css gives every section the same --section-pt/pb, so every
+      section on the page breathes identically and the lower half reads as a
+      list of blocks. Two extra values are introduced below, each with the job
+      it exists for written next to it.
+   ========================================================================== */
+
+:root {
+  /* ── RHYTHM ────────────────────────────────────────────────────────────
+     Two values, and only two. Any more and this stops being a rhythm and
+     becomes a set of arbitrary numbers. */
+
+  /* After the film. The reader has just come off a pinned sequence and needs a
+     breath the length of the thing they just left, or the page below reads as
+     an interruption rather than a continuation. */
+  --rhythm-after-stage: clamp(8rem, 16vw, 15rem);
+
+  /* Between two sections that belong together — a heading and the thing it
+     heads, a panel pair. Closer to each other than to the rest, which is what
+     makes them read as one unit instead of two. */
+  --rhythm-tight: clamp(2rem, 4vw, 3.5rem);
+
+  /* ── TRAVEL ────────────────────────────────────────────────────────────
+     --travel is 8px and its comment calls it the ceiling on translate in any
+     interface transition. That is correct for interface — a button, a panel, a
+     checkbox — and wrong for a page mass. Eight pixels over half a second is
+     below the threshold at which a reader registers that anything happened, and
+     the lower half of this page has been proving it.
+
+     So a second token rather than an edit to the first. Interface keeps its
+     ceiling; a section arriving gets a distance you can actually see. */
+  --travel-mass: 34px;
+}
+
+/* ── THE STAGE ────────────────────────────────────────────────────────────── */
+
+.stage {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--ground);
+  isolation: isolate;
+}
+
+.stage__air {
+  position: absolute;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(56% 46% at 50% 60%,
+      rgb(var(--graphite-900-rgb) / 0) 0%,
+      rgb(var(--graphite-900-rgb) / 0) 40%,
+      rgb(var(--graphite-950-rgb) / 0.6) 76%,
+      rgb(var(--graphite-950-rgb) / 0.94) 100%),
+    radial-gradient(40% 30% at 50% 56%,
+      rgb(56 66 78 / 0.28) 0%,
+      rgb(0 0 0 / 0) 76%);
+}
+
+.stage__mount { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.stage__mount canvas { width: 100%; height: 100%; display: block; }
+
+.stage__still {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* ── THE CAPTIONS ─────────────────────────────────────────────────────────
+   Position comes entirely from --lane-inset and --lane-width, which lanes.js
+   writes. There is no [data-place] here and there are no per-note offsets: four
+   ad-hoc positions were what let the overlap happen. */
+
+.stage-note {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 100%;
+  z-index: 2;
+  display: grid;
+  align-content: center;
+  pointer-events: none;
+}
+
+.stage-note__body {
+  position: absolute;
+  /* Centred in the plate. Without an explicit block offset an absolutely
+     positioned child ignores the grid alignment above it and lands at its
+     static position, which here is the top of the section — under the header. */
+  inset-block-start: 50%;
+  translate: 0 -50%;
+  inset-inline-start: var(--lane-inset, 0);
+  inline-size: var(--lane-width, 40%);
+  padding-inline: var(--page-pad, clamp(1.25rem, 4vw, 3rem));
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.stage-note[data-lane="text-right"] .stage-note__body { text-align: end; }
+
+/* One mask per line. Twelve pixels of translate is not a slide-in — it is a
+   fade with noise on it. A full line height is legible as movement. */
+.stage-note__mask { display: block; overflow: hidden; }
+.stage-note__line { display: block; will-change: transform; }
+
+/* Mono for data and part numbers, sans for prose. IBM Plex Mono is already in
+   the document head and was carrying almost nothing; that split is information,
+   not decoration. */
+.stage-note__index {
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* The callout heading sits at h2 proper. cine.css clamped it down toward h3,
+   which is why the page ran h1 → h3 → body and read flat. h3 is reserved below
+   for the lower half's section heads, so the film and the page are told apart
+   by type weight alone. */
+.stage-note__title { font-size: var(--fs-h2); line-height: 1.06; text-wrap: balance; }
+.stage-note__prose { max-width: var(--measure-lead); color: var(--text-muted); }
+
+/* ── THE ONE DISPLAY-SIZE ELEMENT ─────────────────────────────────────────
+   It appears once on the page, at the moment the car is finished, and it is a
+   figure rather than a slogan. One is a composition; three would be a poster. */
+
+.stage__price {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: clamp(var(--sp-6), 7vh, var(--sp-8));
+  z-index: 2;
+  text-align: center;
+  pointer-events: none;
+}
+
+.stage__price .t-display { line-height: 0.9; }
+.stage__price .t-label { display: block; margin-block-end: var(--sp-3); }
+
+/* ── STACKED ──────────────────────────────────────────────────────────────
+   Below the two-lane breakpoint there are no lanes. The car takes the upper
+   plate, the text sits under it, and overlap is not prevented — it is made
+   impossible. */
+
+@media (max-width: 55.99rem) {
+  .stage-note { align-content: end; }
+  .stage-note__body {
+    position: static;
+    translate: none;
+    inline-size: 100%;
+    text-align: start;
+    padding-block-end: 22vh;
+  }
+  .stage-note[data-lane="text-right"] .stage-note__body { text-align: start; }
+  .stage__price { inset-block-end: var(--sp-6); }
+}
+
+/* ── THE STATIC PATH ──────────────────────────────────────────────────────
+   scene/index4.js takes this when the scene does not run. Everything has
+   arrived and nothing is mid-flight, which for an assembly sequence means the
+   captions are all readable at once rather than one at a time. */
+
+.stage[data-static] .stage-note { position: static; }
+.stage[data-static] .stage-note__body { position: static; inline-size: 100%; }
+.stage[data-static] { height: auto; padding-block: var(--section-pt) var(--section-pb); }
+
+/* ── THE PAGE BELOW ───────────────────────────────────────────────────────── */
+
+.after-stage { padding-block-start: var(--rhythm-after-stage); }
+.tight-below { padding-block-start: var(--rhythm-tight); }
+
+/* Roles read by assets/js/lower.js. Everything here is the resting state; the
+   script only removes it. Nothing depends on the script having run, so a page
+   whose JS never arrives is a page with all its content on screen. */
+
+[data-lower] { opacity: 0; transform: translateY(var(--travel-mass)); }
+[data-lower].is-in { opacity: 1; transform: none; transition: opacity var(--dur-4) var(--ease-out), transform var(--dur-4) var(--ease-out); }
+
+[data-lower="stagger"] > * { opacity: 0; transform: translateY(var(--travel-mass)); }
+[data-lower="stagger"] { opacity: 1; transform: none; }
+[data-lower="stagger"].is-in > * {
+  opacity: 1; transform: none;
+  transition: opacity var(--dur-4) var(--ease-out), transform var(--dur-4) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* A rule that draws itself along its own length. Nearly free, and it ties the
+   lower half to the leader lines in the film above it. */
+[data-lower="rule"] { opacity: 1; transform: none; }
+[data-lower="rule"]::before,
+[data-lower="rule"]::after { transform: scaleY(0); transform-origin: top; }
+[data-lower="rule"].is-in::before,
+[data-lower="rule"].is-in::after { transform: scaleY(1); transition: transform 700ms var(--ease-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-lower],
+  [data-lower="stagger"] > *,
+  [data-lower="rule"]::before,
+  [data-lower="rule"]::after {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

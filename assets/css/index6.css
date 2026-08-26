@@ -14,14 +14,50 @@
    nothing else yet. */
 .f-hero {
   position: relative;
-  min-height: 100svh;
-  display: grid;
   background: var(--graphite-900);
   isolation: isolate;
-  /* the header is persistent and is part of the composition, so the stage
-     starts below it rather than pretending the first 72px are free */
+  /* nine beats of scroll length. The number lives here rather than in the
+     script because it is a composition decision — how much of the visitor's
+     scroll this sequence is allowed to occupy — and composition decisions
+     belong where the rest of the page's proportions are kept. */
+  --beats: 9;
+  --beat-length: 88svh;
+
+}
+
+/* THE SCROLL LENGTH IS SET BY ScrollTrigger, NOT BY THIS FILE, and that is the
+   opposite of what was written here first. Two attempts are worth recording
+   because the second is only obvious once the first has failed:
+
+   1. A separate spacer element with the height, and the stage sticky after it.
+      A sticky box only sticks inside its own parent and only from its own place
+      in the flow, so the stage began 7920px down and never reached the top.
+   2. The hero itself carrying the height, the stage sticky as its first child.
+      Correct — and dead on arrival, because ScrollSmoother is running on this
+      page. It translates the smooth-content wrapper and gives the smooth-wrapper
+      overflow hidden, and either one of those alone stops position: sticky
+      from ever seeing the viewport.
+
+   So the stage is pinned by ScrollTrigger, which is what ScrollSmoother is
+   built to cooperate with. The pin is SCRUBBED and spaced: it releases the
+   moment the visitor scrolls past it, the scrollbar keeps its real length, and
+   nothing has to be watched to the end. That is MJ6 satisfied by behaviour
+   rather than by avoiding the mechanism. */
+.f-hero__track { display: none; }
+
+.f-hero__stage {
+  position: relative;
+  height: 100svh;
+  overflow: clip;
+  /* the header is persistent and is part of the composition, so the words start
+     below it rather than pretending the first 72px are free */
   padding-block-start: var(--header-h);
 }
+
+/* Under reduced motion the sequence is not scrubbed, so the track has nothing to
+   measure against and collapses. The stage becomes one composed frame and the
+   beats are read as a list beneath it. */
+[data-story-mode='static'] .f-hero__stage { position: relative; }
 
 /* The field. Still and canvas share one box, so the scene replaces the image
    without the composition moving under anything placed on top of it later. */
@@ -74,3 +110,197 @@
 
 .f-hero__canvas { touch-action: pan-y; cursor: grab; }
 .f-hero__canvas:active { cursor: grabbing; }
+
+
+/* ════ THE STORYBOARD ═══════════════════════════════════════════════════════
+   Alex's nine beats. The rule the whole overlay is built to is the one from the
+   storyboard's own legend — thin lines, precision points, minimal labels,
+   technical clarity — which in this build means the annotation layer owns no
+   colour, no fill and no box of its own. It is hairlines and mono labels over
+   the scene, and it defers to the car in every frame.
+   ========================================================================== */
+
+/* The ghost word. Scenery: it sits behind the car, carries no rank, and is
+   sized off the viewport rather than the type scale precisely because it is not
+   type doing a typographic job. It is the largest mass in the frame after the
+   car and the smallest in the hierarchy. */
+.f-hero__ghost {
+  position: absolute;
+  inset-block-start: calc(var(--header-h) + var(--sp-6));
+  inset-inline-end: var(--gutter);
+  z-index: -1;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: clamp(4rem, 13vw, 12rem);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  color: rgb(var(--bone-100-rgb) / 0.05);
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+
+.f-hero__ghost[data-empty] { opacity: 0; }
+
+/* The words. Upper left, against the field's quietest corner, and they keep the
+   same box for all nine beats — the sentence changes, the composition does not.
+   A headline that moves between beats makes nine layouts out of one. */
+.f-story__text {
+  position: absolute;
+  inset-block-start: calc(var(--header-h) + var(--sp-8));
+  inset-inline-start: var(--gutter);
+  max-width: min(var(--measure-lead), 42ch);
+}
+
+.f-story__eyebrow {
+  display: flex;
+  gap: var(--sp-4);
+  align-items: baseline;
+  margin: 0 0 var(--sp-4);
+  color: var(--text-muted);
+}
+
+.f-story__eyebrow > :first-child { color: var(--oxblood); }
+
+.f-story__head {
+  margin: 0 0 var(--sp-4);
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  color: var(--text);
+  white-space: pre-line;      /* the beats break their own lines */
+}
+
+.f-story__body {
+  margin: 0;
+  max-width: 34ch;
+  color: var(--text-muted);
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body);
+}
+
+/* ── the callouts ─────────────────────────────────────────────────────────── */
+
+.f-story__lines,
+.f-story__callouts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.f-story__lines { width: 100%; height: 100%; }
+
+.f-story__line {
+  fill: none;
+  stroke: rgb(var(--bone-100-rgb) / 0.55);
+  stroke-width: var(--hairline);
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.f-story__line[data-on] { opacity: var(--a, 1); }
+
+.f-story__callout {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  translate: var(--x) var(--y);
+  max-width: 22ch;
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.f-story__callout[data-on] { opacity: var(--a, 1); }
+
+/* The label sits away from its own leader line: right-side callouts are set
+   flush right so the line leaves from the text's edge rather than crossing it. */
+.f-story__callout[data-side='right'] { transform: translateX(-100%); text-align: end; }
+
+.f-story__callout-label {
+  margin: 0 0 var(--sp-1);
+  color: var(--text);
+}
+
+.f-story__callout-note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-body-s);
+  line-height: var(--lh-body);
+}
+
+.f-story__callout-note[data-empty] { display: none; }
+
+/* ── how long this is ─────────────────────────────────────────────────────── */
+
+.f-story__marks {
+  position: absolute;
+  inset-block-end: var(--sp-7);
+  inset-inline-start: var(--gutter);
+  display: flex;
+  gap: var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.f-story__mark {
+  inline-size: var(--sp-5);
+  block-size: var(--hairline);
+  background: rgb(var(--bone-100-rgb) / 0.22);
+  transition: background var(--dur-2) var(--ease-out);
+}
+
+.f-story__mark[data-on] { background: var(--oxblood); }
+
+/* ── the static equivalent ────────────────────────────────────────────────── */
+
+.f-story__script {
+  margin: 0;
+  padding: var(--sp-9) var(--gutter);
+  display: grid;
+  gap: var(--sp-8);
+  max-width: var(--page-max);
+  list-style: none;
+}
+
+.f-story__script[hidden] { display: none; }
+
+.f-story__script h2 {
+  margin: 0 0 var(--sp-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
+  color: var(--text);
+  white-space: pre-line;
+}
+
+.f-story__script p { margin: 0; color: var(--text-muted); }
+
+/* Narrow is authored, not inherited. The words move off the corner and take the
+   bottom of the frame, because on a phone the upper third is where the car's
+   own mass has to live for the subject to read at all — and the callouts stop
+   projecting to the sides, where there is no side to project to. */
+@media (max-width: 55.99rem) {
+  .f-hero { --beat-length: 76svh; }
+
+  .f-story__text {
+    inset-block-start: auto;
+    inset-block-end: calc(var(--sp-9) + var(--sp-6));
+    inset-inline-end: var(--gutter);
+    max-width: none;
+  }
+
+  .f-story__body { max-width: none; }
+
+  .f-hero__ghost { font-size: clamp(3rem, 22vw, 7rem); }
+
+  .f-story__callouts,
+  .f-story__lines { display: none; }
+}
+
+/* The hint defers to the sequence the moment the sequence starts. The control
+   is untouched; what steps back is only its advertisement. */
+.f-hero__hint[data-story-quiet] { opacity: 0; }

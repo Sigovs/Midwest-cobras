@@ -105,6 +105,32 @@ async function boot() {
       console.info('[scene F] reduced motion — the turn stays, its glide does not');
     }
 
+    /* ── the storyboard ─────────────────────────────────────────────────────
+       Loaded after the car is on screen and never before it. The sequence is a
+       reading of the car; a sequence that arrives first is a loading screen
+       with opinions.
+
+       It fails soft on purpose: if GSAP or ScrollTrigger does not load, the
+       hero is still the composed first beat over a real scene, which is the
+       frame the markup already carries. */
+    const storyRoot = document.querySelector('[data-story]');
+    if (storyRoot) {
+      try {
+        const [{ gsap }, { ScrollTrigger }, THREE, { mountStory }] = await Promise.all([
+          import('gsap'),
+          import('gsap/ScrollTrigger'),
+          import('three'),
+          import('./f-story-stage.js'),
+        ]);
+        gsap.registerPlugin(ScrollTrigger);
+        const story = mountStory({ scene, root: storyRoot, gsap, ScrollTrigger, THREE, reduced });
+        window.__fstory = story;    // the beats are being tuned; this is the handle
+        console.info(`[scene F] storyboard mounted — ${storyRoot.dataset.storyMode}`);
+      } catch (err) {
+        console.info(`[scene F] storyboard not mounted — ${err && err.message ? err.message : err}`);
+      }
+    }
+
   } catch (err) {
     stayStatic(`failed to initialise — ${err && err.message ? err.message : err}`);
   }

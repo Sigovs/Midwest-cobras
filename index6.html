@@ -91,31 +91,70 @@
        Full-screen scene, not full-frame object: what fills the first screen is
        the field, never the scale of the car inside it.
   -->
-  <section class="f-hero" data-ground="dark" aria-labelledby="f-hero-title">
-    <h1 class="sr-only" id="f-hero-title">Midwest Cobras</h1>
+  <section class="f-hero" data-ground="dark" aria-labelledby="f-hero-title" data-story>
+    <h1 class="sr-only" id="f-hero-title">Midwest Cobras — hand-built Backdraft Cobras</h1>
 
-    <!-- The field. The car is in it; nothing else is yet. The still underneath
-         is what the page shows before the scene draws and if it never does. -->
-    <div class="f-hero__field" data-scene-mount
-         data-model="assets/model/shelby-cobra-427-v6.glb"
-         data-env="assets/env/parking_garage_1k.hdr">
-      <!-- The still is this car, at this camera, so the handover is invisible.
-           A placeholder showing a DIFFERENT car for one second is worse than no
-           placeholder at all — it is the page contradicting itself on arrival. -->
-      <picture>
-        <source media="(max-width: 55.99rem)" srcset="assets/img/f-hero-still-mobile.jpg">
-      <img class="f-hero__still" data-scene-still src="assets/img/f-hero-still.jpg"
-           alt="A Shelby Cobra standing in a workshop, three-quarter view from the front"
-           width="2000" height="1125" fetchpriority="high">
-      </picture>
-      <canvas class="f-hero__canvas" data-scene aria-label="The car. Drag to turn it: sideways spins it, up and down changes the height it is seen from. The arrow keys do the same, and Escape returns to the opening view."></canvas>
+    <!-- THE TRACK. Nothing but height: the scroll length the nine beats need.
+         The stage below is `position: sticky` against it rather than pinned by
+         ScrollTrigger, which is the whole of MJ6 here — the page keeps its true
+         height, the scrollbar stays real and lands where it says, and a visitor
+         who wants past the hero scrolls past it at their own speed. -->
+    <div class="f-hero__track" data-story-track aria-hidden="true"></div>
+
+    <div class="f-hero__stage" data-story-stage>
+      <!-- The field. The car is in it. The still underneath is what the page
+           shows before the scene draws and if it never does. -->
+      <div class="f-hero__field" data-scene-mount
+           data-model="assets/model/shelby-cobra-427-v7.glb"
+           data-env="assets/env/parking_garage_1k.hdr">
+        <!-- This car, at this camera, so the handover is invisible. A
+             placeholder showing a DIFFERENT car for one second is worse than no
+             placeholder at all — it is the page contradicting itself on arrival. -->
+        <picture>
+          <source media="(max-width: 55.99rem)" srcset="assets/img/f-hero-still-mobile.jpg">
+          <img class="f-hero__still" data-scene-still src="assets/img/f-hero-still.jpg"
+               alt="A Shelby Cobra standing in a workshop, three-quarter view from the front"
+               width="2000" height="1272" fetchpriority="high">
+        </picture>
+        <canvas class="f-hero__canvas" data-scene aria-label="The car. Drag to turn it: sideways spins it, up and down changes the height it is seen from. The arrow keys do the same, and Escape returns to the opening view."></canvas>
+      </div>
+
+      <!-- The ghost word. It is scenery, not a heading: it carries no rank and
+           no information the sentence beside it does not already carry, which is
+           exactly why it is aria-hidden and why it sits behind everything. -->
+      <p class="f-hero__ghost" data-story-ghost aria-hidden="true">BUILT</p>
+
+      <!-- The words. This is beat one, written into the markup rather than
+           injected, so a page with no JavaScript is still a composed hero
+           instead of an empty field. -->
+      <div class="f-story__text">
+        <p class="f-story__eyebrow t-label">
+          <span data-story-num>01</span>
+          <span data-story-kicker>Hero reveal</span>
+        </p>
+        <p class="f-story__head" data-story-head>Raw power
+in its purest form.</p>
+        <p class="f-story__body" data-story-body>Handbuilt performance. No shortcuts. No compromise. Just the drive.</p>
+      </div>
+
+      <!-- Leader lines and their labels. Both are projected from real points on
+           the car every frame, so between two beats they stay on the part they
+           name instead of pointing at air. -->
+      <svg class="f-story__lines" data-story-lines aria-hidden="true" focusable="false"></svg>
+      <div class="f-story__callouts" data-story-callouts aria-hidden="true"></div>
+
+      <!-- How long this is. A sequence with no visible length is one the visitor
+           cannot decide whether to sit through. -->
+      <ol class="f-story__marks" data-story-marks aria-hidden="true"></ol>
+
+      <p class="f-hero__hint t-label" data-turn-hint hidden>Drag to turn</p>
     </div>
 
-    <!-- Shown only once the car is there, gone the moment it has been used.
-         The wording is the TOUCH wording, because it is the honest one when the
-         page cannot yet know what is pointing at it. index6.js upgrades it for a
-         mouse, where the vertical drag is ours to take. -->
-    <p class="f-hero__hint t-label" data-turn-hint hidden>Drag to turn</p>
+    <!-- The static equivalent, built from the same beats by f-story-stage.js and
+         shown under prefers-reduced-motion. Empty here on purpose: with no
+         JavaScript there is no scene either, and the composed first beat above
+         is the honest fallback for a scene that cannot run. -->
+    <ol class="f-story__script" data-story-script hidden></ol>
   </section>
 
 </main>

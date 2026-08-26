@@ -30,6 +30,42 @@ before the final build needs it. The gate is yielded out loud; it is not absent.
 | Lot and shop photography | **Borrowed, and it does not ship.** The four photographs now on the page — `photo-workshop`, `photo-cobra-black`, `photo-engine`, `photo-backdraft-mark` — are Hinderer Cobras' own photography, taken from `c:/____WORK/HINDERER COBRAS`. They are real Cobras and they read correctly, which is the point of using them in a mock; they are also a different dealer's cars and a different dealer's pictures. Every alt attribute says stand-in. They are replaced by Midwest's own shoot before anything is published. |
 | The hero 3D model | A **1965 AC Shelby 427**, not a Backdraft RT4. The RT4 is a replica of exactly this car, so the silhouette is honest; the paint is not — a specific blue-with-white-stripes car rather than anything in the client's catalogue. |
 
+## The hero storyboard — nine beats, added 2026-08-26
+
+Alex's storyboard (`donot git/refference/1.png`) supplied the copy verbatim. The
+beats live in `assets/js/scene/f-story.js`; every claim-shaped string in them is
+listed here so the ledger and the render cannot drift apart.
+
+**Nothing below is sourced.** All of it is under the compromise Alex authorised
+on 2026-08-24: this is a client mock, unverified claims may appear as ordinary
+copy rather than as visible placeholders, and the ledger records each one. That
+authorisation is not a source and does not become one by being cited.
+
+| Beat | Claim in the render | Status |
+|---|---|---|
+| 01 | "Handbuilt performance. No shortcuts. No compromise." | unverified — client to confirm |
+| 02 | "Classic Cobra proportions with a purpose-built soul." | unverified — client to confirm |
+| 02 | "427 foundation — everything starts here." | unverified — the model in the scene is a 427; whether every car Midwest builds is, is not established |
+| 03 | "Built for grip and control." | unverified — client to confirm |
+| 03 | "Side exit exhaust" | **true of the asset on screen** and of the RT4 as catalogued (backdraftracing.com, read 2026-08-24). Ceramic-coated side pipes are a listed RT4 feature |
+| 04 | "427 badging — a nod to heritage." | descriptive of the model on screen; carries no claim about the client's cars |
+| 05 | "Roll hoop — classic safety. Racer style." | **"safety" is the word to watch.** A styling hoop is not a certified roll-over structure and the copy must not be read as saying it is. Flagged for the client rather than softened unilaterally |
+| 06 | "Tail lights — classic look." | descriptive |
+| 06 | "Race ready — towing points where you need them." | unverified — "race ready" is a claim about a car's fitness for competition and needs the client's word |
+| 07 | "Hood scoop — feeds the beast within." | descriptive of the model on screen |
+| 08 | "Handbuilt in the Midwest. By craftsmen." | unverified — client to confirm |
+| 09 | "Not a catalog. A limited world." | unverified — reads as a claim about production volume. The header's "2–4 at a time" in the storyboard is the same claim and is **not** in the build; it stays out until it is sourced |
+
+Two decisions taken while transcribing, both recorded rather than made quietly:
+
+- The storyboard's masthead line **"BUILT TO ORDER. 2–4 AT A TIME."** is not in
+  the render. A production figure is exactly the kind of number this ledger
+  exists to stop, and it is one sentence to add the moment the client confirms it.
+- The storyboard's beat 06 reads **"LED tail lights — modern reliability,
+  classic look."** The build says "Tail lights — classic look." The lamps on the
+  bought model are not LED units and nobody has said the client's are; "modern
+  reliability" is a warranty-shaped claim attached to a component we cannot see.
+
 ## What has to happen before this ledger can pass Gate 4
 
 0. **The hero model is replaced with a commercially licensed one.** The current

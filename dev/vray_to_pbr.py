@@ -249,7 +249,15 @@ def rebuild(out_dir):
 
         stem = mat.name.replace('/', '_')
         base_img = _write(stem + '__basecolor.png', base_rgba, out_dir, srgb=True)
-        orm_img = _write(stem + '__orm.png', orm, out_dir, srgb=False)
+        # ORM AT HALF THE ATLAS RESOLUTION, and only this map. Roughness and the
+        # metal mask both vary slowly — leather does not change its roughness from
+        # one millimetre to the next, and the mask has soft edges by construction.
+        # So the one map in the set that does not need the density does not get
+        # it: about 1.5 MB back out of the 4.9 the 4096 interior cost. Base colour
+        # and normal keep the full size, because the carpet weave and the leather
+        # grain live in those two and they are what was being looked at.
+        orm_out = orm[::2, ::2] if size > SIZE_EXTERNAL else orm
+        orm_img = _write(stem + '__orm.png', orm_out, out_dir, srgb=False)
 
         # The vendor's own normal and cutout maps go through the same encoder,
         # and not for tidiness. gltf-transform's texture step is libvips, and

@@ -46,9 +46,9 @@ export const BEATS = [
     head: 'Raw power\nin its purest form.',
     body: 'Handbuilt performance. No shortcuts. No compromise. Just the drive.',
     ghost: 'BUILT',
-    pose: { cam: [2.15, 0.52, 3.55], target: [-0.10, 0.46, 0.55], fov: 31 },
+    pose: { cam: [2.45, 0.58, 4.05], target: [-0.88, 0.50, 0.40], fov: 31 },
     callouts: [
-      { label: 'Iconic front end', at: [0.02, 0.42, 1.93], side: 'left' },
+      { label: 'Iconic front end', at: [0.02, 0.42, 1.93], side: 'right' },
     ],
   },
   {
@@ -61,7 +61,7 @@ export const BEATS = [
     pose: { cam: [4.35, 1.05, 5.45], target: [-0.80, 0.56, 0.05], fov: 29 },
     callouts: [
       { label: 'Classic profile', note: 'Haunch to hood. Balanced. Iconic.', at: [0.62, 0.68, -0.95], side: 'right' },
-      { label: '427 foundation', note: 'Everything starts here.', at: [0.70, 0.33, 1.22], side: 'left' },
+      { label: '427 foundation', note: 'Everything starts here.', at: [0.70, 0.33, 1.22], side: 'right' },
     ],
   },
   {
@@ -87,7 +87,7 @@ export const BEATS = [
     pose: { cam: [2.85, 0.60, -0.55], target: [0.55, 0.40, -0.35], fov: 27 },
     callouts: [
       { label: '427 badging', note: 'A nod to heritage.', at: [0.78, 0.56, 0.52], side: 'right' },
-      { label: 'Side pipe exhaust', note: 'Sound. Style. Substance.', at: [0.80, 0.26, -0.95], side: 'left' },
+      { label: 'Side pipe exhaust', note: 'Sound. Style. Substance.', at: [0.80, 0.26, -0.95], side: 'right' },
     ],
   },
   {

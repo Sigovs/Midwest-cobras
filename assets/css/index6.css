@@ -49,9 +49,9 @@
   position: relative;
   height: 100svh;
   overflow: clip;
-  /* the header is persistent and is part of the composition, so the words start
-     below it rather than pretending the first 72px are free */
-  padding-block-start: var(--header-h);
+  /* The header is parked (see index6.html), so there is no persistent chrome to
+     start below. When it comes back this becomes padding-block-start:
+     var(--header-h) again — the token is still there and still correct. */
 }
 
 /* Under reduced motion the sequence is not scrubbed, so the track has nothing to
@@ -126,7 +126,7 @@
    car and the smallest in the hierarchy. */
 .f-hero__ghost {
   position: absolute;
-  inset-block-start: calc(var(--header-h) + var(--sp-6));
+  inset-block-start: var(--sp-6);
   inset-inline-end: var(--gutter);
   z-index: -1;
   margin: 0;
@@ -148,7 +148,7 @@
    A headline that moves between beats makes nine layouts out of one. */
 .f-story__text {
   position: absolute;
-  inset-block-start: calc(var(--header-h) + var(--sp-8));
+  inset-block-start: var(--sp-8);
   inset-inline-start: var(--gutter);
   max-width: min(var(--measure-lead), 42ch);
 }

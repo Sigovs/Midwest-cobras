@@ -84,7 +84,18 @@ async function boot() {
        the car is actually there and leaves the moment it has been used. */
     const hint = document.querySelector('[data-turn-hint]');
     scene.bindTurn(() => { if (hint) hint.setAttribute('data-used', ''); });
-    if (hint) hint.removeAttribute('hidden');
+
+    /* The hint has to describe the control this visitor actually has. A mouse
+       gets both axes, because it has a wheel and the page still scrolls without
+       the drag; a thumb gets one, because on a touch screen the vertical drag is
+       how the visitor leaves this section. Promising a tilt to someone who
+       cannot perform it is worse than promising nothing. */
+    if (hint) {
+      if (window.matchMedia('(pointer: fine)').matches) {
+        hint.textContent = 'Drag to turn it, any direction';
+      }
+      hint.removeAttribute('hidden');
+    }
 
     /* Nothing turns on its own. Under reduced motion the difference is only
        the inertia after a drag — the car itself is still turnable, because

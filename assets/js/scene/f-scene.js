@@ -161,57 +161,165 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
     dirty = true;
   }
 
+  /* ── what the visitor owns, kept apart from what the page asks for ────
+     `pose` is the camera the choreography wants. `turn` is what the visitor has
+     done to it. The frame is the second applied to the first, every time, and
+     the two are never folded together — fold them and a scroll move erases a
+     tilt, or the tilt has to be re-derived from a camera position and drifts a
+     little further from the truth on every pass. */
+  const pose = { cam: new THREE.Vector3(3, 1, 5) };
+
+  const turn = {
+    yaw: 0, pitch: 0,          // pitch is an OFFSET from whatever the pose framed
+    vYaw: 0, vPitch: 0,
+    dragging: false, hasTurned: false, returning: false, homeYaw: 0,
+    lastX: 0, lastY: 0,
+    damping: 0.92,             // a property, not a constant: index6 turns it off
+                               // under reduced motion, and used to be talking to
+                               // nothing while this was `const DAMPING`
+  };
+
+  const SENSITIVITY = 0.0068;        // radians of yaw per pixel
+  const PITCH_SENSITIVITY = 0.0052;  // radians of elevation per pixel
+  const MIN_CLEARANCE = 0.12;        // metres of air left between camera and floor
+  const MAX_ELEVATION = 1.43;        // ~82°, short of straight down, where lookAt
+                                     // with a +Y up vector inverts the picture
+
+  const clamp = (v, lo, hi) => (v < lo ? lo : v > hi ? hi : v);
+
   function setPose(p) {
     if (!p) return;
-    if (p.rotY !== undefined) { turn.angle = p.rotY; pivot.rotation.y = p.rotY; }
+    if (p.rotY !== undefined) turn.yaw = p.rotY;
     if (p.fov !== undefined && p.fov !== camera.fov) {
       camera.fov = p.fov; camera.updateProjectionMatrix();
     }
-    if (p.cam) camera.position.set(p.cam[0], p.cam[1], p.cam[2]);
+    if (p.cam) pose.cam.set(p.cam[0], p.cam[1], p.cam[2]);
     if (p.target) target.set(p.target[0], p.target[1], p.target[2]);
-    dirty = true;
+    applyView();
   }
 
-  /* ── the turn ─────────────────────────────────────────────────────────────
+  /* ── the turn ───────────────────────────────────────
      Driven by the visitor, never by a timer. An object that turns on its own is
      a display stand in a shop window; one that turns because somebody turned it
      is theirs. It also means there is no perpetual motion anywhere near this
      page's reading.
 
-     Vertical drags are released deliberately: the page still scrolls under the
-     thumb, which is the transport the visitor already owns.                  */
-  const turn = { angle: 0, velocity: 0, dragging: false, hasTurned: false, lastX: 0 };
-  const DAMPING = 0.92;
-  const SENSITIVITY = 0.0068;      // radians per pixel
+     YAW TURNS THE CAR. PITCH MOVES THE CAMERA. That reads inconsistent written
+     down and it is the right way round. A car coming round on a turntable drags
+     the room's strip lights along the length of the wing, and that sweep is most
+     of what makes the surface read as lacquer rather than as a coloured shape.
+     Orbiting the camera in yaw instead leaves every highlight pinned where it is
+     and changes only the angle it is seen from: identical silhouette, dead
+     surface. Pitch has no such choice to make — a car does not tilt, so the
+     viewer is the thing that rises.
+
+     Which of the two is happening is invisible to the visitor. It is very
+     visible on the paint.                                                    */
+
+  const _off = new THREE.Vector3();
+
+  function applyView() {
+    pivot.rotation.y = turn.yaw;
+
+    _off.copy(pose.cam).sub(target);
+    const radius = _off.length() || 1;
+    const azimuth = Math.atan2(_off.x, _off.z);
+    const base = Math.asin(clamp(_off.y / radius, -1, 1));
+
+    /* THE FLOOR IS WHY YOU CANNOT GET UNDER THE SILLS, and it is a real reason
+       rather than a timid one: there is a floor, the car is standing on it, and
+       the only way below is through it. So the bottom of the range is wherever
+       this camera would touch the concrete — computed from the pose rather than
+       picked, because a camera further out can drop further before it lands. */
+    const floorLimit = Math.asin(clamp((MIN_CLEARANCE - target.y) / radius, -1, 1));
+
+    /* Clamp the STORED pitch, not the elevation derived from it. Clamping the
+       result instead lets the number keep climbing past the stop while the
+       picture stands still, and then the visitor has to drag the whole way back
+       before anything answers. The control goes numb, and numb reads as broken
+       rather than as a limit. */
+    const lo = floorLimit - base, hi = MAX_ELEVATION - base;
+    if (turn.pitch < lo) { turn.pitch = lo; turn.vPitch = 0; }
+    if (turn.pitch > hi) { turn.pitch = hi; turn.vPitch = 0; }
+
+    const e = base + turn.pitch;
+    const cosE = Math.cos(e), sinE = Math.sin(e);
+    camera.position.set(
+      target.x + radius * cosE * Math.sin(azimuth),
+      target.y + radius * sinE,
+      target.z + radius * cosE * Math.cos(azimuth)
+    );
+    dirty = true;
+  }
 
   function tickTurn() {
     if (turn.dragging) return false;
-    if (Math.abs(turn.velocity) < 0.00015) { turn.velocity = 0; return false; }
-    turn.angle += turn.velocity;
-    turn.velocity *= DAMPING;
-    pivot.rotation.y = turn.angle;
-    return true;
+
+    if (turn.returning) {
+      /* Home. Not a snap: a snap from the far side of the car is a cut, and a
+         cut is the one thing a page pretending to be a photograph cannot do. */
+      turn.yaw += (turn.homeYaw - turn.yaw) * 0.14;
+      turn.pitch += (0 - turn.pitch) * 0.14;
+      if (Math.abs(turn.homeYaw - turn.yaw) < 0.002 && Math.abs(turn.pitch) < 0.002) {
+        turn.yaw = turn.homeYaw; turn.pitch = 0; turn.returning = false;
+      }
+      applyView();
+      return true;
+    }
+
+    if (!turn.damping) { turn.vYaw = turn.vPitch = 0; return false; }
+
+    let moved = false;
+    if (Math.abs(turn.vYaw) >= 0.00015) {
+      turn.yaw += turn.vYaw; turn.vYaw *= turn.damping; moved = true;
+    } else turn.vYaw = 0;
+    if (Math.abs(turn.vPitch) >= 0.00015) {
+      turn.pitch += turn.vPitch; turn.vPitch *= turn.damping; moved = true;
+    } else turn.vPitch = 0;
+
+    if (moved) applyView();
+    return moved;
   }
 
   function bindTurn(onFirstTurn) {
     let startX = 0, startY = 0, axis = null, id = null;
+    turn.homeYaw = turn.yaw;
+
+    const first = () => {
+      if (turn.hasTurned) return;
+      turn.hasTurned = true;
+      onFirstTurn && onFirstTurn();
+    };
 
     canvas.addEventListener('pointerdown', (e) => {
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       id = e.pointerId; axis = null;
-      startX = turn.lastX = e.clientX; startY = e.clientY;
-      turn.dragging = true; turn.velocity = 0;
-      canvas.setPointerCapture(id);
+      turn.returning = false;
+      startX = turn.lastX = e.clientX;
+      startY = turn.lastY = e.clientY;
+      turn.dragging = true; turn.vYaw = turn.vPitch = 0;
+      // release is already guarded; capture can throw too, on a pointer the
+      // browser considers gone by the time the handler runs
+      try { canvas.setPointerCapture(id); } catch (_) {}
     });
 
     canvas.addEventListener('pointermove', (e) => {
       if (!turn.dragging || e.pointerId !== id) return;
-      const dx = e.clientX - startX, dy = e.clientY - startY;
 
-      // decide once what this gesture is; a drag that began as a scroll stays
-      // a scroll
-      if (axis === null) {
+      /* BOTH AXES FOR A MOUSE, ONE FOR A THUMB, and that is not a preference
+         about pointers. A mouse has a wheel, so taking its drag costs the
+         visitor nothing — the page still scrolls with the hand already on the
+         device. A thumb has no wheel: on a touch screen the vertical drag IS
+         the transport, and a canvas the size of this hero with both axes
+         captured is a first screen the visitor cannot get out of. MJ6, and it
+         is the whole reason the axis lock below survives rather than leaving
+         with the single-axis turn it was written for. */
+      const twoAxis = e.pointerType !== 'touch';
+
+      if (!twoAxis && axis === null) {
+        const dx = e.clientX - startX, dy = e.clientY - startY;
         if (Math.abs(dx) < 4 && Math.abs(dy) < 4) return;
+        // a drag that began as a scroll stays a scroll
         axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
         if (axis === 'y') {
           turn.dragging = false;
@@ -220,13 +328,30 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
         }
       }
 
-      const step = (e.clientX - turn.lastX) * SENSITIVITY;
+      const stepYaw = (e.clientX - turn.lastX) * SENSITIVITY;
       turn.lastX = e.clientX;
-      turn.angle += step;
-      turn.velocity = step;
-      pivot.rotation.y = turn.angle;
-      dirty = true;
-      if (!turn.hasTurned) { turn.hasTurned = true; onFirstTurn && onFirstTurn(); }
+      turn.yaw += stepYaw;
+      turn.vYaw = stepYaw;
+
+      /* Drag DOWN and the camera rises. The hand is on the car, not on the
+         camera: pulling the near edge of an object toward you is what tips its
+         roof into view, and it is what every 3D tool anyone has already used
+         does. The other way round feels like dragging the sky. */
+      const beforePitch = turn.pitch;
+      if (twoAxis) {
+        turn.pitch += (e.clientY - turn.lastY) * PITCH_SENSITIVITY;
+        turn.lastY = e.clientY;
+      }
+
+      applyView();
+
+      /* Pitch velocity is read back AFTER applyView has clamped, never from the
+         mouse. At a stop the mouse is still travelling and the picture is not,
+         and inertia taken from the mouse would sit on a dead limit and then
+         fling the camera the instant the limit let go. */
+      turn.vPitch = turn.pitch - beforePitch;
+
+      first();
       e.preventDefault();
     });
 
@@ -238,15 +363,35 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
     canvas.addEventListener('pointerup', up);
     canvas.addEventListener('pointercancel', up);
 
+    /* Back to the framing the page opened on. Once a car can be tumbled it can
+       be tumbled somewhere useless, and a control with no way home is a trap
+       wearing the clothes of a feature. */
+    const home = () => {
+      if (turn.pitch === 0 && turn.yaw === turn.homeYaw) return;
+      turn.returning = true; turn.vYaw = turn.vPitch = 0;
+      dirty = true;
+    };
+    canvas.addEventListener('dblclick', (e) => { home(); e.preventDefault(); });
+
     /* Keyboard parity. A control that only answers a mouse is a control half
-       the audience does not have. */
+       the audience does not have.
+
+       The arrows mirror the DRAG, not a camera move: ArrowRight already turned
+       the car the way dragging right does, and up and down join that sentence
+       rather than starting a second one running the other way. So ArrowDown
+       raises the camera, exactly as dragging down does. */
     canvas.tabIndex = 0;
     canvas.addEventListener('keydown', (e) => {
-      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-      turn.angle += (e.key === 'ArrowLeft' ? -1 : 1) * 0.12;
-      pivot.rotation.y = turn.angle;
-      dirty = true;
-      if (!turn.hasTurned) { turn.hasTurned = true; onFirstTurn && onFirstTurn(); }
+      const STEP = 0.12;
+      if (e.key === 'ArrowLeft')       turn.yaw -= STEP;
+      else if (e.key === 'ArrowRight') turn.yaw += STEP;
+      else if (e.key === 'ArrowUp')    turn.pitch -= STEP;
+      else if (e.key === 'ArrowDown')  turn.pitch += STEP;
+      else if (e.key === 'Escape' || e.key === 'Home') { home(); e.preventDefault(); return; }
+      else return;
+      turn.returning = false;
+      applyView();
+      first();
       e.preventDefault();
     });
   }

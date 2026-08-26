@@ -108,10 +108,13 @@
            alt="A Shelby Cobra standing in a workshop, three-quarter view from the front"
            width="2000" height="1125" fetchpriority="high">
       </picture>
-      <canvas class="f-hero__canvas" data-scene aria-label="The car. Drag to turn it, or use the left and right arrow keys."></canvas>
+      <canvas class="f-hero__canvas" data-scene aria-label="The car. Drag to turn it: sideways spins it, up and down changes the height it is seen from. The arrow keys do the same, and Escape returns to the opening view."></canvas>
     </div>
 
-    <!-- Shown only once the car is there, gone the moment it has been used. -->
+    <!-- Shown only once the car is there, gone the moment it has been used.
+         The wording is the TOUCH wording, because it is the honest one when the
+         page cannot yet know what is pointing at it. index6.js upgrades it for a
+         mouse, where the vertical drag is ours to take. -->
     <p class="f-hero__hint t-label" data-turn-hint hidden>Drag to turn</p>
   </section>
 

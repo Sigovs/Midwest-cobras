@@ -409,78 +409,43 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
   const start = () => { if (!running) { running = true; dirty = true; requestAnimationFrame(frame); } };
   const stop = () => { running = false; };
 
-  /* ── material corrections ─────────────────────────────────────────────────
-     All of them are consequences of a V-Ray specular/glossiness source
-     converted to metallic-roughness. None is a taste decision.
+  /* ── material corrections ───────────────────────────────────
+     THIS BLOCK USED TO BE MUCH LONGER, AND ALL OF WHAT LEFT IT MOVED UPSTREAM.
+
+     Two corrections here were repairing a V-Ray specular/glossiness conversion
+     at render time: metalness rebuilt from a canvas mask derived from the base
+     colour, and metalness forced off the painted panels. Both were correct
+     about the symptom and neither could reach the disease, because the disease
+     was in the .blend: `Reflection` wired into "Specular IOR Level" (which
+     discards it) and `Metallic` wired to an inverted alpha channel. Every metal
+     on the car therefore arrived with a near-black base colour — a conductor
+     has no diffuse term, so its colour is in the reflection map by
+     construction — and every dielectric arrived at metalness 0.65 or 1.0.
+     Seats, headlight reflector and side pipe all rendered as the same black.
+
+     dev/vray_to_pbr.py now does the conversion properly, before export, from
+     the same five maps the vendor shipped. The atlas that reaches this file is
+     already correct, so a runtime correction on top of it would be a second
+     wrong answer stacked on a right one.
+
+     WHAT LEGITIMATELY REMAINS is only what an atlas cannot carry:
 
      1. doubleSided comes off everything but glass. It arrives from the
         exporter, doubles fragment work on a half-million-triangle car, and
         makes shadows wrong on closed panels.
 
-     2. Glass becomes transmission rather than opacity. The difference is
-        whether the cockpit behind it exists.
+     2. Glass and headlamp lenses become transmission rather than opacity. Both
+        are chosen BY NODE NAME, which is why prep_shelby.py separates the
+        lenses out of `Interior` in the first place — a surface with no node of
+        its own cannot be addressed, whatever is wrong with it.
 
-     3. THE PAINT IS NOT METAL, AND THE CONVERSION SAYS IT IS. glTF packs metal
-        into the blue channel of one texture; converting a V-Ray set, that
-        channel is written from the REFLECTION map, which for car paint is
-        bright everywhere because lacquer reflects. Multiplied by the
-        metallicFactor of 1.0 the exporter also wrote, every painted panel
-        becomes metal — and a metal's base colour stops being its colour and
-        becomes its reflectance. Blue paint turns into blue-tinted chrome and
-        reads near-black. The panels drop the metal map and take metalness 0.
-
-     4. Clearcoat goes back on the panels. V-Ray builds lacquer out of
-        Reflection, Fresnel and IOR, and metallic-roughness has nowhere to put
-        them, so converted straight the surface is dead even once the colour is
-        right.                                                               */
-  /* ── the metal mask ───────────────────────────────────────────────────────
-     Correction 3 said the panels are not metal, and that was right about the
-     PAINT and wrong about everything else on the same mesh. `Body` is one
-     116,000-vertex object carrying the shell AND the headlight bezels, the
-     grille surround, the overriders, the badges and the windscreen frame.
-     Dropping the metal map to fix the paint stripped the chrome off all of
-     them, and the car arrived undressed.
-
-     The obvious repair — threshold the existing metal channel — does not work,
-     and the histogram says why: the blue channel is 240–255 across 98% of the
-     atlas. The V-Ray Reflection map it was written from is bright everywhere,
-     because lacquer reflects, so there is no chrome-versus-paint information
-     in it to recover.
-
-     So the mask is derived from the BASE COLOUR instead, where the distinction
-     does exist: chrome is bright and almost colourless, paint is saturated.
-     Roughly an eighth of the atlas comes back as metal, and it is the eighth
-     that should be. */
-  function buildMetalMask(base, roughSource) {
-    const img = base.image;
-    if (!img || !img.width) return null;
-    const c = document.createElement('canvas');
-    c.width = img.width; c.height = img.height;
-    const g = c.getContext('2d', { willReadFrequently: true });
-    g.drawImage(img, 0, 0);
-    const id = g.getImageData(0, 0, c.width, c.height);
-    const d = id.data;
-    for (let i = 0; i < d.length; i += 4) {
-      const r = d[i] / 255, gg = d[i + 1] / 255, b = d[i + 2] / 255;
-      const mx = Math.max(r, gg, b), mn = Math.min(r, gg, b);
-      // bright and near-colourless is chrome; anything with a hue is paint
-      const metal = (mx - mn) < 0.10 && mx > 0.34 ? 255 : 0;
-      d[i] = 255;          // red is unused by the standard material
-      // green stays: it is the roughness channel and it was authored
-      d[i + 2] = metal;
-    }
-    g.putImageData(id, 0, 0);
-    const t = new THREE.CanvasTexture(c);
-    t.flipY = base.flipY;
-    t.wrapS = base.wrapS; t.wrapT = base.wrapT;
-    t.colorSpace = THREE.NoColorSpace;
-    t.needsUpdate = true;
-    return t;
-  }
-
+     3. Clearcoat goes back on the painted panels. A lacquer coat is a second
+        specular lobe over the pigment; metallic-roughness has one lobe and no
+        channel to put the other in, so it has to be asked for here. This is a
+        real gap in the format, not a leftover from the conversion.        */
   function correctMaterials(root) {
     let paint = null;
-    let metalMaskFrom = null;
+
     root.traverse((o) => {
       if (!o.isMesh) return;
       o.castShadow = true;
@@ -489,19 +454,23 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
       const m = o.material;
       if (!m) return;
 
-      /* The headlamp lenses, separated out of `Interior` by dev/prep_shelby.py.
-         Before that surgery they were four thousand faces inside a forty
-         thousand vertex object, mapped to a ten-pixel patch of leather grain
-         that magnified into what looked exactly like tyre tread. There was
-         nothing to address, so there was no material fix — only a geometry
-         one. Now there is a node, and it can simply be given glass. */
+      /* The headlamp lenses, separated out of `Interior` by prep_shelby.py.
+         Before that surgery they were 906 faces inside a 40,000-vertex object,
+         mapped to a ten-pixel patch of leather grain that magnified into what
+         looked exactly like tyre tread. There was nothing to address, so there
+         was no material fix — only a geometry one. Now there is a node.
+
+         Transmission is 0.55 rather than a windscreen's 0.92 because there is
+         a reflector behind this one and it is worth seeing. It was worth
+         nothing while the reflector was black metal; it is worth something
+         now. */
       if (/^lens/i.test(o.name)) {
         o.material = new THREE.MeshPhysicalMaterial({
-          color: 0xdfe6ea,
-          roughness: 0.07,
+          color: 0xeef3f6,
+          roughness: 0.02,
           metalness: 0.0,
-          transmission: 0.55,     // enough to show the reflector, not so much
-          thickness: 0.02,        // that the lens stops being a surface
+          transmission: 0.92,
+          thickness: 0.01,
           ior: 1.52,
           clearcoat: 1.0,
           clearcoatRoughness: 0.03,
@@ -526,15 +495,20 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
         return;
       }
 
+      /* The painted panels share one material instance, cloned once from
+         whichever panel arrives first. They also carry the chrome bezels and
+         the grille surround on the same mesh — which is exactly why the metal
+         decision is no longer made here. It is in the atlas, per texel, where
+         the distinction actually exists. */
       if (PANEL.test(o.name)) {
         if (!paint) {
-          metalMaskFrom = m;
-          paint = m.isMeshPhysicalMaterial ? m.clone() : Object.assign(new THREE.MeshPhysicalMaterial(), {
+          paint = m.isMeshPhysicalMaterial ? m.clone() : new THREE.MeshPhysicalMaterial({
             map: m.map, normalMap: m.normalMap, normalScale: m.normalScale,
-            roughnessMap: m.roughnessMap, color: m.color, name: m.name,
+            roughnessMap: m.roughnessMap, metalnessMap: m.metalnessMap,
+            roughness: m.roughness, metalness: m.metalness,
+            color: m.color, name: m.name,
           });
           paint.name = m.name + '__lacquer';
-          paint.roughness = 0.24;
           paint.clearcoat = 1.0;
           paint.clearcoatRoughness = 0.04;
           paint.envMapIntensity = 1.0;
@@ -553,22 +527,6 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
       if (m.map) m.map.anisotropy = 8;
       m.needsUpdate = true;
     });
-
-    if (paint && paint.map) {
-      const mask = buildMetalMask(paint.map, metalMaskFrom);
-      if (mask) {
-        paint.metalnessMap = mask;
-        paint.roughnessMap = mask;   // green channel is the authored roughness
-        paint.metalness = 1.0;       // the mask decides; the factor only gates it
-        paint.needsUpdate = true;
-      } else {
-        // no pixels to read — fall back to dielectric paint, which is right for
-        // the shell and merely dull on the chrome
-        paint.metalnessMap = null;
-        paint.metalness = 0.0;
-        paint.needsUpdate = true;
-      }
-    }
   }
 
   /* ── loading ──────────────────────────────────────────────────────────────

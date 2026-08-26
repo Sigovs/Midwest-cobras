@@ -118,12 +118,20 @@ draw a frame:
 
 | | |
 |---|---|
-| `assets/model/shelby-cobra-427-v2.glb` | 3.89 MB |
+| `assets/model/shelby-cobra-427-v3.glb` | 4.32 MB |
 | `assets/env/parking_garage_1k.hdr` | 1.47 MB |
 | Draco decoder — `.wasm` + wrapper | 0.10 MB |
-| **Total** | **5.45 MB** |
+| **Total** | **5.88 MB** |
 
-Raw, off a server that does not compress binaries, 6.03 MB.
+Raw, off a server that does not compress binaries, 6.44 MB.
+
+**Re-measured 2026-08-25 after the material rebuild, and it went the wrong way
+by 0.43 MB.** The v3 model carries seven textures where v2 carried six — the
+alpha cutout is its own map now rather than riding in the base colour's alpha —
+and Blender's WebP encoder at quality 85 is less aggressive than the one this
+build used to reach through gltf-transform. It is not a mistake and it is not
+free: it bought a car with an interior, headlamps and a polished exhaust, and it
+is recorded at its price rather than at the price we wanted.
 
 The account of how is short and it is not flattering. The HDR arrived in
 direction F as the light source, and nobody counted it. The figure this paragraph
@@ -140,12 +148,19 @@ exact line nobody re-takes.
 or raises the ceiling a second time, out loud. Both cuts that exist, and what each
 costs:
 
-- **Environment at 512×256** — about 0.41 MB, saving ~1.06. It gives up some of
-  the sharpness in the long interrupted strip highlights, which were the whole
-  reason for lighting from a captured room instead of three lamps.
-- **Texture pass over the glb at half resolution** — roughly 1.5 MB saved. It
-  shows on the interior first: `Shelby_Internal_Orange_Normal` is a 20 MB source
-  map, and leather grain is where the loss becomes visible.
+- **Environment at 512×256** — about 0.41 MB, saving ~1.06. On its own it brings
+  the payload to 4.82 MB and back under the ceiling. It gives up some of the
+  sharpness in the long interrupted strip highlights, which were the whole reason
+  for lighting from a captured room instead of three lamps — and those highlights
+  are now doing more work than they were, because there is polished metal on this
+  car for them to lie along.
+- **Atlases at 1024 instead of 2048** — roughly 2 MB saved, and it is the wrong
+  cut. `SIZE` in `dev/vray_to_pbr.py` is one line, but the Goodyear lettering,
+  the 427 badge and the gauge faces all live in that resolution, and this build
+  just spent a day putting detail back.
+- **Fold the cutout map into the base colour's alpha** — about 0.1 MB, and it
+  removes a texture rather than degrading one. The smallest honest saving on the
+  list.
 
 A budget only works while something is willing to refuse it. This one was widened
 once, on 2026-08-24, and it is now spent and overspent — which is worth more
@@ -176,19 +191,25 @@ confirm`. The gate is yielded, out loud; it is not absent.
 
 ## Open — do not resolve these by guessing
 
-1. **The hero model's licence — and the choice it forces.** The hero now uses
-   `assets/model/ac-cobra-427.glb`, a 1965 AC Shelby 427 with 30 authored PBR
-   maps. It is **CC BY-NC-SA**: NonCommercial excludes a dealer's own website, so
-   it stands in the client mock and does not ship. A commercially licensed
-   equivalent is $30–150.
+1. **The hero model — bought, and the licence document is the open part.**
+   Direction F runs on `assets/model/shelby-cobra-427-v3.glb`, built from the
+   purchased *Shelby Cobra 1965 Racing Model* pack in `donot git/purchased cobra
+   final/`. That closes the CC BY-NC-SA problem the old `ac-cobra-427.glb`
+   carried — NonCommercial excluded a dealer's own website, and this is a paid
+   asset instead.
 
-   There is now a second route, and it exists because the reason we abandoned the
-   client's own model was **our bug, not their file** — `dev/obj2glb.py` was
-   collapsing relative OBJ indices and turning four wheels into one. Fixed
-   2026-08-25. Re-converted, `COBRA.obj` is a whole symmetric car, and it is
-   licence-clean because it is the client's own. It is also visibly coarser, has
-   **no textures whatsoever**, and is still a generic Cobra rather than an RT4.
-   Alex chooses: pay for a good model, or use theirs and accept the grade.
+   **What is still open is narrow and it is not rhetorical: the pack contains no
+   licence file.** Fifteen archives, no LICENSE, no readme, no terms. Marketplace
+   models are usually sold under a royalty-free licence that covers a commercial
+   website, but "usually" is not a record, and the ledger rule on this project
+   does not accept an assumption as a source. Alex has the purchase receipt and
+   the product page; one of those names the tier. Until it is written into
+   `docs/content-ledger.md` this is *paid for and unverified*, which is a much
+   better place than where it was and is still not finished.
+
+   The client's own `COBRA.obj` remains the licence-certain fallback. It is
+   visibly coarser, has no textures at all, and is a generic Cobra rather than an
+   RT4 — worth keeping in mind only if the licence tier turns out to be personal-use.
 2. **Inventory vs Car Collection vs Gallery.** Three separate nav items about
    cars. Working assumption until told otherwise: Inventory = for sale now
    (2–4 cars, shown large); Car Collection = the owner's own cars, not for sale;

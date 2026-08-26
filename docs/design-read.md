@@ -291,7 +291,7 @@ Cut              — the page-load fly-in as a gate. It plays, but the first rea
 | Floor | 30 fps on iPhone 12 and a mid-range 2022 Android |
 | Scene payload ceiling | **5 MB** — geometry + textures + loader, compressed. Raised from 3.5 MB by Alex, 2026-08-24: the supplied model cannot carry the hero, and a car that can arrives with authored PBR maps |
 | Load order | the scene is fetched **after** first paint and after the fallback still is on screen |
-| **Measured, direction F, 2026-08-25** | **5.45 MB gzipped — over.** glb 3.89 + environment 1.47 + Draco 0.10. The HDR was added as the light source and never counted; the ceiling's own words are *geometry + textures + loader*, and a captured room is a texture |
+| **Measured, direction F, 2026-08-25** | **5.88 MB gzipped — over.** glb 4.32 + environment 1.47 + Draco 0.10. The HDR was added as the light source and never counted; the ceiling's own words are *geometry + textures + loader*, and a captured room is a texture. The model grew 0.43 MB the same day, rebuilding materials that had rendered the interior, the headlamps and the exhaust as black metal — the payload is over for a reason that is visible in every frame |
 
 Exceeded means scope is cut. Not the budget — and this one is currently exceeded
 and standing, not quietly absorbed. The two available cuts and what each costs are

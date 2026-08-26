@@ -109,11 +109,34 @@ for o in sorted(bpy.data.objects, key=lambda x: x.name):
     v = len(o.data.vertices) if o.type == 'MESH' else 0
     print(f'       {o.type:6s} {o.name:34.34s} {v:8d}v')
 
+# ── materials ───────────────────────────────────────────────────────────────
+# The .blend's own Principled setup is a bad auto-conversion of the V-Ray
+# material, not the material the preview renders were made with. dev/vray_to_pbr
+# says exactly what is wrong with it and rebuilds it from the same five maps.
+# Without this the seats, the headlight reflectors and the side pipe all arrive
+# as rough black metal, which is not a lighting problem and cannot be lit out of.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import vray_to_pbr
+
+work = os.path.join(os.path.dirname(dst), '_pbr-' + os.path.splitext(os.path.basename(dst))[0])
+vray_to_pbr.rebuild(work)
+bpy.ops.file.pack_all()
+print(f'[tex] repacked after the material rebuild')
+
 # ── export ──────────────────────────────────────────────────────────────────
+# WEBP is written by Blender rather than by gltf-transform, and that is not a
+# preference. gltf-transform's texture step is libvips, and libvips dies on this
+# model's atlases with "value 32 of type gint is invalid for property 'space' of
+# type VipsInterpretation" — an enum member that does not exist. It takes the
+# whole compression stage down with it, so the choice was Blender's encoder or
+# shipping 34 MB of PNG. Quality 85 rather than the default: two of these maps
+# are normals, and lossy compression on a normal map shows up as faceting on
+# exactly the long curved panels this car is made of.
 wanted = dict(
     filepath=dst, export_format='GLB', use_selection=False,
     export_apply=True, export_yup=True, export_materials='EXPORT',
-    export_image_format='AUTO', export_cameras=False, export_lights=False,
+    export_image_format='WEBP', export_image_quality=85,
+    export_cameras=False, export_lights=False,
     export_extras=False, export_animations=False,
     export_draco_mesh_compression_enable=False,
 )

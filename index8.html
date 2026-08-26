@@ -38,6 +38,18 @@
 <!-- ════ HEADER ════════════════════════════════════════════════════════════
      Persistent, so it is counted in the mass scheme and excluded by name from
      the governing event — see .gates/declare.json.                          -->
+<!-- ════ SITE HEADER — PARKED, NOT DELETED ═══════════════════════════════
+     Parked 2026-08-26 on Alex's instruction: direction H is being worked on
+     as the hero alone, so nothing else may occupy the viewport. Commented
+     out rather than removed — a cut section stays recoverable. Delete the
+     two comment markers around it and it is back exactly as it was.
+
+     What went with it:
+       · the wordmark, linking home
+       · nav: Home · Inventory · Build · Service (+ submenu) · Car Collection · Consignment · Finance · Gallery
+       · the mobile MENU disclosure
+  -->
+<!--
 <header class="site-header" data-header>
   <div class="page site-header__inner">
     <a class="site-header__mark" href="/" aria-label="Midwest Cobras — home">
@@ -68,12 +80,25 @@
     </nav>
   </div>
 </header>
+-->
 
-<!-- ScrollSmoother's required structure. Everything that scrolls lives inside
-     #smooth-content; the header above is outside it and stays put. Present on
-     every direction now — the smoother itself decides whether to use it. -->
-<div id="smooth-wrapper">
-<div id="smooth-content">
+<!-- NO SMOOTHER ON THIS PAGE, and it is the smoother's own exit rather than a
+     new flag. createSmoother() looks for #smooth-wrapper and #smooth-content;
+     with neither present it returns null and marks the document
+     data-smooth="off-no-wrapper". That path already existed; this page just
+     takes it.
+
+     WHY. The canvas is position: sticky inside .scene-scope, and ScrollSmoother
+     translates #smooth-content — a transformed ancestor kills sticky outright.
+     Measured here: with the wrapper in place the mount sat at y = -1890 while
+     the reader was 1890px down the page, so the car scrolled away and the notes
+     arrived over an empty field. index6 hit the identical wall and answered it
+     with a ScrollTrigger pin; this page is one hero and smoothing buys it
+     nothing, so the cheaper answer is the right one.
+
+     index2 keeps its wrapper. It is a rival direction and may or may not have
+     the same latent problem — that is a question to ask it, not one to answer
+     on its behalf from here. -->
 
 <main id="main">
 
@@ -86,16 +111,19 @@
      lets the canvas cross over it without the composition moving under the
      headline, so a new pose means a new still, not just a new number.
 
-     It is no longer the SketchUp export. That model was one wheel, half a
-     chassis and an eight-triangle radiator grille; docs/evidence/ holds the
-     measurement rather than the opinion.
+     WHAT THIS ASSET IS, AND WHAT IT IS NOT — rewritten, because the note it
+     replaces was describing a car this page no longer loads.
 
-     WHAT THIS ASSET IS, AND WHAT IT IS NOT. A 1965 AC Shelby 427 — the car the
-     Backdraft RT4 is a replica of, so the silhouette is right — licensed
-     CC BY-NC-SA. NonCommercial is not a licence a dealer's site can ship on,
-     and the paint is one specific blue-and-white car rather than the client's
-     catalogue. Both are logged in docs/content-ledger.md with what replaces
-     them. docs/design-read.md §8 carries the reasoning.
+     It is the PURCHASED Shelby Cobra 1965 Racing Model, not the CC BY-NC-SA
+     Sketchfab download. The licence problem that note carried is therefore
+     gone: it is paid for. What remains open is narrower and lives in
+     docs/content-ledger.md — the pack shipped no licence file at all, so the
+     tier is unrecorded rather than wrong.
+
+     The silhouette is right, because the Backdraft RT4 is a replica of exactly
+     this car. The paint is not the client's: Gulf blue with an orange stripe is
+     one specific livery and nothing in their catalogue. That is the same
+     compromise it always was, and it is logged as one.
 -->
 <!-- The scene's scope: the hero and the reveal, and nothing else. The canvas is
      sticky inside it, so the sequence begins and ends exactly where this
@@ -256,13 +284,28 @@
 </section>
 
 </div><!-- /.scene-scope -->
+<!-- ════ THE PAGE BELOW THE HERO — PARKED, NOT DELETED ═══════════════════════════════
+     Parked 2026-08-26 on Alex's instruction: direction H is being worked on
+     as the hero alone, so nothing else may occupy the viewport. Commented
+     out rather than removed — a cut section stays recoverable. Delete the
+     two comment markers around it and it is back exactly as it was.
 
-<!-- ════ 2 · INVENTORY ═════════════════════════════════════════════════════
+     What went with it:
+       · #inventory — two finished cars, shown large
+       · #build — the specification path
+       · #about — who builds them
+       · #services — service, transport, storage
+       · #consignment — still marked pending client approval
+       · #community — the owners section
+  -->
+<!--
+
+<! - - ════ 2 · INVENTORY ═════════════════════════════════════════════════════
      The brief: typically only 2–4 vehicles, displayed large and prominently
      rather than as a dense grid. So: records, not cards. Each gets a full
      measure of room and the column order inverts on the second one, so the
      section develops instead of repeating a formula.
--->
+- ->
 <section class="section" id="inventory" data-ground="dark" aria-labelledby="inv-title">
   <div class="page">
     <div class="section-head" data-motion="rise">
@@ -285,7 +328,7 @@
           <h3 class="t-h3 lot__title"><span class="plate">RT4 Classic Edition</span></h3>
           <div class="spec lot__spec">
             <div class="spec__row"><div class="spec__key">Model</div><div class="spec__val">RT4 Classic</div></div>
-            <!-- ledger: backdraftracing.com, read 2026-08-24 -->
+            <! - - ledger: backdraftracing.com, read 2026-08-24 - ->
             <div class="spec__row"><div class="spec__key">From</div><div class="spec__val">$66,900</div></div>
             <div class="spec__row"><div class="spec__key">Wheels</div><div class="spec__val">18 <span class="spec__unit">in</span></div></div>
             <div class="spec__row"><div class="spec__key">Side pipes</div><div class="spec__val">Ceramic-coated</div></div>
@@ -303,7 +346,7 @@
           <h3 class="t-h3 lot__title"><span class="plate">RT4B Black Edition</span></h3>
           <div class="spec lot__spec">
             <div class="spec__row"><div class="spec__key">Model</div><div class="spec__val">RT4B Black</div></div>
-            <!-- ledger: backdraftracing.com, read 2026-08-24 -->
+            <! - - ledger: backdraftracing.com, read 2026-08-24 - ->
             <div class="spec__row"><div class="spec__key">From</div><div class="spec__val">$70,500</div></div>
             <div class="spec__row"><div class="spec__key">Rims</div><div class="spec__val">Matte black, 18 <span class="spec__unit">in</span></div></div>
             <div class="spec__row"><div class="spec__key">Roll bars</div><div class="spec__val">Ceramic-coated black</div></div>
@@ -316,11 +359,11 @@
   </div>
 </section>
 
-<!-- ════ 3 · BUILD ═════════════════════════════════════════════════════════
+<! - - ════ 3 · BUILD ═════════════════════════════════════════════════════════
      THE GROUND CHANGES HERE, and it is the one structural decision specific to
      this content: the car lives in the dark, its specification lives in the
      light. Same type, same hairlines, same rhythm — only the ground inverts.
--->
+- ->
 <section class="section" id="build" data-ground="light" aria-labelledby="build-title">
   <div class="page">
     <div class="build-entry">
@@ -377,15 +420,15 @@
   </div>
 </section>
 
-<!-- ════ 4 · WHO WE ARE ════════════════════════════════════════════════════ -->
+<! - - ════ 4 · WHO WE ARE ════════════════════════════════════════════════════ - ->
 <section class="section" id="about" data-ground="light" aria-labelledby="about-title">
   <div class="page">
     <div class="about">
       <div class="section-head" data-motion="rise">
         <p class="t-label">Who we are</p>
-        <!-- ledger: "40 years" is UNVERIFIED — client to confirm. Authorised to
+        <! - - ledger: "40 years" is UNVERIFIED — client to confirm. Authorised to
              stand as ordinary copy in this mock; it does not ship without a
-             source. docs/content-ledger.md -->
+             source. docs/content-ledger.md - ->
         <h2 class="t-h2" id="about-title">Forty years of putting people in cars that should not exist</h2>
         <p class="t-lead t-muted">
           Midwest Cobras builds, sells, services and moves Backdraft Cobras. The
@@ -405,7 +448,7 @@
   </div>
 </section>
 
-<!-- ════ 5 · SERVICES ══════════════════════════════════════════════════════ -->
+<! - - ════ 5 · SERVICES ══════════════════════════════════════════════════════ - ->
 <section class="section" id="services" data-ground="light" aria-labelledby="svc-title">
   <div class="page">
     <div class="section-head" data-motion="rise">
@@ -445,14 +488,14 @@
   </div>
 </section>
 
-<!-- ════ 6 · CONSIGNMENT ═══════════════════════════════════════════════════
+<! - - ════ 6 · CONSIGNMENT ═══════════════════════════════════════════════════
      PENDING CLIENT APPROVAL. The brief places it in the navigation but low on
      the homepage until approved. If it is cut, this block and its copy stay in
      the tree with this comment: what goes with it is the page's only section
      addressed to an owner rather than a buyer — the only place someone who
      already has a Cobra is spoken to. Restore by deleting the surrounding
      comment markers, nothing else.
--->
+- ->
 <section class="section" id="consignment" data-ground="light" aria-labelledby="consign-title">
   <div class="page">
     <div class="consign" data-motion="rise">
@@ -470,10 +513,10 @@
   </div>
 </section>
 
-<!-- ════ 7 · SOCIAL / REVIEWS / EVENTS ═════════════════════════════════════
+<! - - ════ 7 · SOCIAL / REVIEWS / EVENTS ═════════════════════════════════════
      Back to the dark ground: this is the last chapter that is about looking
      rather than reading.
--->
+- ->
 <section class="section" id="community" data-ground="dark" aria-labelledby="comm-title">
   <div class="page">
     <div class="section-head" data-motion="rise">
@@ -526,9 +569,22 @@
   </div>
 </section>
 
+-->
 </main>
 
 <!-- ════ 8 · FOOTER ════════════════════════════════════════════════════════ -->
+<!-- ════ SITE FOOTER — PARKED, NOT DELETED ═══════════════════════════════
+     Parked 2026-08-26 on Alex's instruction: direction H is being worked on
+     as the hero alone, so nothing else may occupy the viewport. Commented
+     out rather than removed — a cut section stays recoverable. Delete the
+     two comment markers around it and it is back exactly as it was.
+
+     What went with it:
+       · address and contact
+       · the secondary navigation columns
+       · the legal line
+  -->
+<!--
 <footer class="site-footer">
   <div class="page">
     <div class="site-footer__top">
@@ -572,8 +628,8 @@
     </div>
   </div>
 </footer>
-</div>
-</div><!-- /#smooth-wrapper -->
+-->
+
 
 <script type="module" src="assets/js/main.js"></script>
 <!-- The scene decides for itself whether to run at all. Every path out of it

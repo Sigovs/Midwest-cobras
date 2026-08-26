@@ -644,7 +644,20 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
       const box = new THREE.Box3().setFromObject(car);
       const c = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
-      car.position.set(-c.x, -box.min.y, -c.z);
+      /* FOUR MILLIMETRES OF AIR UNDER THE TYRES, and it is not a fudge.
+         Sitting the model exactly on y = 0 puts the tyre's contact patch in the
+         same plane as the floor, and a rigid cylinder coplanar with a plane does
+         not touch it — it is sliced by it. Alex sent a crop of the result: the
+         tread cut off along a hard straight line with a torn seam, and what
+         looked like a second ghost tyre underneath, which is the far side's
+         wheel showing through the gap the slice opened.
+
+         Hiding the floor makes the wheel whole again, which is the proof. So the
+         car is lifted by the smallest distance that separates the two surfaces.
+         The grounding is not lost: it was never the floor doing it, it is the
+         painted contact shadow, and four millimetres is far below what that
+         gradient resolves. */
+      car.position.set(-c.x, -box.min.y + 0.004, -c.z);
 
       // sized from the car it belongs to, measured rather than picked
       contact.scale.set(size.x * 2.1, 1, size.z * 1.32);

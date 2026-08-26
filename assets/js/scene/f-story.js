@@ -119,13 +119,22 @@ export const BEATS = [
   {
     id: 'top',
     num: '07',
-    kicker: 'Top down',
+    kicker: 'Hood and cockpit',
     head: 'Form follows\nfunction.',
     body: 'A driver-focused cockpit and a hood that means business.',
     ghost: null,
-    /* 79° rather than straight down: at 90° the camera's up vector and its
-       direction are parallel and lookAt inverts the frame. */
-    pose: { cam: [0.06, 6.45, 1.05], target: [-0.10, 0.40, -0.20], fov: 28 },
+    /* NOT THE PLAN VIEW ANY MORE. The storyboard asked for top down and it was
+       built that way; Alex killed it, and he was right for a reason worth
+       keeping. Straight down, the whole frame is the cockpit floor — and the
+       cockpit floor is the weakest surface on this model: one carpet texture
+       stretched across a tub, with both seats foreshortened to nothing. A beat
+       whose sentence is "form follows function" cannot be the single frame
+       where the form is a grey rectangle.
+
+       Down the bonnet instead. The scoop, the stripes, the screen, the wheel and
+       the side pipe are all in it, both callouts still have something to point
+       at, and the sentence lands harder than it did from above. */
+    pose: { cam: [1.90, 2.58, 3.75], target: [-0.62, 0.55, -0.30], fov: 31 },
     callouts: [
       { label: 'Hood scoop', note: 'Feeds the beast within.', at: [0.02, 0.78, 0.98], side: 'right' },
       { label: 'Driver focused', note: 'Everything where it should be.', at: [0.32, 0.62, -0.38], side: 'right' },

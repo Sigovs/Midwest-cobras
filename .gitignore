@@ -53,3 +53,6 @@ glb/
 
 # Anything the folder name already says to keep out.
 donot git/
+
+# Blender writes these next to the pipeline scripts
+dev/__pycache__/

@@ -132,6 +132,69 @@ else:
         else:
             print(f'[lens] {name}: separate produced nothing')
 
+# ── the windscreen ──────────────────────────────────────────────────────────
+# It is inside `Interior`, and until now it was invisible: the Internal atlas
+# carries a cutout map, `MAT_refraction_invert`, and the conversion wires it into
+# base colour alpha. Everywhere that map is black the mesh vanishes — which is
+# how V-Ray was told where the glass is, and which erased the glass instead of
+# turning it into glass. Alex: put the windscreen back on the car.
+#
+# So the selection is the mask itself rather than a box. A box was tried and it
+# caught the dashboard: the screen and the instrument binnacle are 20 cm apart
+# and share a bounding volume, while the cutout map separates them exactly,
+# because separating them is the only thing it was ever for.
+CUTOUT = 'Shelby_Internal_Orange_MAT_refraction_invert'
+
+def separate_by_cutout(obj_name, new_name, threshold=0.5, zmin=0.60):
+    ob = bpy.data.objects.get(obj_name)
+    img = bpy.data.images.get(CUTOUT + '.png') or bpy.data.images.get(CUTOUT)
+    if ob is None or img is None:
+        print(f'[glass] {new_name}: no {obj_name} or no cutout map — NOT separated')
+        return
+    w, h = img.size
+    px = list(img.pixels)
+
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.context.view_layer.objects.active = ob
+    ob.select_set(True)
+    bpy.ops.object.mode_set(mode='EDIT')
+    bm = bmesh.from_edit_mesh(ob.data)
+    bm.faces.ensure_lookup_table()
+    uv_layer = bm.loops.layers.uv.active
+    mw = ob.matrix_world
+    picked = 0
+    for f in bm.faces:
+        f.select = False
+        # the windscreen is up on the scuttle; the same mask also cuts small
+        # holes low down that are not glass and must stay where they are
+        if (mw @ f.calc_center_median()).z < zmin:
+            continue
+        us = [l[uv_layer].uv for l in f.loops]
+        u = sum(p[0] for p in us) / len(us)
+        v = sum(p[1] for p in us) / len(us)
+        x = min(w - 1, max(0, int((u % 1.0) * w)))
+        y = min(h - 1, max(0, int((v % 1.0) * h)))
+        if px[(y * w + x) * 4] < threshold:
+            f.select = True
+            picked += 1
+    bmesh.update_edit_mesh(ob.data)
+
+    if picked == 0:
+        print(f'[glass] {new_name}: mask selected no faces — NOT separated')
+        bpy.ops.object.mode_set(mode='OBJECT')
+        return
+    bpy.ops.mesh.separate(type='SELECTED')
+    bpy.ops.object.mode_set(mode='OBJECT')
+    new = [o for o in bpy.context.selected_objects if o is not ob]
+    if new:
+        new[0].name = new_name
+        print(f'[glass] {new_name}: {picked} faces separated by the cutout mask')
+    else:
+        print(f'[glass] {new_name}: separate produced nothing')
+
+
+separate_by_cutout('Interior', 'Windscreen')
+
 print('[in ] objects after surgery:')
 for o in sorted(bpy.data.objects, key=lambda x: x.name):
     v = len(o.data.vertices) if o.type == 'MESH' else 0

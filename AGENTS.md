@@ -118,7 +118,7 @@ draw a frame:
 
 | | |
 |---|---|
-| `assets/model/shelby-cobra-427-v6.glb` | 8.64 MB |
+| `assets/model/shelby-cobra-427-v8.glb` | 8.64 MB |
 | `assets/env/parking_garage_1k.hdr` | 1.47 MB |
 | Draco decoder — `.wasm` + wrapper | 0.10 MB |
 | **Total** | **10.21 MB** |
@@ -212,7 +212,7 @@ confirm`. The gate is yielded, out loud; it is not absent.
 ## Open — do not resolve these by guessing
 
 1. **The hero model — bought, and the licence document is the open part.**
-   Direction F runs on `assets/model/shelby-cobra-427-v6.glb`, built from the
+   Direction F runs on `assets/model/shelby-cobra-427-v8.glb`, built from the
    purchased *Shelby Cobra 1965 Racing Model* pack in `donot git/purchased cobra
    final/`. That closes the CC BY-NC-SA problem the old `ac-cobra-427.glb`
    carried — NonCommercial excluded a dealer's own website, and this is a paid

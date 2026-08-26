@@ -705,6 +705,37 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
         return;
       }
 
+      /* THE WINDSCREEN, which was not missing — it was being erased. It lives
+         inside `Interior`, and the Internal atlas carries a cutout map that the
+         conversion wires into base colour alpha. Everywhere that map is black
+         the mesh vanishes; that is how V-Ray was told where the glass is, and
+         it deleted the glass instead of making it glass. Flagging every mesh
+         with `glass` in its name red showed only the visors and the side wings
+         going red, and the screen's chrome frame standing around nothing.
+
+         prep_shelby.py now separates it by that same mask — the mask is exactly
+         the right selector, because separating the screen from the dash is the
+         only job it ever had — and here it gets a material of its own.
+
+         Less transmissive than a modern screen on purpose. At 0.95 it
+         disappears again, which is technically what clean glass does and is
+         useless on a page selling the car: the screen has to be visible as a
+         made object, with an edge and a reflection in it. */
+      if (/^windscreen/i.test(o.name)) {
+        o.material = new THREE.MeshPhysicalMaterial({
+          color: 0xd7e2e6,
+          roughness: 0.02,
+          metalness: 0.0,
+          transmission: 0.86,
+          thickness: 0.008,
+          ior: 1.52,
+          envMapIntensity: 1.6,
+          side: THREE.DoubleSide,
+        });
+        o.castShadow = false;
+        return;
+      }
+
       /* `Glass_dark` was 0.22 transmission and near-black, which on a car with
          no side windows means the two wind deflectors above the scuttle read as
          solid black rectangles sitting in the cockpit. They are tinted glass,

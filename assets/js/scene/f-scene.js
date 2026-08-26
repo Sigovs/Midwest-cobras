@@ -65,6 +65,8 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
   renderer.shadowMap.enabled = full;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
+  const pivotLightHost = [];
+
   const ground = new THREE.Color(token('--graphite-900', '#1a1d21'));
 
   /* Cleared to the page's own ground rather than left transparent. Fog fades
@@ -80,6 +82,26 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
   const pmrem = new THREE.PMREMGenerator(renderer);
   pmrem.compileEquirectangularShader();
 
+  /* ── the cockpit, and a stated exception to "the room does the lighting" ──
+     A captured environment map has no occlusion in three.js, but it also has no
+     way to be *inside* anything: the cockpit is black leather in a dim garage,
+     and it renders as a hole. Alex asked where the seats were three times. They
+     were always there — 4,680 and 4,584 vertices, pleated, correctly placed —
+     and flagging them red proves it in one frame. Black on black is not a
+     missing part, but on a page whose job is to sell the car it may as well be.
+
+     So there is a second light, it is aimed into the cockpit, and it is named
+     rather than smuggled in. Its cone stops at the scuttle: raising
+     envMapIntensity instead did nothing at 4.0, and a point light bright enough
+     to reach the seats blew out the windscreen frame and the roll bar.
+
+     It casts no shadow, and it is the ONLY hand-placed light on this page that
+     is not the shadow key. If a third one is ever wanted, that is the moment to
+     stop and re-read the Motion Read instead. */
+  const cockpit = new THREE.SpotLight(0xfff1de, full ? 26 : 18, 4.5, 0.8, 0.9, 2);
+  cockpit.position.set(0.15, 2.15, -0.35);
+  cockpit.target.position.set(0, 0.42, -0.55);
+
   /* One light, and it is here for the shadow. The room does the lighting. */
   const key = new THREE.DirectionalLight(0xfff4e6, full ? 1.35 : 0.9);
   key.position.set(-5.5, 8.5, 6.0);
@@ -94,6 +116,10 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
     key.shadow.radius = 3;
   }
   scene.add(key);
+
+  // the cockpit light travels with the car, so it is parented to the pivot
+  // rather than to the scene: turn the car and the seats stay lit.
+  pivotLightHost.push(cockpit, cockpit.target);
 
   /* ── floor ────────────────────────────────────────────────────────────────
      Rough enough to read as sealed concrete, smooth enough to hold a soft
@@ -149,6 +175,7 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
   const target = new THREE.Vector3(0, 0.5, 0);
   const pivot = new THREE.Group();
   scene.add(pivot);
+  pivotLightHost.forEach((n) => pivot.add(n));
 
   let dirty = true, running = false, car = null;
 
@@ -445,6 +472,7 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
         real gap in the format, not a leftover from the conversion.        */
   function correctMaterials(root) {
     let paint = null;
+    let seat = null;
 
     root.traverse((o) => {
       if (!o.isMesh) return;
@@ -520,6 +548,31 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
           envMapIntensity: 1.0,
           side: THREE.DoubleSide,
         });
+        o.castShadow = false;
+        return;
+      }
+
+      /* THE SEATS, and the only reason they get a branch is that Alex could not
+         see them and was right not to. They are 4,680 and 4,584 vertices of
+         pleated bucket, correctly placed, correctly black — and black leather at
+         the bottom of an unlit tub is indistinguishable from the tub.
+
+         The cockpit spot does most of the work. This lifts the leather itself a
+         little further, and it stops well short of turning it grey: the gain is
+         on the material's colour multiplier, not on the atlas, so the pleats keep
+         their own shading and the seats stay the darkest thing in the frame. */
+      if (/^seat_/i.test(o.name)) {
+        if (!seat) {
+          seat = m.clone();
+          seat.name = m.name + '__leather';
+          seat.color.setScalar(1.9);
+          seat.envMapIntensity = 1.8;
+          seat.side = THREE.FrontSide;
+          seat.shadowSide = THREE.FrontSide;
+          if (seat.map) seat.map.anisotropy = 8;
+          seat.needsUpdate = true;
+        }
+        o.material = seat;
         o.castShadow = false;
         return;
       }

@@ -72,6 +72,22 @@ LENSES = {
     # by a couple of centimetres.
     'Lamp_rear_right': {'x': (0.46, 0.68),   'y': (1.84, 1.97), 'z': (0.36, 0.62)},
     'Lamp_rear_left':  {'x': (-0.68, -0.46), 'y': (1.84, 1.97), 'z': (0.36, 0.62)},
+    # THE SEATS, and they get a node for the oldest reason on this project: a
+    # surface with no name cannot be argued about. Alex said three times that the
+    # cockpit was empty; the file says otherwise. dev/render_lumps.py settled it
+    # by splitting `Interior` into its 147 loose parts, keeping the two mirrored
+    # 2,363-vertex lumps inside the seat volume, and rendering them alone — they
+    # are unmistakably a pair of pleated Cobra bucket backs.
+    #
+    # They are in the export too: 4,163 vertices sit in the right-hand seat box
+    # of the loaded GLB, and a ray dropped straight down onto the seat hits
+    # `Interior` before it hits anything else. So they are present, unoccluded,
+    # and invisible — black leather with no light on it, inside 40,000 vertices
+    # of tub that share its material and its darkness.
+    #
+    # With their own nodes they can be lit, checked and pointed at.
+    'Seat_right': {'x': (0.05, 0.66),   'y': (0.16, 0.92), 'z': (0.22, 0.82)},
+    'Seat_left':  {'x': (-0.66, -0.05), 'y': (0.16, 0.92), 'z': (0.22, 0.82)},
 }
 
 interior = bpy.data.objects.get('Interior')

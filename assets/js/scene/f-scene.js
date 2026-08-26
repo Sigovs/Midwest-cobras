@@ -171,6 +171,173 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
   contact.renderOrder = -1;
   scene.add(contact);
 
+  /* ════ THE ROOM ═══════════════════════════════════════════════════════════
+     Alex's storyboard names its own visual tone and this is that list, built:
+
+         · dark radial gradient background
+         · soft grounded shadow / light pool
+         · large typography behind car
+
+     All three were missing and the third was the one that mattered. The ghost
+     word was a DOM element sitting on top of the canvas — a caption over a
+     render. In the storyboard it is ON THE WALL: the car passes in front of it,
+     it lives at a distance, and that single fact is most of what makes those
+     frames read as a photographed room rather than as a 3D model with text
+     stuck to the glass.
+
+     ALL THREE ARE BILLBOARDS, and that is not laziness. This camera walks a
+     full circle around the car over nine beats, so a backdrop wall placed
+     behind the subject is behind it for exactly one of them. A plane held
+     square to the camera at a fixed distance is behind the car from every
+     angle, which is what a cyclorama is for in a real studio and what it does
+     here for a fraction of the geometry. */
+
+  function radialTexture({ inner, outer, stops = 1.0, size = 512 }) {
+    const c = document.createElement('canvas');
+    c.width = c.height = size;
+    const g = c.getContext('2d');
+    const grad = g.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+    grad.addColorStop(0, inner);
+    grad.addColorStop(stops, outer);
+    grad.addColorStop(1, outer);
+    g.fillStyle = grad;
+    g.fillRect(0, 0, size, size);
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    return t;
+  }
+
+  /* The wall. Lighter where the car is and falling away to the corners, which is
+     the whole of "dark radial gradient background" — and it has to be a real
+     surface rather than a CSS gradient under a transparent canvas, because the
+     canvas is deliberately opaque: with alpha the fogged floor was opaque while
+     the sky above it was not, and the seam drew a horizon across the frame. */
+  const backdrop = new THREE.Mesh(
+    new THREE.PlaneGeometry(90, 52),
+    new THREE.MeshBasicMaterial({
+      map: radialTexture({
+        inner: 'rgb(46,52,58)',
+        outer: 'rgb(14,16,18)',
+        stops: 0.62,
+      }),
+      depthTest: false,
+      depthWrite: false,
+      fog: false,
+      toneMapped: false,
+    })
+  );
+  backdrop.renderOrder = -50;
+  scene.add(backdrop);
+
+  /* The light pool. A studio floor is not evenly lit — there is a pool the car
+     stands in and darkness past it, and without one a large floor plane reads as
+     a sheet of grey card. Additive so it lifts the floor rather than painting
+     over it, and it stays UNDER the contact shadow: the pool says where the
+     light is, the contact shadow says where the car is, and the second has to
+     win where they overlap. */
+  const pool = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2),
+    new THREE.MeshBasicMaterial({
+      map: radialTexture({ inner: 'rgb(58,62,68)', outer: 'rgb(0,0,0)', stops: 0.55 }),
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+      depthWrite: false,
+      toneMapped: false,
+    })
+  );
+  pool.scale.set(16, 1, 22);
+  pool.position.y = 0.0015;
+  pool.renderOrder = -2;
+  scene.add(pool);
+
+  /* ── the word on the wall ────────────────────────────────────────────────
+     Drawn into a canvas at the display face and hung between the backdrop and
+     the car. renderOrder puts it AFTER the car so the depth buffer already has
+     the body in it, and depthTest then does the occlusion for free — the car
+     passes in front of the word exactly as it does in the storyboard.
+
+     It is set in the page's own display face rather than anything new: a fourth
+     voice has to state the systemic job the three cannot do, and "very large and
+     grey" is not one. */
+  const ghost = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 1),
+    new THREE.MeshBasicMaterial({
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+      fog: false,
+      toneMapped: false,
+    })
+  );
+  ghost.renderOrder = 20;
+  ghost.visible = false;
+  scene.add(ghost);
+
+  let ghostText = null;
+  const ghostFace = token('--font-display', 'sans-serif');
+
+  function setGhost(text) {
+    if (text === ghostText) return;
+    ghostText = text || null;
+    if (!ghostText) { ghost.visible = false; dirty = true; return; }
+
+    const pad = 64;
+    const px = 260;
+    const probe = document.createElement('canvas').getContext('2d');
+    probe.font = `700 ${px}px ${ghostFace}`;
+    const w = Math.ceil(probe.measureText(ghostText).width) + pad * 2;
+    const h = px * 1.35 + pad * 2;
+
+    const c = document.createElement('canvas');
+    c.width = Math.min(4096, w);
+    c.height = Math.ceil(h);
+    const g = c.getContext('2d');
+    g.font = `700 ${px}px ${ghostFace}`;
+    g.textAlign = 'center';
+    g.textBaseline = 'middle';
+    g.fillStyle = '#ffffff';
+    g.fillText(ghostText, c.width / 2, c.height / 2, c.width - pad);
+
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    if (ghost.material.map) ghost.material.map.dispose();
+    ghost.material.map = t;
+    ghost.material.opacity = 0.085;
+    ghost.material.needsUpdate = true;
+    ghost.userData.aspect = c.width / c.height;
+    ghost.visible = true;
+    dirty = true;
+  }
+
+  /* Held square to the camera, at a fixed distance beyond the car. The height is
+     driven off the distance so the word keeps the same size on screen whatever
+     the beat is doing with the lens — it is scenery, and scenery that swells and
+     shrinks with the camera stops being scenery and becomes an effect. */
+  const _toCam = new THREE.Vector3();
+  const _mid = new THREE.Vector3();
+
+  function placeStageBack() {
+    _toCam.copy(camera.position).sub(target);
+    const dist = _toCam.length() || 1;
+    _toCam.divideScalar(dist);
+
+    _mid.copy(target).addScaledVector(_toCam, -Math.max(6, dist * 0.9));
+    backdrop.position.copy(target).addScaledVector(_toCam, -34);
+    backdrop.quaternion.copy(camera.quaternion);
+
+    pool.position.x = 0;
+    pool.position.z = 0;
+
+    if (ghost.visible) {
+      const gd = dist * 1.15 + 2.2;
+      ghost.position.copy(target).addScaledVector(_toCam, -gd);
+      ghost.position.y = target.y + gd * 0.16;
+      ghost.quaternion.copy(camera.quaternion);
+      const hh = gd * 0.30;
+      ghost.scale.set(hh * (ghost.userData.aspect || 4), hh, 1);
+    }
+  }
+
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 160);
   const target = new THREE.Vector3(0, 0.5, 0);
   const pivot = new THREE.Group();
@@ -223,6 +390,9 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
     if (p.cam) pose.cam.set(p.cam[0], p.cam[1], p.cam[2]);
     if (p.target) target.set(p.target[0], p.target[1], p.target[2]);
     applyView();
+    camera.lookAt(target);
+    camera.updateMatrixWorld(true);
+    placeStageBack();
   }
 
   /* ── the turn ───────────────────────────────────────
@@ -428,6 +598,7 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
     const moved = tickTurn();
     if (dirty || moved) {
       camera.lookAt(target);
+      placeStageBack();
       renderer.render(scene, camera);
       dirty = false;
     }
@@ -673,7 +844,7 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
   window.addEventListener('resize', resize, { passive: true });
 
   return {
-    renderer, scene, camera, pivot, ready, setPose, resize, start, stop,
+    renderer, scene, camera, pivot, ready, setPose, resize, start, stop, setGhost,
     bindTurn, turn,
     get car() { return car; },
   };

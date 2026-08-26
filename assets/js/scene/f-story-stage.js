@@ -25,7 +25,6 @@ const EDGE_FADE = 0.04;     // a callout fades out this close to the frame edge
 export function mountStory({ scene, root, gsap, ScrollTrigger, THREE, reduced }) {
   const track = root;   // the hero itself carries the scroll length — see index6.css
   const stage = root.querySelector('[data-story-stage]');
-  const ghost = root.querySelector('[data-story-ghost]');
   const num = root.querySelector('[data-story-num]');
   const kicker = root.querySelector('[data-story-kicker]');
   const head = root.querySelector('[data-story-head]');
@@ -80,8 +79,7 @@ export function mountStory({ scene, root, gsap, ScrollTrigger, THREE, reduced })
     kicker.textContent = b.kicker;
     head.textContent = b.head;               // \n handled by white-space: pre-line
     body.textContent = b.body;
-    ghost.textContent = b.ghost || '';
-    ghost.toggleAttribute('data-empty', !b.ghost);
+    if (scene.setGhost) scene.setGhost(b.ghost);
     root.dataset.storyBeat = b.id;
     root.toggleAttribute('data-story-release', !!b.release);
     dots.forEach((d, k) => d.toggleAttribute('data-on', k <= i));

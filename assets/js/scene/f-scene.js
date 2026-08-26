@@ -593,6 +593,37 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
     });
   }
 
+  /* ── project ──────────────────────────────────────────────────────────────
+     A point on the car, in the car's own space, turned into a point on the
+     plate. It is the same operation the storyboard's callouts do inline and the
+     same one hero-scene.js has carried since direction B, and it lives here now
+     so all three read one implementation rather than three that drift.
+
+     `onPlate` is deliberately looser than the frame — a hair over the edge is
+     still worth drawing a line to, because the label sits inside the frame and
+     only the anchor is out. Off by more than that, the caller hides rather than
+     drawing a line to nowhere. */
+  const _proj = new THREE.Vector3();
+
+  function project(local) {
+    if (!car || !local) return null;
+    camera.lookAt(target);
+    camera.updateMatrixWorld();
+    _proj.set(local[0], local[1], local[2]);
+    pivot.localToWorld(_proj);
+    const depth = _proj.distanceTo(camera.position);
+    _proj.project(camera);
+    const w = canvas.clientWidth || 1;
+    const h = canvas.clientHeight || 1;
+    return {
+      x: (_proj.x * 0.5 + 0.5) * w,
+      y: (-_proj.y * 0.5 + 0.5) * h,
+      onPlate: _proj.z < 1 && _proj.x > -1.15 && _proj.x < 1.15
+               && _proj.y > -1.15 && _proj.y < 1.15,
+      depth,
+    };
+  }
+
   function frame() {
     if (!running) return;
     const moved = tickTurn();
@@ -875,7 +906,7 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
   window.addEventListener('resize', resize, { passive: true });
 
   return {
-    renderer, scene, camera, pivot, ready, setPose, resize, start, stop, setGhost,
+    renderer, scene, camera, pivot, ready, setPose, resize, start, stop, setGhost, project,
     bindTurn, turn,
     get car() { return car; },
   };

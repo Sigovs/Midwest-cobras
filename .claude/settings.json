@@ -1,0 +1,5 @@
+{
+  "enabledPlugins": {
+    "threejs-webgl@claude-design-skillstack": true
+  }
+}

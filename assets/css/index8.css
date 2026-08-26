@@ -1,0 +1,25 @@
+/* ============================================================================
+   index8.css — direction H, and it is deliberately almost empty.
+   ----------------------------------------------------------------------------
+   Direction H is direction B with the bought car in it. alt.css already composes
+   this page and is not touched; this sheet holds only what the new car needs
+   that the old one did not, and if it ever grows past that it has stopped being
+   the same direction.
+
+   No raw values below tokens.css — that rule does not relax for a new direction,
+   and it is the reason this file has no hex in it.
+   ========================================================================== */
+
+/* The bought car is lit by a captured room and cleared to the page's own ground,
+   so the canvas is opaque rather than transparent. Direction B's still sits
+   underneath it and crossfades; with an opaque canvas the still must not show
+   through at the edges, which it did on the first load as a one-pixel seam
+   along the mount. */
+.dir-h .scene-mount { background: var(--graphite-900); }
+
+/* The turn is available on this page too — f-scene binds it — so the canvas says
+   so with the cursor rather than with another line of copy. Direction B has no
+   hint component and does not need one: the car is already moving under the
+   scroll, and a second invitation would be competing with the first. */
+.dir-h [data-scene] { cursor: grab; }
+.dir-h [data-scene]:active { cursor: grabbing; }

@@ -80,10 +80,20 @@ import struct
 import zlib
 import numpy as np
 
-# 2048 because the pipeline's gltf-transform step resizes to 2048 anyway, and
-# compositing at 4096 costs four times the memory to build a texture that is
-# thrown away twenty seconds later.
-SIZE = 2048
+# ── atlas resolution, per atlas, and it is not the same number twice ────────
+# The external atlas is body panels: a metre of paint across a few hundred
+# texels reads fine, because paint has no texture to lose. The internal one
+# carries a whole cockpit — carpet weave, leather grain, the pleats on two seat
+# backs — inside the SAME 2048 the paint had, and at that density the baked bump
+# stops reading as fabric and starts reading as gravel. Alex looked into the
+# cockpit and said so.
+#
+# So the interior gets 4096 and the exterior keeps 2048. It costs about a
+# megabyte, on a payload already over its ceiling, and that is recorded in
+# CLAUDE.md rather than absorbed quietly.
+SIZE_EXTERNAL = 2048
+SIZE_INTERNAL = 4096
+SIZE = SIZE_EXTERNAL          # default for anything that is neither
 
 # The metal mask, and it applies to the EXTERNAL atlas only — see the module
 # docstring for why the internal one gets no mask at all. On this atlas the rule
@@ -100,7 +110,7 @@ def _smoothstep(lo, hi, x):
     return t * t * (3.0 - 2.0 * t)
 
 
-def _raw(img, size=SIZE):
+def _raw(img, size):
     """The image's own bytes, scaled, with colour management kept out of it.
 
     Blender converts an sRGB-tagged image on read. This model tags the same kind
@@ -194,13 +204,14 @@ def rebuild(out_dir):
                   ' — left alone'.format(mat.name, bool(diffuse), bool(reflect), bool(gloss)))
             continue
 
-        d = _raw(diffuse)[..., :3]
-        s = _raw(reflect)[..., :3]
-        g = _raw(gloss)[..., 0]
+        internal = 'internal' in mat.name.lower()
+        size = SIZE_INTERNAL if internal else SIZE_EXTERNAL
+
+        d = _raw(diffuse, size)[..., :3]
+        g = _raw(gloss, size)[..., 0]
 
         rough = np.clip(g, 0.0, 1.0)
         d_max = d.max(axis=2)
-        s_max = s.max(axis=2)
 
         # ── which atlas this is, and why that is the whole decision ──────────
         # Raycasting the rendered car settles what nobody could settle from a
@@ -214,19 +225,23 @@ def rebuild(out_dir):
         # number tuned until the picture looked right. Two attempts were made at
         # tuning that number. The first called the seats chrome. The second
         # called 55% of the interior chrome and said so itself.
-        if 'internal' in mat.name.lower():
+        if internal:
+            # The reflection map is not read here at all: nothing on this atlas
+            # is metal, and at 4096 loading a map to ignore it costs 268 MB.
             metal = np.zeros_like(rough)
             base = d
-            note = 'internal atlas — no metal parts on it, so none is invented'
+            note = 'internal atlas at {}px — no metal parts on it, so none is invented'.format(size)
         else:
             # Bright reflection with a dark diffuse. On the External atlas this
             # does separate: paint is bright and saturated, chrome and the pipe
             # are dark in diffuse with the reflection carrying them.
+            sref = _raw(reflect, size)[..., :3]
+            s_max = sref.max(axis=2)
             metal = _smoothstep(REFL_LO, REFL_HI, s_max) * (1.0 - _smoothstep(DIFF_LO, DIFF_HI, d_max))
-            base = d * (1.0 - metal[..., None]) + s * metal[..., None]
-            note = 'external atlas — mask from reflection over dark diffuse'
+            base = d * (1.0 - metal[..., None]) + sref * metal[..., None]
+            note = 'external atlas at {}px — mask from reflection over dark diffuse'.format(size)
 
-        base_rgba = np.concatenate([base, np.ones((SIZE, SIZE, 1), np.float32)], axis=2)
+        base_rgba = np.concatenate([base, np.ones((size, size, 1), np.float32)], axis=2)
         # glTF's ORM packing: R occlusion (unused), G roughness, B metalness.
         # One image, separated in the node tree — the shape the glTF exporter
         # recognises without re-baking anything.
@@ -244,9 +259,9 @@ def rebuild(out_dir):
         # on them, which means either no WebP for anything or no bump at all.
         # Re-encoded to 8-bit RGBA they are ordinary files and the step runs.
         if bump is not None:
-            bump = _write(stem + '__normal.png', _raw(bump), out_dir, srgb=False)
+            bump = _write(stem + '__normal.png', _raw(bump, size), out_dir, srgb=False)
         if alpha_img is not None:
-            alpha_img = _write(stem + '__cutout.png', _raw(alpha_img), out_dir, srgb=False)
+            alpha_img = _write(stem + '__cutout.png', _raw(alpha_img, size), out_dir, srgb=False)
 
         pct = 100.0 * float((metal > 0.5).mean())
         print('[pbr] {}: metal {:.1f}% of the atlas, mean roughness {:.2f} — {}'

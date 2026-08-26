@@ -118,18 +118,34 @@ draw a frame:
 
 | | |
 |---|---|
-| `assets/model/shelby-cobra-427-v5.glb` | 3.70 MB |
+| `assets/model/shelby-cobra-427-v6.glb` | 8.64 MB |
 | `assets/env/parking_garage_1k.hdr` | 1.47 MB |
 | Draco decoder — `.wasm` + wrapper | 0.10 MB |
-| **Total** | **5.27 MB** |
+| **Total** | **10.21 MB** |
 
-Raw, off a server that does not compress binaries, 5.82 MB.
+Raw, off a server that does not compress binaries, 10.71 MB.
 
-**Three measurements in one day, and the middle one was the worst.** v2 was
-5.45 MB with a car whose interior was black. v3 fixed the materials and went to
-5.88 MB. v4 fixed the fix and came back to 5.26 MB — the internal atlas stopped
-carrying an invented metal channel, which compresses better as well as looking
-right. The ceiling is still 5 MB and this is still over it by 0.26 MB.
+**THIS IS 2.04× THE CEILING AND IT WAS BOUGHT ON PURPOSE.** Alex looked into the
+cockpit at close range on 2026-08-26, saw the carpet rendering as crushed gravel,
+and chose the interior atlas at 4096 over the payload. The exterior stays at
+2048: body paint has no texture to lose, and a metre of lacquer across a few
+hundred texels reads fine.
+
+What it bought, and what it cost:
+
+| | 2048 interior | 4096 interior |
+|---|---|---|
+| Carpet and leather at close range | crushed gravel | reads as fabric |
+| `shelby-cobra-427.glb` | 3.70 MB | **8.64 MB** |
+| Total scene payload, gzipped | 5.27 MB | **10.21 MB** |
+
+**4096 is the ceiling of the source.** The vendor's PNGs are 4096 × 4096, so
+anything above this is upscaling with no new detail in it. There is nothing
+further to buy here at any payload.
+
+The run of measurements, kept because the middle one was the worst: v2 5.45 MB
+with a black interior · v3 5.88 MB, materials fixed · v4 5.26 MB, the invented
+metal channel removed · v6 10.21 MB, interior at source resolution.
 
 The account of how is short and it is not flattering. The HDR arrived in
 direction F as the light source, and nobody counted it. The figure this paragraph
@@ -146,8 +162,14 @@ exact line nobody re-takes.
 or raises the ceiling a second time, out loud. Both cuts that exist, and what each
 costs:
 
-- **Environment at 512×256** — about 0.41 MB, saving ~1.06. On its own it brings
-  the payload to 4.82 MB and back under the ceiling. It gives up some of the
+- **Interior normal map back to 2048** — the single biggest file in the model at
+  22 MB of source PNG, and the one that fixed the gravel. Roughly 2 MB back, and
+  it gives the gravel back with it. Named first because it is the obvious cut and
+  it is the wrong one.
+- **Interior ORM at 2048, base colour and normal at 4096** — roughly 1.5 MB, and
+  it costs the least: roughness varies slowly across leather and carpet, so it is
+  the one map in the set that does not need the density.
+- **Environment at 512×256** — about 0.41 MB, saving ~1.06. It gives up some of the
   sharpness in the long interrupted strip highlights, which were the whole reason
   for lighting from a captured room instead of three lamps — and those highlights
   are now doing more work than they were, because there is polished metal on this
@@ -190,7 +212,7 @@ confirm`. The gate is yielded, out loud; it is not absent.
 ## Open — do not resolve these by guessing
 
 1. **The hero model — bought, and the licence document is the open part.**
-   Direction F runs on `assets/model/shelby-cobra-427-v5.glb`, built from the
+   Direction F runs on `assets/model/shelby-cobra-427-v6.glb`, built from the
    purchased *Shelby Cobra 1965 Racing Model* pack in `donot git/purchased cobra
    final/`. That closes the CC BY-NC-SA problem the old `ac-cobra-427.glb`
    carried — NonCommercial excluded a dealer's own website, and this is a paid

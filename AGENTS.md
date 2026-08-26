@@ -112,13 +112,49 @@ Exceeded means the scope is cut, not the budget.
 knowing what the replacement model would weigh — the supplied SketchUp export was
 one wheel and half a chassis, so the scene either got a real car or got cut.
 
-**It then did not need the room.** `ac-cobra-427.glb` ships at **3.27 MB**, under
-the ceiling it replaced, because `gltf-transform prune` removed six UV sets no
-material referenced and a vertex-colour attribute nothing read — 1.8 MB of the
-5.14 MB the conversion first produced. The raise stands as headroom for the
-configurator, and it is recorded here rather than quietly reused: a budget only
-works while something is willing to refuse it, and this one has now been widened
-once without being spent.
+**The room was needed, and then some. Direction F is over the ceiling.**
+Measured 2026-08-25, gzipped, counting everything the hero fetches before it can
+draw a frame:
+
+| | |
+|---|---|
+| `assets/model/shelby-cobra-427-v2.glb` | 3.89 MB |
+| `assets/env/parking_garage_1k.hdr` | 1.47 MB |
+| Draco decoder — `.wasm` + wrapper | 0.10 MB |
+| **Total** | **5.45 MB** |
+
+Raw, off a server that does not compress binaries, 6.03 MB.
+
+The account of how is short and it is not flattering. The HDR arrived in
+direction F as the light source, and nobody counted it. The figure this paragraph
+used to carry — 3.27 MB — was true, and it was true about a model this build no
+longer loads, and it was a glb-only number sitting in a budget whose own
+definition reads *geometry + textures + loader*. A captured room is a texture. It
+counts, and it always did.
+
+The earlier boast is deleted rather than footnoted: it measured the wrong thing on
+a scene that no longer exists, and a budget line that congratulates itself is the
+exact line nobody re-takes.
+
+**It is recorded over the line and it stays over the line** until Alex cuts scope
+or raises the ceiling a second time, out loud. Both cuts that exist, and what each
+costs:
+
+- **Environment at 512×256** — about 0.41 MB, saving ~1.06. It gives up some of
+  the sharpness in the long interrupted strip highlights, which were the whole
+  reason for lighting from a captured room instead of three lamps.
+- **Texture pass over the glb at half resolution** — roughly 1.5 MB saved. It
+  shows on the interior first: `Shelby_Internal_Orange_Normal` is a 20 MB source
+  map, and leather grain is where the loss becomes visible.
+
+A budget only works while something is willing to refuse it. This one was widened
+once, on 2026-08-24, and it is now spent and overspent — which is worth more
+written down than a number nobody re-measured.
+
+**`empty_warehouse_01_1k.hdr` was deleted on 2026-08-25.** Nothing referenced it:
+1.67 MB of environment map that never reached a page. Not payload, but the same
+failure one step earlier — an asset kept for later, in a tree whose rule is that
+an unused token is deleted.
 
 ## Content ledger — the rule, and its one authorised exception
 

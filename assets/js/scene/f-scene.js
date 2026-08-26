@@ -565,8 +565,13 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
         if (!seat) {
           seat = m.clone();
           seat.name = m.name + '__leather';
-          seat.color.setScalar(1.9);
-          seat.envMapIntensity = 1.8;
+          /* NO COLOUR LIFT. The first version multiplied the leather by 1.9 to
+             get it out of the dark, and on a white ground it turned two pleated
+             buckets into flat pale slabs — Alex saw exactly that. A gain on the
+             base colour flattens the pleats, because it raises the shadowed side
+             of every fold by as much as the lit side. The cone above does the
+             work instead; the leather keeps its own value. */
+          seat.envMapIntensity = 1.4;
           seat.side = THREE.FrontSide;
           seat.shadowSide = THREE.FrontSide;
           if (seat.map) seat.map.anisotropy = 8;

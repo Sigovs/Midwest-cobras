@@ -481,12 +481,41 @@ export function createFScene({ canvas, modelUrl, envUrl, quality = 'full' }) {
         return;
       }
 
+      /* The tail lamps, separated by the same pass and for the same reason as
+         the headlight lenses — their UVs land on the tyre-tread island, so
+         before the surgery each 3 cm oval rendered as a slab of Goodyear.
+
+         Red glass with a dark interior behind it, not an emissive: the car is
+         parked. A tail lamp that glows on a stationary car in a dark garage is
+         a car with its foot on the brake, and it reads as a mistake rather
+         than as a detail. */
+      if (/^lamp_rear/i.test(o.name)) {
+        o.material = new THREE.MeshPhysicalMaterial({
+          color: 0x8c0d10,
+          roughness: 0.06,
+          metalness: 0.0,
+          transmission: 0.55,
+          thickness: 0.02,
+          ior: 1.55,
+          clearcoat: 1.0,
+          clearcoatRoughness: 0.04,
+          envMapIntensity: 1.4,
+          side: THREE.DoubleSide,
+        });
+        o.castShadow = false;
+        return;
+      }
+
+      /* `Glass_dark` was 0.22 transmission and near-black, which on a car with
+         no side windows means the two wind deflectors above the scuttle read as
+         solid black rectangles sitting in the cockpit. They are tinted glass,
+         not panels. Raised until they are glass that happens to be dark. */
       if (/glass|windscreen/i.test(o.name)) {
         const dark = /dark/i.test(o.name);
         o.material = new THREE.MeshPhysicalMaterial({
-          color: dark ? 0x0e1113 : 0xc7d2d8,
+          color: dark ? 0x6d757a : 0xc7d2d8,
           roughness: 0.05, metalness: 0,
-          transmission: dark ? 0.22 : 0.92,
+          transmission: dark ? 0.78 : 0.92,
           thickness: 0.006, ior: 1.52,
           envMapIntensity: 1.0,
           side: THREE.DoubleSide,

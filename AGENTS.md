@@ -118,20 +118,18 @@ draw a frame:
 
 | | |
 |---|---|
-| `assets/model/shelby-cobra-427-v3.glb` | 4.32 MB |
+| `assets/model/shelby-cobra-427-v4.glb` | 3.69 MB |
 | `assets/env/parking_garage_1k.hdr` | 1.47 MB |
 | Draco decoder — `.wasm` + wrapper | 0.10 MB |
-| **Total** | **5.88 MB** |
+| **Total** | **5.26 MB** |
 
-Raw, off a server that does not compress binaries, 6.44 MB.
+Raw, off a server that does not compress binaries, 5.82 MB.
 
-**Re-measured 2026-08-25 after the material rebuild, and it went the wrong way
-by 0.43 MB.** The v3 model carries seven textures where v2 carried six — the
-alpha cutout is its own map now rather than riding in the base colour's alpha —
-and Blender's WebP encoder at quality 85 is less aggressive than the one this
-build used to reach through gltf-transform. It is not a mistake and it is not
-free: it bought a car with an interior, headlamps and a polished exhaust, and it
-is recorded at its price rather than at the price we wanted.
+**Three measurements in one day, and the middle one was the worst.** v2 was
+5.45 MB with a car whose interior was black. v3 fixed the materials and went to
+5.88 MB. v4 fixed the fix and came back to 5.26 MB — the internal atlas stopped
+carrying an invented metal channel, which compresses better as well as looking
+right. The ceiling is still 5 MB and this is still over it by 0.26 MB.
 
 The account of how is short and it is not flattering. The HDR arrived in
 direction F as the light source, and nobody counted it. The figure this paragraph
@@ -192,7 +190,7 @@ confirm`. The gate is yielded, out loud; it is not absent.
 ## Open — do not resolve these by guessing
 
 1. **The hero model — bought, and the licence document is the open part.**
-   Direction F runs on `assets/model/shelby-cobra-427-v3.glb`, built from the
+   Direction F runs on `assets/model/shelby-cobra-427-v4.glb`, built from the
    purchased *Shelby Cobra 1965 Racing Model* pack in `donot git/purchased cobra
    final/`. That closes the CC BY-NC-SA problem the old `ac-cobra-427.glb`
    carried — NonCommercial excluded a dealer's own website, and this is a paid

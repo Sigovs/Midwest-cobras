@@ -33,29 +33,46 @@ Two of those four are nonsense.
     same black hole. A dielectric at metalness 0.65 has almost no diffuse
     response left to shade.
 
-Only the roughness link was right, and it is worth saying so, because the
-opposite was assumed twice on the way here: glossiness IS inverted in this file,
-so roughness = 1 - gloss.
-
 ────────────────────────────────────────────────────────────────────────────────
-WHAT THIS DOES INSTEAD
+WHAT THIS DOES INSTEAD, AND THE TWO ATTEMPTS THAT DID NOT WORK
 
-The standard specular/glossiness -> metallic/roughness conversion. It needs one
-decision — where the metal is — and then it follows:
+    baseColor  = diffuse, with the reflection mixed in where there is metal
+    roughness  = the map named "Glossiness", used DIRECTLY
+    metallic   = decided per ATLAS, not per texel threshold
 
-    metal      = bright reflection AND dark diffuse
-    baseColor  = mix(diffuse, reflection, metal)
-    roughness  = 1 - glossiness
-    metallic   = metal
+The last line is the whole lesson and it cost two rebuilds.
 
-"Bright reflection and dark diffuse" is not a heuristic reached for because
-nothing better was available. It is what a metal IS in a specular/glossiness
-workflow. Lacquer does the opposite: bright saturated diffuse, and a reflection
-that belongs to a clear coat rather than to the substrate. The two are separable
-because the author separated them.
+ATTEMPT ONE used the textbook rule: metal is bright reflection over dark diffuse.
+It is the correct rule for a specular/glossiness source and it is useless on this
+one. dev/probe_atlas.py samples the maps at labelled UVs, and the Reflection map
+reads exactly (1.00, 1.00, 1.00) on the seats, the cockpit floor, the side pipe,
+the wheel rim AND the body paint. It is not a metal colour map at all — it is a
+flat white specular-level mask with the falloff left to Fresnel, which is 0.667
+on all five of those same points. So the rule fired on the leather, mixed white
+into its base colour, and the cockpit arrived as pale grey metal slabs. Alex:
+"where are the seats". They were there. They were chrome.
 
-Coverage is printed on every run. A mask claiming 60% of a car is chrome is a
-mask that is wrong, and it says so out loud instead of shipping.
+ATTEMPT TWO used dark-and-polished instead. It called 54.9% of the Internal atlas
+metal and printed its own warning saying so.
+
+WHAT SETTLED IT was not a better threshold. Raycasting the rendered car says
+where the metal physically is: the side pipe, the chrome bezels, the grille
+surround and the rims are all carried by `Body` and the wheels, which are on the
+EXTERNAL atlas. The INTERNAL atlas carries the cockpit, the steering wheel, the
+door cards and the tyres — leather, carpet, wood and rubber, and not one metal
+part among them. So the internal atlas gets metalness 0 everywhere, because
+there is nothing on it to be metal, and the external atlas keeps a mask.
+
+That is a fact about the model rather than a number tuned until the picture
+looked right, which is why it is allowed to decide.
+
+ROUGHNESS IS NOT INVERTED, and this reverses what the .blend does. Sampled:
+seats 0.73, tyre tread 0.70, wheel rim 0.41, side pipe 0.38, body paint 0.20.
+Read as glossiness that ordering makes rubber glossier than a polished rim. Read
+as roughness it is right on all five. The map's filename lies.
+
+Coverage is printed on every run, with a warning past 45%. A mask claiming most
+of a car is chrome is a mask that is wrong, and it says so instead of shipping.
 """
 import bpy
 import os
@@ -68,11 +85,14 @@ import numpy as np
 # thrown away twenty seconds later.
 SIZE = 2048
 
-# The metal decision. Reflection above REFL_HI with diffuse below DIFF_LO is
-# metal; between each pair it ramps, so the bevel where chrome meets paint does
-# not arrive as a staircase.
-REFL_LO, REFL_HI = 0.22, 0.52
-DIFF_LO, DIFF_HI = 0.10, 0.30
+# The metal mask, and it applies to the EXTERNAL atlas only — see the module
+# docstring for why the internal one gets no mask at all. On this atlas the rule
+# does separate: paint is bright and saturated in diffuse, while chrome and the
+# side pipe are dark in diffuse with their whole appearance carried by the
+# reflection.
+REFL_LO, REFL_HI = 0.22, 0.52   # reflection brightness
+DIFF_LO, DIFF_HI = 0.10, 0.30   # diffuse brightness
+
 
 
 def _smoothstep(lo, hi, x):
@@ -178,13 +198,33 @@ def rebuild(out_dir):
         s = _raw(reflect)[..., :3]
         g = _raw(gloss)[..., 0]
 
+        rough = np.clip(g, 0.0, 1.0)
         d_max = d.max(axis=2)
         s_max = s.max(axis=2)
 
-        metal = _smoothstep(REFL_LO, REFL_HI, s_max) * (1.0 - _smoothstep(DIFF_LO, DIFF_HI, d_max))
-
-        base = d * (1.0 - metal[..., None]) + s * metal[..., None]
-        rough = np.clip(1.0 - g, 0.0, 1.0)
+        # ── which atlas this is, and why that is the whole decision ──────────
+        # Raycasting the rendered car settles what nobody could settle from a
+        # threshold: the side pipe, the chrome bezels, the grille surround and
+        # the rims are all on the EXTERNAL atlas, carried by `Body` and the
+        # wheels. The INTERNAL atlas carries the cockpit, the steering wheel,
+        # the door cards and the tyres — leather, carpet, wood and rubber, and
+        # not one metal part among them.
+        #
+        # So metalness is decided per atlas, by what is on it, instead of by a
+        # number tuned until the picture looked right. Two attempts were made at
+        # tuning that number. The first called the seats chrome. The second
+        # called 55% of the interior chrome and said so itself.
+        if 'internal' in mat.name.lower():
+            metal = np.zeros_like(rough)
+            base = d
+            note = 'internal atlas — no metal parts on it, so none is invented'
+        else:
+            # Bright reflection with a dark diffuse. On the External atlas this
+            # does separate: paint is bright and saturated, chrome and the pipe
+            # are dark in diffuse with the reflection carrying them.
+            metal = _smoothstep(REFL_LO, REFL_HI, s_max) * (1.0 - _smoothstep(DIFF_LO, DIFF_HI, d_max))
+            base = d * (1.0 - metal[..., None]) + s * metal[..., None]
+            note = 'external atlas — mask from reflection over dark diffuse'
 
         base_rgba = np.concatenate([base, np.ones((SIZE, SIZE, 1), np.float32)], axis=2)
         # glTF's ORM packing: R occlusion (unused), G roughness, B metalness.
@@ -209,8 +249,8 @@ def rebuild(out_dir):
             alpha_img = _write(stem + '__cutout.png', _raw(alpha_img), out_dir, srgb=False)
 
         pct = 100.0 * float((metal > 0.5).mean())
-        print('[pbr] {}: metal mask covers {:.1f}% of the atlas (mean roughness {:.2f})'
-              .format(mat.name, pct, float(rough.mean())))
+        print('[pbr] {}: metal {:.1f}% of the atlas, mean roughness {:.2f} — {}'
+              .format(mat.name, pct, float(rough.mean()), note))
         if pct > 45.0:
             print('[pbr]   ! {:.0f}% is too much of a car to be chrome — check the '
                   'REFL/DIFF thresholds before shipping this'.format(pct))

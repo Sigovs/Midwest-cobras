@@ -60,6 +60,18 @@ if tex_dir:
 LENSES = {
     'Lens_right': {'x': (0.36, 0.74),   'y': (-1.99, -1.79), 'z': (0.40, 0.74)},
     'Lens_left':  {'x': (-0.74, -0.36), 'y': (-1.99, -1.79), 'z': (0.40, 0.74)},
+    # THE REAR LAMPS HAVE THE SAME DISEASE, and Alex found it before we did: the
+    # tail lamp lens is UV-mapped onto the tyre-tread island as well, so a 3 cm
+    # oval renders as a slab of Goodyear.
+    #
+    # dev/probe_tail.py located them by bucketing every tail-half face of
+    # `Interior` by its mean UV and printing the result, rather than by tuning a
+    # box against a screenshot — which is exactly how the FIRST lens box came to
+    # be written in the wrong coordinate space. Both lamps land at
+    # x ±0.55..0.59, y 1.90..1.92, z 0.43..0.55. The box below is that, loosened
+    # by a couple of centimetres.
+    'Lamp_rear_right': {'x': (0.46, 0.68),   'y': (1.84, 1.97), 'z': (0.36, 0.62)},
+    'Lamp_rear_left':  {'x': (-0.68, -0.46), 'y': (1.84, 1.97), 'z': (0.36, 0.62)},
 }
 
 interior = bpy.data.objects.get('Interior')

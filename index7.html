@@ -1,0 +1,178 @@
+<!doctype html>
+<!-- ════════════════════════════════════════════════════════════════════════
+     index7 — direction G. The scrollcraft build.
+
+     WHAT IS DIFFERENT ABOUT THIS FILE, said once at the top so nobody has to
+     infer it from a diff.
+
+     Every other page here is a copy of the sterile master and loads
+     tokens.css → system.css → main.css in that order, and below tokens.css
+     there is no hex and no px. This one does not. It is built on
+     nateherkai/scroll-craft, vendored whole at design_dna/external/scrollcraft,
+     which brings its own engine, its own six-token colour system and its own
+     4px spacing scale — and its engine is explicitly never edited per project.
+
+     Two of our standing rules are set aside for it, deliberately, on Alex's
+     instruction of 2026-08-26, and both are named rather than quietly broken:
+
+       1. THREE VOICES BECOMES TWO. Familjen announces, Source Sans informs, and
+          JetBrains Mono is not loaded here. The skill's position is that a third
+          face is a costume; ours is that mono is a role — figures, units, labels
+          — not a voice. Alex chose to test the skill in its own shape rather
+          than half of it. Nothing on this page sets a figure in mono, so the
+          role has to be carried by weight and tracking instead, and whether that
+          works is the actual experiment.
+
+       2. TWO TOKEN SYSTEMS DO NOT COEXIST. The --sc-* tokens below are the only
+          ones on this page. They are not new colours: every value is lifted from
+          tokens.css so the page is our palette expressed in his system, not a
+          second palette. If a value here ever stops matching tokens.css, this
+          page has quietly become a different brand.
+
+     index6 is untouched. These are rival directions, not revisions.
+  ════════════════════════════════════════════════════════════════════════ -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Midwest Cobras — a Cobra, taken apart</title>
+<meta name="description" content="Hand-assembled Backdraft Cobras, built two to four at a time in the Midwest. Scroll to take one apart.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231a1d21'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap">
+
+<link rel="stylesheet" href="assets/vendor/scrollcraft/scrollcraft.css">
+<link rel="stylesheet" href="assets/css/index7.css">
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "./assets/js/vendor/three.module.js"
+  }
+}
+</script>
+</head>
+<body>
+
+<span data-sc-progress></span>
+<div class="sc-grain" aria-hidden="true"></div>
+
+<!-- THE LIVE SURFACE. One canvas, fixed, behind the whole page. Two acts hand
+     it back and forth; everywhere else the CSS fades it out. Two canvases would
+     be two WebGL contexts and two copies of a 3.8 MB model for a car nobody can
+     see twice at once. -->
+<div class="g-surface" data-g-mount
+     data-model="assets/model/shelby-cobra-427-v8.glb"
+     data-env="assets/env/parking_garage_1k.hdr" aria-hidden="true">
+  <canvas class="g-surface__canvas" data-g-canvas></canvas>
+</div>
+
+<main id="top">
+
+  <!-- 1 · ARRIVAL — pin. The one unbroken camera move Alex asked for. -->
+  <section class="g-act" data-sc-act="pin" data-sc-span="3.2" data-g-act="arrival"
+           data-sc-drift="#14171a">
+    <div data-sc-stage class="g-stage">
+      <div class="sc-copy sc-copy--lead g-lead" data-sc-cue="0 0.74 0">
+        <h1 class="sc-display sc-display--xl" data-sc-kinetic="lines">Two to four a year.
+Every one of them by hand.</h1>
+        <p class="sc-body">A Backdraft Cobra is not ordered from a page. It is specified,
+          then built, and the difference shows up in places a photograph cannot reach.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · THE RECORD — flow. An ordinary section done well: the numbers, plainly.
+       Mono is not loaded on this page, so the figures are carried by weight and
+       tracking. Whether that is enough is the experiment named at the top. -->
+  <section class="g-act g-record" data-sc-act="flow" data-sc-drift="#1a1d21">
+    <div class="g-record__inner">
+      <p class="sc-body g-record__kicker" data-sc-in>What is actually underneath</p>
+      <ul class="g-figures">
+        <li data-sc-in>
+          <span class="g-figures__n" data-sc-count="0 427">0</span>
+          <span class="g-figures__u">cubic inches</span>
+          <span class="g-figures__l">The engine the car is named after.</span>
+        </li>
+        <li data-sc-in>
+          <span class="g-figures__n" data-sc-count="0 4">0</span>
+          <span class="g-figures__u">wheels, one mesh each</span>
+          <span class="g-figures__l">Polished alloy. Goodyear Eagle, lettering out.</span>
+        </li>
+        <li data-sc-in>
+          <span class="g-figures__n" data-sc-count="0 29">0</span>
+          <span class="g-figures__u">separate parts on screen</span>
+          <span class="g-figures__l">Shell, doors, boot, glass, lamps, seats, wheels, rods.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3 · THE WALK — pan. Lateral travel under vertical scroll: four crops of
+       the same car, read left to right while the page goes down. -->
+  <section class="g-act g-walk" data-sc-act="pan" data-sc-span="2.6" data-sc-drift="#101316">
+    <div data-sc-stage class="g-walk__stage">
+      <div class="g-walk__rail" data-sc-pan="0.55">
+        <figure class="g-walk__card">
+          <img src="assets/img/f-hero-still.jpg" alt="The front three-quarter: grille, overriders, headlamps." loading="lazy">
+          <figcaption class="sc-body">The face. Two lamps, a grille, and nothing else asked to help.</figcaption>
+        </figure>
+        <figure class="g-walk__card">
+          <img src="assets/img/photo-engine.jpg" alt="An engine bay, stand-in photography." loading="lazy">
+          <figcaption class="sc-body">The side pipe runs the length of the sill and colours where it gets hot.</figcaption>
+        </figure>
+        <figure class="g-walk__card">
+          <img src="assets/img/photo-workshop.jpg" alt="A workshop, stand-in photography." loading="lazy">
+          <figcaption class="sc-body">Built in a room, by people, two to four at a time.</figcaption>
+        </figure>
+        <figure class="g-walk__card">
+          <img src="assets/img/f-hero-still-mobile.jpg" alt="The car standing in the workshop." loading="lazy">
+          <figcaption class="sc-body">Then it stands on the floor and waits for someone to drive it.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · THE SIGNATURE — pin. The car comes apart into the nodes it was bought
+       as, and goes back together. It earns its place because it is the one thing
+       here that could not be a photograph. -->
+  <section class="g-act" data-sc-act="pin" data-sc-span="4.4" data-g-act="signature"
+           data-sc-drift="#0d1013">
+    <div data-sc-stage class="g-stage">
+      <div class="sc-copy g-lead g-lead--right" data-sc-cue="0.04 0.34 0.18">
+        <h2 class="sc-display sc-display--l" data-sc-kinetic="words">It comes apart
+in the order it went together.</h2>
+      </div>
+      <div class="sc-copy g-lead g-lead--right" data-sc-cue="0.42 0.72 0.56">
+        <p class="sc-body">Shell first. Then the doors, the boot lid, the glass.
+          The small chrome last, because it goes on last.</p>
+      </div>
+      <div class="sc-copy g-lead g-lead--right" data-sc-cue="0.78 1 0.90">
+        <p class="sc-body">Keep going and it puts itself back.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · CLOSE — flow, and the last element on the page, which the skill
+       requires and which is also just correct: a closing act followed by
+       anything is not a closing act. -->
+  <section class="g-act g-close" data-sc-act="flow" data-sc-drift="#14171a">
+    <div class="g-close__inner">
+      <h2 class="sc-display sc-display--l" data-sc-in>Yours is not built yet.</h2>
+      <p class="sc-body" data-sc-in>Which is the only honest thing a builder can say
+        before you have told them what you want.</p>
+      <a class="g-cta" href="#top" data-sc-in>Start the specification</a>
+    </div>
+  </section>
+
+</main>
+
+<script type="module" src="assets/js/scene/index7.js"></script>
+<script src="assets/vendor/scrollcraft/scrollcraft.js"></script>
+<!-- The engine does not auto-boot, and that is deliberate on its part: it never
+     generates DOM and never claims a page it was not handed. -->
+<script>ScrollCraft.mount(document.body);</script>
+</body>
+</html>

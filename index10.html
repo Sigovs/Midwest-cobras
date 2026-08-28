@@ -70,21 +70,21 @@
       <p class="tag"><span class="tag__dot" aria-hidden="true"></span>02 / Inventory</p>
       <h2 class="sect__title" id="inventory-title">Four cars, not four hundred.</h2>
       <a class="btn sect__action" href="#inventory">View all inventory <span aria-hidden="true">&rarr;</span></a>
+      <p class="rail-btns" data-rail-controls hidden>
+        <button class="round" type="button" data-rail="prev" aria-label="Previous cars">&larr;</button>
+        <button class="round" type="button" data-rail="next" aria-label="Next cars">&rarr;</button>
+      </p>
       <p class="lede sect__note">Midwest holds two to four Cobras at any one
         time. Each one gets the room a car like this needs — shown at the size
         you would stand in front of it, not shrunk into a grid cell.</p>
     </header>
 
-    <div class="lots">
-      <article class="lot">
-        <!-- Photography is Alex's to supply. The frame states its own subject
-             and aspect so the layout is final at full size and nothing on the
-             page pretends to be a picture that does not exist yet. -->
-        <div class="frame frame--lot" role="img"
-             aria-label="Photograph to be supplied: RT4 Classic Edition, front three-quarter">
-          <span class="frame__slug">Photograph to be supplied</span>
-          <span class="frame__sub">RT4 Classic Edition · front three-quarter · 3:2</span>
-        </div>
+    <!-- A rail, like 07 and 08: two cars now, four at most, and the third is
+         cut by the window rather than by a container. -->
+    <ul class="rail rail--lots" data-rail-track tabindex="0" aria-label="Cars on the floor, scrollable">
+      <li class="lot">
+        <img class="shot shot--lot" src="assets/img/lot-rt4.jpg" width="3000" height="2000"
+             alt="RT4 Classic Edition, front three-quarter, on the shop floor" loading="lazy" decoding="async">
         <p class="lot__state">Lot 01 &middot; Available</p>
         <h3 class="lot__name">RT4 Classic Edition</h3>
         <dl class="spec">
@@ -93,14 +93,11 @@
           <div><dt>Pipes</dt><dd>Ceramic-coated side pipes</dd></div>
         </dl>
         <a class="link" href="#inventory">Full specification <span aria-hidden="true">&rarr;</span></a>
-      </article>
+      </li>
 
-      <article class="lot">
-        <div class="frame frame--lot" role="img"
-             aria-label="Photograph to be supplied: RT4B Black Edition, rear three-quarter">
-          <span class="frame__slug">Photograph to be supplied</span>
-          <span class="frame__sub">RT4B Black Edition · rear three-quarter · 3:2</span>
-        </div>
+      <li class="lot">
+        <img class="shot shot--lot" src="assets/img/lot-rt4b.jpg" width="3000" height="2000"
+             alt="RT4B Black Edition, rear three-quarter, on the shop floor" loading="lazy" decoding="async">
         <p class="lot__state">Lot 02 &middot; Available</p>
         <h3 class="lot__name">RT4B Black Edition</h3>
         <dl class="spec">
@@ -109,8 +106,8 @@
           <div><dt>Pipes</dt><dd>Ceramic-coated black roll bars</dd></div>
         </dl>
         <a class="link" href="#inventory">Full specification <span aria-hidden="true">&rarr;</span></a>
-      </article>
-    </div>
+      </li>
+    </ul>
   </section>
 
   <!-- ══════════════════════════════════════════════════════════════════════
@@ -187,16 +184,10 @@
     </div>
 
     <div class="about__pair">
-      <div class="frame frame--wide" role="img"
-           aria-label="Photograph to be supplied: car on the shop floor, wide">
-        <span class="frame__slug">Photograph to be supplied</span>
-        <span class="frame__sub">On the shop floor, wide · 16:9</span>
-      </div>
-      <div class="frame frame--wide" role="img"
-           aria-label="Photograph to be supplied: car under work, three-quarter">
-        <span class="frame__slug">Photograph to be supplied</span>
-        <span class="frame__sub">Under work, three-quarter · 16:9</span>
-      </div>
+      <img class="shot shot--wide" src="assets/img/shop-04.jpg" width="1800" height="2400"
+           alt="The car in profile, side pipe running the length of the sill" loading="lazy" decoding="async">
+      <img class="shot shot--wide" src="assets/img/shop-01.jpg" width="1800" height="2400"
+           alt="The car from the front three-quarter" loading="lazy" decoding="async">
     </div>
   </section>
 
@@ -331,11 +322,16 @@
     </header>
 
     <ul class="rail rail--shots" data-rail-track tabindex="0" aria-label="Pictures from the shop, scrollable">
-      <li><div class="frame frame--shot" role="img" aria-label="Photograph to be supplied: front three-quarter on the floor"><span class="frame__slug">To be supplied</span></div></li>
-      <li><div class="frame frame--shot" role="img" aria-label="Photograph to be supplied: rear three-quarter, lamps lit"><span class="frame__slug">To be supplied</span></div></li>
-      <li><div class="frame frame--shot" role="img" aria-label="Photograph to be supplied: nose and grille"><span class="frame__slug">To be supplied</span></div></li>
-      <li><div class="frame frame--shot" role="img" aria-label="Photograph to be supplied: flank and side pipe"><span class="frame__slug">To be supplied</span></div></li>
-      <li><div class="frame frame--shot" role="img" aria-label="Photograph to be supplied: front on, low"><span class="frame__slug">To be supplied</span></div></li>
+      <li><img class="shot shot--tall" src="assets/img/shop-01.jpg" width="1800" height="2400"
+               alt="Front three-quarter, lit from above" loading="lazy" decoding="async"></li>
+      <li><img class="shot shot--tall" src="assets/img/shop-03.jpg" width="1800" height="2400"
+               alt="Head on, low" loading="lazy" decoding="async"></li>
+      <li><img class="shot shot--tall" src="assets/img/shop-04.jpg" width="1800" height="2400"
+               alt="The flank and the side pipe" loading="lazy" decoding="async"></li>
+      <li><img class="shot shot--tall" src="assets/img/shop-02.jpg" width="1800" height="2400"
+               alt="Rear three-quarter" loading="lazy" decoding="async"></li>
+      <li><img class="shot shot--tall" src="assets/img/shop-05.jpg" width="1800" height="2400"
+               alt="From behind the near-side rear wing" loading="lazy" decoding="async"></li>
     </ul>
 
     <p class="gallery__follow"><a class="link" href="https://www.instagram.com/midwestcobras/">Follow on Instagram <span aria-hidden="true">&rarr;</span></a></p>

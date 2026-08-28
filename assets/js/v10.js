@@ -67,7 +67,16 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(sync);
   }
 
+  /* 100vw counts the scrollbar and the layout does not, so anything sized from
+     100vw overshoots by exactly this much. The rails are, hence this. */
+  function scrollbar() {
+    var w = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty('--sbw', (w > 0 ? w : 0) + 'px');
+  }
+
   function boot() {
+    scrollbar();
+    window.addEventListener('resize', scrollbar, { passive: true });
     head();
     var sections = document.querySelectorAll('.sect');
     for (var i = 0; i < sections.length; i++) rail(sections[i]);

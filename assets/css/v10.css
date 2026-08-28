@@ -77,16 +77,28 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 [data-ground='light'] .btn--solid { background: var(--ink-on-light); color: var(--bone-050); border-color: var(--ink-on-light); }
 .btn-row { display: flex; flex-wrap: wrap; gap: var(--sp-4); margin-block-start: var(--sp-6); }
 
+/* THE TERTIARY ACTION IS AN OXBLOOD PILL WITH A BONE LABEL, on both grounds.
+   That is the project's own colour law rather than a departure from it:
+   CLAUDE.md says oxblood is text on light and FILL on dark, and a filled mark
+   with a --bone-050 label is exactly the dark-ground form. Keeping the same
+   object on the light ground costs nothing — bone on oxblood measures 8.99:1
+   there too — and it means one shape means one thing across the page.
+
+*/
 .link {
   display: inline-flex; align-items: center; gap: var(--sp-3);
-  font-family: var(--mono); font-size: var(--micro); letter-spacing: 0.05em;
-  color: var(--bone-050); text-decoration: none;
-  border-block-end: var(--hairline) solid transparent;
-  transition: border-color var(--dur-2) var(--ease-out);
+  padding: var(--sp-3) var(--sp-6);
+  border-radius: 999px;
+  background: var(--oxblood);
+  color: var(--bone-050);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase;
+  text-decoration: none;
+  transition: filter var(--dur-2) var(--ease-out);
 }
-[data-ground='light'] .link { color: var(--oxblood); }
-.link:hover { border-block-end-color: currentColor; }
-.link:focus-visible { outline: var(--focus-w) solid currentColor; outline-offset: var(--focus-offset); }
+.link:hover { filter: brightness(1.28); }
+.link:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+[data-ground='light'] .link:focus-visible { outline-color: var(--ink-on-light); }
 
 /* The frame is an empty picture that says what belongs in it. */
 .frame {
@@ -158,17 +170,27 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .wordmark:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
 
-.site-nav ul { display: flex; flex-wrap: wrap; gap: var(--sp-4) var(--sp-6); }
+.site-nav ul { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+/* A pill, not an underline. It is darker than the bar rather than lighter, so
+   the label stays the brightest thing in it and the shape reads as a well the
+   word sits in. The padding is on the link at rest too — otherwise the row
+   reflows the moment a pointer touches it. */
 .site-nav a {
-  display: block; padding-block: var(--sp-2);
+  display: block;
+  padding: var(--sp-3) var(--sp-5);
+  border-radius: 999px;
   font-family: var(--mono); font-size: var(--micro); letter-spacing: 0.05em;
   color: var(--bone-050); text-decoration: none;
-  border-block-end: var(--hairline) solid transparent;
-  transition: border-color var(--dur-2) var(--ease-out);
+  background: transparent;
+  transition: background var(--dur-2) var(--ease-out);
 }
-.site-nav a:hover { border-block-end-color: var(--bone-050); }
-.site-nav a[aria-current='page'] { border-block-end-color: rgb(var(--bone-100-rgb) / 0.4); }
-.site-nav a:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+.site-nav a:hover { background: var(--graphite-950); }
+.site-nav a[aria-current='page'] { background: rgb(var(--graphite-950-rgb) / 0.55); }
+.site-nav a[aria-current='page']:hover { background: var(--graphite-950); }
+.site-nav a:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: 2px; }
+/* Over the hero the bar has no ground of its own, so a graphite pill would be
+   invisible on the graphite-700 plate. There it is drawn from bone at low alpha. */
+.site-head:not([data-stuck='true']) .site-nav a:hover { background: rgb(var(--graphite-950-rgb) / 0.55); }
 
 /* ── 01 hero ───────────────────────────────────────────────────────────── */
 .hero {
@@ -233,8 +255,24 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .sect__head--pair .sect__note { grid-column: 8 / span 5; grid-row: 2; max-inline-size: 46ch; }
 .rail-btns { grid-column: 11 / span 2; grid-row: 2; justify-self: end; display: flex; gap: var(--sp-4); }
 
+/* ── the renders ───────────────────────────────────────────────────────────
+   Stills from the scene in scene/f9.js, off the purchased model whose licence
+   Alex confirmed on 2026-08-28. Same car, same room, same light as the hero —
+   which is the point: a page whose photographs and whose 3D disagree about the
+   light reads as two pages. They are not somebody else's property, which the
+   four images in assets/img/photo-*.jpg are. */
+.shot {
+  display: block; inline-size: 100%; block-size: auto;
+  background: var(--graphite-900);
+  border: var(--hairline) solid rgb(var(--bone-100-rgb) / 0.08);
+}
+.shot--lot  { aspect-ratio: 3 / 2;  object-fit: cover; }
+.shot--wide { aspect-ratio: 16 / 9; object-fit: cover; object-position: center 42%; }
+.shot--tall { aspect-ratio: 3 / 4;  object-fit: cover; }
+
 /* ── 02 inventory ──────────────────────────────────────────────────────── */
-.lots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-8) var(--col-gap); }
+.rail--lots { grid-auto-columns: 34rem; }
+.lot { display: block; }
 .lot__state {
   margin-block: var(--sp-5) var(--sp-3);
   font-family: var(--mono); font-size: var(--micro);
@@ -256,7 +294,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
 }
 .spec dd { color: var(--text); }
-.lot .link { margin-block-start: var(--sp-6); }
+.lot .link { margin-block-start: var(--sp-7); }
 
 /* ── 03 build ──────────────────────────────────────────────────────────── */
 .build__top {
@@ -294,7 +332,11 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   gap: var(--sp-8) var(--col-gap); align-items: start; margin-block-end: var(--sp-8);
 }
 .about__grid > :first-child { grid-column: 1 / span 6; }
-.about__body { grid-column: 8 / span 5; display: grid; gap: var(--sp-6); justify-items: start; }
+/* align-content: start, and it is the whole fix. This column is a grid ITEM in a
+   taller row, so it stretches; without this its own two rows stretch with it and
+   the button drifts 136px below the paragraph it belongs to instead of the 32px
+   the gap actually says. The other two columns built this way get the same. */
+.about__body { grid-column: 8 / span 5; display: grid; gap: var(--sp-6); justify-items: start; align-content: start; }
 .about__pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--col-gap); }
 
 /* ── 05 services ───────────────────────────────────────────────────────── */
@@ -319,19 +361,42 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   gap: var(--sp-8) var(--col-gap); align-items: start;
 }
 .consign > :first-child { grid-column: 1 / span 6; }
-.consign__body { grid-column: 8 / span 5; display: grid; gap: var(--sp-7); justify-items: start; }
+.consign__body { grid-column: 8 / span 5; display: grid; gap: var(--sp-7); justify-items: start; align-content: start; }
 
 /* ── 07 / 08 rails ─────────────────────────────────────────────────────── */
+/* THE RAIL BLEEDS RIGHT. Its left edge stays on the section's own column so it
+   lines up with the heading above it; its right edge runs to the edge of the
+   screen, so the next card is cut by the window rather than by a container. That
+   cut is what says "there is more" without a dot or a counter.
+
+   The left margin is the same distance the centred column is already inset by,
+   and the right margin eats the gutter. --sbw is the scrollbar's width, measured
+   once in v10.js: without it, 100vw overshoots by that much and the whole page
+   gains a horizontal scrollbar. */
+.sect > .rail {
+  max-inline-size: none;
+  margin-inline:
+    max(0px, ((100vw - var(--sbw, 0px)) - 2 * var(--gutter) - var(--page)) / 2)
+    calc(-1 * var(--gutter));
+  padding-inline-end: var(--gutter);
+}
+
 .rail {
-  display: grid; grid-auto-flow: column; grid-auto-columns: 26rem;
+  display: grid; grid-auto-flow: column; grid-auto-columns: 30rem;
   gap: var(--col-gap);
   padding-block-end: var(--sp-5);
   overflow-x: auto; overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity; scrollbar-width: thin;
+  scroll-snap-type: x proximity;
+  /* The bar itself is hidden and the affordance is not: the two arrows are on
+     screen whenever there is anything to scroll, the rail still takes a drag,
+     a wheel, the arrow keys and a screen reader, and the card cut off at the
+     window edge is the other half of saying there is more. */
+  scrollbar-width: none;
 }
+.rail::-webkit-scrollbar { display: none; }
 .rail > * { scroll-snap-align: start; }
 .rail:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
-.rail--shots { grid-auto-columns: 19rem; }
+.rail--shots { grid-auto-columns: 22rem; }
 
 .card {
   display: grid; grid-template-rows: auto 1fr auto; gap: var(--sp-5);
@@ -434,7 +499,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
      heading they belong to. */
   .rail-btns { grid-column: 1; grid-row: auto; justify-self: start; margin-block-start: var(--sp-5); }
 
-  .lots, .about__pair, .build__top, .steps { grid-template-columns: minmax(0, 1fr); }
+  .about__pair, .build__top, .steps { grid-template-columns: minmax(0, 1fr); }
+  .rail--lots { grid-auto-columns: 82vw; }
   .steps { gap: var(--sp-6); }
   .row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
   .frame--square { aspect-ratio: 16 / 9; }
@@ -442,6 +508,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
   .rail { grid-auto-columns: 80vw; }
   .rail--shots { grid-auto-columns: 58vw; }
+  .sect > .rail { margin-inline: 0 calc(-1 * var(--gutter)); }
   .about__numeral { font-size: clamp(7rem, 42vw, 12rem); inset-block-start: 4%; }
 }
 

@@ -1,0 +1,424 @@
+<!doctype html>
+<!-- index10 — built from donot git/midwest_cobras_v10.png, 2026-08-28.
+     Hero = index9's approved stage (hence the index9.css link). Copy is
+     transcribed from the mockup; where it disagreed with docs/content-ledger.md
+     the ledger won. Photography is Alex's to supply; every slot is an empty
+     plate that names its own subject. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Midwest Cobras — Backdraft Cobras built, sold, serviced and moved</title>
+<meta name="description" content="Two to four Cobras on the floor at any one time. Built, sold, serviced and moved out of the Midwest.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2308090b'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Familjen Grotesk returns as the announcing voice: v10 sets its headlines in
+     a normal-width grotesque, which is what the project's own rule specifies and
+     what index9 departed from. Allura is the fourth voice and it earns its place
+     below, in index10.css. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Allura&display=swap">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/index9.css">
+<link rel="stylesheet" href="assets/css/index10.css">
+
+<script type="importmap">
+{ "imports": {
+    "three": "./assets/js/vendor/three.module.js",
+    "gsap": "./assets/js/vendor/gsap/index.js",
+    "gsap/ScrollTrigger": "./assets/js/vendor/gsap/ScrollTrigger.js"
+} }
+</script>
+</head>
+<body class="dir-j dir-m" data-ground="dark">
+
+<a class="m-skip" href="#main">Skip to content</a>
+
+<!-- masthead: absolute, so it belongs to the hero and leaves with it -->
+<header class="m-bar">
+  <a class="m-mark" href="#main" aria-label="Midwest Cobras — home">Midwest Cobras</a>
+  <nav class="m-nav" aria-label="Primary">
+    <ul>
+      <li><a href="#main" aria-current="page">Home</a></li>
+      <li><a href="#inventory">Inventory</a></li>
+      <li><a href="#build">Build</a></li>
+      <!-- no chevron until there is a submenu behind it -->
+      <li><a href="#services">Service</a></li>
+      <li><a href="#collection">Car Collection</a></li>
+      <li><a href="#consignment">Consignment</a></li>
+      <li><a href="#finance">Finance</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- 01 · the scroll — index9's stage, unchanged; only act 01's copy is v10's -->
+<section class="j-hero m-hero" id="stage" data-scene-mount
+         data-model="assets/model/shelby-cobra-427-v8.glb"
+         aria-labelledby="m-title">
+  <canvas class="j-canvas" data-scene aria-hidden="true"></canvas>
+
+  <div class="j-callouts" aria-hidden="true">
+    <svg class="j-lines" data-lines focusable="false"></svg>
+    <div data-callouts></div>
+  </div>
+
+  <div class="j-stage" data-stage>
+    <article class="j-act m-act" data-act="1" aria-labelledby="m-title">
+      <p class="j-eyebrow">
+        <span class="j-micro j-micro--accent">01</span>
+        <span class="j-micro">Midwest Cobras</span>
+      </p>
+      <div class="j-lead-block">
+        <h1 class="j-display" id="m-title">A Cobra
+built to order.</h1>
+        <p class="j-body">Two to four cars on the floor at any one time — built,
+          sold, serviced and moved out of the Midwest.</p>
+        <p class="m-cta-row">
+          <a class="m-btn m-btn--solid" href="#inventory">See what is on the floor</a>
+          <a class="m-btn" href="#build">Build yours</a>
+        </p>
+      </div>
+    </article>
+
+    <article class="j-act m-act" data-act="2" aria-labelledby="m-act2">
+      <p class="j-eyebrow">
+        <span class="j-micro j-micro--accent">01</span>
+        <span class="j-micro">The machine</span>
+      </p>
+      <div class="j-lead-block">
+        <h2 class="j-display j-display--h2" id="m-act2">Form follows
+function.</h2>
+        <p class="j-body">A body over a tube frame, a side pipe that runs the
+          length of the sill, and nothing on it that is not doing a job.</p>
+      </div>
+    </article>
+
+    <article class="j-act m-act" data-act="3" aria-labelledby="m-act3">
+      <p class="j-eyebrow">
+        <span class="j-micro j-micro--accent">01</span>
+        <span class="j-micro">Built to order</span>
+      </p>
+      <div class="j-lead-block">
+        <h2 class="j-display j-display--h2" id="m-act3">Four cars a year
+is not a constraint.</h2>
+      </div>
+      <div class="j-plate">
+        <span class="j-spec"><span class="j-micro j-spec__k">From</span><span class="j-spec__v">$66,900</span></span>
+        <span class="j-spec"><span class="j-micro j-spec__k">Wheels</span><span class="j-spec__v">18 in</span></span>
+        <span class="j-spec"><span class="j-micro j-spec__k">Pipes</span><span class="j-spec__v">Ceramic-coated</span></span>
+        <span class="j-spec"><span class="j-micro j-spec__k">Built by</span><span class="j-spec__v">Backdraft</span></span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- 02 · inventory -->
+<section class="m-sec m-inventory" id="inventory" aria-labelledby="m-inv-title">
+  <header class="m-head">
+    <p class="m-tag"><span class="m-tag__dot" aria-hidden="true"></span><span class="j-micro">02 / Inventory</span></p>
+    <h2 class="m-display" id="m-inv-title">Four cars, not four hundred.</h2>
+    <a class="m-btn m-head__action" href="#inventory">View all inventory <span aria-hidden="true">&rarr;</span></a>
+    <p class="j-body m-head__note">Midwest holds two to four Cobras at any one
+      time. Each one gets the room a car like this needs — shown at the size you
+      would stand in front of it, not shrunk into a grid cell.</p>
+  </header>
+
+  <div class="m-lots">
+    <article class="m-lot">
+      <div class="v-plate m-plate--lot" role="img"
+           aria-label="Photograph to be supplied: RT4 Classic Edition, front three-quarter">
+        <span class="j-micro v-plate__slug">Photograph to be supplied</span>
+        <span class="j-micro v-plate__sub">RT4 Classic Edition · front three-quarter · 3:2</span>
+      </div>
+      <p class="j-micro m-lot__state">Lot 01 &middot; Available</p>
+      <h3 class="m-lot__name">RT4 Classic Edition</h3>
+      <dl class="m-spec">
+        <div><dt class="j-micro">Price</dt><dd>From $66,900</dd></div>
+        <div><dt class="j-micro">Wheels</dt><dd>18 in wheels</dd></div>
+        <div><dt class="j-micro">Pipes</dt><dd>Ceramic-coated side pipes</dd></div>
+      </dl>
+      <a class="m-link" href="#inventory">Full specification <span aria-hidden="true">&rarr;</span></a>
+    </article>
+
+    <article class="m-lot">
+      <div class="v-plate m-plate--lot" role="img"
+           aria-label="Photograph to be supplied: RT4B Black Edition, rear three-quarter">
+        <span class="j-micro v-plate__slug">Photograph to be supplied</span>
+        <span class="j-micro v-plate__sub">RT4B Black Edition · rear three-quarter · 3:2</span>
+      </div>
+      <p class="j-micro m-lot__state">Lot 02 &middot; Available</p>
+      <h3 class="m-lot__name">RT4B Black Edition</h3>
+      <dl class="m-spec">
+        <div><dt class="j-micro">Price</dt><dd>From $70,500</dd></div>
+        <div><dt class="j-micro">Wheels</dt><dd>Matte black, 18 in</dd></div>
+        <div><dt class="j-micro">Pipes</dt><dd>Ceramic-coated black roll bars</dd></div>
+      </dl>
+      <a class="m-link" href="#inventory">Full specification <span aria-hidden="true">&rarr;</span></a>
+    </article>
+  </div>
+</section>
+
+<!-- 03 · build — the light ground: the car lives in the dark, its spec in the light -->
+<section class="m-sec m-build" id="build" data-ground="light" aria-labelledby="m-build-title">
+  <div class="m-build__top">
+    <div class="m-build__copy">
+      <p class="m-tag"><span class="m-tag__dot" aria-hidden="true"></span><span class="j-micro">03 / Build</span></p>
+      <h2 class="m-display" id="m-build-title">Yours is not built yet.</h2>
+      <p class="j-body">Every car leaves this shop specified by the person who is
+        going to drive it. Colour, stance, pipes, the stitching on the seat you
+        will actually sit in — the list below is the conversation, in the order
+        it happens.</p>
+    </div>
+    <div class="v-plate m-plate--build" role="img"
+         aria-label="Photograph to be supplied: car from above, three-quarter rear, dark ground">
+      <span class="j-micro v-plate__slug">Photograph to be supplied</span>
+      <span class="j-micro v-plate__sub">From above, three-quarter rear · 16:10</span>
+    </div>
+  </div>
+
+  <ol class="m-steps">
+    <li class="m-step">
+      <p class="j-micro m-step__n">01</p>
+      <h3 class="m-step__h">Model</h3>
+      <p class="j-body">RT4 Classic or RT4B Black. Everything below follows from this one.</p>
+    </li>
+    <li class="m-step">
+      <p class="j-micro m-step__n">02</p>
+      <h3 class="m-step__h">Body and colour</h3>
+      <p class="j-body">Paint, stripes, and whether the car wears them at all.</p>
+    </li>
+    <li class="m-step">
+      <p class="j-micro m-step__n">03</p>
+      <h3 class="m-step__h">Wheels and stance</h3>
+      <p class="j-body">Eighteen-inch rims, matte black among them, and what sits under the arches.</p>
+    </li>
+    <li class="m-step">
+      <p class="j-micro m-step__n">04</p>
+      <h3 class="m-step__h">Pipes and roll bars</h3>
+      <p class="j-body">Ceramic-coated, side-exit. The two parts you hear and the two you grab.</p>
+    </li>
+    <li class="m-step">
+      <p class="j-micro m-step__n">05</p>
+      <h3 class="m-step__h">Interior</h3>
+      <p class="j-body">Upholstery, stitching, gauges, wheel. The part you are actually sitting in.</p>
+    </li>
+  </ol>
+</section>
+
+<!-- 04 · who we are -->
+<section class="m-sec m-who" id="collection" aria-labelledby="m-who-title">
+  <p class="m-forty" aria-hidden="true">40 years</p>
+
+  <div class="m-who__grid">
+    <div class="m-who__lead">
+      <p class="m-tag"><span class="m-tag__dot" aria-hidden="true"></span><span class="j-micro">04 / Who we are</span></p>
+      <h2 class="m-display" id="m-who-title">Forty years of putting people in cars
+        that should not exist.</h2>
+    </div>
+    <div class="m-who__body">
+      <p class="j-body">Midwest Cobras builds, sells, services and moves Backdraft
+        Cobras. The work has not changed in four decades: a car arrives as a crate
+        of parts and leaves as somebody's. We are not a showroom that happens to
+        stock one — this is the only thing here.</p>
+      <a class="m-btn m-btn--solid" href="#collection">About us</a>
+    </div>
+  </div>
+
+  <div class="m-who__pair">
+    <div class="v-plate m-plate--who" role="img"
+         aria-label="Photograph to be supplied: car on the shop floor, wide">
+      <span class="j-micro v-plate__slug">Photograph to be supplied</span>
+      <span class="j-micro v-plate__sub">On the shop floor, wide · 16:9</span>
+    </div>
+    <div class="v-plate m-plate--who" role="img"
+         aria-label="Photograph to be supplied: car under work, three-quarter">
+      <span class="j-micro v-plate__slug">Photograph to be supplied</span>
+      <span class="j-micro v-plate__sub">Under work, three-quarter · 16:9</span>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · services -->
+<section class="m-sec m-services" id="services" data-ground="light" aria-labelledby="m-serv-title">
+  <header class="m-head m-head--pair">
+    <p class="m-tag"><span class="m-tag__dot" aria-hidden="true"></span><span class="j-micro">05 / Services</span></p>
+    <h2 class="m-display" id="m-serv-title">After it is yours.</h2>
+    <p class="j-body m-head__note">The sale is the short part. Both of these sit
+      under one heading in the navigation because a Cobra needs them from the
+      same people.</p>
+  </header>
+
+  <ul class="m-rows">
+    <li class="m-row">
+      <div class="v-plate m-plate--row" role="img"
+           aria-label="Photograph to be supplied: car in the workshop bay at night">
+        <span class="j-micro v-plate__slug">To be supplied</span>
+      </div>
+      <div class="m-row__body">
+        <p class="m-tag"><span class="m-tag__dot" aria-hidden="true"></span><span class="j-micro">01</span></p>
+        <h3 class="m-row__h">Tune-up and service</h3>
+        <p class="j-body">These are not cars a general workshop sees twice a year.
+          Setup, carburetion, cooling, brakes and the annual going-over, done by
+          people with your car's own build sheet open in front of them.</p>
+      </div>
+      <a class="m-link m-row__link" href="tel:+19136625000">Book service <span aria-hidden="true">&rarr;</span></a>
+    </li>
+    <li class="m-row">
+      <div class="v-plate m-plate--row" role="img"
+           aria-label="Photograph to be supplied: car being loaded into an enclosed transporter">
+        <span class="j-micro v-plate__slug">To be supplied</span>
+      </div>
+      <div class="m-row__body">
+        <p class="m-tag"><span class="m-tag__dot" aria-hidden="true"></span><span class="j-micro">02</span></p>
+        <h3 class="m-row__h">Transportation</h3>
+        <p class="j-body">Enclosed transport to the shop, to an event, or to a new
+          owner. The car does not arrive on an open trailer behind somebody's
+          pickup.</p>
+      </div>
+      <a class="m-link m-row__link" href="tel:+19136625000">Arrange transport <span aria-hidden="true">&rarr;</span></a>
+    </li>
+  </ul>
+</section>
+
+<!-- 06 · consignment -->
+<section class="m-sec m-consign" id="consignment" data-ground="light" aria-labelledby="m-cons-title">
+  <div class="m-consign__grid">
+    <div>
+      <p class="m-tag"><span class="m-tag__dot" aria-hidden="true"></span><span class="j-micro">06 / Consignment</span></p>
+      <h2 class="m-display" id="m-cons-title">Already have one.</h2>
+    </div>
+    <div class="m-consign__body">
+      <p class="j-body">If the car is going to change hands, it is worth it
+        changing hands properly — photographed the way it deserves, described
+        accurately, and shown to people who already know what they are looking
+        at.</p>
+      <a class="m-link" href="tel:+19136625000">Talk about consigning <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · reviews — ledger row 8: Alex's copy from the mockup, unconfirmed.
+     The rail is a list with overflow, so it scrolls without the buttons. -->
+<section class="m-sec m-reviews" id="reviews" aria-labelledby="m-rev-title">
+  <header class="m-head m-head--rail">
+    <p class="m-tag"><span class="m-tag__dot" aria-hidden="true"></span><span class="j-micro">07 / Reviews</span></p>
+    <h2 class="m-display" id="m-rev-title">In their words.</h2>
+    <p class="m-railbtns" data-rail-controls hidden>
+      <button class="m-round" type="button" data-rail="prev" aria-label="Previous accounts">&larr;</button>
+      <button class="m-round" type="button" data-rail="next" aria-label="Next accounts">&rarr;</button>
+    </p>
+  </header>
+
+  <ul class="m-rail" data-rail-track tabindex="0" aria-label="Owner accounts, scrollable">
+    <li class="m-card">
+      <p class="m-tag"><span class="m-tag__dot" aria-hidden="true"></span><span class="j-micro">01</span></p>
+      <blockquote><p>&ldquo;They talked me out of the spec I came in with. Took an
+        hour, cost them the upsell, and the car is better for it.&rdquo;</p></blockquote>
+      <p class="j-micro m-card__by">Dale W. &middot; Cedar Rapids, IA<br>RT4 Classic Edition</p>
+    </li>
+    <li class="m-card">
+      <p class="m-tag"><span class="m-tag__dot" aria-hidden="true"></span><span class="j-micro">02</span></p>
+      <blockquote><p>&ldquo;Second one from these guys. First one still runs the way
+        it did the day it left.&rdquo;</p></blockquote>
+      <p class="j-micro m-card__by">Marcus B. &middot; Rockford, IL<br>RT4B Black Edition</p>
+    </li>
+    <li class="m-card">
+      <p class="m-tag"><span class="m-tag__dot" aria-hidden="true"></span><span class="j-micro">03</span></p>
+      <blockquote><p>&ldquo;I have bought cars from dealers who could not tell me
+        what was under the hood. Here they had the build sheet open before I
+        finished the question, and every part on it had a reason. The whole thing
+        took nine months and I knew where it was every week of them.&rdquo;</p></blockquote>
+      <p class="j-micro m-card__by">Ken H. &middot; Eau Claire, WI<br>RT4 Classic Edition</p>
+    </li>
+    <!-- card 04 is clipped in the mockup itself; the rest is Alex's to send -->
+    <li class="m-card m-card--pending">
+      <p class="m-tag"><span class="m-tag__dot" aria-hidden="true"></span><span class="j-micro">04</span></p>
+      <blockquote><p>&ldquo;The side p… which is to… schedule.&rdquo;</p></blockquote>
+      <p class="j-micro m-card__pend">Text clipped in the v10 mockup — to be supplied</p>
+      <p class="j-micro m-card__by">Ray T. &middot; RT4B Black Edition</p>
+    </li>
+  </ul>
+</section>
+
+<!-- 08 · live from the shop -->
+<section class="m-sec m-shop" id="gallery" aria-labelledby="m-shop-title">
+  <header class="m-head m-head--rail">
+    <p class="m-tag m-tag--ig">
+      <svg class="m-ig" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+        <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/>
+      </svg>
+      <span class="j-micro">@midwestcobras</span>
+    </p>
+    <h2 class="m-display" id="m-shop-title">Live from the shop.</h2>
+    <p class="m-railbtns" data-rail-controls hidden>
+      <button class="m-round" type="button" data-rail="prev" aria-label="Previous pictures">&larr;</button>
+      <button class="m-round" type="button" data-rail="next" aria-label="Next pictures">&rarr;</button>
+    </p>
+  </header>
+
+  <ul class="m-rail m-rail--shots" data-rail-track tabindex="0" aria-label="Pictures from the shop, scrollable">
+    <li><div class="v-plate m-plate--shot" role="img" aria-label="Photograph to be supplied: front three-quarter on the floor"><span class="j-micro v-plate__slug">To be supplied</span></div></li>
+    <li><div class="v-plate m-plate--shot" role="img" aria-label="Photograph to be supplied: rear three-quarter, lamps lit"><span class="j-micro v-plate__slug">To be supplied</span></div></li>
+    <li><div class="v-plate m-plate--shot" role="img" aria-label="Photograph to be supplied: nose and grille"><span class="j-micro v-plate__slug">To be supplied</span></div></li>
+    <li><div class="v-plate m-plate--shot" role="img" aria-label="Photograph to be supplied: flank and side pipe"><span class="j-micro v-plate__slug">To be supplied</span></div></li>
+    <li><div class="v-plate m-plate--shot" role="img" aria-label="Photograph to be supplied: front on, low"><span class="j-micro v-plate__slug">To be supplied</span></div></li>
+  </ul>
+
+  <p class="m-shop__follow"><a class="m-link" href="https://www.instagram.com/midwestcobras/">Follow on Instagram <span aria-hidden="true">&rarr;</span></a></p>
+</section>
+
+</main>
+
+<!-- foot — address and phone are the sourced ones (ledger row 10), not the
+     mockup's "to be supplied". No email was supplied, so there is none. -->
+<footer class="m-sec m-foot" id="finance">
+  <div class="m-foot__grid">
+    <div class="m-foot__brand">
+      <p class="m-mark m-mark--foot">Midwest Cobras</p>
+      <p class="m-foot__line">Backdraft Cobras built,<br>sold, serviced and moved.</p>
+    </div>
+
+    <nav class="m-foot__col" aria-label="Cars">
+      <p class="j-micro m-foot__k">Cars</p>
+      <ul>
+        <li><a href="#inventory">Inventory</a></li>
+        <li><a href="#build">Build</a></li>
+        <li><a href="#collection">Car Collection</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+      </ul>
+    </nav>
+
+    <nav class="m-foot__col" aria-label="Services">
+      <p class="j-micro m-foot__k">Services</p>
+      <ul>
+        <li><a href="#services">Tune-Up / Service</a></li>
+        <li><a href="#services">Transportation</a></li>
+        <li><a href="#consignment">Consignment</a></li>
+        <li><a href="#finance">Finance</a></li>
+      </ul>
+    </nav>
+
+    <div class="m-foot__col">
+      <p class="j-micro m-foot__k">Contact</p>
+      <address class="m-foot__addr">
+        <p>14510 Parallel Lane<br>Basehor, KS 66007</p>
+        <p><a href="tel:+19136625000">913 662 5000</a></p>
+        <p><a href="https://www.midwestcobras.com">midwestcobras.com</a></p>
+      </address>
+    </div>
+  </div>
+
+  <p class="j-micro m-foot__legal">&copy; 2026 Midwest Cobras, LLC</p>
+</footer>
+
+<script type="module" src="assets/js/scene/index9.js"></script>
+<script type="module" src="assets/js/index10-rails.js"></script>
+</body>
+</html>

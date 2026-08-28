@@ -1,0 +1,472 @@
+/* index10.css — the v10 layout, 2026-08-28. Loaded after index9.css, which
+   supplies the approved hero unchanged.
+   Two changes to what index9 set: the announcing voice goes back to Familjen
+   Grotesk (v10 sets headlines in a normal-width grotesque, which is the rule
+   CLAUDE.md states), and Allura joins as a fourth voice for one job the other
+   three cannot do — the wordmark. A stand-in until the client's artwork lands. */
+
+:root {
+  --j-display: "Familjen Grotesk", system-ui, sans-serif;
+  --m-mark: "Allura", "Familjen Grotesk", cursive;
+
+  /* v10's ramp, read off the mockup at 1920 and expressed as clamps. */
+  --m-h1: clamp(2.8rem, 4.6vw, 5.5rem);
+  --m-h2: clamp(2.4rem, 3.9vw, 4.6rem);
+  --m-h3: clamp(1.35rem, 1.7vw, 2rem);
+  --m-lot: clamp(1.5rem, 2vw, 2.35rem);
+  --m-pad: clamp(5rem, 10vh, 9rem);
+  --m-page: 110rem;          /* 1760 — the mockup's 1920 less its gutters */
+}
+
+/* index9's hero display is condensed and tight. With a normal-width grotesque
+   the same leading crowds; these are the two numbers that follow from the face,
+   and nothing else about the hero changes. */
+.dir-m .j-display { line-height: 0.98; letter-spacing: -0.02em; }
+.dir-m .j-act .j-display { max-inline-size: 14ch; }
+.dir-m .j-act[data-act='1'] .j-display { max-inline-size: 13ch; }
+
+.dir-m .m-sec > * { max-inline-size: var(--m-page); margin-inline: auto; }
+
+/* ── the skip link ─────────────────────────────────────────────────────────
+   First tab stop, and it goes where it says. */
+.m-skip {
+  position: fixed;
+  inset-block-start: var(--sp-4);
+  inset-inline-start: var(--sp-4);
+  z-index: 100;
+  translate: 0 -300%;
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--bone-050);
+  color: var(--ink-on-light);
+  font-family: var(--j-mono);
+  font-size: var(--j-micro);
+  text-transform: uppercase;
+  letter-spacing: var(--j-track-micro);
+  text-decoration: none;
+}
+.m-skip:focus-visible { translate: 0 0; outline: var(--focus-w) solid var(--ink-on-light); outline-offset: 2px; }
+
+/* ── masthead ─────────────────────────────────────────────────────────────
+   Fixed, because it sits over a pinned scene that does not scroll away on its
+   own. No background: the stage under it is already near-black at the top and a
+   bar would draw a line across a photograph. */
+.m-bar {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-7);
+  padding: var(--sp-6) var(--gutter);
+  pointer-events: none;
+}
+.m-bar > * { pointer-events: auto; }
+
+.m-mark {
+  font-family: var(--m-mark);
+  font-size: clamp(1.9rem, 2.2vw, 2.6rem);
+  line-height: 1.05;
+  color: var(--bone-050);
+  text-decoration: none;
+  white-space: pre-line;
+}
+.m-bar .m-mark { max-inline-size: 8ch; }
+.m-mark:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+
+.m-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4) var(--sp-6);
+}
+.m-nav a {
+  font-family: var(--j-mono);
+  font-size: var(--j-micro);
+  letter-spacing: 0.05em;
+  color: var(--bone-050);
+  text-decoration: none;
+  padding-block: var(--sp-2);
+  border-block-end: var(--hairline) solid transparent;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.m-nav a:hover { border-block-end-color: var(--bone-050); }
+.m-nav a[aria-current='page'] { border-block-end-color: rgb(var(--bone-100-rgb) / 0.4); }
+.m-nav a:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+
+/* The hero's own copy starts below the bar rather than under it. */
+.dir-m .j-act { padding-block-start: clamp(8rem, 14vh, 11rem); }
+
+/* ── section furniture ────────────────────────────────────────────────────── */
+.m-sec {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--m-pad);
+  padding-inline: var(--gutter);
+  color: var(--text);
+}
+.m-build, .m-services, .m-consign { background: var(--ground); }
+
+.m-display {
+  margin: 0;
+  font-family: var(--j-display);
+  font-weight: 600;
+  font-size: var(--m-h2);
+  line-height: 1.02;
+  letter-spacing: -0.028em;
+  color: var(--text);
+  text-wrap: balance;
+  max-inline-size: 20ch;
+}
+.m-hero .m-display { font-size: var(--m-h1); }
+
+/* The section marker: a filled oxblood square and a mono label. Oxblood is fill
+   on dark and text on light — `CLAUDE.md`, and it is a measurement. The mockup
+   does the same thing without being told. */
+.m-tag { display: flex; align-items: center; gap: var(--sp-3); margin: 0 0 var(--sp-5); }
+.m-tag__dot { inline-size: 0.5rem; block-size: 0.5rem; background: var(--oxblood); flex: none; }
+.m-tag .j-micro { color: var(--text-muted); }
+[data-ground='light'] .m-tag .j-micro { color: var(--text-muted); }
+.m-tag--ig { gap: var(--sp-4); }
+.m-ig { color: var(--text-muted); flex: none; }
+
+.m-head {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-5) var(--col-gap);
+  align-items: start;
+  margin-block-end: var(--sp-8);
+}
+.m-head > .m-tag { grid-column: 1 / span 8; grid-row: 1; }
+.m-head > .m-display { grid-column: 1 / span 8; grid-row: 2; }
+.m-head__action { grid-column: 10 / span 3; grid-row: 2; justify-self: end; }
+.m-head__note { grid-column: 1 / span 6; grid-row: 3; margin-block-start: var(--sp-5); max-inline-size: 56ch; }
+.m-head--pair > .m-display { grid-column: 1 / span 6; }
+.m-head--pair .m-head__note { grid-column: 8 / span 5; grid-row: 2; margin-block-start: 0; max-inline-size: 46ch; }
+.m-head--rail > .m-display { grid-column: 1 / span 8; }
+.m-railbtns { grid-column: 11 / span 2; grid-row: 2; justify-self: end; display: flex; gap: var(--sp-4); margin: 0; }
+
+/* ── buttons and links ────────────────────────────────────────────────────── */
+.m-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-6);
+  font-family: var(--j-mono);
+  font-size: var(--j-micro);
+  letter-spacing: var(--j-track-micro);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text);
+  border: var(--hairline) solid var(--rule);
+  transition: background var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out);
+}
+.m-btn:hover { border-color: var(--text); }
+.m-btn:focus-visible { outline: var(--focus-w) solid var(--text); outline-offset: var(--focus-offset); }
+.m-btn--solid { background: var(--bone-050); color: var(--ink-on-light); border-color: var(--bone-050); }
+.m-btn--solid:hover { background: var(--bone-100); border-color: var(--bone-100); }
+[data-ground='light'] .m-btn--solid { background: var(--ink-on-light); color: var(--bone-050); border-color: var(--ink-on-light); }
+
+.m-cta-row { display: flex; flex-wrap: wrap; gap: var(--sp-4); margin: var(--sp-6) 0 0; }
+
+/* On the light ground oxblood is a text colour and measures 8.55:1 on bone.
+   On the dark ground it is never text, so the link is bone there. */
+.m-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-family: var(--j-mono);
+  font-size: var(--j-micro);
+  letter-spacing: 0.05em;
+  color: var(--bone-050);
+  text-decoration: none;
+  border-block-end: var(--hairline) solid transparent;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+[data-ground='light'] .m-link { color: var(--oxblood); }
+.m-link:hover { border-block-end-color: currentColor; }
+.m-link:focus-visible { outline: var(--focus-w) solid currentColor; outline-offset: var(--focus-offset); }
+
+/* ── the empty plate, borrowed from index9 and re-proportioned ─────────────── */
+.m-plate--lot   { aspect-ratio: 3 / 2; }
+.m-plate--build { aspect-ratio: 16 / 10; }
+.m-plate--who   { aspect-ratio: 16 / 9; }
+.m-plate--row   { aspect-ratio: 1 / 1; }
+.m-plate--shot  { aspect-ratio: 3 / 4; }
+[data-ground='light'] .v-plate { border-color: rgb(var(--graphite-950-rgb) / 0.14); }
+
+/* ── 02 · INVENTORY ───────────────────────────────────────────────────────
+   Two lots, equal, because both are available and neither outranks the other —
+   which is the one case where a pair of equal tiles is the truthful shape. */
+.m-lots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-8) var(--col-gap);
+}
+.m-lot__state { margin: var(--sp-5) 0 var(--sp-3); color: var(--text-muted); }
+.m-lot__name {
+  margin: 0 0 var(--sp-5);
+  font-family: var(--j-display);
+  font-weight: 600;
+  font-size: var(--m-lot);
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.m-spec { margin: 0; display: grid; }
+.m-spec > div {
+  display: grid;
+  grid-template-columns: minmax(0, 5rem) minmax(0, 1fr);
+  gap: var(--sp-5);
+  align-items: baseline;
+  padding-block: var(--sp-4);
+  border-block-start: var(--hairline) solid var(--rule);
+}
+.m-spec dt { color: var(--text-muted); }
+.m-spec dd { margin: 0; color: var(--text); }
+.m-lot .m-link { margin-block-start: var(--sp-6); }
+
+/* ── 03 · BUILD ───────────────────────────────────────────────────────────── */
+.m-build__top {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--sp-8);
+  align-items: start;
+  margin-block-end: var(--sp-8);
+}
+.m-build__copy { display: grid; gap: var(--sp-6); align-content: start; }
+
+.m-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--col-gap);
+}
+.m-step { border-block-start: var(--hairline) solid var(--rule); padding-block-start: var(--sp-5); }
+.m-step__n { margin: 0 0 var(--sp-4); color: var(--oxblood); }
+.m-step__h {
+  margin: 0 0 var(--sp-4);
+  font-family: var(--j-display);
+  font-weight: 600;
+  font-size: var(--m-h3);
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+.m-step .j-body { max-inline-size: 30ch; }
+
+/* ── 04 · WHO WE ARE ──────────────────────────────────────────────────────
+   The watermark is scenery: aria-hidden, and it repeats the "forty years" the
+   headline beside it already says. */
+.m-who { overflow: clip; }
+.m-forty {
+  position: absolute;
+  inset-block-start: 8%;
+  inset-inline-start: -2%;
+  margin: 0;
+  z-index: 0;
+  font-family: var(--j-display);
+  font-weight: 700;
+  font-size: clamp(12rem, 26vw, 30rem);
+  line-height: 0.78;
+  letter-spacing: -0.05em;
+  color: var(--bone-050);
+  opacity: 0.045;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.m-who__grid, .m-who__pair { position: relative; z-index: 1; }
+.m-who__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap);
+  align-items: start;
+  margin-block-end: var(--sp-8);
+}
+.m-who__lead { grid-column: 1 / span 6; }
+.m-who__body { grid-column: 8 / span 5; display: grid; gap: var(--sp-6); justify-items: start; }
+.m-who__body .j-body, .m-consign__body .j-body, .m-build__copy .j-body { max-inline-size: 52ch; }
+.m-who__pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--col-gap); }
+
+/* ── 05 · SERVICES ────────────────────────────────────────────────────────── */
+.m-rows { list-style: none; margin: 0; padding: 0; }
+.m-row {
+  display: grid;
+  grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) auto;
+  gap: var(--sp-7);
+  align-items: start;
+  padding-block: var(--sp-7);
+  border-block-start: var(--hairline) solid var(--rule);
+}
+.m-row:last-child { border-block-end: var(--hairline) solid var(--rule); }
+.m-row__body { display: grid; gap: var(--sp-4); }
+.m-row__h {
+  margin: 0;
+  font-family: var(--j-display);
+  font-weight: 600;
+  font-size: var(--m-h3);
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+.m-row__body .j-body { max-inline-size: 68ch; }
+.m-row__link { align-self: center; }
+
+/* ── 06 · CONSIGNMENT ─────────────────────────────────────────────────────── */
+.m-consign__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap);
+  align-items: start;
+}
+.m-consign__grid > :first-child { grid-column: 1 / span 6; }
+.m-consign__body { grid-column: 8 / span 5; display: grid; gap: var(--sp-7); justify-items: start; }
+
+/* ── 07 / 08 · THE RAILS ──────────────────────────────────────────────────
+   A LIST WITH OVERFLOW, NOT A CAROUSEL WIDGET. It scrolls with the wheel, the
+   trackpad, a drag, the arrow keys and a screen reader's own navigation, because
+   that is what an overflowing list already does. The two round buttons are
+   convenience: they are hidden until the script that drives them is running, so
+   the scripts-off page never shows a control that does nothing. */
+.m-rail {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 var(--sp-5);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 26rem;
+  gap: var(--col-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+}
+.m-rail > * { scroll-snap-align: start; }
+.m-rail:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+.m-rail--shots { grid-auto-columns: 19rem; }
+
+.m-card {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--sp-5);
+  padding: var(--sp-6);
+  background: var(--surface);
+  border: var(--hairline) solid var(--rule);
+}
+.m-card blockquote { margin: 0; }
+.m-card blockquote p { margin: 0; font-size: 1.0625rem; line-height: 1.5; color: var(--text); text-wrap: pretty; }
+.m-card__by { color: var(--text-muted); line-height: 1.7; }
+.m-card--pending { border-style: dashed; }
+.m-card__pend { color: var(--bone-300); opacity: 0.72; }
+
+.m-round {
+  inline-size: 3rem;
+  block-size: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: var(--hairline) solid var(--rule);
+  background: transparent;
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color var(--dur-2) var(--ease-out), background var(--dur-2) var(--ease-out);
+}
+.m-round:hover:not(:disabled) { border-color: var(--text); }
+/* The only contrast exemption on this page, and it is the standard one:
+   WCAG 1.4.3 does not apply to inactive controls. 0.4 rather than 0.3 anyway —
+   it still reads as unavailable and it is easier to see that it is there. */
+.m-round:disabled { opacity: 0.4; cursor: default; }
+.m-round:focus-visible { outline: var(--focus-w) solid var(--text); outline-offset: var(--focus-offset); }
+
+.m-shop__follow { margin: var(--sp-7) 0 0; }
+
+/* ── foot ─────────────────────────────────────────────────────────────────── */
+.m-foot { border-block-start: var(--hairline) solid var(--rule); }
+.m-foot__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap);
+  align-items: start;
+}
+.m-foot__brand { grid-column: 1 / span 5; display: grid; gap: var(--sp-6); }
+.m-foot__grid > :nth-child(2) { grid-column: 7 / span 2; }
+.m-foot__grid > :nth-child(3) { grid-column: 9 / span 2; }
+.m-foot__grid > :nth-child(4) { grid-column: 11 / span 2; }
+/* A navigation label that breaks mid-phrase reads as two links. */
+.m-foot__col ul a { white-space: nowrap; }
+.m-mark--foot { font-size: clamp(2rem, 2.4vw, 2.8rem); }
+.m-foot__line {
+  margin: 0;
+  font-family: var(--j-display);
+  font-weight: 600;
+  font-size: clamp(1.15rem, 1.5vw, 1.6rem);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+.m-foot__k { margin: 0 0 var(--sp-5); color: var(--text-muted); }
+.m-foot__col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-4); }
+.m-foot__col a, .m-foot__addr a {
+  color: var(--text);
+  text-decoration: none;
+  border-block-end: var(--hairline) solid transparent;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.m-foot__col a:hover, .m-foot__addr a:hover { border-block-end-color: var(--text); }
+.m-foot__col a:focus-visible, .m-foot__addr a:focus-visible { outline: var(--focus-w) solid var(--text); outline-offset: var(--focus-offset); }
+.m-foot__addr { font-style: normal; display: grid; gap: var(--sp-4); color: var(--text); }
+.m-foot__addr p { margin: 0; line-height: 1.5; }
+.m-foot__legal { margin: var(--sp-8) 0 0; padding-block-start: var(--sp-6); border-block-start: var(--hairline) solid var(--rule); color: var(--text-muted); }
+
+/* ── narrow, authored rather than reflowed ───────────────────────────────── */
+@media (max-width: 61.99rem) {
+  :root { --m-h1: clamp(2.2rem, 9vw, 3.2rem); --m-h2: clamp(2rem, 8vw, 2.9rem); }
+
+  /* The masthead's eight items are a desktop row. On a phone the wordmark stays
+     and the navigation becomes a scrolling strip under it, which is honest: this
+     page has one screen of nav and hiding it behind a button that opens a sheet
+     is a component this pass has no reason to build. */
+  .m-bar { flex-direction: column; align-items: stretch; gap: var(--sp-4); padding: var(--sp-5) var(--gutter); }
+  .m-bar .m-mark { max-inline-size: none; }
+  .m-nav ul { flex-wrap: nowrap; overflow-x: auto; gap: var(--sp-5); padding-block-end: var(--sp-2); }
+  .m-nav a { white-space: nowrap; }
+  .dir-m .j-act { padding-block-start: clamp(9rem, 20vh, 13rem); }
+
+  .m-head, .m-who__grid, .m-consign__grid, .m-foot__grid { grid-template-columns: minmax(0, 1fr); }
+  .m-head > .m-tag, .m-head > .m-display, .m-head__action, .m-head__note,
+  .m-head--pair > .m-display, .m-head--pair .m-head__note, .m-head--rail > .m-display,
+  .m-who__lead, .m-who__body, .m-consign__grid > :first-child, .m-consign__body,
+  .m-foot__brand, .m-foot__grid > :nth-child(2), .m-foot__grid > :nth-child(3), .m-foot__grid > :nth-child(4) {
+    grid-column: 1; grid-row: auto; justify-self: start;
+  }
+  .m-head__note { margin-block-start: 0; }
+
+  /* Two round buttons and a heading do not share a line at this width. The row
+     has to be released as well as the column: left at grid-row 2 the buttons
+     landed ABOVE the heading they belong to. */
+  .m-railbtns { grid-column: 1; grid-row: auto; justify-self: start; margin-block-start: var(--sp-5); }
+
+  .m-lots, .m-who__pair { grid-template-columns: minmax(0, 1fr); }
+  .m-build__top { grid-template-columns: minmax(0, 1fr); }
+  .m-steps { grid-template-columns: minmax(0, 1fr); gap: var(--sp-6); }
+
+  /* The service row is a picture, a paragraph and a link across a metre of
+     screen. Stacked, the link goes under the words it belongs to. */
+  .m-row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
+  .m-plate--row { aspect-ratio: 16 / 9; }
+  .m-row__link { align-self: start; }
+
+  .m-rail { grid-auto-columns: 80vw; }
+  .m-rail--shots { grid-auto-columns: 58vw; }
+
+  .m-forty { font-size: clamp(7rem, 42vw, 12rem); inset-block-start: 4%; }
+}
+
+/* Reduced motion: the rails stop gliding and jump, which is what the setting is
+   for. Everything else on this page is already still. */
+@media (prefers-reduced-motion: reduce) {
+  .m-rail { scroll-behavior: auto; }
+}

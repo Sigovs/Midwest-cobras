@@ -332,7 +332,10 @@
     var ROLES = [
       ['title', '.sect__title, .row__h, .news__h, .lot__name, .build__h, .site-foot__line'],
       ['text',  '.lede, .sect__note, .row__body p, .news__item p, .news__meta, .spec, .tag, .btn, .link, .site-foot__col, .site-foot address'],
-      ['media', '.about__pair .shot, .row__shot, .frame']
+      /* 04's plates are NOT here. They wipe open on a scroll timeline in the
+         stylesheet instead, which is smooth because it is tied to the wheel
+         rather than to a 520ms clock that starts when a threshold trips. */
+      ['media', '.frame']
     ];
 
     var seen = [];
@@ -342,6 +345,8 @@
         var el = found[i];
         if (el.closest('.hero')) continue;          /* the first read waits for nothing */
         if (el.closest('.rail')) continue;          /* see RAILS below */
+        if (el.closest('.row')) continue;           /* 05 runs on a scroll timeline */
+        if (el.closest('.about__grid, .about__pair')) continue;  /* so does 04 */
         if (el.hasAttribute('data-reveal')) continue; /* first role named wins */
         /* ONLY WHAT IS STILL BELOW THE FOLD. Hiding something the visitor is
            already looking at is how a reveal turns into a bug: if the observer

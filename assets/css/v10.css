@@ -344,6 +344,48 @@ html { scroll-padding-block-start: 9rem; }
   /* Two lines, and exactly two: the only break is the one in the markup. */
   white-space: nowrap;
 }
+
+/* ── the arrival ──────────────────────────────────────────────────────────
+   The headline steps in from the left a line at a time, then the band comes
+   up from below. Gentle on purpose: 1.5rem and 1.25rem, 520ms, and the whole
+   thing is over inside 1.04s — an entrance the first read has to sit through
+   is worse than no entrance at all.
+
+   These animate the SPANS and the band's CHILDREN, never .hero__copy or
+   .hero__foot themselves. Those two carry the scroll exit's transform, and a
+   filled animation on the same property would pin it at its last keyframe and
+   the hero would never leave. Two motion systems, kept off each other's
+   properties.
+
+   Pure CSS, and that matters: an animation always ends where it was told to.
+   Nothing here can leave the headline invisible the way a missed observer
+   can. */
+.hero__title span { display: block; }
+
+@keyframes hero-step {
+  from { opacity: 0; transform: translate3d(-1.5rem, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hero-rise {
+  from { opacity: 0; transform: translate3d(0, 1.25rem, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hero__title span,
+.hero__foot > * { animation: var(--dur-4) var(--ease-out) both; }
+.hero__title span { animation-name: hero-step; }
+.hero__foot > *  { animation-name: hero-rise; }
+
+.hero__title span:nth-child(1) { animation-delay: 140ms; }
+.hero__title span:nth-child(2) { animation-delay: 260ms; }
+.hero__foot > .lede            { animation-delay: 400ms; }
+.hero__foot > .btn-row         { animation-delay: 520ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Present, immediately. */
+  .hero__title span,
+  .hero__foot > * { animation: none; opacity: 1; transform: none; }
+}
 /* The lede and the buttons are a band across the bottom of the frame, not a
    stack under the headline. The headline takes the top of the shot, the band
    takes the bottom, and the video keeps the middle — which is where the cars
@@ -689,6 +731,71 @@ html { scroll-padding-block-start: 9rem; }
    and neither is cropped at all. */
 .about__pair { display: grid; grid-template-columns: minmax(0, 640fr) minmax(0, 914fr); gap: var(--col-gap); }
 
+/* ── 04 · the type travels too, and not at one rate ────────────────────────
+   Same device as the plates below it, applied up the section: the decorative
+   numeral is the furthest thing back and moves most, the argument moves less,
+   the body copy least. Three rates over one section is what stops a page of
+   text from arriving as one sheet.
+
+   Applied to the CONTAINERS, never to .sect__title itself — that heading
+   already carries the reveal's own transform, and two systems writing the
+   same property is how one of them silently wins. The reveal does opacity and
+   its slide; this moves the box the heading sits in. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .about__numeral,
+    .about__grid > :nth-child(1),
+    .about__grid > :nth-child(2) {
+      animation: linear both;
+      animation-timeline: view();
+      animation-range: entry 15% cover 50%;
+    }
+    .about__numeral            { animation-name: about-back;  }
+    .about__grid > :nth-child(1) { animation-name: about-mid;  }
+    .about__grid > :nth-child(2) { animation-name: about-near; }
+  }
+}
+@keyframes about-back { from { transform: translate3d(0, 7rem, 0);   } to { transform: none; } }
+@keyframes about-mid  { from { transform: translate3d(0, 3rem, 0);   } to { transform: none; } }
+@keyframes about-near { from { transform: translate3d(0, 1.5rem, 0); } to { transform: none; } }
+
+/* ── 04 · the pair moves as it is passed ───────────────────────────────────
+   The two plates do not travel at the same rate. That is the whole device:
+   two pictures rising together are one flat card, two rising at different
+   rates are two objects at different distances, and the section is about a
+   room full of cars rather than a layout. The narrow plate moves further
+   because it is the nearer subject — a fuel cap at arm's length against a
+   car seen down its whole flank.
+
+   Scroll-driven, through view(), so it is a function of position and has no
+   duration: it runs backwards on the way up and stops dead when the visitor
+   stops. No JS, and nothing here can hide content — the only property
+   animated is transform, so where view() is unsupported the pair simply sits
+   still. That is the point of the @supports.
+
+   entry 10% -> cover 55%: finished well before the plate reaches the middle
+   of the frame, so what the visitor actually looks at is a settled picture. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Two animations on one plate, on two properties and two ranges. The wipe
+       runs across the whole of the plate's entry, so it opens at the speed the
+       visitor is scrolling and never snaps; the rise finishes earlier, so the
+       picture has settled by the time it is actually being looked at. */
+    .about__pair .shot {
+      animation: plate-near linear both, plate-wipe linear both;
+      animation-timeline: view(), view();
+      animation-range: entry 10% cover 55%, entry 0% entry 100%;
+    }
+    .about__pair .shot:nth-child(2) { animation-name: plate-far, plate-wipe; }
+  }
+}
+@keyframes plate-near { from { transform: translate3d(0, 5rem, 0); } to { transform: none; } }
+@keyframes plate-far  { from { transform: translate3d(0, 2rem, 0); } to { transform: none; } }
+@keyframes plate-wipe {
+  from { clip-path: inset(0 0 0 100%); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
 /* ── 05 services ───────────────────────────────────────────────────────── */
 /* Both service pictures are cutouts with real alpha, not framed photographs.
    So they get no .frame: no border, no ground, no hatch — the object sits
@@ -811,6 +918,37 @@ html { scroll-padding-block-start: 9rem; }
 .gallery__follow { margin-block-start: var(--sp-7); }
 
 
+/* ── 05 · the rows assemble as they arrive ─────────────────────────────────
+   A service row is a band read left to right: the object, then what is done
+   to it, then how to ask for it. So it arrives that way — the cutout in from
+   the left, the argument in from the right to meet it, and the link last.
+   Two directions closing on each other, not three things fading up together.
+
+   Scroll-timed like 04, so it is tied to the wheel and cannot snap, and it
+   settles by cover 45% — well before the row is the thing being read. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .row__shot,
+    .row__body,
+    .row > .link {
+      animation: linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 45%;
+    }
+    .row__shot   { animation-name: row-in-left; }
+    .row__body   { animation-name: row-in-right; }
+    .row > .link { animation-name: row-in-right; animation-range: entry 20% cover 55%; }
+  }
+}
+@keyframes row-in-left {
+  from { opacity: 0; transform: translate3d(-3rem, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes row-in-right {
+  from { opacity: 0; transform: translate3d(2rem, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
 /* ── 06 news and events ────────────────────────────────────────────────────
    Three items, deliberately not three of the same tile. The lead is wider,
    carries no photograph and gets the larger headline; the two beside it are
@@ -879,6 +1017,9 @@ html { scroll-padding-block-start: 9rem; }
 /* ── footer ────────────────────────────────────────────────────────────── */
 .site-foot {
   position: relative; isolation: isolate; overflow: clip;
+  /* A column, so the legal line can be pushed to the floor of the footer
+     rather than held off the columns by a margin that guesses the distance. */
+  display: flex; flex-direction: column;
   /* The footer is as tall as its photograph is, so the picture is seen whole
      rather than cropped to whatever height the columns happen to need.
      footer.jpg is 1920 x 960 — exactly 2:1 — so its height is half the window
@@ -962,7 +1103,11 @@ html { scroll-padding-block-start: 9rem; }
 .site-foot address p { line-height: 1.5; }
 .site-foot__legal {
   display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-4) var(--sp-7);
-  margin-block-start: clamp(8rem, 22vh, 16rem);
+  /* auto, not a number. The footer is as tall as its photograph, the columns
+     are as tall as their content, and the gap between them is whatever is
+     left — so this line sits on the bottom of the frame at every width
+     instead of near it. */
+  margin-block-start: auto; padding-block-start: var(--sp-8);
   font-family: var(--mono); font-size: var(--micro);
   letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
 }

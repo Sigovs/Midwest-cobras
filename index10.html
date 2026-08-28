@@ -63,16 +63,17 @@
     <!-- Background, not content: the headline is what the page says and the
          video is the room it says it in. Hence aria-hidden, and no controls.
 
-         It does not loop. The headlights coming on is a thing that happens
-         once, and a loop would keep switching them off again — so it plays,
-         arrives, and holds on the last frame, which is the composed shot.
+         It loops, on Alex's instruction. The headlights coming on therefore
+         switches off again every eight seconds, which is the cost; what it buys
+         is a hero that is never a still photograph by the time anyone scrolls
+         back up to it.
 
          muted is not a preference, it is the condition every browser puts on
          autoplay; playsinline stops iOS taking it fullscreen. The poster is
          the first frame, so nothing flashes before the first video frame
          paints, and it is what stands in if the file never arrives at all. -->
     <div class="hero__media" aria-hidden="true">
-      <video class="hero__video" autoplay muted playsinline preload="auto"
+      <video class="hero__video" autoplay muted playsinline loop preload="auto"
              poster="assets/video/hero-poster.jpg" width="1920" height="1080">
         <source src="assets/video/hero.webm" type="video/webm">
         <source src="assets/video/hero.mp4" type="video/mp4">

@@ -166,14 +166,19 @@ put in `donot git/refference/`:
 
 | File on the page | Source file | Note |
 |---|---|---|
-| `car-rt4-front.jpg` | `RT4_HP_top.jpg` | Backdraft's own RT4 homepage banner |
-| `car-rt4b-front.jpg` | `RT4B_HP_top-1.jpg` | Backdraft's own RT4B homepage banner |
+| `car-rt4-front.jpg` | `invenoitry1.png` | |
+| `car-rt4b-front.jpg` | `invenoitry2.png` | |
 
-Both source files carry a branding band across the lower third — a large mark and
-a line of small type under the car. **The band is cropped off**: each image keeps
-the top 70% of its height, then a centred 16:9 window from that, scaled to
-1728×972. Verified by measuring detail energy row by row in the output; the
-bottom of each frame is quiet, so no part of the band survived.
+Alex named `RT4_HP_top.jpg` / `RT4B_HP_top-1.jpg` first and then corrected it to
+these two. The rejected pair carried a branding band across the lower third — a
+large mark and a line of small type beneath the car — which is worth recording
+because it is the trap in that folder: **anything off a manufacturer's homepage
+arrives with the manufacturer's lockup on it.**
+
+`invenoitry1/2` are clean. Measured row by row, both are flat background above
+20% and below 73% of their height with no high-frequency band anywhere, so
+nothing had to be cropped away — only 29px off 635 to reach 16:9, then scaled to
+1728×972, the size the cards already declared.
 
 **Their alt text is a placeholder and needs a person.** It reads *"RT4 Classic
 Edition"* and *"RT4B Black Edition"* and nothing else, because this session

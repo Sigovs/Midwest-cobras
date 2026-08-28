@@ -42,6 +42,7 @@
        motion gets the destination without the journey, rather than a poster of
        the frame before anything happened. */
     v.removeAttribute('autoplay');
+    v.removeAttribute('loop');   /* or anything that restarts it runs forever */
     v.pause();
     var end = function () {
       try { v.currentTime = Math.max(0, v.duration - 0.05); } catch (e) {}

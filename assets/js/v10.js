@@ -2,7 +2,9 @@
 
    1 · the header takes a ground once the hero has left
    1b · the hero video parks on its last frame under reduced motion
+   1c · the hero headline leaves upward and out of focus as you scroll
    2 · the rails get their arrow buttons and their wrap-around
+   3 · titles, prose and pictures arrive as the page is scrolled
 
    Both rails already scroll without this file — they are lists with
    overflow-x, so the wheel, a trackpad, a drag, the arrow keys and a screen
@@ -270,13 +272,133 @@
     document.documentElement.style.setProperty('--sbw', (w > 0 ? w : 0) + 'px');
   }
 
+  /* ── 1c · the hero hands over to the inventory ───────────────────────
+     One custom property, --hero-exit, running 0 -> 1 across the hero's own
+     height. The CSS does the rest. Scroll-linked and not timed: the transport
+     is never taken from the visitor, and scrolling back up restores the frame
+     exactly, because the value is a pure function of scroll position.
+
+     0.82 rather than 1: the text has to be gone by the time the inventory
+     headline is on screen, not at the instant the hero's last pixel leaves —
+     otherwise the two overlap and both are unreadable. */
+  function handover() {
+    var el = document.querySelector('.hero');
+    if (!el || reduced) return;
+
+    var queued = false;
+    function apply() {
+      queued = false;
+      var span = (el.offsetHeight || window.innerHeight) * 0.82;
+      var p = window.pageYOffset / span;
+      if (p < 0) p = 0;
+      if (p > 1) p = 1;
+      el.style.setProperty('--hero-exit', p.toFixed(3));
+    }
+    function onScroll() {
+      if (queued) return;
+      queued = true;
+      window.requestAnimationFrame(apply);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    apply();
+  }
+
+  /* ── 3 · scroll reveal ───────────────────────────────────────────────
+     Titles arrive from the side, prose rises from below, pictures wipe open
+     from their left edge. The CSS holds the three states; this only decides
+     what is in which role and when it has been seen.
+
+     Bound to roles, never to instances — the selectors below name what a
+     thing IS, so a new section written tomorrow animates without touching
+     this file.
+
+     The hero is excluded on purpose: no entrance the first read has to wait
+     for. Under reduced motion nothing is marked at all, so the CSS never has
+     anything to reveal and the page is simply present.
+
+     RAILS ARE EXCLUDED. A card inside .rail sits in a horizontally scrolling
+     box, so the cards past its right edge never intersect the viewport and
+     would stay hidden for good — the inventory would simply have no
+     photographs. A reveal is not worth one lost card.
+
+     once: an element that has arrived is unobserved. Re-playing on the way
+     back up is a page that will not sit still while it is being read. */
+  function reveal() {
+    if (reduced) return;
+    if (!('IntersectionObserver' in window)) return;
+
+    var ROLES = [
+      ['title', '.sect__title, .row__h, .news__h, .lot__name, .build__h, .site-foot__line'],
+      ['text',  '.lede, .sect__note, .row__body p, .news__item p, .news__meta, .spec, .tag, .btn, .link, .site-foot__col, .site-foot address'],
+      ['media', '.about__pair .shot, .row__shot, .frame']
+    ];
+
+    var seen = [];
+    for (var r = 0; r < ROLES.length; r++) {
+      var found = document.querySelectorAll(ROLES[r][1]);
+      for (var i = 0; i < found.length; i++) {
+        var el = found[i];
+        if (el.closest('.hero')) continue;          /* the first read waits for nothing */
+        if (el.closest('.rail')) continue;          /* see RAILS below */
+        if (el.hasAttribute('data-reveal')) continue; /* first role named wins */
+        /* ONLY WHAT IS STILL BELOW THE FOLD. Hiding something the visitor is
+           already looking at is how a reveal turns into a bug: if the observer
+           then never fires, the content is gone and nothing says why. */
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.9) continue;
+        el.setAttribute('data-reveal', ROLES[r][0]);
+        seen.push(el);
+      }
+    }
+
+    /* Stagger is per parent, not per page: things that arrive together are a
+       group, and a running total across the document would leave the footer
+       waiting three seconds for its turn. Capped at four steps so a long list
+       does not trail. */
+    var counts = [];
+    var parents = [];
+    for (var j = 0; j < seen.length; j++) {
+      var p = seen[j].parentNode;
+      var k = parents.indexOf(p);
+      if (k < 0) { k = parents.push(p) - 1; counts[k] = 0; }
+      var step = counts[k]++;
+      if (step > 3) step = 3;
+      seen[j].style.setProperty('--reveal-delay', (step * 90) + 'ms');
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      for (var n = 0; n < entries.length; n++) {
+        if (!entries[n].isIntersecting) continue;
+        entries[n].target.setAttribute('data-in', '');
+        io.unobserve(entries[n].target);
+      }
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+
+    for (var m = 0; m < seen.length; m++) io.observe(seen[m]);
+
+    /* THE FAILSAFE, and it is not optional. Everything above is decoration;
+       the content underneath it is the page. If the observer misfires, if a
+       browser disagrees about thresholds, if an element ends up inside a
+       clipping ancestor nobody thought about — the words and the pictures
+       still have to appear. Six seconds after load anything still unrevealed
+       is revealed regardless. A late entrance is a blemish. A permanently
+       invisible section is a broken page. */
+    window.setTimeout(function () {
+      io.disconnect();
+      for (var f = 0; f < seen.length; f++) seen[f].setAttribute('data-in', '');
+    }, 6000);
+  }
+
   function boot() {
     scrollbar();
     window.addEventListener('resize', scrollbar, { passive: true });
     head();
     hero();
+    handover();
     var sections = document.querySelectorAll('.sect');
     for (var i = 0; i < sections.length; i++) rail(sections[i]);
+    reveal();
   }
 
   if (document.readyState === 'loading') {

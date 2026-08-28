@@ -264,10 +264,8 @@
 
     <ul class="rows">
       <li class="row">
-        <div class="frame frame--square" role="img"
-             aria-label="Photograph to be supplied: car in the workshop bay">
-          <span class="frame__slug">To be supplied</span>
-        </div>
+        <img class="row__shot" src="assets/img/service-tune-up.png" width="1254" height="1254"
+             alt="A Cobra up on the ramps with its bonnet off" loading="lazy" decoding="async">
         <div class="row__body">
           <p class="tag"><span class="tag__dot" aria-hidden="true"></span>01</p>
           <h3 class="row__h">Tune-up and service</h3>
@@ -278,10 +276,8 @@
         <a class="link" href="tel:+19136625000">Book service <span aria-hidden="true">&rarr;</span></a>
       </li>
       <li class="row">
-        <div class="frame frame--square" role="img"
-             aria-label="Photograph to be supplied: car loaded into an enclosed transporter">
-          <span class="frame__slug">To be supplied</span>
-        </div>
+        <img class="row__shot" src="assets/img/service-transport.png" width="1448" height="1086"
+             alt="A Cobra strapped down inside an enclosed transporter, ramps still out" loading="lazy" decoding="async">
         <div class="row__body">
           <p class="tag"><span class="tag__dot" aria-hidden="true"></span>02</p>
           <h3 class="row__h">Transportation</h3>
@@ -293,10 +289,70 @@
     </ul>
   </section>
 
-  <section class="sect sect--bone sect--tight-t" id="consignment" data-ground="light" aria-labelledby="consignment-title">
+  <!-- ══════════════════════════════════════════════════════════════════════
+       06 · NEWS AND EVENTS — graphite-950
+       Not the record, so not the light ground: this is the marque speaking
+       about its own world, which puts it with the dark family. It also breaks
+       services and consignment apart, so the page does not run three light
+       blocks together.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--950 news" id="news" aria-labelledby="news-title">
+    <header class="sect__head">
+      <p class="tag"><span class="tag__dot" aria-hidden="true"></span>06 / News and events</p>
+      <h2 class="sect__title" id="news-title">News and events.</h2>
+      <a class="btn sect__action" href="#news">Read all news <span aria-hidden="true">&rarr;</span></a>
+    </header>
+
+    <ul class="news__list">
+      <!-- The lead carries no photograph, on purpose. The story is somebody
+           else's and so are its pictures — HotCars / AOL — and a news card is
+           read as illustrating its story, so lending it one of our own cars
+           would be a claim we are not making. It takes the extra scale
+           instead, which is also why the three cards are not one shape. -->
+      <li class="news__item news__item--lead">
+        <p class="news__meta"><time datetime="2026-08-22">22 Aug 2026</time> &middot; HotCars</p>
+        <h3 class="news__h">A Corvette Grand Sport just sold for $18.7m — and it
+          exists because of the Cobra.</h3>
+        <p>Chassis 003 took the Corvette record at RM Sotheby&rsquo;s in Monterey,
+          at more than twice the previous one. Five were built, three of them
+          coupes. Zora Arkus-Duntov drew it as an answer to Shelby&rsquo;s car and
+          against a GM racing ban: a tubular chassis at around 1,900&nbsp;lb and
+          an aluminium 377 making north of 600&nbsp;hp.</p>
+        <a class="link" href="https://www.aol.com/articles/rarest-sexiest-american-sports-car-093012000.html/"
+           rel="noopener noreferrer" target="_blank">Read the story <span aria-hidden="true">&rarr;</span></a>
+      </li>
+
+      <li class="news__item">
+        <span class="lot__shot">
+          <img class="shot shot--wide" src="assets/img/shot-05.jpg" width="900" height="1200"
+               alt="A Backdraft on black rims, side pipe running past the rear wheel" loading="lazy" decoding="async">
+        </span>
+        <p class="news__meta"><time datetime="2026-08-15">15 Aug 2026</time> &middot; Ford Authority</p>
+        <h3 class="news__h">The Daytona Coupe took $42.9m and the American record with it.</h3>
+        <p>Carroll Shelby&rsquo;s own 1964 Daytona Coupe is now the most expensive
+          American car ever sold at auction. Six were built to beat Ferrari at Le
+          Mans, and in 1965 they did.</p>
+      </li>
+
+      <li class="news__item">
+        <span class="lot__shot">
+          <img class="shot shot--wide" src="assets/img/shot-02.jpg" width="900" height="1200"
+               alt="The nose of a Backdraft, headlight and louvred hood" loading="lazy" decoding="async">
+        </span>
+        <p class="news__meta">AC Cars</p>
+        <h3 class="news__h">AC has built the Cobra again, and this is the production car.</h3>
+        <p>AC announced the revival in December 2022 and has now shown the
+          finished version: Ford-powered again, assembled in Sweden, sold into
+          global markets. The car Shelby turned into a track weapon is back in
+          series production for the first time in sixty years.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="sect sect--bone sect--bone-raised sect--tight-t" id="consignment" data-ground="light" aria-labelledby="consignment-title">
     <div class="consign">
       <div>
-        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>06 / Consignment</p>
+        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>07 / Consignment</p>
         <h2 class="sect__title" id="consignment-title">Already have one.</h2>
       </div>
       <div class="consign__body">
@@ -310,13 +366,13 @@
   </section>
 
   <!-- ══════════════════════════════════════════════════════════════════════
-       07 · REVIEWS — graphite-900. The rail is a list with overflow, so it
+       08 · REVIEWS — graphite-900. The rail is a list with overflow, so it
        scrolls with the wheel, a drag, the keyboard and a screen reader on
        its own. The two buttons are revealed by script and hidden without it.
      ══════════════════════════════════════════════════════════════════════ -->
   <section class="sect sect--900" id="reviews" aria-labelledby="reviews-title">
     <header class="sect__head sect__head--rail">
-      <p class="tag"><span class="tag__dot" aria-hidden="true"></span>07 / Reviews</p>
+      <p class="tag"><span class="tag__dot" aria-hidden="true"></span>08 / Reviews</p>
       <h2 class="sect__title" id="reviews-title">In their words.</h2>
       <p class="rail-btns" data-rail-controls hidden>
         <button class="round" type="button" data-rail="prev" aria-label="Previous accounts">&larr;</button>
@@ -360,7 +416,7 @@
   </section>
 
   <!-- ══════════════════════════════════════════════════════════════════════
-       08 · GALLERY — graphite-950, the darkest ground on the page, so the
+       09 · GALLERY — graphite-950, the darkest ground on the page, so the
        pictures are the only thing in it.
      ══════════════════════════════════════════════════════════════════════ -->
   <section class="sect sect--950" id="gallery" aria-labelledby="gallery-title">

@@ -8,12 +8,13 @@
   --mono:  "JetBrains Mono", ui-monospace, monospace;
   --script: "Allura", cursive;
 
-  --h1:   clamp(3.2rem, 5.8vw, 6.75rem);
+  --h1:   clamp(3.6rem, 7vw, 8.5rem);
   --h2:   clamp(2.4rem, 3.9vw, 4.6rem);
   --h3:   clamp(1.35rem, 1.7vw, 2rem);
   --lot:  clamp(1.5rem, 2vw, 2.35rem);
   --micro: 0.875rem;              /* 14px floor for functional text */
   --nav:   1rem;                  /* 16 — the nav sits above the floor, not on it */
+  --news-h: clamp(1.15rem, 1.35vw, 1.4rem);
   --track: 0.16em;
   --pad:  clamp(5rem, 10vh, 9rem);
   --page: 110rem;                 /* the mockup's 1920 less its gutters */
@@ -279,9 +280,13 @@ html { scroll-padding-block-start: 9rem; }
    a scroll container, so unlike `hidden` it does not kill the stickiness. */
 .hero {
   position: sticky; inset-block-start: 0; z-index: 0;
-  display: grid; align-content: space-between; row-gap: var(--sp-7);
+  display: grid; align-content: space-between; row-gap: var(--sp-6);
   min-block-size: 100svh;
-  padding: clamp(11rem, 19vh, 15rem) var(--edge) var(--pad);
+  /* The 15svh is the drop, kept separate from the clearance so the two can be
+     tuned apart: the clamp is what keeps the headline out from under the fixed
+     bar, the 7svh is where it sits once it is clear of it. The band at the
+     bottom does not move — align-content pins it. */
+  padding: calc(clamp(8.5rem, 14vh, 11rem) + 7svh) var(--edge) var(--pad);
   isolation: isolate;
   overflow: clip;
 }
@@ -323,16 +328,42 @@ html { scroll-padding-block-start: 9rem; }
 /* Holds the headline alone now — the lede moved to .hero__foot — so this is
    purely a wrap guard. Widened with the type so the display size is not
    quietly capped by a box that was measured for smaller letters. */
-.hero__copy { position: relative; z-index: 2; max-inline-size: min(60ch, 56%); }
+/* No measure on the headline. The break is authored — there is a <br> in the
+   markup — so the box must never add a second one of its own; at 134px a cap
+   of 62% was deciding where the line ended, not the author. */
+/* Centred, and the one place on this page symmetry is right: the headline is
+   a head-on announcement over a head-on shot of three cars, and that framing
+   is the point. Everything below it stays asymmetric. */
+.hero__copy {
+  position: relative; z-index: 2;
+  max-inline-size: none; justify-self: center; text-align: center;
+}
 .hero__title {
   font-family: var(--face); font-weight: 600; font-size: var(--h1);
   line-height: 0.98; letter-spacing: -0.028em; color: var(--bone-050);
+  /* Two lines, and exactly two: the only break is the one in the markup. */
+  white-space: nowrap;
 }
 /* The lede and the buttons are a band across the bottom of the frame, not a
    stack under the headline. The headline takes the top of the shot, the band
    takes the bottom, and the video keeps the middle — which is where the cars
    are. Distributed to the full width of the column, so the row has the same
    two edges as every section below it. */
+/* THE EXIT. --hero-exit runs 0 -> 1 across the hero's own height and is set by
+   v10.js from the scroll position, so this is scroll-linked and has no duration
+   of its own: stop scrolling and it stops, scroll back and it comes back
+   exactly. The headline and the band leave together, upward and out of focus,
+   as the inventory arrives underneath them.
+
+   14vh and 14px are the whole of it. Further and the type is gone before the
+   next section has arrived, which reads as a gap rather than a handover. */
+.hero__copy,
+.hero__foot {
+  transform: translate3d(0, calc(var(--hero-exit, 0) * -14vh), 0);
+  filter: blur(calc(var(--hero-exit, 0) * 14px));
+  opacity: calc(1 - var(--hero-exit, 0));
+  will-change: transform, filter, opacity;
+}
 .hero__foot {
   position: relative; z-index: 2;
   display: flex; flex-wrap: wrap; align-items: flex-end;
@@ -351,6 +382,12 @@ html { scroll-padding-block-start: 9rem; }
 .sect--950 { background: var(--graphite-950); }
 .sect--900 { background: var(--graphite-900); }
 .sect--bone { background: var(--ground); }
+/* Consignment sits directly under services and both are bone, so without this
+   they read as one very long light block. --surface is the next step up the
+   same ramp — bone-050 over bone-100, a 6% lift — which separates the two
+   without introducing a colour or a rule between them. The record stays one
+   ground; it just gains a seam. */
+.sect--bone-raised { background: var(--surface); }
 /* Two sections that are one statement: the seam between them closes. */
 .sect--tight-b { padding-block-end: var(--sp-7); }
 .sect--tight-t { padding-block-start: var(--sp-7); }
@@ -653,6 +690,16 @@ html { scroll-padding-block-start: 9rem; }
 .about__pair { display: grid; grid-template-columns: minmax(0, 640fr) minmax(0, 914fr); gap: var(--col-gap); }
 
 /* ── 05 services ───────────────────────────────────────────────────────── */
+/* Both service pictures are cutouts with real alpha, not framed photographs.
+   So they get no .frame: no border, no ground, no hatch — the object sits
+   straight on the bone and the section's own negative space is its frame. They
+   are also different shapes, 1:1 and 4:3, and that is left alone. Forcing a
+   square on the transporter would cut the trailer in half, and two identical
+   tiles is the card-wall read again. */
+.row__shot {
+  inline-size: 100%; block-size: auto;
+  align-self: center;
+}
 .row {
   display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) auto;
   gap: var(--sp-7); align-items: start;
@@ -762,6 +809,72 @@ html { scroll-padding-block-start: 9rem; }
 .round:focus-visible { outline: var(--focus-w) solid var(--text); outline-offset: var(--focus-offset); }
 
 .gallery__follow { margin-block-start: var(--sp-7); }
+
+
+/* ── 06 news and events ────────────────────────────────────────────────────
+   Three items, deliberately not three of the same tile. The lead is wider,
+   carries no photograph and gets the larger headline; the two beside it are
+   narrower and picture-led. Three identical cards would be the card wall. */
+.news__list {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap); align-items: start;
+}
+.news__item { display: grid; gap: var(--sp-4); align-content: start; }
+.news__item--lead { grid-column: 1 / span 5; }
+.news__list > :nth-child(2) { grid-column: 7 / span 3; }
+.news__list > :nth-child(3) { grid-column: 10 / span 3; }
+/* The two photographs are 900 x 1200 portrait originals; 16/9 through them
+   takes the top off the car, so the news tiles run 4/3 like the pair in 04. */
+.news__item .shot { aspect-ratio: 4 / 3; }
+.news__meta {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.news__h {
+  font-family: var(--face); font-weight: 600; font-size: var(--news-h);
+  line-height: 1.2; letter-spacing: -0.015em; color: var(--text);
+}
+.news__item--lead .news__h { font-size: var(--lot); }
+.news__item p { color: var(--text-muted); line-height: 1.55; }
+.news__item .link { justify-self: start; margin-block-start: var(--sp-3); }
+
+/* ── scroll reveal ─────────────────────────────────────────────────────────
+   One language, three roles, and it binds to roles rather than to elements —
+   a selector naming one heading animates nothing on the next page and raises
+   no error while failing.
+
+     title  slides in from the side
+     text   rises from below
+     media  wipes open from its left edge
+
+   Everything is gated on .js, so with scripts off the page is simply there.
+   The hero is deliberately excluded: the first read never waits for an
+   entrance. Distance is 3rem and 2rem rather than the 8px the interface scale
+   caps translation at — that cap governs hover, focus and press, where motion
+   sits under the pointer. An entrance that has to be seen from across a
+   section is a different job, and 8px is invisible at that range. */
+.js [data-reveal] {
+  transition:
+    opacity var(--dur-4) var(--ease-out),
+    transform var(--dur-4) var(--ease-out),
+    clip-path var(--dur-4) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js [data-reveal='title'] { opacity: 0; transform: translate3d(-3rem, 0, 0); }
+.js [data-reveal='text']  { opacity: 0; transform: translate3d(0, 2rem, 0); }
+.js [data-reveal='media'] { opacity: 0; clip-path: inset(0 0 0 100%); }
+.js [data-reveal][data-in] {
+  opacity: 1; transform: none; clip-path: inset(0 0 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Not a faster entrance — none. The content is simply present. */
+  .js [data-reveal],
+  .js [data-reveal][data-in] {
+    opacity: 1; transform: none; clip-path: none;
+    transition: none; transition-delay: 0ms;
+  }
+}
 
 /* ── footer ────────────────────────────────────────────────────────────── */
 .site-foot {
@@ -919,6 +1032,8 @@ html { scroll-padding-block-start: 9rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .rail { scroll-behavior: auto; }
+  /* The hero simply scrolls away like any other block. */
+  .hero__copy, .hero__foot { transform: none; filter: none; opacity: 1; }
   /* The picture still changes — that is the content, not the decoration. What
      goes is the dissolve between the two. */
   .build__shot { transition: none; }

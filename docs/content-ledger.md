@@ -20,7 +20,9 @@ before the final build needs it. The gate is yielded out loud; it is not absent.
 | 7 | `Forty years…` | Who we are | **sourced** | Client brief, `docs/brief-midwest-cobras.pdf`: *"Emphasize 40 years of experience."* Confirmed by the client via Alex, 2026-08-27. No longer blocks Gate 4. |
 | 8 | Customer reviews | Owners, index9 §07 | **unverified — client to confirm** | Both quotations and both attributions are transcribed from Alex's own v4 mockup, `donot git/midwest-cobras-v4.png`. **I have written none of them and added no name, city or chassis number that is not in that file** — which keeps this row's original rule that nothing is invented, while letting the client's draft stand as draft. It is not a source: a mockup is a design, and the named owners still have to be real people who said these words. |
 | 9 | Event dates | Owners | **placeholder, visibly so** | None. Dates read `TBC`. |
-| 10 | Address, phone | Footer | **sourced** | Client dealer form supplied by Alex, 2026-08-27: Midwest Cobras, LLC — 14510 Parallel Lane, Basehor, KS 66007 — 913-662-5000 — www.midwestcobras.com. No email address was given, so the footer carries none. |
+| 10 | Address, telephone, domain | Footer | **sourced** | Client dealer form, read from Alex's screenshot 2026-08-28: Midwest Cobras, LLC · 14510 Parallel Lane · Basehor · Kansas · 66007 · 913-662-5000 · www.midwestcobras.com. The Fax field is empty on the form, so there is no fax on the page. |
+| 10b | Contact person and direct line | Footer | **sourced** | Same form: **Kristi Kunard, 913-238-6803, kristi@midwestcobras.com**. This supersedes the earlier note that no email was supplied — there is one, and the footer carries it. |
+| 10c | `Independent dealer` | Footer | **sourced** | Same form: *"Part of a group or other dealer: **No**."* |
 
 ## Not claims, and why they are still listed
 
@@ -114,6 +116,27 @@ them. Nothing on this page is a borrowed photograph, which is a step forward fro
 the four Hinderer images recorded above: those are still on the older index
 pages, and they are still somebody else's property.
 
+## Simulated content — Alex's instruction, 2026-08-28
+
+> *"остальное что не знаешь симулируй"* — fill the remaining holes rather than
+> leave them.
+
+Done, and listed here rather than blended in. **Simulated is not sourced and it
+is not "unverified — client to confirm" either**: those are the client's own
+words waiting for a check, and this is mine, written to hold a shape. It is the
+weakest status in this file and every line of it is replaced before anything
+ships.
+
+| Where | What | Note |
+|---|---|---|
+| index10 §07, card 04 | The fourth owner account | The v10 mockup clips it mid-sentence: only *"The side p… which is to… schedule."* and *"Ray T. · RT4B Black Edition"* are legible. The completion is written to match those fragments and nothing else. **A named person did not say this.** |
+
+**Photography is deliberately NOT simulated.** Eleven frames stay empty and
+labelled. There are four usable photographs in `assets/img/` and they are
+Hinderer Cobras' property, recorded above as borrowed and not shipping — putting
+them back to fill holes would trade a visible gap for an invisible one, and an
+invisible one is the kind that reaches a client's live site.
+
 ## What has to happen before this ledger can pass Gate 4
 
 0. ~~The hero model is replaced with a commercially licensed one.~~ **DONE.**
@@ -148,8 +171,9 @@ pages, and they are still somebody else's property.
    matter most are the production headline (*"Four cars, not four hundred."*),
    *"Fully insured"*, and the Carroll Shelby disclaimer — a volume claim, a
    coverage claim and a trademark position. None of them is mine to soften.
-2c. **Basehor or Lake Forest.** The mockup and the sourced dealer form disagree
-   about where the company is. The sourced address is on the page; if there are
-   two facilities, both get rows.
+2c. ~~**Basehor or Lake Forest.**~~ **Closed 2026-08-28.** The dealer form gives
+   one address and one only — Basehor, Kansas. *Lake Forest* was the v4 mockup's
+   invention and it is on no page. index9's two references were already changed
+   to Basehor; index10 names no city in its body copy at all.
 3. Any figure added to the configurator (option prices, lead times, engine
    specifications) arrives with a source in the same commit as the copy.

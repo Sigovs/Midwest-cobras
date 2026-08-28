@@ -448,3 +448,10 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 @media (prefers-reduced-motion: reduce) {
   .rail { scroll-behavior: auto; }
 }
+
+/* The named contact sits under the switchboard number rather than beside it:
+   one is the company, the other is a person, and they are not the same rank. */
+.site-foot__who { margin-block-start: var(--sp-4); color: var(--text-muted); }
+.site-foot__who a { color: var(--text); }
+.site-foot__legal a { color: var(--text-muted); text-decoration: none; border-block-end: var(--hairline) solid transparent; }
+.site-foot__legal a:hover { border-block-end-color: var(--text-muted); }

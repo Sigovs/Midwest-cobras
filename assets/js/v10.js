@@ -45,37 +45,164 @@
        than a card and a gap, and the snap would drag it back, which reads as
        the button fighting you. */
     function page() {
-      var mandatory = getComputedStyle(track).scrollSnapType.indexOf("mandatory") !== -1;
-      if (mandatory && track.children.length > 1) {
-        var a = track.children[0].getBoundingClientRect();
-        var b = track.children[1].getBoundingClientRect();
-        return Math.max(b.left - a.left, 240);
-      }
-      return Math.max(track.clientWidth * 0.8, 240);
+      if (track.children.length < 2) return Math.max(track.clientWidth * 0.8, 240);
+      var stride = track.children[1].getBoundingClientRect().left
+                 - track.children[0].getBoundingClientRect().left;
+      if (stride < 8) return Math.max(track.clientWidth * 0.8, 240);
+      /* Whole cards only. Four fifths of a window is the right distance and
+         almost never a whole number of cards, so it is rounded to one — a rail
+         left standing between two cards has thrown away the grid it just drew.
+         A card wider than a third of the window is a big card and moves alone;
+         a rail of thumbnails moves as many as fit in four fifths of a screen. */
+      var wide = stride > track.clientWidth / 3;
+      var n = wide ? 1 : Math.max(1, Math.round(track.clientWidth * 0.8 / stride));
+      return stride * n;
     }
 
+    /* The browser animates the scroll, not a rAF loop here.
+
+       A hand-rolled tween looked like the safer option and is not: rAF is
+       throttled to about one frame a second when the window is occluded or the
+       tab is in the background, and a scroll animation that stalls halfway
+       leaves the rail parked between two cards. The browser's own smooth scroll
+       is driven by the scroller and does not stall like that.
+
+       What it will not survive is being started in the same task as a direct
+       write to scrollLeft — it is silently dropped, which is a press of the
+       arrow that does nothing. So when the loop has just jumped, the scroll is
+       handed to the next task. */
     function go(dir) {
-      track.scrollBy({ left: dir * page(), behavior: reduced ? 'auto' : 'smooth' });
+      clearTimeout(settle);
+      var jumped = normalise();
+      var step = dir * page();
+      function run() {
+        busyUntil = Date.now() + (reduced ? 0 : 700);
+        track.scrollBy({ left: step, behavior: reduced ? 'auto' : 'smooth' });
+        settle = setTimeout(afterSettle, 160);
+      }
+      if (jumped) setTimeout(run, 0); else run();
     }
 
-    /* Disabled at the ends rather than wrapping: a rail that silently
-       teleports back to the start is a rail whose scrollbar is lying. */
+    /* ── the loop ────────────────────────────────────────────────────────
+       Three copies of the list: one before, the real one, one after. Prepending
+       a full set shifts everything right by exactly one set width, so "home" is
+       that width and nothing has to be measured against the old positions.
+
+       When the scroll settles more than half a set either side of home, the
+       scroll position jumps by one set. The content under the visitor is
+       identical at both ends of that jump, so there is nothing to see — which is
+       the whole trick, and the reason this needs three sets rather than two.
+
+       Only after it settles. Jumping during a smooth scroll cancels the
+       animation, and the spare set on each side is the room that buys the wait.
+
+       No JavaScript: no clones, and the rail is a list that scrolls to its end.
+       That is a smaller thing to lose than the cards themselves. */
+    var real = Array.prototype.slice.call(track.children);
+    var looping = false;
+
+    function clone(el) {
+      var c = el.cloneNode(true);
+      c.setAttribute('aria-hidden', 'true');
+      c.setAttribute('data-clone', '');
+      /* A copy is not a second car. It is out of the tab order and out of the
+         accessibility tree, so the count a screen reader announces is the
+         count that exists. */
+      var focusable = c.querySelectorAll('a, button, input, select, textarea, [tabindex]');
+      for (var i = 0; i < focusable.length; i++) focusable[i].setAttribute('tabindex', '-1');
+      return c;
+    }
+
+    function buildLoop() {
+      if (looping || real.length < 2) return;
+      /* No "does it overflow yet" test here, and that was a real bug: with two
+         cars the list fits the window exactly, so the guard refused to clone —
+         and refusing to clone is what kept it from overflowing. Cloning is what
+         creates the scroll, not a reaction to it. Two cars and a slice of the
+         third is the shape the prototype has, and the third is the first one
+         coming round again. */
+      var head = document.createDocumentFragment();
+      var tail = document.createDocumentFragment();
+      for (var i = 0; i < real.length; i++) {
+        head.appendChild(clone(real[i]));
+        tail.appendChild(clone(real[i]));
+      }
+      track.appendChild(tail);
+      track.insertBefore(head, track.firstChild);
+      looping = true;
+      home();
+    }
+
+    function setWidth() {
+      if (!looping) return 0;
+      var box = track.getBoundingClientRect().left + track.scrollLeft;
+      var first = track.children[0].getBoundingClientRect().left - box;
+      var nth = track.children[real.length].getBoundingClientRect().left - box;
+      return nth - first;
+    }
+
+    function jump(to) {
+      var snap = track.style.scrollSnapType;
+      var behav = track.style.scrollBehavior;
+      /* Snap off for the duration, or it drags the jump back the way it came. */
+      track.style.scrollSnapType = 'none';
+      track.style.scrollBehavior = 'auto';
+      track.scrollLeft = to;
+      track.style.scrollSnapType = snap;
+      track.style.scrollBehavior = behav;
+    }
+
+    function home() { jump(setWidth()); }
+
+    var settle, busyUntil = 0;
+    /* A drag, a wheel or a swipe settles here. An arrow press waits out its own
+       animation first — jumping mid-scroll is what cancels it. */
+    function afterSettle() {
+      if (Date.now() < busyUntil) { settle = setTimeout(afterSettle, 120); return; }
+      normalise();
+    }
+    /* Returns whether it actually moved the scroll position — the caller needs
+       to know, because a smooth scroll started right after a jump is dropped. */
+    function normalise() {
+      if (!looping) return false;
+      var w = setWidth();
+      if (!w) return false;
+      var x = track.scrollLeft;
+      if (x < w * 0.5) { jump(x + w); return true; }
+      if (x > w * 1.5) { jump(x - w); return true; }
+      return false;
+    }
+
+    /* A wrapping rail has no ends, so neither arrow is ever dead. Both stay
+       live and the only question left is whether there is anything to scroll. */
     function sync() {
       var max = track.scrollWidth - track.clientWidth;
-      prev.disabled = track.scrollLeft <= 2;
-      next.disabled = track.scrollLeft >= max - 2;
+      if (looping) {
+        prev.disabled = false;
+        next.disabled = false;
+      } else {
+        prev.disabled = track.scrollLeft <= 2;
+        next.disabled = track.scrollLeft >= max - 2;
+      }
       controls.hidden = max <= 2;      /* nothing to scroll, nothing to press */
     }
 
     prev.addEventListener('click', function () { go(-1); });
     next.addEventListener('click', function () { go(1); });
-    track.addEventListener('scroll', sync, { passive: true });
-    window.addEventListener('resize', sync, { passive: true });
+    track.addEventListener('scroll', function () {
+      sync();
+      clearTimeout(settle);
+      settle = setTimeout(afterSettle, 140);
+    }, { passive: true });
+    window.addEventListener('resize', function () { sync(); normalise(); }, { passive: true });
 
     controls.hidden = false;
+    buildLoop();
     sync();
-    /* Web fonts land after first paint and change the measurements. */
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(sync);
+    /* Web fonts land after first paint and change every measurement here. */
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { buildLoop(); home(); sync(); });
+    }
   }
 
   /* 100vw counts the scrollbar and the layout does not, so anything sized from

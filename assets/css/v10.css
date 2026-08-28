@@ -426,13 +426,6 @@ html { scroll-padding-block-start: 9rem; }
     calc(-1 * var(--gutter));
   padding-inline-end: var(--gutter);
 }
-/* 07 and 08 keep their left edge on the heading's column and run off the right.
-   This one is a different shape and needs both edges: it reaches the window on
-   each side and pads itself back in by the peek. */
-.sect > .rail--lots {
-  margin-inline: calc(-1 * var(--gutter));
-  padding-inline: var(--peek);
-}
 
 .rail {
   display: grid; grid-auto-flow: column; grid-auto-columns: 30rem;
@@ -453,15 +446,25 @@ html { scroll-padding-block-start: 9rem; }
 
 /* After .rail, not before it: these are overrides and the two selectors weigh
    the same, so the later one is the only one that wins. */
+/* Two cars whole and the third cut by the window, with the first one's left
+   edge on the same line as the heading above it. That line is what the eye
+   reads the section from; a card floated off it looks like a different section.
+
+   So the card is half the content column, gap included — which is why the still
+   mockup shows two cars side by side and the prototype shows a carousel, and
+   they are the same layout. It scrolls; it just starts where the grid would. */
+/* Exactly on the heading, not half a pixel off it. The shared bleed rule
+   nudges a rail in by (window - gutters - page)/2 to sit on the page column;
+   here the section's own content box already starts on that line, and the
+   sub-pixel remainder of that sum was showing as a 1px step against the
+   headline. Zero, and the two edges are the same edge. */
+.sect > .rail--lots { margin-inline-start: max(0px, (100% - var(--page)) / 2); }
+
 .rail--lots {
-  --card: min(66vw, 78rem);
-  --peek: max(var(--gutter), ((100vw - var(--sbw, 0px)) - var(--card)) / 2);
+  --col: min(var(--page), (100vw - var(--sbw, 0px)) - 2 * var(--gutter));
+  --card: calc((var(--col) - var(--col-gap)) / 2);
   grid-auto-columns: var(--card);
-  gap: var(--sp-7);
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--peek);
 }
-.rail--lots > .lot { scroll-snap-align: center; }
 
 .card {
   display: grid; grid-template-rows: auto 1fr auto; gap: var(--sp-5);
@@ -579,7 +582,7 @@ html { scroll-padding-block-start: 9rem; }
 
   .about__pair, .build__top, .steps { grid-template-columns: minmax(0, 1fr); }
   /* One car fills the phone with a thumb's width of the next one showing. */
-  .rail--lots { --card: 86vw; gap: var(--sp-5); }
+  .rail--lots { --card: 86vw; }
   .steps { gap: var(--sp-6); }
   .row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
   .frame--square { aspect-ratio: 16 / 9; }

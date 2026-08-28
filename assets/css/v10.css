@@ -1,0 +1,427 @@
+/* v10.css — the whole page. One file, flat names, tokens.css underneath it.
+   Grounds are named in the class: sect--950 is graphite-950, sect--900 is
+   graphite-900, sect--bone is the record surface and carries data-ground=light. */
+
+:root {
+  --face:  "Familjen Grotesk", system-ui, sans-serif;
+  --text-face: "Source Sans 3", system-ui, sans-serif;
+  --mono:  "JetBrains Mono", ui-monospace, monospace;
+  --script: "Allura", cursive;
+
+  --h1:   clamp(2.8rem, 4.6vw, 5.5rem);
+  --h2:   clamp(2.4rem, 3.9vw, 4.6rem);
+  --h3:   clamp(1.35rem, 1.7vw, 2rem);
+  --lot:  clamp(1.5rem, 2vw, 2.35rem);
+  --micro: 0.875rem;              /* 14px floor for functional text */
+  --track: 0.16em;
+  --pad:  clamp(5rem, 10vh, 9rem);
+  --page: 110rem;                 /* the mockup's 1920 less its gutters */
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--graphite-950);
+  color: var(--text);
+  font-family: var(--text-face);
+  font-size: clamp(1.0625rem, 1.15vw, 1.3125rem);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p, dl, dd, blockquote, figure { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+/* ── shared ────────────────────────────────────────────────────────────── */
+.skip {
+  position: fixed; z-index: 100;
+  inset-block-start: var(--sp-4); inset-inline-start: var(--sp-4);
+  translate: 0 -300%;
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--bone-050); color: var(--ink-on-light);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; text-decoration: none;
+}
+.skip:focus-visible { translate: 0 0; outline: var(--focus-w) solid var(--ink-on-light); outline-offset: 2px; }
+
+.tag {
+  display: flex; align-items: center; gap: var(--sp-3);
+  margin-block-end: var(--sp-5);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text-muted);
+}
+/* Oxblood is fill on dark and text on light — it measures 2.18:1 on graphite
+   and 8.55:1 on bone, so on dark it is a square and never a word. */
+.tag__dot { flex: none; inline-size: 0.5rem; block-size: 0.5rem; background: var(--oxblood); }
+.tag--ig { gap: var(--sp-4); }
+.tag--ig svg { flex: none; }
+
+.lede { color: var(--text-muted); line-height: 1.6; max-inline-size: 56ch; text-wrap: pretty; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-6);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text); text-decoration: none;
+  border: var(--hairline) solid var(--rule);
+  transition: background var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
+}
+.btn:hover { border-color: var(--text); }
+.btn:focus-visible { outline: var(--focus-w) solid var(--text); outline-offset: var(--focus-offset); }
+.btn--solid { background: var(--bone-050); color: var(--ink-on-light); border-color: var(--bone-050); }
+.btn--solid:hover { background: var(--bone-100); border-color: var(--bone-100); }
+[data-ground='light'] .btn--solid { background: var(--ink-on-light); color: var(--bone-050); border-color: var(--ink-on-light); }
+.btn-row { display: flex; flex-wrap: wrap; gap: var(--sp-4); margin-block-start: var(--sp-6); }
+
+.link {
+  display: inline-flex; align-items: center; gap: var(--sp-3);
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: 0.05em;
+  color: var(--bone-050); text-decoration: none;
+  border-block-end: var(--hairline) solid transparent;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+[data-ground='light'] .link { color: var(--oxblood); }
+.link:hover { border-block-end-color: currentColor; }
+.link:focus-visible { outline: var(--focus-w) solid currentColor; outline-offset: var(--focus-offset); }
+
+/* The frame is an empty picture that says what belongs in it. */
+.frame {
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  align-content: center; justify-items: center; gap: var(--sp-2);
+  padding-inline: var(--sp-5); text-align: center;
+  background:
+    repeating-linear-gradient(-45deg,
+      rgb(var(--bone-100-rgb) / 0.018) 0 2px, transparent 2px 9px),
+    var(--graphite-900);
+  border: var(--hairline) solid rgb(var(--bone-100-rgb) / 0.10);
+  overflow: hidden;
+}
+.frame__slug, .frame__sub {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--bone-300); max-inline-size: 100%;
+}
+.frame__slug { opacity: 0.9; }
+.frame__sub  { opacity: 0.68; letter-spacing: 0.10em; }
+.frame--lot    { aspect-ratio: 3 / 2; }
+.frame--build  { aspect-ratio: 16 / 10; }
+.frame--wide   { aspect-ratio: 16 / 9; }
+.frame--square { aspect-ratio: 1 / 1; }
+.frame--shot   { aspect-ratio: 3 / 4; }
+[data-ground='light'] .frame { border-color: rgb(var(--graphite-950-rgb) / 0.14); }
+
+/* ── header ────────────────────────────────────────────────────────────── */
+.site-head {
+  position: fixed; z-index: 50; inset-block-start: 0; inset-inline: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-7);
+  padding: var(--sp-6) var(--gutter);
+  transition: background var(--dur-3) var(--ease-out), padding var(--dur-3) var(--ease-out);
+}
+/* Set by v10.js once the hero has left. Over the hero the bar has no ground so
+   it cannot crop the frame; past it, it needs one to stay legible. */
+.site-head[data-stuck='true'] {
+  background: rgb(var(--graphite-950-rgb) / 0.92);
+  backdrop-filter: blur(10px);
+  padding-block: var(--sp-4);
+  border-block-end: var(--hairline) solid var(--rule);
+}
+
+.wordmark {
+  font-family: var(--script); font-size: clamp(1.9rem, 2.2vw, 2.6rem);
+  line-height: 1.05; color: var(--bone-050); text-decoration: none;
+}
+.site-head .wordmark { max-inline-size: 8ch; }
+.wordmark:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+
+.site-nav ul { display: flex; flex-wrap: wrap; gap: var(--sp-4) var(--sp-6); }
+.site-nav a {
+  display: block; padding-block: var(--sp-2);
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: 0.05em;
+  color: var(--bone-050); text-decoration: none;
+  border-block-end: var(--hairline) solid transparent;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.site-nav a:hover { border-block-end-color: var(--bone-050); }
+.site-nav a[aria-current='page'] { border-block-end-color: rgb(var(--bone-100-rgb) / 0.4); }
+.site-nav a:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+
+/* ── 01 hero ───────────────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  display: flex; align-items: center;
+  min-block-size: 100svh;
+  padding: clamp(9rem, 16vh, 13rem) var(--gutter) var(--pad);
+  isolation: isolate;
+  overflow: clip;
+}
+/* #2C3138 — that is --graphite-700 exactly, so it is the token and not a hex.
+   A flat plate the size of the finished frame, so nothing below it moves when
+   the real hero arrives. */
+.hero__placeholder {
+  position: absolute; inset: 0; z-index: 0;
+  display: grid; place-items: center;
+  background: var(--graphite-700);
+}
+.hero__placeholder span {
+  font-family: var(--mono); font-size: clamp(1rem, 2.4vw, 2.2rem);
+  letter-spacing: 0.42em; text-transform: uppercase;
+  color: rgb(var(--bone-100-rgb) / 0.34);
+}
+.hero__copy { position: relative; z-index: 2; max-inline-size: min(54ch, 48%); }
+.hero__title {
+  font-family: var(--face); font-weight: 600; font-size: var(--h1);
+  line-height: 0.98; letter-spacing: -0.028em; color: var(--bone-050);
+}
+.hero .lede { margin-block-start: var(--sp-6); }
+/* --rule IS graphite-700, which is now the placeholder's own colour, so the
+   outline button's border vanished into it. On this one ground the border is
+   drawn from bone instead. */
+.hero .btn { border-color: rgb(var(--bone-100-rgb) / 0.34); }
+.hero .btn:hover { border-color: var(--bone-050); }
+
+/* ── section shell ─────────────────────────────────────────────────────── */
+.sect { padding: var(--pad) var(--gutter); }
+.sect > * { max-inline-size: var(--page); margin-inline: auto; }
+.sect--950 { background: var(--graphite-950); }
+.sect--900 { background: var(--graphite-900); }
+.sect--bone { background: var(--ground); }
+/* Two sections that are one statement: the seam between them closes. */
+.sect--tight-b { padding-block-end: var(--sp-7); }
+.sect--tight-t { padding-block-start: var(--sp-7); }
+
+.sect__title {
+  font-family: var(--face); font-weight: 600; font-size: var(--h2);
+  line-height: 1.02; letter-spacing: -0.028em; color: var(--text);
+  text-wrap: balance; max-inline-size: 20ch;
+}
+
+.sect__head {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-5) var(--col-gap); align-items: start;
+  margin-block-end: var(--sp-8);
+}
+.sect__head > .tag { grid-column: 1 / span 8; grid-row: 1; }
+.sect__head > .sect__title { grid-column: 1 / span 8; grid-row: 2; }
+.sect__action { grid-column: 10 / span 3; grid-row: 2; justify-self: end; }
+.sect__note { grid-column: 1 / span 6; grid-row: 3; }
+.sect__head--pair > .sect__title { grid-column: 1 / span 6; }
+.sect__head--pair .sect__note { grid-column: 8 / span 5; grid-row: 2; max-inline-size: 46ch; }
+.rail-btns { grid-column: 11 / span 2; grid-row: 2; justify-self: end; display: flex; gap: var(--sp-4); }
+
+/* ── 02 inventory ──────────────────────────────────────────────────────── */
+.lots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-8) var(--col-gap); }
+.lot__state {
+  margin-block: var(--sp-5) var(--sp-3);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.lot__name {
+  margin-block-end: var(--sp-5);
+  font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  letter-spacing: -0.02em; color: var(--text);
+}
+.spec > div {
+  display: grid; grid-template-columns: minmax(0, 5rem) minmax(0, 1fr);
+  gap: var(--sp-5); align-items: baseline;
+  padding-block: var(--sp-4);
+  border-block-start: var(--hairline) solid var(--rule);
+}
+.spec dt {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.spec dd { color: var(--text); }
+.lot .link { margin-block-start: var(--sp-6); }
+
+/* ── 03 build ──────────────────────────────────────────────────────────── */
+.build__top {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--sp-8); align-items: start; margin-block-end: var(--sp-8);
+}
+.build__copy { display: grid; gap: var(--sp-6); align-content: start; }
+.steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--col-gap); }
+.step { border-block-start: var(--hairline) solid var(--rule); padding-block-start: var(--sp-5); }
+.step__n {
+  margin-block-end: var(--sp-4);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); color: var(--oxblood);
+}
+.step__h {
+  margin-block-end: var(--sp-4);
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  letter-spacing: -0.015em; color: var(--text);
+}
+.step p { color: var(--text-muted); max-inline-size: 30ch; }
+
+/* ── 04 who we are ─────────────────────────────────────────────────────── */
+.about { position: relative; overflow: clip; }
+/* The numeral is ground, not text: graphite-700 on graphite-900, aria-hidden,
+   and it repeats the sentence in front of it. */
+.about__numeral {
+  position: absolute; z-index: 0; inset-block-start: 8%; inset-inline-start: -2%;
+  font-family: var(--face); font-weight: 700;
+  font-size: clamp(12rem, 26vw, 30rem); line-height: 0.78; letter-spacing: -0.05em;
+  color: var(--graphite-700); white-space: nowrap; pointer-events: none;
+}
+.about__grid, .about__pair { position: relative; z-index: 1; }
+.about__grid {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap); align-items: start; margin-block-end: var(--sp-8);
+}
+.about__grid > :first-child { grid-column: 1 / span 6; }
+.about__body { grid-column: 8 / span 5; display: grid; gap: var(--sp-6); justify-items: start; }
+.about__pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--col-gap); }
+
+/* ── 05 services ───────────────────────────────────────────────────────── */
+.row {
+  display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) auto;
+  gap: var(--sp-7); align-items: start;
+  padding-block: var(--sp-7);
+  border-block-start: var(--hairline) solid var(--rule);
+}
+.rows > .row:last-child { border-block-end: var(--hairline) solid var(--rule); }
+.row__body { display: grid; gap: var(--sp-4); }
+.row__h {
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  letter-spacing: -0.015em; color: var(--text);
+}
+.row__body p { color: var(--text-muted); max-inline-size: 68ch; }
+.row .link { align-self: center; }
+
+/* ── 06 consignment ────────────────────────────────────────────────────── */
+.consign {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap); align-items: start;
+}
+.consign > :first-child { grid-column: 1 / span 6; }
+.consign__body { grid-column: 8 / span 5; display: grid; gap: var(--sp-7); justify-items: start; }
+
+/* ── 07 / 08 rails ─────────────────────────────────────────────────────── */
+.rail {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 26rem;
+  gap: var(--col-gap);
+  padding-block-end: var(--sp-5);
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity; scrollbar-width: thin;
+}
+.rail > * { scroll-snap-align: start; }
+.rail:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+.rail--shots { grid-auto-columns: 19rem; }
+
+.card {
+  display: grid; grid-template-rows: auto 1fr auto; gap: var(--sp-5);
+  padding: var(--sp-6);
+  background: var(--surface); border: var(--hairline) solid var(--rule);
+}
+.card blockquote p { font-size: 1.0625rem; line-height: 1.5; color: var(--text); text-wrap: pretty; }
+.card__by {
+  font-family: var(--mono); font-size: var(--micro); line-height: 1.7;
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.card--pending { border-style: dashed; }
+.card__pending {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--bone-300); opacity: 0.72;
+}
+
+.round {
+  inline-size: 3rem; block-size: 3rem;
+  display: grid; place-items: center;
+  border-radius: 50%; border: var(--hairline) solid var(--rule);
+  background: transparent; color: var(--text); font-size: 1rem; cursor: pointer;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.round:hover:not(:disabled) { border-color: var(--text); }
+/* WCAG 1.4.3 does not apply to inactive controls, but it still wants to be seen. */
+.round:disabled { opacity: 0.4; cursor: default; }
+.round:focus-visible { outline: var(--focus-w) solid var(--text); outline-offset: var(--focus-offset); }
+
+.gallery__follow { margin-block-start: var(--sp-7); }
+
+/* ── footer ────────────────────────────────────────────────────────────── */
+.site-foot {
+  padding: var(--pad) var(--gutter);
+  background: var(--graphite-900);
+  border-block-start: var(--hairline) solid var(--rule);
+}
+.site-foot > * { max-inline-size: var(--page); margin-inline: auto; }
+.site-foot__grid {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap); align-items: start;
+}
+.site-foot__brand { grid-column: 1 / span 5; display: grid; gap: var(--sp-6); }
+.site-foot__grid > :nth-child(2) { grid-column: 7 / span 2; }
+.site-foot__grid > :nth-child(3) { grid-column: 9 / span 2; }
+.site-foot__grid > :nth-child(4) { grid-column: 11 / span 2; }
+.wordmark--foot { font-size: clamp(2rem, 2.4vw, 2.8rem); }
+.site-foot__line {
+  font-family: var(--face); font-weight: 600;
+  font-size: clamp(1.15rem, 1.5vw, 1.6rem); line-height: 1.25;
+  letter-spacing: -0.015em; color: var(--text);
+}
+.site-foot__k {
+  margin-block-end: var(--sp-5);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.site-foot__col ul { display: grid; gap: var(--sp-4); }
+.site-foot__col a, .site-foot address a {
+  color: var(--text); text-decoration: none; white-space: nowrap;
+  border-block-end: var(--hairline) solid transparent;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.site-foot__col a:hover, .site-foot address a:hover { border-block-end-color: var(--text); }
+.site-foot__col a:focus-visible, .site-foot address a:focus-visible { outline: var(--focus-w) solid var(--text); outline-offset: var(--focus-offset); }
+.site-foot address { font-style: normal; display: grid; gap: var(--sp-4); color: var(--text); }
+.site-foot address p { line-height: 1.5; }
+.site-foot__legal {
+  margin-block-start: var(--sp-8); padding-block-start: var(--sp-6);
+  border-block-start: var(--hairline) solid var(--rule);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+
+/* ── narrow ────────────────────────────────────────────────────────────── */
+@media (max-width: 61.99rem) {
+  :root { --h1: clamp(2.2rem, 9vw, 3.2rem); --h2: clamp(2rem, 8vw, 2.9rem); }
+
+  .site-head { flex-direction: column; align-items: stretch; gap: var(--sp-4); padding: var(--sp-5) var(--gutter); }
+  .site-head .wordmark { max-inline-size: none; }
+  .site-nav ul { flex-wrap: nowrap; overflow-x: auto; gap: var(--sp-5); padding-block-end: var(--sp-2); }
+  .site-nav a { white-space: nowrap; }
+
+  .hero { padding-block-start: clamp(11rem, 24vh, 15rem); }
+  .hero__copy { max-inline-size: none; }
+
+  .sect__head, .about__grid, .consign, .site-foot__grid { grid-template-columns: minmax(0, 1fr); }
+  .sect__head > .tag, .sect__head > .sect__title, .sect__action, .sect__note,
+  .sect__head--pair > .sect__title, .sect__head--pair .sect__note,
+  .about__grid > :first-child, .about__body,
+  .consign > :first-child, .consign__body,
+  .site-foot__brand, .site-foot__grid > :nth-child(2),
+  .site-foot__grid > :nth-child(3), .site-foot__grid > :nth-child(4) {
+    grid-column: 1; grid-row: auto; justify-self: start;
+  }
+  /* Released from row 2 as well as column 11, or the buttons land above the
+     heading they belong to. */
+  .rail-btns { grid-column: 1; grid-row: auto; justify-self: start; margin-block-start: var(--sp-5); }
+
+  .lots, .about__pair, .build__top, .steps { grid-template-columns: minmax(0, 1fr); }
+  .steps { gap: var(--sp-6); }
+  .row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
+  .frame--square { aspect-ratio: 16 / 9; }
+  .row .link { align-self: start; }
+
+  .rail { grid-auto-columns: 80vw; }
+  .rail--shots { grid-auto-columns: 58vw; }
+  .about__numeral { font-size: clamp(7rem, 42vw, 12rem); inset-block-start: 4%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail { scroll-behavior: auto; }
+}

@@ -367,8 +367,20 @@ body.dir-j {
   visibility: visible;
 }
 
-/* Only the live act may be interacted with, and only its own controls. */
-[data-stage='on'] .j-act[data-on] .j-cta { pointer-events: auto; }
+/* THE LIVE ACT IS INTERACTIVE. ALL OF IT.
+
+   This used to read `.j-act[data-on] .j-cta`, which handed pointer events back
+   to one class and left everything else in the hero dead: the headline could not
+   be selected, nothing in the frame could be inspected, and index10's two hero
+   buttons — .m-btn, not .j-cta — did not respond to a click at all.
+   elementFromPoint returned <html> at every point of the first screen.
+
+   The reason the stage is pointer-events: none is that it is a full-bleed layer
+   over a canvas and its empty regions must not eat drags. That reason applies to
+   the LAYER, not to the act's own content. So the visible act gets its events
+   back wholesale, and the three hidden ones stay inert — which they already are,
+   being visibility: hidden. */
+[data-stage='on'] .j-act[data-on] { pointer-events: auto; }
 
 /* Pinned, the hero is exactly one viewport and the scroll belongs to the
    camera. Unpinned — reduced motion, no script — the acts are the page. */

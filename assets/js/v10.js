@@ -1,7 +1,8 @@
-/* v10.js — two small jobs. The page is finished HTML and CSS without it.
+/* v10.js — three small jobs. The page is finished HTML and CSS without it.
 
    1 · the header takes a ground once the hero has left
-   2 · the two rails get their arrow buttons
+   1b · the hero video parks on its last frame under reduced motion
+   2 · the rails get their arrow buttons and their wrap-around
 
    Both rails already scroll without this file — they are lists with
    overflow-x, so the wheel, a trackpad, a drag, the arrow keys and a screen
@@ -26,6 +27,30 @@
     new IntersectionObserver(function (entries) {
       bar.setAttribute('data-stuck', entries[0].isIntersecting ? 'false' : 'true');
     }, { rootMargin: '-72px 0px 0px 0px', threshold: 0 }).observe(hero);
+  }
+
+  /* ── 1b · the hero video under reduced motion ───────────────────────── */
+  function hero() {
+    var v = document.querySelector('.hero__video');
+    if (!v || !reduced) return;
+
+    /* The autoplay attribute is in the markup, because without scripts that is
+       the only thing that starts it and a still hero is a worse default than a
+       moving one. Here it is taken back off and the video is parked on its last
+       frame instead — the shot with the headlights on, which is the one the
+       whole eight seconds is travelling towards. Someone who has asked for less
+       motion gets the destination without the journey, rather than a poster of
+       the frame before anything happened. */
+    v.removeAttribute('autoplay');
+    v.pause();
+    var end = function () {
+      try { v.currentTime = Math.max(0, v.duration - 0.05); } catch (e) {}
+      v.pause();
+    };
+    if (v.readyState >= 1) end();
+    else v.addEventListener('loadedmetadata', end, { once: true });
+    /* Chrome can start it anyway before the attribute comes off. */
+    v.addEventListener('play', function () { v.pause(); end(); });
   }
 
   /* ── 2 · the rails ──────────────────────────────────────────────────── */
@@ -216,6 +241,7 @@
     scrollbar();
     window.addEventListener('resize', scrollbar, { passive: true });
     head();
+    hero();
     var sections = document.querySelectorAll('.sect');
     for (var i = 0; i < sections.length; i++) rail(sections[i]);
   }

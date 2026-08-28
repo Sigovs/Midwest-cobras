@@ -49,7 +49,24 @@
        plate the size of the finished frame, so the layout below it is real.
      ══════════════════════════════════════════════════════════════════════ -->
   <section class="hero" aria-labelledby="hero-title">
-    <div class="hero__placeholder" aria-hidden="true"><span>Placeholder</span></div>
+    <!-- Background, not content: the headline is what the page says and the
+         video is the room it says it in. Hence aria-hidden, and no controls.
+
+         It does not loop. The headlights coming on is a thing that happens
+         once, and a loop would keep switching them off again — so it plays,
+         arrives, and holds on the last frame, which is the composed shot.
+
+         muted is not a preference, it is the condition every browser puts on
+         autoplay; playsinline stops iOS taking it fullscreen. The poster is
+         the first frame, so nothing flashes before the first video frame
+         paints, and it is what stands in if the file never arrives at all. -->
+    <div class="hero__media" aria-hidden="true">
+      <video class="hero__video" autoplay muted playsinline preload="auto"
+             poster="assets/video/hero-poster.jpg" width="1920" height="1080">
+        <source src="assets/video/hero.webm" type="video/webm">
+        <source src="assets/video/hero.mp4" type="video/mp4">
+      </video>
+    </div>
 
     <div class="hero__copy">
       <h1 class="hero__title" id="hero-title">A Cobra<br>built to order.</h1>
@@ -85,8 +102,8 @@
          front of the car at, and that promise is what sets the width. -->
     <ul class="rail rail--lots" data-rail-track tabindex="0" aria-label="Cars on the floor, scrollable">
       <li class="lot">
-        <img class="shot shot--lot" src="assets/img/lot-rt4.jpg" width="3000" height="2000"
-             alt="RT4 Classic Edition, front three-quarter, on the shop floor" loading="lazy" decoding="async">
+        <img class="shot shot--lot" src="assets/img/car-rt4-front.jpg" width="1728" height="972"
+             alt="RT4 Classic Edition in indigo blue with white stripes, front three-quarter" loading="lazy" decoding="async">
         <p class="lot__state">Lot 01 &middot; Available</p>
         <h3 class="lot__name">RT4 Classic Edition</h3>
         <dl class="spec">
@@ -98,8 +115,8 @@
       </li>
 
       <li class="lot">
-        <img class="shot shot--lot" src="assets/img/lot-rt4b.jpg" width="3000" height="2000"
-             alt="RT4B Black Edition, rear three-quarter, on the shop floor" loading="lazy" decoding="async">
+        <img class="shot shot--lot" src="assets/img/car-rt4b-front.jpg" width="1728" height="972"
+             alt="RT4B Black Edition in red with black stripes on black rims, front three-quarter" loading="lazy" decoding="async">
         <p class="lot__state">Lot 02 &middot; Available</p>
         <h3 class="lot__name">RT4B Black Edition</h3>
         <dl class="spec">
@@ -116,7 +133,7 @@
        03 · BUILD — bone-050. The record ground: this is where the
        specification is written down, so it is lit.
      ══════════════════════════════════════════════════════════════════════ -->
-  <section class="sect sect--bone" id="build" data-ground="light" aria-labelledby="build-title">
+  <section class="sect sect--950 build" id="build" aria-labelledby="build-title">
     <div class="build__top">
       <div class="build__copy">
         <p class="tag"><span class="tag__dot" aria-hidden="true"></span>03 / Build</p>
@@ -126,35 +143,52 @@
           will actually sit in — the list below is the conversation, in the order
           it happens.</p>
       </div>
-      <div class="frame frame--build" role="img"
-           aria-label="Photograph to be supplied: car from above, three-quarter rear">
-        <span class="frame__slug">Photograph to be supplied</span>
-        <span class="frame__sub">From above, three-quarter rear · 16:10</span>
+      <!-- One stage, five frames stacked in it, the active one opaque. The
+           swap is CSS — the section watches which step is under the pointer
+           with :has() — so it works with scripts off and there is no state
+           being kept in two places.
+
+           The first image carries the alt text and the other four are
+           aria-hidden: to a screen reader this is one picture of the car, and
+           the five steps below already say in words what each one shows. Five
+           alt texts for five views of the same car is noise, not access. -->
+      <div class="build__stage" data-build-stage>
+        <img class="build__shot" data-build="1" src="assets/img/build-01.webp"
+             width="1600" height="900" decoding="async"
+             alt="A Backdraft Cobra, the specification the five steps below describe">
+        <img class="build__shot" data-build="2" src="assets/img/build-02.webp"
+             width="1600" height="900" loading="lazy" decoding="async" alt="" aria-hidden="true">
+        <img class="build__shot" data-build="3" src="assets/img/build-03.webp"
+             width="1600" height="900" loading="lazy" decoding="async" alt="" aria-hidden="true">
+        <img class="build__shot" data-build="4" src="assets/img/build-04.webp"
+             width="1600" height="900" loading="lazy" decoding="async" alt="" aria-hidden="true">
+        <img class="build__shot" data-build="5" src="assets/img/build-05.webp"
+             width="1600" height="900" loading="lazy" decoding="async" alt="" aria-hidden="true">
       </div>
     </div>
 
-    <ol class="steps">
-      <li class="step">
+    <ol class="steps" data-build-steps>
+      <li class="step" data-build-step="1" tabindex="0">
         <p class="step__n">01</p>
         <h3 class="step__h">Model</h3>
         <p>RT4 Classic or RT4B Black. Everything below follows from this one.</p>
       </li>
-      <li class="step">
+      <li class="step" data-build-step="2" tabindex="0">
         <p class="step__n">02</p>
         <h3 class="step__h">Body and colour</h3>
         <p>Paint, stripes, and whether the car wears them at all.</p>
       </li>
-      <li class="step">
+      <li class="step" data-build-step="3" tabindex="0">
         <p class="step__n">03</p>
         <h3 class="step__h">Wheels and stance</h3>
         <p>Eighteen-inch rims, matte black among them, and what sits under the arches.</p>
       </li>
-      <li class="step">
+      <li class="step" data-build-step="4" tabindex="0">
         <p class="step__n">04</p>
         <h3 class="step__h">Pipes and roll bars</h3>
         <p>Ceramic-coated, side-exit. The two parts you hear and the two you grab.</p>
       </li>
-      <li class="step">
+      <li class="step" data-build-step="5" tabindex="0">
         <p class="step__n">05</p>
         <h3 class="step__h">Interior</h3>
         <p>Upholstery, stitching, gauges, wheel. The part you are actually sitting in.</p>
@@ -186,10 +220,10 @@
     </div>
 
     <div class="about__pair">
-      <img class="shot shot--wide" src="assets/img/shop-04.jpg" width="1800" height="2400"
-           alt="The car in profile, side pipe running the length of the sill" loading="lazy" decoding="async">
-      <img class="shot shot--wide" src="assets/img/shop-01.jpg" width="1800" height="2400"
-           alt="The car from the front three-quarter" loading="lazy" decoding="async">
+      <img class="shot shot--wide" src="assets/img/car-rt4-side.jpg" width="1728" height="972"
+           alt="An RT4 in profile, the side pipe running the length of the sill" loading="lazy" decoding="async">
+      <img class="shot shot--wide" src="assets/img/car-rt4b-side.jpg" width="1728" height="972"
+           alt="An RT4B in profile on black rims" loading="lazy" decoding="async">
     </div>
   </section>
 
@@ -324,16 +358,16 @@
     </header>
 
     <ul class="rail rail--shots" data-rail-track tabindex="0" aria-label="Pictures from the shop, scrollable">
-      <li><img class="shot shot--tall" src="assets/img/shop-01.jpg" width="1800" height="2400"
-               alt="Front three-quarter, lit from above" loading="lazy" decoding="async"></li>
-      <li><img class="shot shot--tall" src="assets/img/shop-03.jpg" width="1800" height="2400"
-               alt="Head on, low" loading="lazy" decoding="async"></li>
-      <li><img class="shot shot--tall" src="assets/img/shop-04.jpg" width="1800" height="2400"
-               alt="The flank and the side pipe" loading="lazy" decoding="async"></li>
-      <li><img class="shot shot--tall" src="assets/img/shop-02.jpg" width="1800" height="2400"
-               alt="Rear three-quarter" loading="lazy" decoding="async"></li>
-      <li><img class="shot shot--tall" src="assets/img/shop-05.jpg" width="1800" height="2400"
-               alt="From behind the near-side rear wing" loading="lazy" decoding="async"></li>
+      <li><img class="shot shot--tall" src="assets/img/shot-01.jpg" width="900" height="1200"
+               alt="Bonnet and headlight, close" loading="lazy" decoding="async"></li>
+      <li><img class="shot shot--tall" src="assets/img/shot-03.jpg" width="900" height="1200"
+               alt="The RT4 nose, low and angled" loading="lazy" decoding="async"></li>
+      <li><img class="shot shot--tall" src="assets/img/shot-04.jpg" width="900" height="1200"
+               alt="Stripes running over the bonnet, from above" loading="lazy" decoding="async"></li>
+      <li><img class="shot shot--tall" src="assets/img/shot-02.jpg" width="900" height="1200"
+               alt="The RT4B nose, low and angled" loading="lazy" decoding="async"></li>
+      <li><img class="shot shot--tall" src="assets/img/shot-05.jpg" width="900" height="1200"
+               alt="The RT4B flank and side pipe" loading="lazy" decoding="async"></li>
     </ul>
 
     <p class="gallery__follow"><a class="link" href="https://www.instagram.com/midwestcobras/">Follow on Instagram <span aria-hidden="true">&rarr;</span></a></p>
@@ -345,6 +379,12 @@
      10, 10b, 10c, read 2026-08-28. The form's Fax field is empty, so there is no
      fax. "Part of a group or other dealer: No" is why it says independent. -->
 <footer class="site-foot" id="finance">
+  <!-- A band across the top of the footer, edge to edge. It is the last thing
+       on the page and it is a picture, not a link — the words underneath are
+       what the footer is for. -->
+  <img class="site-foot__band" src="assets/img/footer.jpg" width="1920" height="960"
+       alt="A Backdraft Cobra" loading="lazy" decoding="async">
+
   <div class="site-foot__grid">
     <div class="site-foot__brand">
       <p class="wordmark wordmark--foot"><span>Midwest Cobras</span></p>

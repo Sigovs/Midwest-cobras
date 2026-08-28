@@ -232,18 +232,39 @@ html { scroll-padding-block-start: 9rem; }
   isolation: isolate;
   overflow: clip;
 }
-/* #2C3138 — that is --graphite-700 exactly, so it is the token and not a hex.
-   A flat plate the size of the finished frame, so nothing below it moves when
-   the real hero arrives. */
-.hero__placeholder {
-  position: absolute; inset: 0; z-index: 0;
-  display: grid; place-items: center;
-  background: var(--graphite-700);
+/* The video fills the frame at any shape. graphite-950 underneath, because a
+   16:9 file in a tall window shows its own background for the first frame
+   otherwise, and white is the one colour this page never starts on. */
+.hero__media { position: absolute; inset: 0; z-index: 0; background: var(--graphite-950); }
+.hero__video { inline-size: 100%; block-size: 100%; object-fit: cover; display: block; }
+
+/* A scrim, not a wash. The headline sits in the left third and the cars are
+   centred, so the gradient is horizontal and dies out before it reaches them —
+   darkening the whole frame to protect the type would throw away the thing the
+   type is standing in front of.
+
+   The stops are measured against the video, not guessed: the brightest pixel
+   under the lede is the lit floor at #6c6a66, and bone-050 on that is 3.4:1 —
+   under the 4.5 the body text needs. Under this scrim the same pixel is #191a1c
+   and the ratio is 12.9:1. */
+.hero::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgb(var(--graphite-950-rgb) / 0.92) 0%,
+    rgb(var(--graphite-950-rgb) / 0.86) 28%,
+    rgb(var(--graphite-950-rgb) / 0.45) 52%,
+    rgb(var(--graphite-950-rgb) / 0.12) 74%,
+    rgb(var(--graphite-950-rgb) / 0.12) 100%);
 }
-.hero__placeholder span {
-  font-family: var(--mono); font-size: clamp(1rem, 2.4vw, 2.2rem);
-  letter-spacing: 0.42em; text-transform: uppercase;
-  color: rgb(var(--bone-100-rgb) / 0.34);
+/* The seam into 02. Without it the lit floor at the bottom of the frame meets
+   graphite-950 as a hard edge across the full width. */
+.hero::after {
+  content: ''; position: absolute; inset-inline: 0; inset-block-end: 0; z-index: 1;
+  block-size: 26%; pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgb(var(--graphite-950-rgb) / 0) 0%,
+    rgb(var(--graphite-950-rgb) / 1) 100%);
 }
 .hero__copy { position: relative; z-index: 2; max-inline-size: min(54ch, 48%); }
 .hero__title {
@@ -251,9 +272,8 @@ html { scroll-padding-block-start: 9rem; }
   line-height: 0.98; letter-spacing: -0.028em; color: var(--bone-050);
 }
 .hero .lede { margin-block-start: var(--sp-6); }
-/* --rule IS graphite-700, which is now the placeholder's own colour, so the
-   outline button's border vanished into it. On this one ground the border is
-   drawn from bone instead. */
+/* --rule is graphite-700 and this ground is a photograph, so a hairline in it
+   is either invisible or fighting whatever is behind it. Drawn from bone here. */
 .hero .btn { border-color: rgb(var(--bone-100-rgb) / 0.34); }
 .hero .btn:hover { border-color: var(--bone-050); }
 
@@ -348,8 +368,89 @@ html { scroll-padding-block-start: 9rem; }
   gap: var(--sp-8); align-items: start; margin-block-end: var(--sp-8);
 }
 .build__copy { display: grid; gap: var(--sp-6); align-content: start; }
+
+/* ── the stage ──────────────────────────────────────────────────────────────
+   Five frames in one box, one visible. The box holds its own height from the
+   first image's aspect ratio, so nothing below it moves when the picture
+   changes — a stage that resizes on hover is a page that flinches. */
+/* THE GROUND IS NOT FLAT. The cars are cut-outs standing on nothing, and a car
+   on a flat rectangle of one colour has no floor and no room — it reads as a
+   sticker. A soft pool of light, centred where the car is and falling away to
+   the section's own black at the edges, is what puts it somewhere.
+
+   It is on the section rather than the stage: light that stops at the picture's
+   edge is a box, and the whole point is that there is no box. Two stops from the
+   same channel token, no new colour — graphite-900 in the middle at a third
+   strength, nothing at the rim. */
+.build {
+  background:
+    radial-gradient(115% 78% at 52% 46%,
+      rgb(var(--graphite-900-rgb) / 1) 0%,
+      rgb(var(--graphite-900-rgb) / 0.55) 38%,
+      rgb(var(--graphite-950-rgb) / 0) 72%),
+    var(--graphite-950);
+}
+
+/* The car images are cut out — PNG alpha, no background of their own — so the
+   stage paints nothing behind them and that pool shows through.
+   A box colour here would put a rectangle around a car that was masked
+   precisely so it would not have one. */
+.build__stage { position: relative; aspect-ratio: 16 / 9; background: none; }
+.build__shot {
+  position: absolute; inset: 0;
+  inline-size: 100%; block-size: 100%; object-fit: contain;
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+.build__shot[data-build='1'] { opacity: 1; }
+
+/* THE SWAP IS CSS. The section asks which step is under the pointer and lights
+   the matching frame; no script, no state kept in two places, and it works with
+   JavaScript off. :focus-within is in every selector beside :hover so the
+   keyboard gets the same thing the mouse gets, not a note explaining it.
+
+   Reading it: while a step is hovered or focused, step 1's frame goes dark and
+   the matching one comes up. Written the other way round — light the match,
+   leave the default alone — both would be visible at once. */
+.build:has(.step:hover) .build__shot[data-build='1'],
+.build:has(.step:focus-within) .build__shot[data-build='1'] { opacity: 0; }
+
+.build:has([data-build-step='1']:hover) .build__shot[data-build='1'],
+.build:has([data-build-step='1']:focus-within) .build__shot[data-build='1'],
+.build:has([data-build-step='2']:hover) .build__shot[data-build='2'],
+.build:has([data-build-step='2']:focus-within) .build__shot[data-build='2'],
+.build:has([data-build-step='3']:hover) .build__shot[data-build='3'],
+.build:has([data-build-step='3']:focus-within) .build__shot[data-build='3'],
+.build:has([data-build-step='4']:hover) .build__shot[data-build='4'],
+.build:has([data-build-step='4']:focus-within) .build__shot[data-build='4'],
+.build:has([data-build-step='5']:hover) .build__shot[data-build='5'],
+.build:has([data-build-step='5']:focus-within) .build__shot[data-build='5'] { opacity: 1; }
+
 .steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--col-gap); }
-.step { border-block-start: var(--hairline) solid var(--rule); padding-block-start: var(--sp-5); }
+
+/* The rule over each step is the thing that says which one you are on. It is
+   the same mark the tag dot uses, so the section has one accent and not two. */
+.step {
+  border-block-start: var(--hairline) solid var(--rule);
+  padding-block-start: var(--sp-5);
+  position: relative; cursor: default;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.step::before {
+  content: ''; position: absolute; inset-block-start: calc(-1 * var(--hairline));
+  inset-inline: 0; block-size: 2px; background: var(--oxblood);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform var(--dur-3) var(--ease-out);
+}
+.step:hover::before, .step:focus-within::before { transform: scaleX(1); }
+/* Step 01 is what the stage shows at rest, so it carries the mark at rest —
+   until the pointer says otherwise. */
+.step[data-build-step='1']::before { transform: scaleX(1); }
+.steps:hover .step[data-build-step='1']::before,
+.steps:focus-within .step[data-build-step='1']::before { transform: scaleX(0); }
+.step[data-build-step='1']:hover::before,
+.step[data-build-step='1']:focus-within::before { transform: scaleX(1); }
+.step:focus-visible { outline: var(--focus-w) solid var(--ink-900, currentColor); outline-offset: var(--focus-offset); }
 .step__n {
   margin-block-end: var(--sp-4);
   font-family: var(--mono); font-size: var(--micro);
@@ -498,11 +599,23 @@ html { scroll-padding-block-start: 9rem; }
 
 /* ── footer ────────────────────────────────────────────────────────────── */
 .site-foot {
-  padding: var(--pad) var(--gutter);
+  padding: 0 var(--gutter) var(--pad);
   background: var(--graphite-900);
   border-block-start: var(--hairline) solid var(--rule);
 }
 .site-foot > * { max-inline-size: var(--page); margin-inline: auto; }
+
+/* Edge to edge, and it undoes the two things the footer does to its children:
+   the page-width cap and the gutter. The negative margin is the gutter itself,
+   so the band reaches the window whatever the gutter clamps to. */
+.site-foot__band {
+  display: block;
+  max-inline-size: none;
+  inline-size: calc(100% + 2 * var(--gutter));
+  margin-inline: calc(-1 * var(--gutter));
+  margin-block-end: var(--pad);
+  block-size: auto; aspect-ratio: 2 / 1; object-fit: cover;
+}
 .site-foot__grid {
   display: grid; grid-template-columns: repeat(12, 1fr);
   gap: var(--sp-8) var(--col-gap); align-items: start;
@@ -566,6 +679,17 @@ html { scroll-padding-block-start: 9rem; }
 
   .hero { padding-block-start: clamp(11rem, 24vh, 15rem); }
   .hero__copy { max-inline-size: none; }
+  /* A 16:9 frame in a portrait window is cropped to a slice, and the copy is on
+     top of the cars rather than beside them. So the scrim turns vertical: dark
+     where the words are, clear where the cars are. */
+  .hero::before {
+    background: linear-gradient(
+      to bottom,
+      rgb(var(--graphite-950-rgb) / 0.88) 0%,
+      rgb(var(--graphite-950-rgb) / 0.72) 46%,
+      rgb(var(--graphite-950-rgb) / 0.34) 72%,
+      rgb(var(--graphite-950-rgb) / 0.34) 100%);
+  }
 
   .sect__head, .about__grid, .consign, .site-foot__grid { grid-template-columns: minmax(0, 1fr); }
   .sect__head > .tag, .sect__head > .sect__title, .sect__action, .sect__note,
@@ -596,6 +720,18 @@ html { scroll-padding-block-start: 9rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .rail { scroll-behavior: auto; }
+  /* The picture still changes — that is the content, not the decoration. What
+     goes is the dissolve between the two. */
+  .build__shot { transition: none; }
+  .step::before { transition: none; }
+}
+
+/* :has() is what drives the build stage. Where it is missing the section is the
+   one still image it used to be, which is the honest fallback: the five steps
+   already say in words what each frame shows. */
+@supports not selector(:has(*)) {
+  .build__shot:not([data-build='1']) { display: none; }
+  .step::before { display: none; }
 }
 
 /* The named contact sits under the switchboard number rather than beside it:

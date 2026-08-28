@@ -142,6 +142,65 @@ are photographs or they are nothing. They still carry their labelled plates.
 The four Hinderer images recorded above are unchanged: still on the older index
 pages, still somebody else's property, still not shipping.
 
+## Photography — Jonathan Motorcars, authorised by Alex 2026-08-28
+
+Alex: *"no copyright issues это наша тоже дилерская. используй"* — Jonathan
+Motorcars is part of the same group, and its photography may be used here. That
+is the same standing as the model licence in Gate 4 item 0: the client contact
+stating the position. **It is the only thing that makes these images usable and
+it is worth a written line from whoever owns the group**, because a website is
+where a permission gets tested.
+
+Facebook was where he pointed first. It is login-walled and its photo pages
+render in script, so nothing is fetchable from it. `jonathanmotorcars.com` is
+the same photography and is a plain server, so that is the source.
+
+| File | Source | Car |
+|---|---|---|
+| `car-rt4-front.jpg`, `car-rt4-side.jpg` | `/imagetag/2014/…` | Backdraft RT4, indigo blue, white stripes, stock ZT1017 |
+| `car-rt4b-front.jpg`, `car-rt4b-side.jpg` | `/imagetag/2016/…` | Backdraft RT4B, red, black stripes, stock ZT1166 |
+| `shot-01.jpg` … `shot-05.jpg` | the same two galleries | crops of the above |
+
+**These are photographs of cars in Jonathan Motorcars' inventory, not Midwest
+Cobras'.** §02 presents them as the cars on Midwest's floor, which is the claim
+to watch — the photography is authorised, the *placement* is a client mock
+standing in for Midwest's own stock. Two prices sit under them, $66,900 and
+$70,500, and those are Backdraft Racing's published base prices (rows 1 and 2),
+not what these particular cars sell for. Jonathan lists them at $139,995.
+
+**The specification rows are simulated, on Alex's instruction 2026-08-28** —
+*"спеки не должны быть точные, симулируй"*. The real ones were available from the
+listings (Roush 427IR 580HP, Tremec TKX 5-speed, caramel leather) and are
+deliberately not used: they describe a specific car in New Jersey and would read
+as Midwest's own build sheet.
+
+**Frames showing the Jonathan Motorcars dealer plate were not used.** Several
+rear three-quarters carry it legibly. Another dealership's plate on this page is
+a different problem from copyright and it is not solved by permission.
+
+**The renders are gone.** `shop-01`…`shop-05`, `lot-rt4`, `lot-rt4b` — deleted,
+not kept. Real photographs of the actual product beat renders of a Shelby 427
+wearing an RT4's name, which was the compromise recorded here this morning and is
+now closed.
+
+**Still not photographed:** the workshop bay and the enclosed transporter in §05.
+Both plates stay.
+
+## Build section — the five cut-outs, 2026-08-28
+
+`build-01.webp` … `build-05.webp`, from `b1.png`…`b5.png` supplied by Alex.
+Masked PNGs with alpha, so they are WebP rather than JPEG — a JPEG has no alpha
+and would have put a rectangle around a car that was cut out precisely so it
+would not have one. Provenance not stated by the client; **ask before launch**,
+because these are the only images on the page whose origin this file cannot name.
+
+## Hero video — `video_hero_final`, supplied by Alex 2026-08-28
+
+Three Cobras in a lit shop, headlights coming up, eight seconds. Supplied by the
+client, re-encoded here to 1920×1080 with the audio stripped: WebM 1.07 MB, MP4
+2.13 MB as the Safari fallback. Provenance not stated; **same question as the
+build cut-outs, and it should be answered by the same person.**
+
 ## Simulated content — Alex's instruction, 2026-08-28
 
 > *"остальное что не знаешь симулируй"* — fill the remaining holes rather than

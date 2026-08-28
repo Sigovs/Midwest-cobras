@@ -18,15 +18,47 @@
   /* ── 1 · the header ─────────────────────────────────────────────────── */
   function head() {
     var bar = document.getElementById('site-head');
-    var hero = document.querySelector('.hero');
-    if (!bar || !hero) return;
-
-    /* IntersectionObserver rather than a scroll handler: the browser works out
-       when the hero has left and says so, instead of us asking on every frame. */
+    var first = document.querySelector('main .sect');
+    if (!bar || !first) return;
     if (!('IntersectionObserver' in window)) return;
-    new IntersectionObserver(function (entries) {
-      bar.setAttribute('data-stuck', entries[0].isIntersecting ? 'false' : 'true');
-    }, { rootMargin: '-72px 0px 0px 0px', threshold: 0 }).observe(hero);
+
+    /* WATCHING THE HERO STOPPED WORKING THE DAY THE HERO WENT STICKY. It used
+       to scroll away and the bar took its ground when it left; now it holds at
+       the top of the window forever, never stops intersecting, and the bar
+       never took its ground at all — the labels ran over 02 with nothing
+       behind them.
+
+       So the thing watched is a one-pixel marker in normal flow, sitting where
+       the hero used to end. It is made here rather than written into the markup
+       because it is a mechanism, not content, and a page with no scripts has no
+       use for it — that page keeps the ground at all times, which is the safe
+       side of this switch and the reason it is the default in the stylesheet.
+
+       isIntersecting is not enough on its own: the marker is outside the root
+       both when it is ABOVE the bar and when it is still below the fold, and
+       those two want opposite answers. The rectangle says which. */
+    var mark = document.createElement('div');
+    mark.setAttribute('aria-hidden', 'true');
+    mark.style.cssText = 'position:relative;block-size:1px;margin-block-end:-1px;pointer-events:none';
+    first.parentNode.insertBefore(mark, first);
+
+    var io, h;
+    function watch() {
+      var next = Math.round(bar.getBoundingClientRect().height);
+      if (next === h) return;              /* same bar, same line, same observer */
+      h = next;
+      if (io) io.disconnect();
+      io = new IntersectionObserver(function (entries) {
+        bar.setAttribute('data-stuck', entries[0].boundingClientRect.top <= h ? 'true' : 'false');
+      }, { rootMargin: '-' + h + 'px 0px 0px 0px', threshold: 0 });
+      io.observe(mark);
+    }
+
+    watch();
+    /* The bar is two heights — one over the hero, one past it — and it is a
+       third on a phone. The line has to follow it. */
+    window.addEventListener('resize', watch, { passive: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(watch);
   }
 
   /* ── 1b · the hero video under reduced motion ───────────────────────── */

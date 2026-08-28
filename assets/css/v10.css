@@ -805,10 +805,10 @@ html { scroll-padding-block-start: 9rem; }
   max-inline-size: none; margin: 0;
   font-family: var(--face); font-weight: 700;
   /* The width comes from the body size alone, no tracking. Six caps advance
-     about 4.3em in this face, so 28vw puts the word near 120% of the window and
+     about 4.3em in this face, so 24vw puts the word just past the window and
      the C and the S run off both edges — which is the point, and .site-foot
      clips it. */
-  font-size: 28vw;
+  font-size: 24vw;
   line-height: 0.72; letter-spacing: -0.02em;
   text-align: center; text-transform: uppercase; white-space: nowrap;
   color: rgb(var(--bone-100-rgb) / 0.12);

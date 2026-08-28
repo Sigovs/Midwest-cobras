@@ -110,11 +110,37 @@ copy, the ledger records each one. That authorisation is not a source.
   that the mockup's contact block was filler. The sourced number is used instead.
 - `© 2024` — the mockup's footer year. The page reads 2026.
 
-**All photography is absent and says so.** Alex is supplying it. Every image slot
-is an empty plate carrying its own subject and aspect in mono type — eleven of
-them. Nothing on this page is a borrowed photograph, which is a step forward from
-the four Hinderer images recorded above: those are still on the older index
-pages, and they are still somebody else's property.
+**Nine of the eleven image slots are now our own renders. 2026-08-28.** Alex
+confirmed the model licence the same day (Gate 4, item 0), and the moment that
+closed, the scene could photograph the car itself.
+
+| File | Where it is used |
+|---|---|
+| `assets/img/lot-rt4.jpg`, `lot-rt4b.jpg` | §02 inventory, the two cars on the floor |
+| `assets/img/shop-01.jpg` … `shop-05.jpg` | §08 gallery rail, and two of them again in §04 |
+
+**Their status is `own work — render, not photograph`**, and that is a third thing,
+distinct from both *sourced* and *simulated*:
+
+- They are **not borrowed.** Every pixel comes from
+  `assets/model/shelby-cobra-427-v8.glb` under the licence Alex confirmed, lit by
+  `assets/env/parking_garage_1k.hdr`, through this project's own
+  `assets/js/scene/f9.js`. Nothing here is the four Hinderer images' problem.
+- They are **not a photograph of a car this dealer owns.** The model is a Shelby
+  Cobra 427, the inventory copy names an RT4 and an RT4B, and those are not the
+  same car. A buyer looking at §02 is looking at a generic Cobra with the right
+  silhouette and the wrong badge. **This is the line that matters and it is the
+  one that gets replaced first when Alex supplies his own shoot.**
+- They are **consistent with the hero, deliberately.** Same model, same room,
+  same light. A page whose photographs and whose 3D disagree about the light
+  reads as two pages stitched together.
+
+**Two slots stay empty**, both in §05 services: a workshop bay and a car loaded
+into an enclosed transporter. The scene has one car and no building, so those
+are photographs or they are nothing. They still carry their labelled plates.
+
+The four Hinderer images recorded above are unchanged: still on the older index
+pages, still somebody else's property, still not shipping.
 
 ## Simulated content — Alex's instruction, 2026-08-28
 
@@ -131,11 +157,13 @@ ships.
 |---|---|---|
 | index10 §07, card 04 | The fourth owner account | The v10 mockup clips it mid-sentence: only *"The side p… which is to… schedule."* and *"Ray T. · RT4B Black Edition"* are legible. The completion is written to match those fragments and nothing else. **A named person did not say this.** |
 
-**Photography is deliberately NOT simulated.** Eleven frames stay empty and
-labelled. There are four usable photographs in `assets/img/` and they are
-Hinderer Cobras' property, recorded above as borrowed and not shipping — putting
-them back to fill holes would trade a visible gap for an invisible one, and an
-invisible one is the kind that reaches a client's live site.
+**Photography is still not simulated, and the renders are not an exception to
+that.** A render carries its own honest status — recorded above as *own work —
+render, not photograph* — because it depicts a model this project holds a licence
+to, not a car sitting in Basehor. What remains forbidden is the thing that was
+forbidden before: putting the Hinderer images back to fill a hole. That trades a
+visible gap for an invisible one, and an invisible one is the kind that reaches a
+client's live site.
 
 ## What has to happen before this ledger can pass Gate 4
 

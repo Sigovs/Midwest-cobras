@@ -127,6 +127,15 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 [data-ground='light'] .frame { border-color: rgb(var(--graphite-950-rgb) / 0.14); }
 
 /* ── header ────────────────────────────────────────────────────────────── */
+/* The masthead is fixed, so without this every in-page anchor — and the skip
+   link, which is the one that matters — lands underneath it and the visitor
+   arrives at a heading they cannot read. scroll-padding on the scroller rather
+   than scroll-margin on eleven targets: one rule, and a new section inherits it
+   instead of being remembered. The value is the measured stuck height plus a
+   little air; it is deliberately generous, because landing slightly early reads
+   as correct and landing slightly late reads as broken. */
+html { scroll-padding-block-start: 9rem; }
+
 .site-head {
   position: fixed; z-index: 50; inset-block-start: 0; inset-inline: 0;
   display: flex; align-items: center; justify-content: space-between;
@@ -134,14 +143,30 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   padding: var(--sp-6) var(--gutter);
   transition: background var(--dur-3) var(--ease-out), padding var(--dur-3) var(--ease-out);
 }
-/* Set by v10.js once the hero has left. Over the hero the bar has no ground so
-   it cannot crop the frame; past it, it needs one to stay legible. */
-.site-head[data-stuck='true'] {
+/* THE GROUND IS THE DEFAULT AND THE HERO IS THE EXCEPTION, which is the way
+   round it has to be. It was written the other way — transparent until v10.js
+   said otherwise — and that makes the no-JS page unreadable: a fixed bar with
+   bone labels and no ground, sitting over §05's bone section, is white on
+   almost-white. The nav did not degrade, it disappeared.
+
+   So the bar always has a ground, and v10.js takes it away while the hero is on
+   screen. Scripts off: a ground over the hero too, which is a smaller loss than
+   an invisible navigation, and it is the only thing that changes.
+
+   The cost, named: the observer's first callback can land after the first
+   paint, so the ground may show over the hero for a frame. A frame of a visible
+   bar against a frame of no bar at all — the trade is not close. */
+.site-head {
   background: rgb(var(--graphite-950-rgb) / 0.92);
   backdrop-filter: blur(10px);
-  padding-block: var(--sp-4);
   border-block-end: var(--hairline) solid var(--rule);
 }
+.site-head[data-stuck='false'] {
+  background: transparent;
+  backdrop-filter: none;
+  border-block-end-color: transparent;
+}
+.site-head[data-stuck='true'] { padding-block: var(--sp-4); }
 
 /* The client's own logo. Masked rather than dropped in as an image, so it
    inherits colour and reads on the dark ground and the light one from a single
@@ -158,7 +183,10 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 @supports (mask-image: url('')) or (-webkit-mask-image: url('')) {
   .wordmark {
     inline-size: clamp(6.5rem, 7.2vw, 8.625rem);
-    aspect-ratio: 138 / 95;
+    /* The vendor file's own box. It is never rescaled to match a number typed
+       here: a mask sized `contain` renders identically at any intrinsic size,
+       so redrawing the paths would cost precision and buy nothing. */
+    aspect-ratio: 1496 / 1031;
     background: currentColor;
     -webkit-mask: url('../img/logo.svg') no-repeat center / contain;
     mask: url('../img/logo.svg') no-repeat center / contain;
@@ -189,8 +217,11 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .site-nav a[aria-current='page']:hover { background: var(--graphite-950); }
 .site-nav a:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: 2px; }
 /* Over the hero the bar has no ground of its own, so a graphite pill would be
-   invisible on the graphite-700 plate. There it is drawn from bone at low alpha. */
-.site-head:not([data-stuck='true']) .site-nav a:hover { background: rgb(var(--graphite-950-rgb) / 0.55); }
+   invisible on the graphite-700 plate. There it is drawn at low alpha instead.
+   Keyed to 'false' and not to :not('true'), because with scripts off there is no
+   attribute at all and that bar DOES have a ground — it should get the solid
+   pill like every other grounded state. */
+.site-head[data-stuck='false'] .site-nav a:hover { background: rgb(var(--graphite-950-rgb) / 0.55); }
 
 /* ── 01 hero ───────────────────────────────────────────────────────────── */
 .hero {
@@ -480,8 +511,21 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
   .site-head { flex-direction: column; align-items: stretch; gap: var(--sp-4); padding: var(--sp-5) var(--gutter); }
   .site-head .wordmark { max-inline-size: none; }
-  .site-nav ul { flex-wrap: nowrap; overflow-x: auto; gap: var(--sp-5); padding-block-end: var(--sp-2); }
+  /* A strip that scrolls sideways, like the rails — and like them its own bar
+     is hidden. The default one renders as a bright white slab across the top of
+     a dark masthead, which is louder than anything else on the screen. The
+     clipped word at the right edge is the affordance. */
+  .site-nav ul {
+    flex-wrap: nowrap; overflow-x: auto; gap: var(--sp-5);
+    padding-block-end: var(--sp-2);
+    overscroll-behavior-x: contain;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .site-nav ul::-webkit-scrollbar { display: none; }
   .site-nav a { white-space: nowrap; }
+
+  /* The bar is taller here — logo over nav rather than beside it. */
+  html { scroll-padding-block-start: 12rem; }
 
   .hero { padding-block-start: clamp(11rem, 24vh, 15rem); }
   .hero__copy { max-inline-size: none; }

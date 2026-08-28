@@ -24,7 +24,10 @@
      is a full-bleed frame and a bar on top of it would crop the frame. It
      takes a ground of its own once the page has scrolled past the hero. -->
 <header class="site-head" id="site-head">
-  <a class="wordmark" href="#top">Midwest Cobras</a>
+  <!-- The real logo, assets/img/logo.svg, drawn as a CSS mask so it takes the
+       page's own colour on either ground. The words stay in the markup for a
+       screen reader and for a browser that cannot mask. -->
+  <a class="wordmark" href="#top"><span>Midwest Cobras</span></a>
   <nav class="site-nav" aria-label="Primary">
     <ul>
       <li><a href="#top" aria-current="page">Home</a></li>
@@ -343,7 +346,7 @@
 <footer class="site-foot" id="finance">
   <div class="site-foot__grid">
     <div class="site-foot__brand">
-      <p class="wordmark wordmark--foot">Midwest Cobras</p>
+      <p class="wordmark wordmark--foot"><span>Midwest Cobras</span></p>
       <p class="site-foot__line">Backdraft Cobras built,<br>sold, serviced and moved.</p>
     </div>
 

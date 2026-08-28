@@ -131,11 +131,31 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   border-block-end: var(--hairline) solid var(--rule);
 }
 
+/* The client's own logo. Masked rather than dropped in as an image, so it
+   inherits colour and reads on the dark ground and the light one from a single
+   file. Its own paths are #AAAAAA; a mask only reads alpha, so that is ignored.
+   If mask is unsupported the span shows instead — hence @supports. */
 .wordmark {
-  font-family: var(--script); font-size: clamp(1.9rem, 2.2vw, 2.6rem);
-  line-height: 1.05; color: var(--bone-050); text-decoration: none;
+  display: block;
+  color: var(--bone-050);
+  text-decoration: none;
+  font-family: var(--script);
+  font-size: clamp(1.9rem, 2.2vw, 2.6rem);
+  line-height: 1.05;
 }
-.site-head .wordmark { max-inline-size: 8ch; }
+@supports (mask-image: url('')) or (-webkit-mask-image: url('')) {
+  .wordmark {
+    inline-size: clamp(6.5rem, 7.2vw, 8.625rem);
+    aspect-ratio: 138 / 95;
+    background: currentColor;
+    -webkit-mask: url('../img/logo.svg') no-repeat center / contain;
+    mask: url('../img/logo.svg') no-repeat center / contain;
+  }
+  .wordmark span {
+    position: absolute; inline-size: 1px; block-size: 1px;
+    margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+}
 .wordmark:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
 
 .site-nav ul { display: flex; flex-wrap: wrap; gap: var(--sp-4) var(--sp-6); }
@@ -359,6 +379,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .site-foot__grid > :nth-child(3) { grid-column: 9 / span 2; }
 .site-foot__grid > :nth-child(4) { grid-column: 11 / span 2; }
 .wordmark--foot { font-size: clamp(2rem, 2.4vw, 2.8rem); }
+@supports (mask-image: url('')) or (-webkit-mask-image: url('')) {
+  .wordmark--foot { inline-size: clamp(7.5rem, 9vw, 11rem); }
+}
 .site-foot__line {
   font-family: var(--face); font-weight: 600;
   font-size: clamp(1.15rem, 1.5vw, 1.6rem); line-height: 1.25;

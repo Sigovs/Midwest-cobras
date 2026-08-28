@@ -359,6 +359,56 @@ html { scroll-padding-block-start: 9rem; }
 .shot--wide { aspect-ratio: 16 / 9; object-fit: cover; object-position: center 42%; }
 .shot--tall { aspect-ratio: 3 / 4;  object-fit: cover; }
 
+/* ── 08 the Instagram tiles ────────────────────────────────────────────────
+   The corner is rounded on the WRAPPER and not on the picture, because the
+   picture is what moves: a radius on a scaling element scales with it, and the
+   corner would swell as the photograph grows. Clipping on the parent keeps one
+   fixed corner with the image sliding underneath it.
+
+   The hairline moves up here for the same reason — scaled, it thickens. */
+.tile {
+  position: relative; display: block;
+  overflow: clip;
+  border-radius: var(--radius-media);
+  border: var(--hairline) solid rgb(var(--bone-100-rgb) / 0.08);
+  background: var(--graphite-900);
+}
+.tile .shot { border: 0; background: none; transition: transform var(--dur-3) var(--ease-out); }
+.tile:hover .shot,
+.tile:focus-visible .shot { transform: scale(1.06); }
+.tile:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+
+/* The mark sits in the corner the eye leaves the picture by, and it is over a
+   photograph whose brightness is not ours to choose — so it carries its own
+   ground rather than trusting the pixels under it. */
+.tile__ig {
+  position: absolute; inset-block-start: var(--sp-3); inset-inline-end: var(--sp-3);
+  display: grid; place-items: center;
+  inline-size: 2rem; block-size: 2rem;
+  border-radius: 999px;
+  background: rgb(var(--graphite-950-rgb) / 0.62);
+  color: var(--bone-050);
+  transition: background var(--dur-2) var(--ease-out);
+}
+.tile:hover .tile__ig { background: rgb(var(--graphite-950-rgb) / 0.86); }
+
+@media (prefers-reduced-motion: reduce) {
+  /* The durations already collapse to 1ms, which turns the zoom into a jump
+     rather than removing it. This removes it. */
+  .tile:hover .shot,
+  .tile:focus-visible .shot { transform: none; }
+}
+/* The two WHO WE ARE photographs are the client's own, shot on a phone in
+   portrait — 900 x 1200, so both are crops whatever happens here.
+   They share a HEIGHT and not a ratio: the columns are 5:7, so a single
+   aspect-ratio on both would force the widths back to equal. The row height is
+   the constant, each frame takes the width its column gives it. */
+.about__pair .shot {
+  aspect-ratio: auto;
+  block-size: clamp(17rem, 23vw, 27.5rem);
+  object-position: center 46%;
+}
+
 /* ── 02 inventory ──────────────────────────────────────────────────────────
    A carousel like 07 and 08, and unlike them it is CENTRED and cut on both
    edges. Two thirds of the window per card, because the section's own paragraph
@@ -369,6 +419,19 @@ html { scroll-padding-block-start: 9rem; }
    rail's inline padding is exactly that, so the first card lands centred with
    nothing scrolled and the last one can still reach the middle. */
 .lot { display: block; min-inline-size: 0; }
+/* The photograph is the only thing in the card that moves, and it moves inside
+   its own frame — which is why the clipping box is this wrapper and not .lot.
+   Clip on .lot and a focus ring on the specification link gets cut off with it.
+   The hairline moves here too: left on the image it would scale with the zoom
+   and then be clipped, which reads as the border thickening and vanishing. */
+.lot__shot {
+  display: block; overflow: clip;
+  border-radius: var(--radius-media);
+  border: var(--hairline) solid rgb(var(--bone-100-rgb) / 0.08);
+}
+.lot__shot .shot { border: 0; transition: transform var(--dur-3) var(--ease-out); }
+.lot:hover .lot__shot .shot,
+.lot:focus-within .lot__shot .shot { transform: scale(1.045); }
 .lot__state {
   margin-block: var(--sp-5) var(--sp-3);
   font-family: var(--mono); font-size: var(--micro);
@@ -543,7 +606,13 @@ html { scroll-padding-block-start: 9rem; }
    the button drifts 136px below the paragraph it belongs to instead of the 32px
    the gap actually says. The other two columns built this way get the same. */
 .about__body { grid-column: 8 / span 5; display: grid; gap: var(--sp-6); justify-items: start; align-content: start; }
-.about__pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--col-gap); }
+/* NOT two equal columns. The pair is 5:7 — the profile earns the wider frame
+   because it is the longer subject, and two identical rectangles side by side
+   are the card-wall read the page is trying not to be.
+   640 and 914 are the photographs' own widths at their shared height of 436,
+   so at any page width the columns hand each frame exactly its native ratio
+   and neither is cropped at all. */
+.about__pair { display: grid; grid-template-columns: minmax(0, 640fr) minmax(0, 914fr); gap: var(--col-gap); }
 
 /* ── 05 services ───────────────────────────────────────────────────────── */
 .row {
@@ -658,27 +727,46 @@ html { scroll-padding-block-start: 9rem; }
 
 /* ── footer ────────────────────────────────────────────────────────────── */
 .site-foot {
-  padding: var(--pad) var(--gutter) 0;
-  background: var(--graphite-900);
+  position: relative; isolation: isolate; overflow: clip;
+  padding: var(--pad) var(--gutter);
+  background: var(--graphite-950);
   border-block-start: var(--hairline) solid var(--rule);
 }
-.site-foot > * { max-inline-size: var(--page); margin-inline: auto; }
+.site-foot > * { position: relative; z-index: 2; max-inline-size: var(--page); margin-inline: auto; }
 
-/* Edge to edge, and it undoes the two things the footer does to its children:
-   the page-width cap and the gutter. The negative margin is the gutter itself,
-   so the band reaches the window whatever the gutter clamps to.
-
-   It is the last element and it has no bottom margin, so it sits flush on the
-   end of the document. A strip of ground under a full-bleed image is the
-   difference between a page that finishes and a page that stops. */
-.site-foot__band {
-  display: block;
-  max-inline-size: none;
-  inline-size: calc(100% + 2 * var(--gutter));
-  margin-inline: calc(-1 * var(--gutter));
-  margin-block-start: var(--pad);
-  block-size: auto; aspect-ratio: 2 / 1; object-fit: cover;
+/* The photograph, and the scrim that makes text on it legal. The scrim is a
+   composed element and not a reflex wash: it is heaviest where the columns sit
+   and clears toward the bottom right, where the picture is the point and there
+   is nothing to read. Measured on the rendered pixels, not on the token. */
+.site-foot__media {
+  position: absolute; inset: 0; z-index: 0;
+  max-inline-size: none; margin-inline: 0;
 }
+.site-foot__media img { inline-size: 100%; block-size: 100%; object-fit: cover; display: block; }
+.site-foot__media::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgb(var(--graphite-950-rgb) / 0.82) 0%,
+      rgb(var(--graphite-950-rgb) / 0.62) 42%,
+      rgb(var(--graphite-950-rgb) / 0.46) 100%);
+}
+
+/* The marque, oversized past both edges so it reads as a surface the page is
+   printed on rather than a word placed on it. Low enough in the ramp that it
+   is texture, not a heading — it must never compete with the legal line
+   sitting across it. */
+.site-foot__mark {
+  position: absolute; inset-inline: 0; inset-block-end: -0.12em; z-index: 1;
+  max-inline-size: none; margin: 0;
+  font-family: var(--face); font-weight: 700;
+  font-size: clamp(5rem, 27vw, 30rem);
+  line-height: 0.78; letter-spacing: -0.03em;
+  text-align: center; text-transform: uppercase; white-space: nowrap;
+  color: rgb(var(--bone-100-rgb) / 0.06);
+  pointer-events: none; user-select: none;
+}
+
 .site-foot__grid {
   display: grid; grid-template-columns: repeat(12, 1fr);
   gap: var(--sp-8) var(--col-gap); align-items: start;
@@ -712,8 +800,8 @@ html { scroll-padding-block-start: 9rem; }
 .site-foot address { font-style: normal; display: grid; gap: var(--sp-4); color: var(--text); }
 .site-foot address p { line-height: 1.5; }
 .site-foot__legal {
-  margin-block-start: var(--sp-8); padding-block-start: var(--sp-6);
-  border-block-start: var(--hairline) solid var(--rule);
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-4) var(--sp-7);
+  margin-block-start: clamp(8rem, 22vh, 16rem);
   font-family: var(--mono); font-size: var(--micro);
   letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
 }
@@ -786,6 +874,10 @@ html { scroll-padding-block-start: 9rem; }
   /* The picture still changes — that is the content, not the decoration. What
      goes is the dissolve between the two. */
   .build__shot { transition: none; }
+  /* A zoom that snaps is worse than no zoom. The picture simply holds still. */
+  .lot__shot .shot { transition: none; }
+  .lot:hover .lot__shot .shot,
+  .lot:focus-within .lot__shot .shot { transform: none; }
   .step::before { transition: none; }
 }
 

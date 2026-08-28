@@ -120,8 +120,10 @@
          front of the car at, and that promise is what sets the width. -->
     <ul class="rail rail--lots" data-rail-track tabindex="0" aria-label="Cars on the floor, scrollable">
       <li class="lot">
-        <img class="shot shot--lot" src="assets/img/car-rt4-front.jpg" width="1728" height="972"
-             alt="RT4 Classic Edition" loading="lazy" decoding="async">
+        <span class="lot__shot">
+          <img class="shot shot--lot" src="assets/img/car-rt4-front.jpg" width="1728" height="972"
+               alt="RT4 Classic Edition" loading="lazy" decoding="async">
+        </span>
         <p class="lot__state">Lot 01 &middot; Available</p>
         <h3 class="lot__name">RT4 Classic Edition</h3>
         <dl class="spec">
@@ -133,8 +135,10 @@
       </li>
 
       <li class="lot">
-        <img class="shot shot--lot" src="assets/img/car-rt4b-front.jpg" width="1728" height="972"
-             alt="RT4B Black Edition" loading="lazy" decoding="async">
+        <span class="lot__shot">
+          <img class="shot shot--lot" src="assets/img/car-rt4b-front.jpg" width="1728" height="972"
+               alt="RT4B Black Edition" loading="lazy" decoding="async">
+        </span>
         <p class="lot__state">Lot 02 &middot; Available</p>
         <h3 class="lot__name">RT4B Black Edition</h3>
         <dl class="spec">
@@ -238,10 +242,10 @@
     </div>
 
     <div class="about__pair">
-      <img class="shot shot--wide" src="assets/img/car-rt4-side.jpg" width="1728" height="972"
-           alt="An RT4 in profile, the side pipe running the length of the sill" loading="lazy" decoding="async">
-      <img class="shot shot--wide" src="assets/img/car-rt4b-side.jpg" width="1728" height="972"
-           alt="An RT4B in profile on black rims" loading="lazy" decoding="async">
+      <img class="shot shot--wide" src="assets/img/about-fuel-cap.png" width="640" height="436"
+           alt="The Shelby Cobra fuel cap standing proud of the rear deck" loading="lazy" decoding="async">
+      <img class="shot shot--wide" src="assets/img/about-side-pipe.png" width="914" height="436"
+           alt="A polished side pipe running past the rear wheel" loading="lazy" decoding="async">
     </div>
   </section>
 
@@ -375,17 +379,37 @@
       </p>
     </header>
 
+    <!-- Each picture is a link to the profile, not a decoration that merely
+         behaves like one. It lifts and carries the Instagram mark on hover, and
+         a thing that does that has to go somewhere when it is clicked. The alt
+         text is the link text, so the five links read as five different things
+         rather than five copies of the same one. -->
     <ul class="rail rail--shots" data-rail-track tabindex="0" aria-label="Pictures from the shop, scrollable">
-      <li><img class="shot shot--tall" src="assets/img/shot-01.jpg" width="900" height="1200"
-               alt="Bonnet and headlight, close" loading="lazy" decoding="async"></li>
-      <li><img class="shot shot--tall" src="assets/img/shot-03.jpg" width="900" height="1200"
-               alt="The RT4 nose, low and angled" loading="lazy" decoding="async"></li>
-      <li><img class="shot shot--tall" src="assets/img/shot-04.jpg" width="900" height="1200"
-               alt="Stripes running over the bonnet, from above" loading="lazy" decoding="async"></li>
-      <li><img class="shot shot--tall" src="assets/img/shot-02.jpg" width="900" height="1200"
-               alt="The RT4B nose, low and angled" loading="lazy" decoding="async"></li>
-      <li><img class="shot shot--tall" src="assets/img/shot-05.jpg" width="900" height="1200"
-               alt="The RT4B flank and side pipe" loading="lazy" decoding="async"></li>
+      <li><a class="tile" href="https://www.instagram.com/midwestcobras/">
+        <img class="shot shot--tall" src="assets/img/shot-01.jpg" width="900" height="1200"
+             alt="Bonnet and headlight, close" loading="lazy" decoding="async">
+        <span class="tile__ig" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></span>
+      </a></li>
+      <li><a class="tile" href="https://www.instagram.com/midwestcobras/">
+        <img class="shot shot--tall" src="assets/img/shot-03.jpg" width="900" height="1200"
+             alt="The RT4 nose, low and angled" loading="lazy" decoding="async">
+        <span class="tile__ig" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></span>
+      </a></li>
+      <li><a class="tile" href="https://www.instagram.com/midwestcobras/">
+        <img class="shot shot--tall" src="assets/img/shot-04.jpg" width="900" height="1200"
+             alt="Stripes running over the bonnet, from above" loading="lazy" decoding="async">
+        <span class="tile__ig" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></span>
+      </a></li>
+      <li><a class="tile" href="https://www.instagram.com/midwestcobras/">
+        <img class="shot shot--tall" src="assets/img/shot-02.jpg" width="900" height="1200"
+             alt="The RT4B nose, low and angled" loading="lazy" decoding="async">
+        <span class="tile__ig" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></span>
+      </a></li>
+      <li><a class="tile" href="https://www.instagram.com/midwestcobras/">
+        <img class="shot shot--tall" src="assets/img/shot-05.jpg" width="900" height="1200"
+             alt="The RT4B flank and side pipe" loading="lazy" decoding="async">
+        <span class="tile__ig" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></span>
+      </a></li>
     </ul>
 
     <p class="gallery__follow"><a class="link" href="https://www.instagram.com/midwestcobras/">Follow on Instagram <span aria-hidden="true">&rarr;</span></a></p>
@@ -397,6 +421,17 @@
      10, 10b, 10c, read 2026-08-28. The form's Fax field is empty, so there is no
      fax. "Part of a group or other dealer: No" is why it says independent. -->
 <footer class="site-foot" id="finance">
+  <!-- The photograph is the ground the footer stands on, not a band under it.
+       aria-hidden and no alt job: everything the footer says is in the text
+       above it, and the picture is the room that text is said in. -->
+  <div class="site-foot__media" aria-hidden="true">
+    <img src="assets/img/footer.jpg" width="1920" height="960" alt="" loading="lazy" decoding="async">
+  </div>
+
+  <!-- The marque at the size the building is. It is decoration and it is
+       already said by the wordmark, so it is hidden from the reader. -->
+  <p class="site-foot__mark" aria-hidden="true">Cobras</p>
+
   <div class="site-foot__grid">
     <div class="site-foot__brand">
       <p class="wordmark wordmark--foot"><span>Midwest Cobras</span></p>
@@ -435,13 +470,11 @@
     </div>
   </div>
 
-  <p class="site-foot__legal">&copy; 2026 Midwest Cobras, LLC &middot; Independent dealer &middot; <a href="https://www.midwestcobras.com">midwestcobras.com</a></p>
+  <p class="site-foot__legal">
+    <span>&copy; 2026 Midwest Cobras, LLC</span>
+    <span>Powered by All Auto Network</span>
+  </p>
 
-  <!-- Edge to edge and flush with the bottom of the page — the last thing there
-       is, under the words rather than over them. It is a picture and not a link:
-       everything the footer is for is above it. -->
-  <img class="site-foot__band" src="assets/img/footer.jpg" width="1920" height="960"
-       alt="A Backdraft Cobra" loading="lazy" decoding="async">
 </footer>
 
 <script src="assets/js/v10.js" defer></script>

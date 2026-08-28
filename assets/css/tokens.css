@@ -149,6 +149,10 @@
   --hairline: 1px;
   --radius:   2px;
   --radius-control: 2px;
+  /* Photographs only. The 2px above is the machined geometry of the system and
+     stays that way; a car shot is a picture in a frame, not a system boundary,
+     and it is the one place a visible corner is earned. */
+  --radius-media: 10px;
 
   /* ── ELEVATION ────────────────────────────────────────────────────────────
      One value, and it is only for layers that genuinely float: the nav

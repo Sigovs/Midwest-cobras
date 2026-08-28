@@ -116,14 +116,26 @@ pages, and they are still somebody else's property.
 
 ## What has to happen before this ledger can pass Gate 4
 
-0. **The hero model is replaced with a commercially licensed one.** The current
-   asset is `CC Attribution-NonCommercial-ShareAlike` (Ddiaz Design, Sketchfab).
-   NonCommercial excludes a dealer's own website by any reading, and ShareAlike
-   would put the same licence on the build. It stands in the client mock and it
-   does not ship. An equivalent 427 with a royalty-free commercial licence is
-   $30–150 on the Sketchfab Store, TurboSquid or CGTrader — the cheapest open
-   item on this list, and the only one that is a legal exposure rather than a
-   quality one.
+0. ~~The hero model is replaced with a commercially licensed one.~~ **DONE.**
+
+   *History, kept because it is the reason the rule exists.* The build once ran
+   on a `CC Attribution-NonCommercial-ShareAlike` asset (Ddiaz Design,
+   Sketchfab). NonCommercial excludes a dealer's own website by any reading and
+   ShareAlike would have put the same licence on the build. It was replaced by
+   the purchased *Shelby Cobra 1965 Racing Model* — but the pack shipped with no
+   LICENSE file, no readme and no terms across fifteen archives, so the tier was
+   unknown and the entry stayed open as *paid for and unverified*.
+
+   **Alex confirmed the licence on 2026-08-28.** That is the same standing as
+   rows 7 and 10: the client contact, who holds the receipt and the product page,
+   stating the position. This entry no longer blocks Gate 4.
+
+   *One thing would still make the record stronger and it is not a challenge to
+   the confirmation:* the ledger names a source for everything else — a URL, a
+   document, a date. If the receipt or the product page names the tier in words
+   ("Royalty Free", "Editorial Use Only", and so on), that sentence written into
+   this row is what a future reader needs, because in a year nobody will
+   remember which of the two it was.
 0b. **The photography is Midwest's own.** Four borrowed images stand in. This
    is the same class of item as the model licence: it is not a quality problem,
    it is somebody else's property on a page that sells cars.

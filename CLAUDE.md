@@ -230,25 +230,18 @@ confirm`. The gate is yielded, out loud; it is not absent.
 
 ## Open — do not resolve these by guessing
 
-1. **The hero model — bought, and the licence document is the open part.**
-   Direction F runs on `assets/model/shelby-cobra-427-v8.glb`, built from the
-   purchased *Shelby Cobra 1965 Racing Model* pack in `donot git/purchased cobra
-   final/`. That closes the CC BY-NC-SA problem the old `ac-cobra-427.glb`
-   carried — NonCommercial excluded a dealer's own website, and this is a paid
-   asset instead.
+1. ~~**The hero model — bought, and the licence document is the open part.**~~
+   **CLOSED, 2026-08-28: Alex confirmed the licence.**
 
-   **What is still open is narrow and it is not rhetorical: the pack contains no
-   licence file.** Fifteen archives, no LICENSE, no readme, no terms. Marketplace
-   models are usually sold under a royalty-free licence that covers a commercial
-   website, but "usually" is not a record, and the ledger rule on this project
-   does not accept an assumption as a source. Alex has the purchase receipt and
-   the product page; one of those names the tier. Until it is written into
-   `docs/content-ledger.md` this is *paid for and unverified*, which is a much
-   better place than where it was and is still not finished.
+   The build runs on `assets/model/shelby-cobra-427-v8.glb`, from the purchased
+   *Shelby Cobra 1965 Racing Model* pack in `donot git/purchased cobra final/`.
+   That closed the CC BY-NC-SA problem the old `ac-cobra-427.glb` carried —
+   NonCommercial excluded a dealer's own website — and the remaining question was
+   the tier, because the pack shipped with no LICENSE file across fifteen
+   archives. Alex holds the receipt and the product page and has confirmed it.
 
-   The client's own `COBRA.obj` remains the licence-certain fallback. It is
-   visibly coarser, has no textures at all, and is a generic Cobra rather than an
-   RT4 — worth keeping in mind only if the licence tier turns out to be personal-use.
+   Recorded in `docs/content-ledger.md` under Gate 4, item 0. The client's own
+   `COBRA.obj` is no longer needed as a fallback.
 2. **Inventory vs Car Collection vs Gallery.** Three separate nav items about
    cars. Working assumption until told otherwise: Inventory = for sale now
    (2–4 cars, shown large); Car Collection = the owner's own cars, not for sale;

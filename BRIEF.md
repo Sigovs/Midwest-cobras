@@ -254,9 +254,12 @@ remaining problem and its costed cuts are in `CLAUDE.md`.
 
 ## 9 · Asset origin (`GI3`, `GI6`)
 
-Purchased *Shelby Cobra 1965 Racing Model*, CGTrader. Nothing on this page is
-generated imagery. The environment is procedural geometry and light, not a
-depiction of a real place, so `GI3` is not engaged.
+Purchased *Shelby Cobra 1965 Racing Model*, CGTrader. **Licence confirmed by
+Alex, 2026-08-28** — the pack itself carries no LICENSE file, so the confirmation
+is the record. See `docs/content-ledger.md`, Gate 4 item 0.
+
+Nothing on this page is generated imagery. The environment is procedural geometry
+and light, not a depiction of a real place, so `GI3` is not engaged.
 
 ---
 

@@ -38,10 +38,21 @@
     var next = controls.querySelector('[data-rail="next"]');
     if (!prev || !next) return;
 
-    /* Four fifths of the visible width, so the card you were reading is still
-       on screen after the jump. A rail that scrolls exactly one viewport loses
-       your place every time. */
-    function page() { return Math.max(track.clientWidth * 0.8, 240); }
+    /* Two rails, two right answers. A rail of small cards moves four fifths of
+       a screen, so the card you were reading is still on it afterwards. The
+       inventory carousel holds one large card at a time and snaps hard to the
+       middle, so it moves exactly one card — 0.8 of the window there is more
+       than a card and a gap, and the snap would drag it back, which reads as
+       the button fighting you. */
+    function page() {
+      var mandatory = getComputedStyle(track).scrollSnapType.indexOf("mandatory") !== -1;
+      if (mandatory && track.children.length > 1) {
+        var a = track.children[0].getBoundingClientRect();
+        var b = track.children[1].getBoundingClientRect();
+        return Math.max(b.left - a.left, 240);
+      }
+      return Math.max(track.clientWidth * 0.8, 240);
+    }
 
     function go(dir) {
       track.scrollBy({ left: dir * page(), behavior: reduced ? 'auto' : 'smooth' });

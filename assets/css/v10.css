@@ -285,6 +285,10 @@ html { scroll-padding-block-start: 9rem; }
 .sect__head--pair > .sect__title { grid-column: 1 / span 6; }
 .sect__head--pair .sect__note { grid-column: 8 / span 5; grid-row: 2; max-inline-size: 46ch; }
 .rail-btns { grid-column: 11 / span 2; grid-row: 2; justify-self: end; display: flex; gap: var(--sp-4); }
+/* 07 and 08 have arrows and no button; 02 has both, and they were landing in
+   the same cell on top of each other. Where there is a button the arrows drop
+   under it and sit on the note's row, still hard right. */
+.sect__head:has(.sect__action) .rail-btns { grid-row: 3; align-self: end; }
 
 /* ── the renders ───────────────────────────────────────────────────────────
    Stills from the scene in scene/f9.js, off the purchased model whose licence
@@ -297,13 +301,24 @@ html { scroll-padding-block-start: 9rem; }
   background: var(--graphite-900);
   border: var(--hairline) solid rgb(var(--bone-100-rgb) / 0.08);
 }
-.shot--lot  { aspect-ratio: 3 / 2;  object-fit: cover; }
+/* Widescreen, not the 3:2 the render was shot at. At two thirds of the window a
+   3:2 frame is 832px tall and the card stops fitting on a laptop; this is the
+   proportion the prototype uses and it costs a strip of empty floor, which the
+   render has plenty of. */
+.shot--lot  { aspect-ratio: 16 / 9; object-fit: cover; }
 .shot--wide { aspect-ratio: 16 / 9; object-fit: cover; object-position: center 42%; }
 .shot--tall { aspect-ratio: 3 / 4;  object-fit: cover; }
 
-/* ── 02 inventory ──────────────────────────────────────────────────────── */
-.rail--lots { grid-auto-columns: 34rem; }
-.lot { display: block; }
+/* ── 02 inventory ──────────────────────────────────────────────────────────
+   A carousel like 07 and 08, and unlike them it is CENTRED and cut on both
+   edges. Two thirds of the window per card, because the section's own paragraph
+   promises *the size you would stand in front of it* — that sentence is what
+   sets this number, not the number of cars.
+
+   `--peek` is the strip of the neighbouring car left showing on each side. The
+   rail's inline padding is exactly that, so the first card lands centred with
+   nothing scrolled and the last one can still reach the middle. */
+.lot { display: block; min-inline-size: 0; }
 .lot__state {
   margin-block: var(--sp-5) var(--sp-3);
   font-family: var(--mono); font-size: var(--micro);
@@ -411,6 +426,13 @@ html { scroll-padding-block-start: 9rem; }
     calc(-1 * var(--gutter));
   padding-inline-end: var(--gutter);
 }
+/* 07 and 08 keep their left edge on the heading's column and run off the right.
+   This one is a different shape and needs both edges: it reaches the window on
+   each side and pads itself back in by the peek. */
+.sect > .rail--lots {
+  margin-inline: calc(-1 * var(--gutter));
+  padding-inline: var(--peek);
+}
 
 .rail {
   display: grid; grid-auto-flow: column; grid-auto-columns: 30rem;
@@ -428,6 +450,18 @@ html { scroll-padding-block-start: 9rem; }
 .rail > * { scroll-snap-align: start; }
 .rail:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
 .rail--shots { grid-auto-columns: 22rem; }
+
+/* After .rail, not before it: these are overrides and the two selectors weigh
+   the same, so the later one is the only one that wins. */
+.rail--lots {
+  --card: min(66vw, 78rem);
+  --peek: max(var(--gutter), ((100vw - var(--sbw, 0px)) - var(--card)) / 2);
+  grid-auto-columns: var(--card);
+  gap: var(--sp-7);
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--peek);
+}
+.rail--lots > .lot { scroll-snap-align: center; }
 
 .card {
   display: grid; grid-template-rows: auto 1fr auto; gap: var(--sp-5);
@@ -544,7 +578,8 @@ html { scroll-padding-block-start: 9rem; }
   .rail-btns { grid-column: 1; grid-row: auto; justify-self: start; margin-block-start: var(--sp-5); }
 
   .about__pair, .build__top, .steps { grid-template-columns: minmax(0, 1fr); }
-  .rail--lots { grid-auto-columns: 82vw; }
+  /* One car fills the phone with a thumb's width of the next one showing. */
+  .rail--lots { --card: 86vw; gap: var(--sp-5); }
   .steps { gap: var(--sp-6); }
   .row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
   .frame--square { aspect-ratio: 16 / 9; }

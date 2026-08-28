@@ -1,0 +1,1113 @@
+/* ============================================================================
+   index9.css — direction J. The campaign.
+   ----------------------------------------------------------------------------
+   DIALECT YIELD, STATED FIRST. The project's typography rule is three voices
+   with three jobs: Familjen announces, Source Sans informs, JetBrains Mono
+   records. This direction replaces the announcing voice with BARLOW CONDENSED
+   on Alex's instruction of 2026-08-26.
+
+   It is a real change, not a swap. Familjen is a grotesque with generous
+   sidebearings — it reads as considered, editorial, calm. Barlow Condensed is
+   narrow, which buys two things this brief asks for and that one cannot: a
+   headline can be enormous and still be short enough to break where the author
+   wants, and a column of condensed caps has vertical rhythm a normal-width face
+   cannot produce at any size. Race timing sheets, entry lists and homologation
+   plates are set in condensed faces for the same reason.
+
+   The other two voices are unchanged and keep their jobs. Mono is never used
+   for a headline here — it records: scene numbers, prices, measurements, the
+   callout titles, and nothing else.
+
+   COLOUR IS UNCHANGED. Every value resolves through tokens.css. The environment
+   colours live in f9.js because they are a texture rather than a surface, and
+   tokens.css has no channel for the colour of nothing.
+   ========================================================================== */
+
+/* ── the type system ─────────────────────────────────────────────────────── */
+:root {
+  --j-display: "Barlow Condensed", "Familjen Grotesk", system-ui, sans-serif;
+  --j-text: "Source Sans 3", system-ui, sans-serif;
+  --j-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* The hero is allowed to be enormous. The brief's numbers, kept as tokens so
+     the ramp is one decision rather than nine. */
+  --j-hero: clamp(4.5rem, 8vw, 9.4rem);
+  --j-h2: clamp(3.2rem, 5.4vw, 6.2rem);
+  --j-lead: clamp(1.0625rem, 1.15vw, 1.3125rem);
+  /* 14px, not the 11-13px the brief asked for. DNA62 cites I7 - functional
+     text never below 14px - and I7 is an invariant, which does not yield to a
+     stated aesthetic preference. The tracking does the work the size was meant
+     to do, so the look survives and the floor holds. */
+  --j-micro: 0.875rem;
+
+  /* Condensed faces need tighter leading than a normal-width grotesque or the
+     column falls apart into stripes. */
+  --j-lh-display: 0.86;
+  --j-track-display: -0.015em;
+  --j-track-micro: 0.16em;
+}
+
+.dir-j *,
+.dir-j *::before,
+.dir-j *::after { box-sizing: border-box; }
+
+/* [hidden] is an attribute and display is a declaration, so a component that
+   sets display wins and the attribute silently does nothing. Pass 1 shipped a
+   "427 cu in" figure on all three options because of exactly this. */
+.dir-j [hidden] { display: none !important; }
+
+body.dir-j {
+  margin: 0;
+  background: #08090b;
+  color: var(--text);
+  font-family: var(--j-text);
+  font-size: var(--j-lead);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.j-display {
+  margin: 0;
+  font-family: var(--j-display);
+  font-weight: 700;
+  font-size: var(--j-hero);
+  line-height: var(--j-lh-display);
+  letter-spacing: var(--j-track-display);
+  text-transform: uppercase;
+  color: var(--bone-050);
+  white-space: pre-line;      /* the breaks are authored, not reflowed */
+}
+
+/* The breaks in the hero statement are authored, so balancing them is a second
+   opinion about a decision already taken — and at some widths it let the last
+   line run long enough to sit under the car's nose. The ceiling is stated per
+   act, in the stage block, because each act's mass is a different width. */
+
+.j-display--h2 { font-size: var(--j-h2); }
+
+/* Body is deliberately not pure white. On a near-black ground, #fff body copy
+   glares and reads thinner than it is; bone-300 at this size is the same rank
+   without the halo. */
+.j-body {
+  margin: 0;
+  max-width: 34ch;
+  color: var(--bone-300);
+  font-size: var(--j-lead);
+  line-height: 1.62;
+  text-wrap: pretty;
+}
+
+.j-micro {
+  margin: 0;
+  font-family: var(--j-mono);
+  font-size: var(--j-micro);
+  font-weight: 500;
+  letter-spacing: var(--j-track-micro);
+  text-transform: uppercase;
+  color: var(--bone-300);
+}
+
+/* MEASURED, AND IT WAS WRONG. #820007 on #08090b is 1.85:1 — not a close call,
+   a straight AA failure, and it was on the page through pass 1. CLAUDE.md
+   already says why: oxblood is text on light and FILL on dark. So the accent is
+   a filled oxblood mark with a bone label beside it, which is the same signal at
+   10.7:1. */
+.j-micro--accent {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  color: var(--bone-050);
+}
+.j-micro--accent::before {
+  content: '';
+  flex: none;
+  inline-size: 0.1875rem;
+  block-size: 0.9em;
+  background: var(--oxblood);
+}
+
+/* ── the stage ───────────────────────────────────────────────────────────
+   ONE SCENE, FOUR ACTS, NO FOLD. Alex, 2026-08-26.
+
+   Two layouts live in this block and only one is ever active:
+
+   · FLOW is the default and it is what the document actually is — four
+     articles, one after another, each a full composition on its own. Scripts
+     off, WebGL absent, a thin machine, a crawler: all of them get this, and it
+     is finished rather than degraded.
+
+   · STAGE is switched on by JS once the scene reports live. It lifts the four
+     articles into one layer over the canvas and the scroll drives a camera
+     instead of a scrollbar.
+
+   Written flow-first on purpose. A stage-first stylesheet would leave the
+   no-script reader four absolutely positioned boxes stacked on top of one
+   another at opacity zero, which is a blank page that validates.           */
+.j-hero {
+  position: relative;
+  isolation: isolate;
+}
+
+.j-canvas {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  display: block;
+  z-index: 0;
+}
+
+/* THE SEAM, AND IT IS THE BANNED HORIZON IN ITS LAST HIDING PLACE. The floor
+   inside the frame is dark, but the frame ENDS, and measured across the hero's
+   bottom row the render reached #6a6a6a while the page behind it is #08090b —
+   a hundred-level step running the full width at the boundary. A camera
+   operator flags the bottom of frame for exactly this. The scrim is that flag:
+   the lit floor is allowed to exist, and it is not allowed to reach an edge. */
+/* THE TOP OF FRAME IS FLAGGED TOO, AND FOR A REASON THAT ONLY APPEARS ONCE THE
+   CAMERA MOVES. With one held frame the top of the picture was always the dark
+   ceiling of the room, so the scene number sat on black by luck. Across four
+   acts the luck runs out: in portrait, act 03 puts the windscreen exactly where
+   the eyebrow is and a mono label in bone lands on pale glass. A composition
+   that depends on which way the car happens to be pointing is not a
+   composition. Weak on a wide screen, where there is rarely anything up there;
+   real in portrait, where the car fills the width. */
+.j-hero::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+  block-size: 18%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgb(8 9 11 / 0.86) 0%,
+    rgb(8 9 11 / 0.52) 42%,
+    rgb(8 9 11 / 0.18) 74%,
+    rgb(8 9 11 / 0) 100%);
+}
+
+.j-hero::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: 40%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgb(8 9 11 / 0) 0%,
+    rgb(8 9 11 / 0.28) 30%,
+    rgb(8 9 11 / 0.66) 58%,
+    rgb(8 9 11 / 0.93) 82%,
+    rgb(8 9 11 / 1) 100%);
+}
+
+/* ── an act, in flow ─────────────────────────────────────────────────────
+   Every act is the same twelve columns and the same three rows, so four
+   different arrangements are four placements inside one system rather than
+   four layouts. */
+.j-act {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto 1fr auto;
+  gap: 0 var(--col-gap);
+  min-block-size: 100svh;
+  padding: var(--sp-8) var(--gutter) var(--sp-7);
+}
+
+.j-eyebrow {
+  grid-column: 1 / span 6;
+  grid-row: 1;
+  align-self: start;
+  display: flex;
+  gap: var(--sp-4);
+  align-items: baseline;
+}
+
+.j-lead-block {
+  grid-row: 2;
+  align-self: center;
+  display: grid;
+  gap: var(--sp-5);
+  justify-items: start;
+}
+
+/* THE ONLY THING THAT VARIES BETWEEN ACTS IS WHERE THE MASS SITS AND HOW WIDE
+   IT IS. Act 01 is a statement beside a car, so it takes five columns on the
+   left. Act 02 explains a shape, so it drops to four and moves down — the eye
+   should not find it in the same place twice. Act 03 carries a plate and gives
+   the heading room for it. Act 04 is a door and stands alone at the bottom. */
+.j-act[data-act='1'] .j-lead-block { grid-column: 1 / span 5; }
+
+.j-act[data-act='2'] .j-lead-block { grid-column: 1 / span 4; align-self: end; }
+
+/* ACT 03 WAS THE ONE THAT BROKE, AND IT BROKE THREE WAYS AT ONCE: the spec
+   plate stood in a right-hand column that the car's tail was already occupying,
+   the heading laddered into four ragged lines against a 12ch ceiling, and the
+   annotation's label landed on top of the headline with its leader crossing the
+   whole frame to the wrong wheel.
+
+   The plate is now a STRIP ALONG THE FOOT of the frame — four values on one
+   line, the way a plate is riveted under a photograph in a catalogue — which
+   frees the entire right of the frame for the car and makes this act's
+   arrangement unlike any of the other three. The heading gets a column more and
+   a size less so its authored break survives. The annotation is gone: the plate
+   is this act's annotation, and two across four acts is the restraint the frame
+   was asking for. */
+.j-act[data-act='3'] .j-lead-block { grid-column: 1 / span 6; align-self: center; }
+.j-act[data-act='3'] .j-display {
+  font-size: clamp(2.6rem, 4.2vw, 4.6rem);
+  max-inline-size: 20ch;
+}
+
+.j-act[data-act='4'] .j-lead-block { grid-column: 1 / span 6; align-self: end; gap: var(--sp-6); }
+
+/* The statement column is five of twelve, and the copy is held inside it. The
+   breaks in a hero statement are authored, so letting the last line run wide
+   enough to sit under the car's nose is a second opinion about a decision
+   already taken. */
+.j-act .j-display { max-inline-size: 12ch; }
+
+/* ACT 01 IS TIGHTER THAN THE REST AND THE NUMBER IS MEASURED. Its frame puts
+   the car's leftmost point at 0.385 of the width — 611px on a 1600px screen —
+   and at a 12ch ceiling the statement's third line runs to 653px, so its full
+   stop landed on the bonnet. At 9ch the line breaks where it was always meant
+   to and the last word lands on its own, which is the better setting anyway:
+   "LOT." alone is a hammer, and it clears the car by ninety pixels. */
+.j-act[data-act='1'] .j-display { max-inline-size: 9ch; }
+.j-act[data-act='4'] .j-display { max-inline-size: 14ch; }
+
+/* The rail: three facts, one line, bottom left. Mono, small, tracked — a
+   homologation plate rather than a stat row. */
+.j-rail {
+  grid-column: 1 / span 7;
+  grid-row: 3;
+  align-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-5) var(--sp-7);
+  border-top: var(--hairline) solid rgb(var(--bone-100-rgb) / 0.14);
+  padding-top: var(--sp-4);
+}
+
+.j-rail__item { display: grid; gap: var(--sp-1); }
+.j-rail__k { color: var(--bone-300); opacity: 0.7; }
+.j-rail__v {
+  font-family: var(--j-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1rem;
+  color: var(--bone-050);
+  letter-spacing: 0.01em;
+}
+
+/* The spec plate is the rail's vertical sibling and shares its rules: mono
+   values, tabular figures, a hairline over each row and nothing else. */
+.j-plate {
+  grid-column: 1 / span 12;
+  grid-row: 3;
+  align-self: end;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-5) var(--sp-7);
+}
+
+.j-spec {
+  display: grid;
+  gap: var(--sp-1);
+  border-top: var(--hairline) solid rgb(var(--bone-100-rgb) / 0.14);
+  padding-top: var(--sp-3);
+}
+.j-spec__k { color: var(--bone-300); opacity: 0.7; }
+.j-spec__v { font-family: var(--j-mono); font-variant-numeric: tabular-nums; font-size: 1rem; color: var(--bone-050); }
+
+.j-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-family: var(--j-mono);
+  font-size: var(--j-micro);
+  letter-spacing: var(--j-track-micro);
+  text-transform: uppercase;
+  color: var(--bone-050);
+  text-decoration: none;
+  border-bottom: var(--hairline) solid var(--oxblood);
+  padding-bottom: var(--sp-2);
+}
+.j-cta:focus-visible { outline: 2px solid var(--bone-050); outline-offset: 4px; }
+
+/* ── the stage, switched on ──────────────────────────────────────────────
+   The four acts stop being a sequence of places and become a sequence of
+   moments in one place.
+
+   VISIBILITY, NOT JUST OPACITY. Three of the four acts are always inaudible as
+   well as invisible: an act at opacity 0 is still in the accessibility tree and
+   still takes tab stops, so a keyboard reader looking at act 01 would tab
+   straight into act 04's call to action. `visibility: hidden` takes it out of
+   both, and it still animates, because the property is transitioned
+   discretely at the end while opacity carries the fade. */
+[data-stage='on'] {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+[data-stage='on'] .j-act {
+  position: absolute;
+  inset: 0;
+  min-block-size: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+[data-stage='on'] .j-act[data-on] {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Only the live act may be interacted with, and only its own controls. */
+[data-stage='on'] .j-act[data-on] .j-cta { pointer-events: auto; }
+
+/* Pinned, the hero is exactly one viewport and the scroll belongs to the
+   camera. Unpinned — reduced motion, no script — the acts are the page. */
+[data-stage='on'] { pointer-events: none; }
+/* ── the callout ─────────────────────────────────────────────────────────
+   One elbow, one hairline, a mono title and at most one line under it. An
+   engineering annotation, not a HUD: no arrowhead, no box, no glow, and never
+   more than two on screen. */
+.j-callouts { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.j-lines { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; }
+
+.j-line {
+  fill: none;
+  stroke: rgb(var(--bone-100-rgb) / 0.62);
+  stroke-width: var(--hairline);
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+.j-line[data-on] { opacity: 1; }
+
+.j-dot {
+  fill: none;
+  stroke: rgb(var(--bone-100-rgb) / 0.9);
+  stroke-width: var(--hairline);
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+.j-dot[data-on] { opacity: 1; }
+
+.j-callout {
+  position: absolute;
+  translate: var(--x) var(--y);
+  max-inline-size: 21ch;
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+.j-callout[data-on] { opacity: 1; }
+.j-callout[data-side='right'] { transform: translateX(-100%); text-align: end; }
+
+.j-callout__t { margin: 0 0 var(--sp-1); color: var(--bone-050); }
+.j-callout__d {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--bone-300);
+  opacity: 0.85;
+}
+
+/* ── flow mode, which is a deliverable and not a fallback ────────────────
+   Four readers land here and they are not the same reader:
+
+     · scripts off, or a crawler
+     · no WebGL, or a machine too thin for the scene
+     · GSAP failed to load, so there is no pin to hand the scroll to
+     · prefers-reduced-motion, where a scrubbed pin is refused outright
+
+   All four get the same page and it is finished: four full compositions, one
+   after another, in document order. The car is not thrown away with the motion
+   — the canvas is FIXED behind the acts and parked on act 01's frame, so it is
+   present, and it does not move, which is the whole requirement. Acts 02–04
+   carry their own ground so the copy over it never has to fight a photograph.
+
+   The one place this loses to the stage is the annotation: a leader line points
+   at a part of a car, and if the reader can scroll the copy away from the car
+   the line points at nothing. Annotations are the stage's, and only the
+   stage's. */
+:root:not([data-stage='on']) .j-callouts { display: none; }
+
+:root:not([data-stage='on']) .j-canvas { position: fixed; z-index: 0; }
+
+:root:not([data-stage='on']) .j-act { z-index: 1; }
+
+:root:not([data-stage='on']) .j-act[data-act='2'],
+:root:not([data-stage='on']) .j-act[data-act='3'],
+:root:not([data-stage='on']) .j-act[data-act='4'] {
+  background: rgb(8 9 11 / 0.94);
+}
+
+/* Act 01 keeps the composed frame, so its copy keeps the composed width. The
+   later acts have a ground of their own and no car to leave room for, so they
+   take the width they would have taken if a car had never been in the plan. */
+:root:not([data-stage='on']) .j-act[data-act='2'] .j-lead-block,
+:root:not([data-stage='on']) .j-act[data-act='3'] .j-lead-block,
+:root:not([data-stage='on']) .j-act[data-act='4'] .j-lead-block { grid-column: 1 / span 8; }
+
+:root:not([data-stage='on']) .j-act[data-act='2'] .j-display,
+:root:not([data-stage='on']) .j-act[data-act='3'] .j-display,
+:root:not([data-stage='on']) .j-act[data-act='4'] .j-display { max-inline-size: 18ch; }
+
+/* The scrim exists to stop the LIT FLOOR reaching the bottom of the frame. In
+   flow mode the frame does not end at the hero's foot — the canvas is fixed and
+   the acts pass over it — so the scrim is pinned to the viewport with it. */
+:root:not([data-stage='on']) .j-hero::after {
+  position: fixed;
+  inset-block-end: 0;
+  block-size: 40%;
+  z-index: 0;
+}
+:root:not([data-stage='on']) .j-hero::before {
+  position: fixed;
+  inset-block-start: 0;
+  z-index: 0;
+}
+
+/* Nothing to fix if there is no scene at all. */
+:root:not([data-scene-state='live']) .j-canvas,
+:root:not([data-scene-state='live']) .j-hero::before,
+:root:not([data-scene-state='live']) .j-hero::after { display: none; }
+
+:root:not([data-scene-state='live']) .j-act { background: none; }
+
+/* ── the stage's own geometry ────────────────────────────────────────────
+   Pinned, the hero is exactly one viewport: the acts are absolutely placed
+   inside it and the scroll past it belongs to the camera. */
+:root[data-stage='on'] .j-hero {
+  block-size: 100svh;
+  overflow: clip;
+}
+/* ── narrow, authored separately ─────────────────────────────────────────
+   Portrait is not the landscape page at a smaller size. The car is framed
+   differently (see scene/index9.js), the copy sits under it rather than beside
+   it, and the annotation is not projected at all — a leader line across a 390px
+   frame is longer than the part it names (DNA62). */
+@media (max-width: 55.99rem) {
+  :root { --j-hero: clamp(3rem, 12.5vw, 4.5rem); --j-h2: clamp(2.6rem, 11vw, 3.8rem); }
+
+  /* FOUR ROWS, NOT THREE, AND IT WAS A REAL BUG THE FIRST TIME. The landscape
+     grid gives the statement row 2 and the rail row 3. Narrow moves the
+     statement down to row 3; leaving the rail's row alone put both in one cell
+     and printed them on top of each other. */
+  .j-act {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: auto 1fr auto auto;
+    padding-block-end: var(--sp-8);
+  }
+
+  .j-eyebrow { grid-column: 1 / span 6; flex-wrap: nowrap; }
+  /* The eyebrow wrapped, and the second line hung under the oxblood mark with
+     nothing to its left. flex-wrap does not govern that — the wrap is inside
+     the label, not between the flex items — so the tracking gives the width
+     back instead. The 14px floor is untouched (DNA62 / I7). */
+  .j-eyebrow .j-micro { letter-spacing: 0.08em; white-space: nowrap; }
+
+  .j-act .j-lead-block,
+  .j-act[data-act='1'] .j-lead-block,
+  .j-act[data-act='2'] .j-lead-block,
+  .j-act[data-act='3'] .j-lead-block,
+  .j-act[data-act='4'] .j-lead-block {
+    grid-column: 1 / span 6;
+    grid-row: 3;
+    align-self: end;
+  }
+
+  .j-act .j-display,
+  .j-act[data-act='4'] .j-display { max-inline-size: none; }
+
+  .j-rail {
+    grid-column: 1 / span 6;
+    grid-row: 4;
+    margin-block-start: var(--sp-6);
+    gap: var(--sp-4) var(--sp-6);
+  }
+
+  .j-plate {
+    grid-column: 1 / span 6;
+    grid-row: 4;
+    margin-block-start: var(--sp-6);
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-4) var(--sp-5);
+  }
+
+  .j-callouts, .j-lines { display: none; }
+
+  /* Portrait puts the copy over the lower half of the frame rather than beside
+     it, so the scrim has to be deeper here than on a landscape screen. */
+  .j-hero::after,
+  :root:not([data-stage='on']) .j-hero::after { block-size: 56%; }
+  .j-hero::before { block-size: 26%; }
+
+  :root:not([data-stage='on']) .j-act[data-act='2'] .j-lead-block,
+  :root:not([data-stage='on']) .j-act[data-act='3'] .j-lead-block,
+  :root:not([data-stage='on']) .j-act[data-act='4'] .j-lead-block { grid-column: 1 / span 6; }
+  :root:not([data-stage='on']) .j-act[data-act='2'] .j-display,
+  :root:not([data-stage='on']) .j-act[data-act='3'] .j-display,
+  :root:not([data-stage='on']) .j-act[data-act='4'] .j-display { max-inline-size: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   BELOW THE FOLD — built from the v4 mockup, 2026-08-28.
+
+   ONE DELIBERATE DEPARTURE FROM THE MOCKUP, AND IT IS THE BIGGEST DECISION HERE.
+   The v4 file sets every headline in a SERIF. This page's announcing voice is
+   Barlow Condensed, approved at the B2 checkpoint and frozen twice by name. A
+   serif below and a condensed grotesque above would make one document read as
+   two, and matching the mockup would mean re-cutting the hero — which the same
+   instruction forbade. So the mockup's COMPOSITION, COPY, ORDER and GROUND SPLIT
+   are followed exactly and its typeface is not. It is one line to reverse if
+   Alex wants the serif: change --v-face and add the family to the font link.
+
+   Everything else here is the hero's own system reused rather than restated —
+   same twelve columns, same gutter, same hairline, same mono, same tokens.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --v-face: var(--j-display);
+  --v-h2:   clamp(2.5rem, 4.4vw, 5rem);
+  --v-h3:   clamp(1.9rem, 3vw, 3.2rem);
+  --v-mark: clamp(2.2rem, 3.8vw, 4.2rem);
+  --v-forty: clamp(5.5rem, 11.5vw, 13rem);
+  --v-pad:  clamp(5.5rem, 11vh, 9.5rem);
+}
+
+.v-sec {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--v-pad);
+  padding-inline: var(--gutter);
+  color: var(--text);
+}
+
+.v-sec > * { max-inline-size: var(--page-max); margin-inline: auto; }
+
+.v-display {
+  margin: 0;
+  font-family: var(--v-face);
+  font-weight: 700;
+  font-size: var(--v-h2);
+  line-height: 0.92;
+  letter-spacing: var(--j-track-display);
+  text-transform: uppercase;
+  color: var(--bone-050);
+  text-wrap: balance;
+  max-inline-size: 16ch;
+}
+
+/* ── the section head: eyebrow left, statement under it, note far right ────── */
+.v-head {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-5) var(--col-gap);
+  align-items: start;
+  margin-block-end: var(--sp-8);
+}
+.v-sec .j-eyebrow { grid-column: auto; grid-row: auto; margin: 0; }
+.v-head > .v-eyebrow { grid-column: 1 / span 7; grid-row: 1; }
+.v-head > .v-display { grid-column: 1 / span 7; grid-row: 2; }
+.v-head__note { grid-column: 9 / span 4; grid-row: 1 / span 2; max-inline-size: 42ch; }
+.v-head--split { grid-template-columns: 1fr auto; align-items: baseline; }
+.v-head--split > .v-eyebrow { grid-column: 1; grid-row: 1; }
+.v-head__flag { grid-column: 2; grid-row: 1; color: var(--bone-300); opacity: 0.68; }
+
+/* ── the empty plate ───────────────────────────────────────────────────────
+   NOT A BROKEN IMAGE AND NOT A GREY BOX. Alex is supplying the photography, so
+   every image slot states its own subject and aspect in the type the rest of the
+   page uses for measurements. The layout is therefore real at full size — the
+   columns, the baselines and the crops are all final — and nothing on the page
+   pretends to be a photograph that does not exist. When the files land, each
+   plate takes an <img> and the label comes out. */
+.v-plate {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  justify-items: center;
+  gap: var(--sp-2);
+  padding-inline: var(--sp-5);
+  min-inline-size: 0;
+  text-align: center;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      rgb(var(--bone-100-rgb) / 0.018) 0 2px,
+      transparent 2px 9px),
+    var(--graphite-900);
+  border: var(--hairline) solid rgb(var(--bone-100-rgb) / 0.10);
+  overflow: hidden;
+}
+.v-plate__slug { color: var(--bone-300); opacity: 0.9; max-inline-size: 100%; }
+.v-plate__sub  { color: var(--bone-300); opacity: 0.68; letter-spacing: 0.10em; max-inline-size: 100%; }
+
+.v-plate--wide  { aspect-ratio: 16 / 9; }
+.v-plate--card  { aspect-ratio: 4 / 3; }
+.v-plate--desk  { aspect-ratio: 16 / 7; }
+.v-plate--tall  { aspect-ratio: 3 / 2; }
+.v-plate--band  { position: absolute; inset: 0; aspect-ratio: auto; border: 0; z-index: 0; }
+.v-plate--strip { aspect-ratio: 4 / 3; }
+.v-plate--strip-wide { aspect-ratio: 16 / 10; }
+
+/* ════ 02 · CURRENT COLLECTION ═══════════════════════════════════════════════
+   Two lots and they are deliberately not equal: one car is in stock and one is
+   still being commissioned, so one gets the width and the other gets a card.
+   A grid of two identical tiles would say they are the same offer. */
+.v-lots {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap);
+  align-items: start;
+}
+.v-lot--major { grid-column: 1 / span 8; }
+.v-lot--minor { grid-column: 10 / span 3; }
+
+.v-lot__bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  margin-block: var(--sp-5) 0;
+  padding-block-end: var(--sp-4);
+  border-bottom: var(--hairline) solid var(--rule);
+}
+.v-lot__name {
+  margin: 0;
+  font-family: var(--v-face);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2.1vw, 2.15rem);
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  color: var(--bone-050);
+}
+.v-lot--minor .v-lot__name { font-size: clamp(1.25rem, 1.5vw, 1.5rem); }
+/* Oxblood is fill on dark, never text — CLAUDE.md, and it measures 2.18:1 on
+   graphite. The mockup sets this price in orange; here the price is bone and the
+   oxblood is the rule under it, which is the same emphasis at 16:1. */
+.v-lot__price {
+  margin: 0;
+  font-family: var(--j-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1rem, 1.2vw, 1.25rem);
+  color: var(--bone-050);
+  border-bottom: 2px solid var(--oxblood);
+  padding-block-end: var(--sp-1);
+}
+.v-lot__price--quiet { border-bottom-color: rgb(var(--bone-100-rgb) / 0.22); }
+
+.v-spec { margin: var(--sp-5) 0 0; }
+.v-spec__pair { display: grid; gap: var(--sp-2); }
+.v-spec dt { color: var(--bone-300); opacity: 0.72; }
+.v-spec dd {
+  margin: 0;
+  font-family: var(--j-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9375rem;
+  color: var(--bone-050);
+}
+.v-spec--row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--sp-6) var(--sp-6);
+}
+.v-spec--stack { display: grid; gap: var(--sp-4); }
+.v-spec--stack .v-spec__pair {
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: var(--sp-4);
+  border-bottom: var(--hairline) solid var(--rule);
+  padding-block-end: var(--sp-3);
+}
+.v-spec--stack dd { text-align: end; }
+
+/* ════ 03 · THE COMMISSIONING DESK ═══════════════════════════════════════════
+   The one light ground. `[data-ground='light']` re-points the semantic aliases;
+   the two rules below are the only ones needed to follow it, because .j-micro
+   and .v-display were written against the dark family by name. They are scoped
+   to the desk rather than rewritten globally — the hero is an approved
+   checkpoint and nothing here is allowed to reach it. */
+.v-desk {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--sp-8);
+  align-items: stretch;
+  background: var(--ground);
+  padding: var(--sp-8);
+}
+[data-ground='light'] .j-micro { color: var(--text-muted); }
+[data-ground='light'] .j-body  { color: var(--text-muted); }
+
+/* THE PLATE CARRIES ITS OWN GROUND AND THE LIGHT SWITCH MUST NOT REACH INSIDE IT.
+   Caught by measurement, not by eye: the desk's picture is a DARK plate sitting
+   in a LIGHT panel, so the rule above was painting its labels in ink-on-light —
+   #5b6169 on #1a1d21, which measured 1.93:1. A ground switch applies to a
+   ground, and the plate is a different ground. */
+[data-ground='light'] .v-plate .j-micro { color: var(--bone-300); }
+
+.v-desk__step {
+  margin: 0 0 var(--sp-4);
+  color: var(--text-muted);
+}
+.v-desk__controls { min-inline-size: 0; }
+.v-desk__controls > .v-desk__step + * { margin-block-end: var(--sp-7); }
+.v-desk__fig { min-inline-size: 0; }
+.v-platform__opt > *, .v-rail__row > *, .v-rail__body > * { min-inline-size: 0; }
+
+.v-sr {
+  position: absolute; inline-size: 1px; block-size: 1px;
+  padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+.v-platform { border: 0; padding: 0; margin: 0 0 var(--sp-7); display: grid; grid-template-columns: minmax(0, 1fr); }
+.v-platform__opt {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--surface);
+  border: var(--hairline) solid var(--rule);
+  cursor: pointer;
+  transition: background var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out);
+}
+.v-platform__opt + .v-platform__opt { border-block-start: 0; }
+.v-platform input { position: absolute; opacity: 0; pointer-events: none; }
+.v-platform__name { color: var(--text); }
+.v-platform__state { color: var(--text-muted); }
+
+/* The selected platform inverts to the dark family — the same two grounds the
+   whole project runs on, used here to say which spec is live. */
+.v-platform__opt:has(input:checked) {
+  background: var(--graphite-900);
+  border-color: var(--graphite-900);
+}
+.v-platform__opt:has(input:checked) .v-platform__n,
+.v-platform__opt:has(input:checked) .v-platform__name { color: var(--bone-050); }
+/* The mockup sets [active_spec] in orange on the dark row. Oxblood measures
+   2.18:1 on graphite and CLAUDE.md is explicit that it is fill on dark and never
+   text, so the label is bone and the INVERSION of the whole row carries the
+   emphasis instead. Same signal, 16:1 instead of 2.18:1. */
+.v-platform__opt:has(input:checked) .v-platform__state { color: var(--bone-050); }
+.v-platform__opt:has(input:focus-visible) { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: 2px; }
+
+.v-rail { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); }
+.v-rail__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-5);
+  padding-block: var(--sp-4);
+  border-block-end: var(--hairline) solid var(--rule);
+}
+.v-rail__n { color: var(--text-muted); }
+.v-rail__body { display: grid; gap: var(--sp-1); }
+.v-rail__k { color: var(--text-muted); }
+.v-rail__v { font-size: 1rem; color: var(--text); }
+.v-rail__chip {
+  inline-size: 1.125rem; block-size: 1.125rem;
+  background: var(--chip);
+  border: var(--hairline) solid rgb(var(--graphite-950-rgb) / 0.30);
+}
+
+.v-desk__fig { margin: 0; display: grid; grid-template-rows: 1fr auto; }
+.v-desk__fig .v-plate--desk { aspect-ratio: auto; min-block-size: 18rem; }
+.v-desk__cap {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  margin-block-start: var(--sp-4);
+}
+.v-desk__cap .j-micro { letter-spacing: 0.09em; white-space: nowrap; }
+
+/* ════ 04 · ARCHIVE DOSSIER ══════════════════════════════════════════════════ */
+.v-dossier__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap);
+  align-items: start;
+  margin-block-start: var(--sp-7);
+}
+.v-dossier__lead {
+  grid-column: 1 / span 6;
+  position: relative;
+  padding-block-start: calc(var(--v-forty) * 0.74);
+}
+.v-dossier__body { grid-column: 7 / span 6; display: grid; gap: var(--sp-6); }
+
+/* The watermark sits behind the sentence it repeats, which is what a large
+   sectional numeral does on a printed page. It is aria-hidden in the markup. */
+.v-forty {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: -0.05em;
+  margin: 0;
+  font-family: var(--v-face);
+  font-weight: 700;
+  font-size: var(--v-forty);
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--bone-050);
+  /* Ornament. aria-hidden, and it repeats the sentence it sits behind, so it
+     carries no information a reader could lose. Contrast rules do not reach it
+     and raising it to 4.5:1 would stop it being a watermark. */
+  opacity: 0.055;
+  pointer-events: none;
+}
+.v-display--dossier { position: relative; max-inline-size: 18ch; }
+.v-dossier__p { max-inline-size: 62ch; }
+.v-dossier__p--quiet { color: var(--bone-300); opacity: 0.78; }
+
+/* ════ 05 · SERVICES ═════════════════════════════════════════════════════════
+   Full-bleed bands. The copy needs a ground of its own over a photograph, so
+   each band carries a gradient scrim from the left — the same device the hero
+   uses at the foot of its frame, for the same reason. */
+.v-services { padding-inline: 0; padding-block: 0; }
+.v-services > * { max-inline-size: none; }
+
+.v-band {
+  position: relative;
+  display: grid;
+  align-content: center;
+  min-block-size: clamp(20rem, 34vw, 30rem);
+  padding: var(--v-pad) var(--gutter);
+  overflow: hidden;
+  isolation: isolate;
+}
+.v-band + .v-band { border-block-start: var(--hairline) solid var(--rule); }
+.v-band::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to right,
+    rgb(var(--graphite-950-rgb) / 0.94) 0%,
+    rgb(var(--graphite-950-rgb) / 0.80) 34%,
+    rgb(var(--graphite-950-rgb) / 0.42) 62%,
+    rgb(var(--graphite-950-rgb) / 0.28) 100%);
+}
+.v-band__copy {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: var(--sp-5);
+  max-inline-size: min(46ch, 42%);
+  margin-inline: auto 0;
+  margin-inline-start: max(0px, calc((100% - var(--page-max)) / 2));
+}
+.v-display--band { font-size: var(--v-h3); max-inline-size: 14ch; }
+.v-band__tag {
+  position: absolute;
+  z-index: 2;
+  inset-inline-end: var(--gutter);
+  inset-block-start: 50%;
+  translate: 0 -50%;
+  margin: 0;
+  color: var(--bone-300);
+}
+
+/* ════ 06 · CONSIGNMENT DESK ═════════════════════════════════════════════════ */
+.v-consign__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap);
+  align-items: center;
+}
+.v-consign__copy { grid-column: 1 / span 5; display: grid; gap: var(--sp-5); justify-items: start; }
+.v-consign .v-plate--tall { grid-column: 7 / span 6; }
+
+.v-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-block-start: var(--sp-3);
+  padding: var(--sp-4) var(--sp-6);
+  font-family: var(--j-mono);
+  font-size: var(--j-micro);
+  letter-spacing: var(--j-track-micro);
+  text-transform: uppercase;
+  color: var(--bone-050);
+  text-decoration: none;
+  border: var(--hairline) solid rgb(var(--bone-100-rgb) / 0.34);
+  transition: border-color var(--dur-2) var(--ease-out), background var(--dur-2) var(--ease-out);
+}
+.v-btn:hover { border-color: var(--bone-050); background: rgb(var(--bone-100-rgb) / 0.06); }
+.v-btn:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+
+/* ════ 07 · THE CHRONICLES ═══════════════════════════════════════════════════ */
+.v-quotes {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap);
+  align-items: start;
+}
+.v-quote { margin: 0; }
+.v-quote--major { grid-column: 1 / span 7; }
+.v-quote--minor {
+  grid-column: 9 / span 4;
+  padding: var(--sp-6);
+  background: var(--surface);
+  border: var(--hairline) solid var(--rule);
+}
+/* Ornament, aria-hidden. The quotation it opens is set in real text under it. */
+.v-quote__mark {
+  margin: 0 0 var(--sp-4);
+  font-family: var(--v-face);
+  font-size: 3.5rem;
+  line-height: 0.6;
+  color: var(--oxblood);
+}
+.v-quote__text { margin: 0; }
+.v-quote__text p {
+  margin: 0;
+  font-size: clamp(1.15rem, 1.55vw, 1.6rem);
+  line-height: 1.45;
+  color: var(--bone-050);
+  text-wrap: pretty;
+}
+.v-quote--minor .v-quote__text p { font-size: clamp(1rem, 1.15vw, 1.15rem); }
+.v-quote__by { display: grid; gap: var(--sp-1); margin-block-start: var(--sp-5); }
+.v-quote__who { font-size: 1rem; font-weight: 600; color: var(--bone-050); }
+.v-quote__where { color: var(--bone-300); opacity: 0.72; }
+
+/* ════ 08 · LIVE FROM THE SHOP ═══════════════════════════════════════════════
+   A contact strip, not a grid of equal tiles: the cells sit on a staggered
+   baseline, so the row reads as frames laid out on a bench. */
+.v-strip {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1.15fr 0.8fr 0.9fr 1.25fr;
+  gap: var(--col-gap);
+  align-items: start;
+}
+.v-strip__cell { margin-block-start: calc(var(--drop, 0) * 14rem); }
+.v-strip__cap { margin: var(--sp-4) 0 0; color: var(--bone-300); opacity: 0.72; }
+
+/* ════ 09 · FOOT ═════════════════════════════════════════════════════════════ */
+.v-foot { border-block-start: var(--hairline) solid var(--rule); }
+.v-foot__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap);
+  align-items: start;
+}
+.v-foot__brand { grid-column: 1 / span 5; display: grid; gap: var(--sp-5); }
+.v-foot__col:nth-of-type(2) { grid-column: 7 / span 3; }
+.v-foot__col:nth-of-type(3) { grid-column: 10 / span 3; }
+.v-foot__col ul a { white-space: nowrap; }
+
+.v-wordmark {
+  margin: 0;
+  font-family: var(--v-face);
+  font-weight: 700;
+  font-size: var(--v-mark);
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--bone-050);
+}
+.v-foot__blurb { max-inline-size: 40ch; }
+.v-foot__k { color: var(--bone-300); opacity: 0.72; margin: 0 0 var(--sp-5); }
+.v-foot__col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
+.v-foot__col a,
+.v-foot__addr a {
+  color: var(--bone-050);
+  text-decoration: none;
+  border-block-end: var(--hairline) solid transparent;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.v-foot__col a:hover,
+.v-foot__addr a:hover { border-block-end-color: var(--oxblood); }
+.v-foot__col a:focus-visible,
+.v-foot__addr a:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+.v-foot__addr { font-style: normal; display: grid; gap: var(--sp-3); color: var(--bone-050); }
+.v-foot__addr p { margin: 0; line-height: 1.5; }
+
+.v-foot__legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sp-4) var(--sp-7);
+  margin-block-start: var(--sp-8);
+  padding-block-start: var(--sp-6);
+  border-block-start: var(--hairline) solid var(--rule);
+}
+.v-foot__legal .j-micro { color: var(--bone-300); opacity: 0.68; }
+
+/* ── narrow, authored rather than reflowed ───────────────────────────────── */
+@media (max-width: 55.99rem) {
+  :root { --v-h2: clamp(2rem, 8.5vw, 2.9rem); --v-h3: clamp(1.7rem, 7vw, 2.3rem); }
+
+  .v-head { grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
+  .v-head > .v-eyebrow, .v-head > .v-display, .v-head__note { grid-column: 1; grid-row: auto; }
+  .v-head--split { grid-template-columns: minmax(0, 1fr); }
+  .v-head__flag { grid-column: 1; }
+
+  .v-lots, .v-dossier__grid, .v-consign__grid, .v-quotes, .v-foot__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .v-lot--major, .v-lot--minor,
+  .v-dossier__lead, .v-dossier__body,
+  .v-consign__copy, .v-consign .v-plate--tall,
+  .v-quote--major, .v-quote--minor,
+  .v-foot__brand, .v-foot__col:nth-of-type(2), .v-foot__col:nth-of-type(3) {
+    grid-column: 1;
+  }
+
+  .v-spec--row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--sp-5); }
+
+  /* The desk stops being two columns and becomes what it is on a phone: a form
+     with a picture over it. */
+  .v-desk { grid-template-columns: minmax(0, 1fr); padding: var(--sp-6); gap: var(--sp-7); }
+  .v-desk__fig { order: -1; }
+
+  /* The platform row is three tracked labels side by side, which is a wide-screen
+     shape. On a phone the state drops under the name and the tracking comes in —
+     the 14px floor is untouched, only the letter-spacing gives ground. */
+  .v-desk .j-micro { letter-spacing: 0.07em; }
+  .v-platform__opt {
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: var(--sp-2);
+    padding: var(--sp-4);
+  }
+  .v-platform__state { grid-column: 2; justify-self: start; }
+  .v-rail__row { gap: var(--sp-4); }
+  .v-desk__cap { flex-direction: column; gap: var(--sp-2); }
+  .v-desk__cap .j-micro { white-space: normal; }
+  .v-plate { padding-inline: var(--sp-4); }
+  /* The desk's picture stretches to match a two-column panel. Stacked, there is
+     nothing to match, and stretching turns it into a portrait slab. */
+  .v-desk__fig { grid-template-rows: auto auto; }
+  .v-desk__fig .v-plate--desk { aspect-ratio: 16 / 9; min-block-size: 0; }
+
+  /* A scrim from the left cannot work when the copy is under the picture rather
+     than beside it, so the band's scrim turns through ninety degrees. */
+  .v-band { min-block-size: 0; padding-block: calc(var(--v-pad) * 0.9); }
+  .v-band::after {
+    background: linear-gradient(to bottom,
+      rgb(var(--graphite-950-rgb) / 0.34) 0%,
+      rgb(var(--graphite-950-rgb) / 0.72) 42%,
+      rgb(var(--graphite-950-rgb) / 0.94) 100%);
+  }
+  .v-band__copy { max-inline-size: none; margin-inline-start: 0; }
+  .v-band__tag { position: static; translate: none; margin-block-start: var(--sp-6); }
+
+  /* The staggered baseline is a wide-screen device. On one column it is just
+     uneven spacing, so it comes off. */
+  .v-strip { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .v-strip__cell { margin-block-start: 0; }
+  .v-plate--strip-wide { aspect-ratio: 4 / 3; }
+
+  .v-forty { font-size: clamp(4rem, 22vw, 7rem); }
+}

@@ -17,10 +17,10 @@ before the final build needs it. The gate is yielded out loud; it is not absent.
 | 4 | `Ceramic-coated side pipes and roll bars` | Lot 01/02, build step 04 | **sourced** | backdraftracing.com — RT4B custom options, read 2026-08-24 |
 | 5 | `18 in` rims, matte black | Lot 01/02, build step 03 | **sourced** | backdraftracing.com — RT4B custom options, read 2026-08-24 |
 | 6 | `Built by Backdraft` | hero, footer | **sourced** | Backdraft logo supplied in the client asset folder; backdraftracing.com lists DEALERS |
-| 7 | `Forty years…` | Who we are | **unverified — client to confirm** | Client brief, `docs/brief-midwest-cobras.pdf`: *"Emphasize 40 years of experience."* Whose forty years, and from what year, is not stated. **Blocks Gate 4 on the final build.** |
-| 8 | Customer reviews | Owners | **placeholder, visibly so** | None. Copy reads "to be supplied" and nothing is invented. |
+| 7 | `Forty years…` | Who we are | **sourced** | Client brief, `docs/brief-midwest-cobras.pdf`: *"Emphasize 40 years of experience."* Confirmed by the client via Alex, 2026-08-27. No longer blocks Gate 4. |
+| 8 | Customer reviews | Owners, index9 §07 | **unverified — client to confirm** | Both quotations and both attributions are transcribed from Alex's own v4 mockup, `donot git/midwest-cobras-v4.png`. **I have written none of them and added no name, city or chassis number that is not in that file** — which keeps this row's original rule that nothing is invented, while letting the client's draft stand as draft. It is not a source: a mockup is a design, and the named owners still have to be real people who said these words. |
 | 9 | Event dates | Owners | **placeholder, visibly so** | None. Dates read `TBC`. |
-| 10 | Address, phone | Footer | **placeholder, visibly so** | None. Reads "to be supplied". |
+| 10 | Address, phone | Footer | **sourced** | Client dealer form supplied by Alex, 2026-08-27: Midwest Cobras, LLC — 14510 Parallel Lane, Basehor, KS 66007 — 913-662-5000 — www.midwestcobras.com. No email address was given, so the footer carries none. |
 
 ## Not claims, and why they are still listed
 
@@ -66,6 +66,54 @@ Two decisions taken while transcribing, both recorded rather than made quietly:
   bought model are not LED units and nobody has said the client's are; "modern
   reliability" is a warranty-shaped claim attached to a component we cannot see.
 
+## index9's below-the-fold — the v4 mockup, transcribed 2026-08-28
+
+Alex supplied `donot git/midwest-cobras-v4.png` and asked for the below-fold to
+be filled from it. **Every string in sections 02–09 of index9 is transcribed from
+that file. None of it is written by me**, which is the same standing the hero
+storyboard has above: the client's own draft copy, recorded here as draft.
+
+**Nothing below is sourced.** All of it stands under the compromise Alex
+authorised on 2026-08-24 — client mock, unverified claims may appear as ordinary
+copy, the ledger records each one. That authorisation is not a source.
+
+| Where | Claim in the render | Status |
+|---|---|---|
+| 02 | `Four cars, not four hundred.` | **unverified** — a production-volume claim, the exact class this ledger exists to catch. It is the section's headline, so it cannot be quietly softened; it needs the client's word or a different headline |
+| 02 | `$144,500` · `$152,000` | **unverified** — the sourced figures are *from* $66,900 and *from* $70,500 (rows 1–2). These are specific cars at specific prices and nothing supports them |
+| 02 | `BDR2084` · `BDR2112` | **unverified** — chassis numbers name individual vehicles |
+| 02 | `Roush 427 SR (510 HP)` · `Tremec TKO600 5-Speed` · `Coyote 5.0L Gen 3 V8` | **unverified** — real products, but nothing establishes these cars carry them. A horsepower figure is a claim |
+| 02 | `Guardsman Blue / White Stripes` · `Liquid Graphite / Black Accents` | **unverified** — colour names for specific cars |
+| 02 | `In stock` · `Commission in progress` | **unverified** — availability is a statement a buyer acts on |
+| 02, 05 | `our Basehor facility` · `transport from Basehor` | **CHANGED FROM THE MOCKUP.** v4 reads *Lake Forest*; row 10, sourced 2026-08-27, puts the company at Basehor, KS. The sourced address wins and the change is recorded rather than made quietly. If Lake Forest is a second, real facility, it goes back and gets its own row |
+| 03 | `Guardsman Metallic Blue` · `18" Polished Halibrand Style` · `Polished Stainless Steel` · `Sabin Diamond-Stitched Leather` | **unverified** — configurator options. Any of these carrying a price or a lead time needs a source in the same commit as the figure. **`Sabin` is transcribed exactly as the mockup spells it and is probably meant to be `Satin`** — flagged rather than corrected, because a material name is the client's to fix |
+| 03 | `Fig 3.1 — chassis specification diagram` · `Backdraft Racing Inc.` | descriptive; the Backdraft attribution is supported by row 6 |
+| 04 | `a four-decade obsession` | **sourced** — same fact as row 7, confirmed 2026-08-27 |
+| 04 | `Midwest Cobras was born from…` · `in partnership with Backdraft Racing` | **unverified** — the partnership is consistent with row 6's dealer listing; the origin story is not established |
+| 04 | `brutally fast performance roadsters` | **unverified** — a performance superlative |
+| 05 | `private, climate-controlled enclosed transporters` · `Fully insured white-glove transport` | **unverified, and insurance is the word to watch.** "Fully insured" is a coverage claim a customer would rely on. Flagged for the client rather than softened here |
+| 05 | `dyno tuning` · `custom suspension geometry alignment` | **unverified** — a list of services offered |
+| 06 | `Our global collector network` | **unverified** — a coverage claim |
+| 07 | Both quotations, `David K.` / Chicago, IL / RT4 Classic #2044, `Harlan V.` / St. Charles, IL / RT4B Black #1988 | **unverified — client to confirm.** See the note under row 8 below |
+| 07 | `Verified commissions` | **unverified** — it asserts the quotes have been verified, which is precisely what has not happened |
+| 08 | `Chassis setup / Deerfield` | **unverified** — names a location that is neither Basehor nor Lake Forest |
+| 09 | `Not affiliated with Carroll Shelby Licensing.` | **unverified — needs the client's legal position, not mine.** It is a disclaimer about a third party's trademark and it either is or is not the client's counsel's wording |
+| 09 | address, telephone, `midwestcobras.com` | **sourced** — row 10 |
+
+**Three things from the mockup are deliberately NOT on the page:**
+
+- `inquire@midwestcobras.com` — row 10 records that no email address was
+  supplied. A mailto that bounces is worse than no mailto.
+- `847.555.0184` — **555 is the reserved fictional exchange**, which is the tell
+  that the mockup's contact block was filler. The sourced number is used instead.
+- `© 2024` — the mockup's footer year. The page reads 2026.
+
+**All photography is absent and says so.** Alex is supplying it. Every image slot
+is an empty plate carrying its own subject and aspect in mono type — eleven of
+them. Nothing on this page is a borrowed photograph, which is a step forward from
+the four Hinderer images recorded above: those are still on the older index
+pages, and they are still somebody else's property.
+
 ## What has to happen before this ledger can pass Gate 4
 
 0. **The hero model is replaced with a commercially licensed one.** The current
@@ -79,8 +127,17 @@ Two decisions taken while transcribing, both recorded rather than made quietly:
 0b. **The photography is Midwest's own.** Four borrowed images stand in. This
    is the same class of item as the model licence: it is not a quality problem,
    it is somebody else's property on a page that sells cars.
-1. Row 7 gets a source or the sentence changes.
-2. Rows 8–10 get real content or their sections are cut — and a cut section
-   leaves its component and a comment saying what went with it.
+1. ~~Row 7 gets a source or the sentence changes.~~ **Done** — confirmed by the client via Alex, 2026-08-27.
+2. ~~Rows 8–10 get real content or their sections are cut.~~ Row 10 is **done**
+   (2026-08-27). Rows 8 and 9 stand: the testimonials are the client's draft, not
+   confirmed accounts, and a cut section leaves its component and a comment
+   saying what went with it.
+2b. **The v4 below-fold block above is settled, line by line.** The three that
+   matter most are the production headline (*"Four cars, not four hundred."*),
+   *"Fully insured"*, and the Carroll Shelby disclaimer — a volume claim, a
+   coverage claim and a trademark position. None of them is mine to soften.
+2c. **Basehor or Lake Forest.** The mockup and the sourced dealer form disagree
+   about where the company is. The sourced address is on the page; if there are
+   two facilities, both get rows.
 3. Any figure added to the configurator (option prices, lead times, engine
    specifications) arrives with a source in the same commit as the copy.

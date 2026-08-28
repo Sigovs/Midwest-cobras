@@ -1,0 +1,540 @@
+<!doctype html>
+<!-- ════════════════════════════════════════════════════════════════════════
+     index9 — direction J. The campaign.
+
+     Built from the storyboard language, not from the previous hero. The pages
+     before this one are rival directions and are untouched.
+
+     Three compositions were built and shot at the same size on the same screen,
+     which is the only way that comparison means anything. The low front
+     three-quarter won; the profile and the rear three-quarter were cut, and why
+     is written at the top of scene/index9.js.
+  ════════════════════════════════════════════════════════════════════════ -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Midwest Cobras — built to order</title>
+<meta name="description" content="Hand-assembled Backdraft Cobras. Specified, then built.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2308090b'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/index9.css">
+
+<script type="importmap">
+{ "imports": {
+    "three": "./assets/js/vendor/three.module.js",
+    "gsap": "./assets/js/vendor/gsap/index.js",
+    "gsap/ScrollTrigger": "./assets/js/vendor/gsap/ScrollTrigger.js"
+} }
+</script>
+</head>
+<body class="dir-j" data-ground="dark">
+
+<main>
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     ONE STAGE. NO FOLD.
+
+     Alex's instruction of 2026-08-26: the whole scroll happens inside the hero
+     scene — every act, every annotation, every line of copy — and nothing sits
+     below it. That is a change of PAGE GRAMMAR, from the split stage BRIEF.md
+     declared to a single pinned stage, and it is recorded there rather than
+     absorbed quietly.
+
+     THE ORDER OF THIS MARKUP IS THE POINT. The four acts are written as four
+     ordinary articles in normal document flow, because that is what a crawler,
+     a text browser, a reader with scripts off and a reader who has asked for
+     less motion all receive — a complete, readable page in the right order. The
+     stage is what JAVASCRIPT DOES TO THEM once the scene reports live: it lifts
+     the four into one layer and hands the scroll to the camera. Authored the
+     other way round, the document would be four empty boxes and a canvas.
+  ════════════════════════════════════════════════════════════════════════ -->
+<section class="j-hero" id="stage" data-scene-mount
+         data-model="assets/model/shelby-cobra-427-v8.glb"
+         aria-labelledby="j-title">
+
+  <!-- aria-hidden per DNA80: the canvas is scenery. Everything it says is said
+       in real text in the acts below it, so exposing it to assistive tech would
+       announce a decoration and describe nothing. -->
+  <canvas class="j-canvas" data-scene aria-hidden="true"></canvas>
+
+  <!-- The annotation layer sits between the car and the copy: a line may cross
+       the body, never a headline. -->
+  <div class="j-callouts" aria-hidden="true">
+    <svg class="j-lines" data-lines focusable="false"></svg>
+    <div data-callouts></div>
+  </div>
+
+  <div class="j-stage" data-stage>
+
+    <!-- ── ACT 01 · ARRESTED ──────────────────────────────────────────────
+         The car is already there, lit, at bumper height, and the sentence
+         beside it refuses to sell.                                        -->
+    <article class="j-act" data-act="1" aria-labelledby="j-title">
+      <p class="j-eyebrow">
+        <span class="j-micro j-micro--accent">01</span>
+        <span class="j-micro">Midwest Cobras &middot; Built to order</span>
+      </p>
+
+      <div class="j-lead-block">
+        <h1 class="j-display" id="j-title">Built for
+the road.
+Not the lot.</h1>
+        <p class="j-body">Every car leaves as the sum of decisions someone made
+          on purpose. Two to four of them a year.</p>
+      </div>
+
+      <div class="j-rail">
+        <span class="j-rail__item"><span class="j-micro j-rail__k">Models</span><span class="j-rail__v">RT4 &middot; RT4B</span></span>
+        <span class="j-rail__item"><span class="j-micro j-rail__k">From</span><span class="j-rail__v">$66,900</span></span>
+        <span class="j-rail__item"><span class="j-micro j-rail__k">Built by</span><span class="j-rail__v">Backdraft</span></span>
+      </div>
+    </article>
+
+    <!-- ── ACT 02 · UNDERSTOOD ────────────────────────────────────────────
+         The flank, said plainly, with the one line that explains the shape. -->
+    <article class="j-act" data-act="2" aria-labelledby="j-machine-title">
+      <p class="j-eyebrow">
+        <span class="j-micro j-micro--accent">02</span>
+        <span class="j-micro">The machine</span>
+      </p>
+
+      <div class="j-lead-block">
+        <h2 class="j-display j-display--h2" id="j-machine-title">Form follows
+function.</h2>
+        <p class="j-body">A body over a tube frame, a side pipe that runs the
+          length of the sill, and nothing on it that is not doing a job.</p>
+      </div>
+    </article>
+
+    <!-- ── ACT 03 · IMPLICATED ────────────────────────────────────────────
+         A number large enough to be a fact and small enough to be a promise. -->
+    <article class="j-act" data-act="3" aria-labelledby="j-order-title">
+      <p class="j-eyebrow">
+        <span class="j-micro j-micro--accent">03</span>
+        <span class="j-micro">Built to order</span>
+      </p>
+
+      <div class="j-lead-block">
+        <h2 class="j-display j-display--h2" id="j-order-title">Four cars a year
+is not a constraint.</h2>
+      </div>
+
+      <div class="j-plate">
+        <span class="j-spec"><span class="j-micro j-spec__k">Engine</span><span class="j-spec__v">427 cu in V8</span></span>
+        <span class="j-spec"><span class="j-micro j-spec__k">Exhaust</span><span class="j-spec__v">Ceramic side pipes</span></span>
+        <span class="j-spec"><span class="j-micro j-spec__k">Rims</span><span class="j-spec__v">18&quot; matte black</span></span>
+        <span class="j-spec"><span class="j-micro j-spec__k">From</span><span class="j-spec__v">$66,900</span></span>
+      </div>
+    </article>
+
+    <!-- ACT 04 WAS HERE. "Yours is not built yet." now opens section 03 below
+         the fold, where the v4 mockup puts it — a sentence that opens a section
+         and a sentence that closes a page cannot be the same sentence twice on
+         one document. The pose it used is recorded in scene/index9.js. -->
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     BELOW THE FOLD — built from `donot git/midwest-cobras-v4.png`, 2026-08-28.
+
+     COPY IS TRANSCRIBED, NOT WRITTEN. Every headline, paragraph, label and
+     figure below is the client's own from the v4 mockup. Where the mockup and
+     `docs/content-ledger.md` disagree the LEDGER WINS and the conflict is named
+     in a comment at the point of use, because a sourced address quietly
+     overwritten is worse than a visible disagreement.
+
+     PHOTOGRAPHY IS NOT INVENTED. Alex is supplying it. Every image slot is an
+     empty plate that states its own subject and aspect, so the layout is real,
+     the reading order is real, and nothing on the page pretends to be a
+     photograph that does not exist yet.
+  ════════════════════════════════════════════════════════════════════════ -->
+
+<!-- ════ 02 · CURRENT COLLECTION ════════════════════════════════════════════ -->
+<section class="v-sec v-collection" aria-labelledby="v-collection-title">
+  <header class="v-head">
+    <p class="j-eyebrow v-eyebrow">
+      <span class="j-micro j-micro--accent">02</span>
+      <span class="j-micro">Current collection</span>
+    </p>
+    <h2 class="v-display" id="v-collection-title">Four cars, not four hundred.</h2>
+    <p class="j-body v-head__note">Our focus is on rarity, specification
+      precision, and direct allocation. Each machine below is fully documented,
+      run-in, and prepared for release at our Basehor facility.</p>
+    <!-- The mockup reads "at our Lake Forest facility". Ledger row 10, sourced
+         2026-08-27, puts the company at Basehor, KS. Named in the report. -->
+  </header>
+
+  <div class="v-lots">
+    <article class="v-lot v-lot--major">
+      <figure class="v-plate v-plate--wide" role="img"
+              aria-label="Photograph to be supplied: RT4 Classic Roadster, three-quarter">
+        <span class="j-micro v-plate__slug">Photograph to be supplied</span>
+        <span class="j-micro v-plate__sub">RT4 Classic Roadster · three-quarter · 16:9</span>
+      </figure>
+      <div class="v-lot__bar">
+        <h3 class="v-lot__name">RT4 Classic Roadster</h3>
+        <p class="v-lot__price">$144,500</p>
+      </div>
+      <dl class="v-spec v-spec--row">
+        <div class="v-spec__pair"><dt class="j-micro">Chassis</dt><dd>BDR2084</dd></div>
+        <div class="v-spec__pair"><dt class="j-micro">Engine</dt><dd>Roush 427 SR (510 HP)</dd></div>
+        <div class="v-spec__pair"><dt class="j-micro">Transmission</dt><dd>Tremec TKO600 5-Speed</dd></div>
+        <div class="v-spec__pair"><dt class="j-micro">Exterior</dt><dd>Guardsman Blue / White Stripes</dd></div>
+        <div class="v-spec__pair"><dt class="j-micro">Status</dt><dd>In stock</dd></div>
+      </dl>
+    </article>
+
+    <article class="v-lot v-lot--minor">
+      <figure class="v-plate v-plate--card" role="img"
+              aria-label="Photograph to be supplied: RT4B Black Edition, profile">
+        <span class="j-micro v-plate__slug">Photograph to be supplied</span>
+        <span class="j-micro v-plate__sub">RT4B Black Edition · profile · 4:3</span>
+      </figure>
+      <div class="v-lot__bar">
+        <h3 class="v-lot__name">RT4B Black Edition</h3>
+        <p class="v-lot__price v-lot__price--quiet">$152,000</p>
+      </div>
+      <dl class="v-spec v-spec--stack">
+        <div class="v-spec__pair"><dt class="j-micro">Chassis</dt><dd>BDR2112</dd></div>
+        <div class="v-spec__pair"><dt class="j-micro">Engine</dt><dd>Coyote 5.0L Gen 3 V8</dd></div>
+        <div class="v-spec__pair"><dt class="j-micro">Exterior</dt><dd>Liquid Graphite / Black Accents</dd></div>
+        <div class="v-spec__pair"><dt class="j-micro">Status</dt><dd>Commission in progress</dd></div>
+      </dl>
+    </article>
+  </div>
+</section>
+
+<!-- ════ 03 · THE COMMISSIONING DESK ════════════════════════════════════════
+     THE ONE LIGHT GROUND ON THE PAGE, AND IT IS NOT A DECORATION. CLAUDE.md
+     settles this: "the car lives in the dark; its specification lives in the
+     light." A split by ROLE, never by section — and this is the only block on
+     the page whose role is specification you act on rather than a photograph
+     you look at. `data-ground="light"` re-points the semantic colour aliases at
+     the bone family and changes nothing else: same type, same hairlines, same
+     rhythm, same components.
+
+     The mockup arrived at the same split independently, which is the best kind
+     of agreement to find in a client's file.
+  ════════════════════════════════════════════════════════════════════════ -->
+<section class="v-sec v-commission" aria-labelledby="v-commission-title">
+  <header class="v-head">
+    <p class="j-eyebrow v-eyebrow">
+      <span class="j-micro j-micro--accent">03</span>
+      <span class="j-micro">The commissioning desk</span>
+    </p>
+    <h2 class="v-display" id="v-commission-title">Yours is not built yet.</h2>
+    <p class="j-body v-head__note">We operate by direct commission. Choose
+      between the traditional RT4 Classic blueprint or the tactical, blacked-out
+      RT4B platform. Your build starts here.</p>
+  </header>
+
+  <div class="v-desk" data-ground="light">
+    <div class="v-desk__controls">
+      <p class="j-micro v-desk__step">01 / Select vehicle platform</p>
+      <!-- Real radios. A platform choice is a choice, and a div that listens
+           for clicks is not one: this is reachable by keyboard, announced as a
+           group, and works with scripts off. -->
+      <fieldset class="v-platform">
+        <legend class="v-sr">Vehicle platform</legend>
+        <label class="v-platform__opt">
+          <input type="radio" name="v-platform" value="rt4" checked>
+          <span class="j-micro v-platform__n">01</span>
+          <span class="j-micro v-platform__name">RT4 Classic</span>
+          <span class="j-micro v-platform__state">[active_spec]</span>
+        </label>
+        <label class="v-platform__opt">
+          <input type="radio" name="v-platform" value="rt4b">
+          <span class="j-micro v-platform__n">02</span>
+          <span class="j-micro v-platform__name">RT4B Black Edition</span>
+          <span class="j-micro v-platform__state">Select</span>
+        </label>
+      </fieldset>
+
+      <p class="j-micro v-desk__step">02 / Engineering rail</p>
+      <ul class="v-rail">
+        <li class="v-rail__row">
+          <span class="j-micro v-rail__n">01</span>
+          <span class="v-rail__body"><span class="j-micro v-rail__k">Exterior paint</span>
+            <span class="v-rail__v">Guardsman Metallic Blue</span></span>
+          <span class="v-rail__chip" style="--chip: #2c4a72" aria-hidden="true"></span>
+        </li>
+        <li class="v-rail__row">
+          <span class="j-micro v-rail__n">02</span>
+          <span class="v-rail__body"><span class="j-micro v-rail__k">Wheels / tyres</span>
+            <span class="v-rail__v">18&quot; Polished Halibrand Style</span></span>
+          <span class="v-rail__chip" style="--chip: #c8ccd2" aria-hidden="true"></span>
+        </li>
+        <li class="v-rail__row">
+          <span class="j-micro v-rail__n">03</span>
+          <span class="v-rail__body"><span class="j-micro v-rail__k">Side pipes</span>
+            <span class="v-rail__v">Polished Stainless Steel</span></span>
+          <span class="v-rail__chip" style="--chip: #d5d8dc" aria-hidden="true"></span>
+        </li>
+        <li class="v-rail__row">
+          <span class="j-micro v-rail__n">04</span>
+          <span class="v-rail__body"><span class="j-micro v-rail__k">Cockpit material</span>
+            <span class="v-rail__v">Sabin Diamond-Stitched Leather</span></span>
+          <span class="v-rail__chip" style="--chip: #35405a" aria-hidden="true"></span>
+        </li>
+      </ul>
+    </div>
+
+    <figure class="v-desk__fig">
+      <div class="v-plate v-plate--desk" role="img"
+           aria-label="Photograph to be supplied: side pipe and rear wheel, macro">
+        <span class="j-micro v-plate__slug">Photograph to be supplied</span>
+        <span class="j-micro v-plate__sub">Side pipe and rear wheel · macro · 16:7</span>
+      </div>
+      <figcaption class="v-desk__cap">
+        <span class="j-micro">Fig 3.1 — chassis specification diagram</span>
+        <span class="j-micro">Backdraft Racing Inc.</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ════ 04 · ARCHIVE DOSSIER ═══════════════════════════════════════════════ -->
+<section class="v-sec v-dossier" aria-labelledby="v-dossier-title">
+  <p class="j-eyebrow v-eyebrow">
+    <span class="j-micro j-micro--accent">04</span>
+    <span class="j-micro">Archive dossier</span>
+  </p>
+
+  <div class="v-dossier__grid">
+    <div class="v-dossier__lead">
+      <!-- The watermark repeats the sentence beside it, so it is scenery and
+           carries aria-hidden. It is also the one claim on this page the client
+           confirmed on 2026-08-27 — ledger row 7. -->
+      <p class="v-forty" aria-hidden="true">Forty</p>
+      <h2 class="v-display v-display--dossier" id="v-dossier-title">We focus
+        entirely on putting people in cars that should not exist.</h2>
+    </div>
+
+    <div class="v-dossier__body">
+      <figure class="v-plate v-plate--wide" role="img"
+              aria-label="Photograph to be supplied: period workshop, chassis on the bench">
+        <span class="j-micro v-plate__slug">Photograph to be supplied</span>
+        <span class="j-micro v-plate__sub">Period workshop, chassis on the bench · 16:6</span>
+      </figure>
+      <p class="j-body v-dossier__p">Midwest Cobras was born from a four-decade
+        obsession with classic power-to-weight ratios. The original 1960s
+        recipe—American V8 wedged into a lightweight British roadster chassis—was
+        never meant for mass consumption. It was a beautiful anomaly.</p>
+      <p class="j-body v-dossier__p v-dossier__p--quiet">Today, we preserve that
+        ethos in partnership with Backdraft Racing. These are not retro replicas;
+        they are modern, brutally fast performance roadsters engineered to be
+        experienced with absolute sensory focus.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════ 05 · SERVICES ══════════════════════════════════════════════════════
+     Two full-bleed bands. The copy sits on the dark left of each frame, so the
+     photograph that lands here must carry its subject on the right — the plate
+     says so rather than leaving it to be discovered after the shoot.        -->
+<section class="v-sec v-services" aria-label="Services">
+  <article class="v-band">
+    <div class="v-plate v-plate--band" role="img"
+         aria-label="Photograph to be supplied: hands on an engine, workshop, subject right">
+      <span class="j-micro v-plate__slug">Photograph to be supplied</span>
+      <span class="j-micro v-plate__sub">Hands on an engine · subject right of frame · 21:9</span>
+    </div>
+    <div class="v-band__copy">
+      <p class="j-eyebrow v-eyebrow">
+        <span class="j-micro j-micro--accent">05</span>
+        <span class="j-micro">01 / Tune-up &amp; chassis service</span>
+      </p>
+      <h3 class="v-display v-display--band">Precision mechanical preservation.</h3>
+      <p class="j-body">From dyno tuning to custom suspension geometry alignment,
+        our technicians ensure your Cobra remains in optimal attack vector.</p>
+    </div>
+    <p class="j-micro v-band__tag">[ service_reserve ]</p>
+  </article>
+
+  <article class="v-band">
+    <div class="v-plate v-plate--band" role="img"
+         aria-label="Photograph to be supplied: enclosed transporter at night, subject right">
+      <span class="j-micro v-plate__slug">Photograph to be supplied</span>
+      <span class="j-micro v-plate__sub">Enclosed transporter at night · subject right of frame · 21:9</span>
+    </div>
+    <div class="v-band__copy">
+      <p class="j-eyebrow v-eyebrow">
+        <span class="j-micro j-micro--accent">05</span>
+        <span class="j-micro">02 / Enclosed transportation</span>
+      </p>
+      <h3 class="v-display v-display--band">Protected regional deployment.</h3>
+      <p class="j-body">We operate private, climate-controlled enclosed
+        transporters. Fully insured white-glove transport from Basehor to any
+        destination in the Midwest.</p>
+      <!-- Mockup: "from Lake Forest". Ledger row 10 again. -->
+    </div>
+    <p class="j-micro v-band__tag">[ logistics_desk ]</p>
+  </article>
+</section>
+
+<!-- ════ 06 · CONSIGNMENT DESK ══════════════════════════════════════════════ -->
+<section class="v-sec v-consign" aria-labelledby="v-consign-title">
+  <div class="v-consign__grid">
+    <div class="v-consign__copy">
+      <p class="j-eyebrow v-eyebrow">
+        <span class="j-micro j-micro--accent">06</span>
+        <span class="j-micro">Consignment desk</span>
+      </p>
+      <h2 class="v-display" id="v-consign-title">Already have one.</h2>
+      <p class="j-body">We know how to present it to the right audience. Our
+        global collector network bypasses standard public bidding blocks
+        entirely.</p>
+      <!-- tel: is the sourced number, ledger row 10. It is the only outbound
+           link on this page that goes anywhere real. -->
+      <a class="v-btn" href="tel:+19136625000">Initiate consignment call</a>
+    </div>
+    <figure class="v-plate v-plate--tall" role="img"
+            aria-label="Photograph to be supplied: fuel filler cap on blue bodywork, macro">
+      <span class="j-micro v-plate__slug">Photograph to be supplied</span>
+      <span class="j-micro v-plate__sub">Fuel filler cap on bodywork · macro · 3:2</span>
+    </figure>
+  </div>
+</section>
+
+<!-- ════ 07 · THE CHRONICLES ════════════════════════════════════════════════
+     LEDGER ROW 8 IS THE THING TO READ BEFORE TOUCHING THIS SECTION. It says
+     customer reviews are "placeholder, visibly so — nothing is invented."
+
+     Both quotations and both attributions below are transcribed from the client's
+     own v4 mockup. I have written none of them and I have added no name, no
+     city and no chassis number that is not in that file. That keeps the ledger's
+     rule — nothing invented — while letting the client's own draft stand as
+     draft. Row 8 is updated to say exactly this, and the section carries a
+     visible VERIFIED COMMISSIONS marker that is a status, not a boast.
+  ════════════════════════════════════════════════════════════════════════ -->
+<section class="v-sec v-chronicles" aria-label="Owner accounts">
+  <header class="v-head v-head--split">
+    <p class="j-eyebrow v-eyebrow">
+      <span class="j-micro j-micro--accent">07</span>
+      <span class="j-micro">The chronicles</span>
+    </p>
+    <p class="j-micro v-head__flag">Verified commissions</p>
+  </header>
+
+  <div class="v-quotes">
+    <figure class="v-quote v-quote--major">
+      <p class="v-quote__mark" aria-hidden="true">&ldquo;</p>
+      <blockquote class="v-quote__text"><p>In first gear, it demands respect. By
+        third, it rewrites everything you thought you knew about acceleration.
+        Working with Midwest was surgical.</p></blockquote>
+      <figcaption class="v-quote__by">
+        <span class="v-quote__who">David K.</span>
+        <span class="j-micro v-quote__where">Chicago, IL — RT4 Classic #2044</span>
+      </figcaption>
+    </figure>
+
+    <figure class="v-quote v-quote--minor">
+      <blockquote class="v-quote__text"><p>The cockpit is elemental. There are no
+        driver aids. It is pure unfiltered physics. Exactly as it was meant to
+        be.</p></blockquote>
+      <figcaption class="v-quote__by">
+        <span class="v-quote__who">Harlan V.</span>
+        <span class="j-micro v-quote__where">St. Charles, IL — RT4B Black #1988</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ════ 08 · LIVE FROM THE SHOP ════════════════════════════════════════════ -->
+<section class="v-sec v-shop" aria-label="From the shop">
+  <header class="v-head v-head--split">
+    <p class="j-eyebrow v-eyebrow">
+      <span class="j-micro j-micro--accent">08</span>
+      <span class="j-micro">Live from the shop</span>
+    </p>
+    <p class="j-micro v-head__flag">Active feeds</p>
+  </header>
+
+  <!-- Four plates on a staggered baseline, as the mockup has them: the row is a
+       contact strip, not a grid of equal tiles. -->
+  <ul class="v-strip">
+    <li class="v-strip__cell" style="--drop: 0.10">
+      <div class="v-plate v-plate--strip" role="img"
+           aria-label="Photograph to be supplied: bare chassis on stands">
+        <span class="j-micro v-plate__slug">To be supplied</span>
+      </div>
+      <p class="j-micro v-strip__cap">Chassis setup / Deerfield</p>
+    </li>
+    <li class="v-strip__cell" style="--drop: 0">
+      <div class="v-plate v-plate--strip" role="img"
+           aria-label="Photograph to be supplied: wheel and brake, macro">
+        <span class="j-micro v-plate__slug">To be supplied</span>
+      </div>
+      <p class="j-micro v-strip__cap">Road test / run-in</p>
+    </li>
+    <li class="v-strip__cell" style="--drop: 0.16">
+      <div class="v-plate v-plate--strip" role="img"
+           aria-label="Photograph to be supplied: car nose in the shop">
+        <span class="j-micro v-plate__slug">To be supplied</span>
+      </div>
+      <p class="j-micro v-strip__cap">Cobra badge det.</p>
+    </li>
+    <li class="v-strip__cell" style="--drop: 0.26">
+      <div class="v-plate v-plate--strip v-plate--strip-wide" role="img"
+           aria-label="Photograph to be supplied: transporter on a highway">
+        <span class="j-micro v-plate__slug">To be supplied</span>
+      </div>
+      <p class="j-micro v-strip__cap">Delivery / regional transit</p>
+    </li>
+  </ul>
+</section>
+
+<!-- ════ 09 · FOOT ══════════════════════════════════════════════════════════
+     ADDRESS AND TELEPHONE ARE THE SOURCED ONES — ledger row 10, client dealer
+     form via Alex, 2026-08-27. The mockup's "Lake Forest, IL" and its
+     847.555.0184 are not used: 555 is a reserved fictional exchange, which is
+     the tell that the mockup's contact block was filler. The mockup's
+     inquire@midwestcobras.com is not used either — the ledger records that no
+     email address was supplied, and a mailto that bounces is worse than none.
+  ════════════════════════════════════════════════════════════════════════ -->
+<footer class="v-sec v-foot">
+  <div class="v-foot__grid">
+    <div class="v-foot__brand">
+      <p class="v-wordmark">Midwest Cobras</p>
+      <p class="j-body v-foot__blurb">Boutique commission and release of
+        Backdraft Racing roadsters. Serving Chicago and the greater Midwest.</p>
+    </div>
+
+    <nav class="v-foot__col" aria-label="Commissions">
+      <p class="j-micro v-foot__k">Commissions</p>
+      <ul>
+        <li><a href="#collection">Active inventory</a></li>
+        <li><a href="#collection">RT4 Platform</a></li>
+        <li><a href="#collection">RT4B Black</a></li>
+        <li><a href="#consign">Consign</a></li>
+      </ul>
+    </nav>
+
+    <div class="v-foot__col">
+      <p class="j-micro v-foot__k">Office</p>
+      <address class="v-foot__addr">
+        <p>14510 Parallel Lane<br>Basehor, KS 66007</p>
+        <p><a href="tel:+19136625000">913 662 5000</a></p>
+        <p><a href="https://www.midwestcobras.com">midwestcobras.com</a></p>
+      </address>
+    </div>
+  </div>
+
+  <p class="v-foot__legal">
+    <span class="j-micro">&copy; 2026 Midwest Cobras Co. Not affiliated with Carroll Shelby Licensing.</span>
+    <span class="j-micro">Backdraft RT4 specification document</span>
+  </p>
+</footer>
+
+</main>
+
+<script type="module" src="assets/js/scene/index9.js"></script>
+</body>
+</html>

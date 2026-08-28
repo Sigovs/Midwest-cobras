@@ -396,13 +396,42 @@ html { scroll-padding-block-start: 9rem; }
    A box colour here would put a rectangle around a car that was masked
    precisely so it would not have one. */
 .build__stage { position: relative; aspect-ratio: 16 / 9; background: none; }
+/* THE CROSSFADE, and why it is not one duration on one property.
+
+   Both frames animate at once, so a plain symmetric fade dips: halfway through,
+   the outgoing car is at 0.5 and the incoming car is at 0.5, and for a moment
+   the stage shows two half-cars and no whole one. The fix is to make the two
+   halves different — the outgoing one leaves quickly and early, the incoming one
+   arrives over the longer haul and slightly behind it. The dip closes because
+   the sum stays near one the whole way across.
+
+   `dur-4` is the entrance of a mass, which is what this is: a car, not a hover
+   state. ease-inout rather than ease-out, because a crossfade has no arrival to
+   land — it is a dissolve, and a curve that decelerates onto a stop makes the
+   last twenty percent of it visible as a stall.
+
+   The scale is a sixth of a percent per side and it exists to give the swap a
+   direction. Without it a dissolve between two cars of the same size in the same
+   place reads as a glitch in the image rather than a change of subject. */
 .build__shot {
   position: absolute; inset: 0;
   inline-size: 100%; block-size: 100%; object-fit: contain;
   opacity: 0;
-  transition: opacity var(--dur-3) var(--ease-out);
+  transform: scale(1.006);
+  /* leaving: quick, and no delay */
+  transition:
+    opacity var(--dur-3) var(--ease-inout),
+    transform var(--dur-3) var(--ease-inout);
+  will-change: opacity;
 }
-.build__shot[data-build='1'] { opacity: 1; }
+/* arriving: the long haul, a beat behind the one going out */
+.build:has(.step:hover) .build__shot,
+.build:has(.step:focus-within) .build__shot {
+  transition:
+    opacity var(--dur-4) var(--ease-inout) 60ms,
+    transform var(--dur-4) var(--ease-inout) 60ms;
+}
+.build__shot[data-build='1'] { opacity: 1; transform: scale(1); }
 
 /* THE SWAP IS CSS. The section asks which step is under the pointer and lights
    the matching frame; no script, no state kept in two places, and it works with
@@ -424,7 +453,7 @@ html { scroll-padding-block-start: 9rem; }
 .build:has([data-build-step='4']:hover) .build__shot[data-build='4'],
 .build:has([data-build-step='4']:focus-within) .build__shot[data-build='4'],
 .build:has([data-build-step='5']:hover) .build__shot[data-build='5'],
-.build:has([data-build-step='5']:focus-within) .build__shot[data-build='5'] { opacity: 1; }
+.build:has([data-build-step='5']:focus-within) .build__shot[data-build='5'] { opacity: 1; transform: scale(1); }
 
 .steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--col-gap); }
 
@@ -599,7 +628,7 @@ html { scroll-padding-block-start: 9rem; }
 
 /* ── footer ────────────────────────────────────────────────────────────── */
 .site-foot {
-  padding: 0 var(--gutter) var(--pad);
+  padding: var(--pad) var(--gutter) 0;
   background: var(--graphite-900);
   border-block-start: var(--hairline) solid var(--rule);
 }
@@ -607,13 +636,17 @@ html { scroll-padding-block-start: 9rem; }
 
 /* Edge to edge, and it undoes the two things the footer does to its children:
    the page-width cap and the gutter. The negative margin is the gutter itself,
-   so the band reaches the window whatever the gutter clamps to. */
+   so the band reaches the window whatever the gutter clamps to.
+
+   It is the last element and it has no bottom margin, so it sits flush on the
+   end of the document. A strip of ground under a full-bleed image is the
+   difference between a page that finishes and a page that stops. */
 .site-foot__band {
   display: block;
   max-inline-size: none;
   inline-size: calc(100% + 2 * var(--gutter));
   margin-inline: calc(-1 * var(--gutter));
-  margin-block-end: var(--pad);
+  margin-block-start: var(--pad);
   block-size: auto; aspect-ratio: 2 / 1; object-fit: cover;
 }
 .site-foot__grid {

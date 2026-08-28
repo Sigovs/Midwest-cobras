@@ -157,8 +157,29 @@ the same photography and is a plain server, so that is the source.
 
 | File | Source | Car |
 |---|---|---|
-| `car-rt4-front.jpg`, `car-rt4-side.jpg` | `/imagetag/2014/…` | Backdraft RT4, indigo blue, white stripes, stock ZT1017 |
-| `car-rt4b-front.jpg`, `car-rt4b-side.jpg` | `/imagetag/2016/…` | Backdraft RT4B, red, black stripes, stock ZT1166 |
+| `car-rt4-side.jpg` | `/imagetag/2014/…` | Backdraft RT4, indigo blue, white stripes, stock ZT1017 |
+| `car-rt4b-side.jpg` | `/imagetag/2016/…` | Backdraft RT4B, red, black stripes, stock ZT1166 |
+
+**The two inventory cards no longer use these.** Replaced 2026-08-28 on Alex's
+instruction — *"replace inventory cars. images in ref"* — with the two files he
+put in `donot git/refference/`:
+
+| File on the page | Source file | Note |
+|---|---|---|
+| `car-rt4-front.jpg` | `RT4_HP_top.jpg` | Backdraft's own RT4 homepage banner |
+| `car-rt4b-front.jpg` | `RT4B_HP_top-1.jpg` | Backdraft's own RT4B homepage banner |
+
+Both source files carry a branding band across the lower third — a large mark and
+a line of small type under the car. **The band is cropped off**: each image keeps
+the top 70% of its height, then a centred 16:9 window from that, scaled to
+1728×972. Verified by measuring detail energy row by row in the output; the
+bottom of each frame is quiet, so no part of the band survived.
+
+**Their alt text is a placeholder and needs a person.** It reads *"RT4 Classic
+Edition"* and *"RT4B Black Edition"* and nothing else, because this session
+cannot open images and I will not describe a paint colour or a camera angle I
+have not seen. The colour was sampled numerically and came back inconclusive for
+both. Anyone who can look at the two files should write two real sentences.
 | `shot-01.jpg` … `shot-05.jpg` | the same two galleries | crops of the above |
 
 **These are photographs of cars in Jonathan Motorcars' inventory, not Midwest

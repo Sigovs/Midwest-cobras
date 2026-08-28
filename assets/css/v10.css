@@ -239,15 +239,53 @@ html { scroll-padding-block-start: 9rem; }
    pill like every other grounded state. */
 .site-head[data-stuck='false'] .site-nav a:hover { background: var(--oxblood); }
 
+/* THE NUMBER IS FILLED AND EVERY OTHER ITEM IS NOT, which is the point of it:
+   seven items go somewhere on this page and one leaves it for a telephone, and
+   the pill says which is which before the word is read.
+
+   Hover EMPTIES it to an outline instead of deepening it, because there is
+   nowhere brighter for a bone pill to go — the fill is the resting state, so
+   the only move left is to take it away. The border is on the resting state
+   too, in the fill's own colour, or the box would grow 2px the moment a
+   pointer touched it and the whole row would step sideways.
+
+   Written after the two rules above and with a heavier selector, because both
+   set a background on the nav link's hover and one of them is oxblood — a red
+   pill where a white one is meant to empty out. */
+.site-head .site-nav__tel a {
+  background: var(--bone-050);
+  color: var(--ink-on-light);
+  border: var(--hairline) solid var(--bone-050);
+  transition: background var(--dur-2) var(--ease-out),
+              color var(--dur-2) var(--ease-out);
+}
+.site-head .site-nav__tel a:hover,
+.site-head[data-stuck='false'] .site-nav__tel a:hover {
+  background: transparent;
+  color: var(--bone-050);
+}
+
 /* ── 01 hero ───────────────────────────────────────────────────────────── */
+/* STICKY, SO THE PAGE SLIDES OVER IT RATHER THAN PUSHING IT OFF. The hero
+   holds at the top of the window and 02 rises across it — which only works
+   because every section below carries an opaque ground of its own. A section
+   that forgot its background would show the video through itself.
+
+   The stack is the other half: sticky alone still paints in source order, so
+   the hero would sit ON TOP of the thing scrolling up to cover it. z-index 0
+   here and 1 on the sections is what makes it the floor.
+
+   `overflow: clip` stays. It clips the hero's own children and does not create
+   a scroll container, so unlike `hidden` it does not kill the stickiness. */
 .hero {
-  position: relative;
+  position: sticky; inset-block-start: 0; z-index: 0;
   display: grid; align-content: space-between; row-gap: var(--sp-7);
   min-block-size: 100svh;
   padding: clamp(11rem, 19vh, 15rem) var(--edge) var(--pad);
   isolation: isolate;
   overflow: clip;
 }
+.sect, .site-foot { position: relative; z-index: 1; }
 /* The video fills the frame at any shape. graphite-950 underneath, because a
    16:9 file in a tall window shows its own background for the first frame
    otherwise, and white is the one colour this page never starts on. */
@@ -728,9 +766,15 @@ html { scroll-padding-block-start: 9rem; }
 /* ── footer ────────────────────────────────────────────────────────────── */
 .site-foot {
   position: relative; isolation: isolate; overflow: clip;
+  /* The footer is as tall as its photograph is, so the picture is seen whole
+     rather than cropped to whatever height the columns happen to need.
+     footer.jpg is 1920 x 960 — exactly 2:1 — so its height is half the window
+     width, less the scrollbar, which is what --sbw is measured for. min- and
+     not a fixed size: if the content ever outgrows the picture it wins, and
+     the image goes back to filling the taller box. */
+  min-block-size: calc((100vw - var(--sbw, 0px)) / 2);
   padding: var(--pad) var(--gutter);
   background: var(--graphite-950);
-  border-block-start: var(--hairline) solid var(--rule);
 }
 .site-foot > * { position: relative; z-index: 2; max-inline-size: var(--page); margin-inline: auto; }
 
@@ -757,13 +801,17 @@ html { scroll-padding-block-start: 9rem; }
    is texture, not a heading — it must never compete with the legal line
    sitting across it. */
 .site-foot__mark {
-  position: absolute; inset-inline: 0; inset-block-end: -0.12em; z-index: 1;
+  position: absolute; inset-inline: 0; inset-block-end: var(--pad); z-index: 1;
   max-inline-size: none; margin: 0;
   font-family: var(--face); font-weight: 700;
-  font-size: clamp(5rem, 27vw, 30rem);
-  line-height: 0.78; letter-spacing: -0.03em;
+  /* The width comes from the body size alone, no tracking. Six caps advance
+     about 4.3em in this face, so 28vw puts the word near 120% of the window and
+     the C and the S run off both edges — which is the point, and .site-foot
+     clips it. */
+  font-size: 28vw;
+  line-height: 0.72; letter-spacing: -0.02em;
   text-align: center; text-transform: uppercase; white-space: nowrap;
-  color: rgb(var(--bone-100-rgb) / 0.06);
+  color: rgb(var(--bone-100-rgb) / 0.12);
   pointer-events: none; user-select: none;
 }
 

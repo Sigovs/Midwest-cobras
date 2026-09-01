@@ -578,6 +578,9 @@ html { scroll-padding-block-start: 9rem; }
   gap: var(--sp-8); align-items: start; margin-block-end: var(--sp-8);
 }
 .build__copy { display: grid; gap: var(--sp-6); align-content: start; }
+/* The grid gap already spaces it; .btn-row's own top margin would double it.
+   Same reason .hero__foot zeroes it. */
+.build__copy .btn-row { margin: 0; justify-self: start; }
 
 /* ── the stage ──────────────────────────────────────────────────────────────
    Five frames in one box, one visible. The box holds its own height from the

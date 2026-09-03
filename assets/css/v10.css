@@ -264,6 +264,26 @@ html { scroll-padding-block-start: 9rem; }
       var(--wordmark-ink, var(--oxblood)) 58%);
     -webkit-mask: url('../img/logo.svg') no-repeat center / contain;
     mask: url('../img/logo.svg') no-repeat center / contain;
+
+    /* A SMALL GLOW, AND IT FOLLOWS THE LETTERS. drop-shadow reads the alpha the
+       mask produced, so the halo is the shape of the script — a radial layer
+       behind it would be a blob with an edge, and an edged tint over a
+       deliberately transparent ground is the thing that draws a line nobody
+       asked for.
+
+       Two passes: a tight one that gives the strokes a lip, and a wide faint one
+       that lifts the mark off the striped wall behind it. In the lifted red
+       rather than in white, so it reads as the mark catching light instead of
+       as a bloom sitting on top of it.
+
+       This is a dialect preference set aside on Alex's instruction — the house
+       position is against decorative glow — and it is set aside for a mark whose
+       colour the client chose and which measures 1.69:1 on its own ground. The
+       invariant it may not break is the hard edge, and drop-shadow cannot make
+       one: there is no box to have an edge. */
+    filter:
+      drop-shadow(0 0 4px rgb(var(--oxblood-lift-rgb) / 0.55))
+      drop-shadow(0 0 12px rgb(var(--oxblood-lift-rgb) / 0.28));
   }
   .wordmark span {
     position: absolute; inline-size: 1px; block-size: 1px;

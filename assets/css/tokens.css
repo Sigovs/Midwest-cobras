@@ -62,6 +62,7 @@
      anti-patterns is about buttons, where a label's contrast varies across its
      own background; nothing sits on top of this. */
   --oxblood-lift: #b00f19;
+  --oxblood-lift-rgb: 176 15 25;
 
   /* Semantic aliases — components reference these, never the ramps above */
   --ground:            var(--graphite-900);

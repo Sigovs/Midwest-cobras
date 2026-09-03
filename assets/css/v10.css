@@ -178,6 +178,37 @@ html { scroll-padding-block-start: 9rem; }
 }
 .site-head[data-stuck='true'] { padding-block: var(--sp-4); }
 
+/* A GROUND UNDER THE MARK, AND ONLY WHERE IT HAS NONE. The burgundy logo is the
+   client's colour and it is dark; over the hero the bar is transparent by
+   design, so the mark was landing straight on a photograph of a dark shop wall
+   and losing its edges.
+
+   Fixed at the background layer, which is the only place this is allowed to be
+   fixed — weighting the mark or outlining it would be solving a ground problem
+   on the type.
+
+   Three things keep it from becoming a box. It fades to fully transparent well
+   inside its own edges, so there is no rim to catch; it is taller than the bar
+   so the falloff finishes below the bar's own line rather than against it; and
+   it is gone the moment the bar takes its solid ground back, where it would be a
+   dark smudge on an already dark surface. */
+.site-head::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: min(30rem, 42vw);
+  block-size: 210%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(115% 92% at 0% 0%,
+    rgb(var(--graphite-950-rgb) / 0.58) 0%,
+    rgb(var(--graphite-950-rgb) / 0.30) 40%,
+    rgb(var(--graphite-950-rgb) / 0) 74%);
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+.site-head[data-stuck='true']::before { opacity: 0; }
+
 /* The client's own logo. Masked rather than dropped in as an image, so it
    inherits colour and reads on the dark ground and the light one from a single
    file. Its own paths are #AAAAAA; a mask only reads alpha, so that is ignored.

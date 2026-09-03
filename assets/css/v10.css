@@ -249,7 +249,19 @@ html { scroll-padding-block-start: 9rem; }
        here: a mask sized `contain` renders identically at any intrinsic size,
        so redrawing the paths would cost precision and buy nothing. */
     aspect-ratio: 1496 / 1031;
-    background: currentColor;
+    /* A GRADIENT INSIDE THE MARK, not behind it — light falling across a badge
+       rather than a flat sticker, and the reason is contrast: the base colour
+       is 1.69:1 on the bar and the lifted stop is 2.53:1, so the letterforms
+       gain an edge without the mark stopping being burgundy.
+
+       148deg follows the script's own rise, so the light reads as light rather
+       than as a UI gradient laid over it. The client's exact colour is the
+       bottom stop and holds most of the mass; the lift is the top corner only.
+
+       currentColor still drives the no-mask fallback, which is the <span>. */
+    background: linear-gradient(148deg,
+      var(--wordmark-lift, var(--oxblood-lift)) 0%,
+      var(--wordmark-ink, var(--oxblood)) 58%);
     -webkit-mask: url('../img/logo.svg') no-repeat center / contain;
     mask: url('../img/logo.svg') no-repeat center / contain;
   }

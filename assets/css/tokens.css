@@ -51,6 +51,18 @@
   --oxblood:     #820007;
   --oxblood-rgb: 130 0 7;
 
+  /* The same hue, lifted. It exists for one job: the wordmark is the client's
+     burgundy on a dark ground, where #820007 measures 1.69:1 on the header bar,
+     and a two-stop fill inside the mark pulls it up without changing what
+     colour it is. Measured on the bar: #820007 1.69:1, this 2.53:1, #C4161F
+     3.01:1 and already reading crimson, #FF000E 4.54:1 and fire-engine red.
+     2.53 is the most lift available that is still burgundy.
+
+     It is a fill for a MARK, not for a control. The gradient ban in
+     anti-patterns is about buttons, where a label's contrast varies across its
+     own background; nothing sits on top of this. */
+  --oxblood-lift: #b00f19;
+
   /* Semantic aliases — components reference these, never the ramps above */
   --ground:            var(--graphite-900);
   --ground-deep:       var(--graphite-950);

@@ -182,23 +182,30 @@ html { scroll-padding-block-start: 9rem; }
    inherits colour and reads on the dark ground and the light one from a single
    file. Its own paths are #AAAAAA; a mask only reads alpha, so that is ignored.
    If mask is unsupported the span shows instead — hence @supports. */
-/* THE MARK'S COLOUR IS ONE TOKEN, and the client asked about it on 2026-09-03:
-   could the logo be their burgundy rather than silver.
+/* THE MARK IS THE CLIENT'S BURGUNDY. Asked for on 2026-09-03, measured, argued
+   against, and taken anyway on Alex's instruction the same day — recorded here
+   because a colour decision that reverses a measurement is exactly the one that
+   gets silently undone by whoever reads this file next.
 
-   Measured before answering. #820007 on the header bar is 1.69:1 — the mark
-   becomes a dark smudge on a dark bar. Lifting their hue until it reads takes it
-   to #FF000E at 4.5:1, which is a fire-engine red and not burgundy any more:
-   burgundy is DEFINED by being dark, and so is this bar, and both cannot be true
-   at once. On bone it measures 8.55:1 and looks like the brand.
+   What the measurement said, and it has not changed: #820007 on the header bar
+   is 1.69:1. Their hue cannot be lifted to a readable 4.5:1 and stay burgundy —
+   it arrives at #FF000E, a fire-engine red — because burgundy is defined by
+   being dark and so is the bar. On bone the same colour is 8.55:1.
 
-   So the mark follows the law this project already runs on — oxblood is text on
-   light and fill on dark — rather than taking a colour that would hide it. The
-   token is here so the answer is one line the day a light-ground placement
-   exists. Today both placements, header and footer, are dark, so this renders
-   exactly as before and changes nothing you can see. */
+   Two things make this cost less than the number alone suggests. A logo is
+   exempt from WCAG contrast: it is a mark, not text, and the accessible name is
+   carried by the <span> inside it, which screen readers read and which no colour
+   can dim. And the header is glass over the hero — the mark sits on the car for
+   most of the first screen rather than on the bar.
+
+   It is still a dark red mark on a dark bar and it is quieter than the silver
+   was. That is the trade, it was made on purpose, and docs/evidence/
+   logo-burgundy-2026-09-03.jpg is the four-way comparison it was made against.
+
+   One line to reverse: --wordmark-ink back to var(--bone-050). */
 .wordmark {
   display: block;
-  color: var(--wordmark-ink, var(--bone-050));
+  color: var(--wordmark-ink, var(--oxblood));
   text-decoration: none;
   font-family: var(--script);
   font-size: clamp(1.9rem, 2.2vw, 2.6rem);
@@ -220,7 +227,6 @@ html { scroll-padding-block-start: 9rem; }
     margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
   }
 }
-[data-ground='light'] .wordmark { --wordmark-ink: var(--oxblood); }
 .wordmark:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
 
 .site-nav ul { display: flex; flex-wrap: wrap; gap: var(--sp-2); }

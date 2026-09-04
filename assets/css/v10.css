@@ -245,41 +245,40 @@ html { scroll-padding-block-start: 9rem; }
    in-between frames to stop on, every one of which would have to be a designed
    frame (MJ4); two states have two, and both are drawn here.
 
-   AND THE CAR COMES OFF IN THE COMPACT BAR, which is a measurement rather than
-   a preference. Measured off the files: in logo1 the car is 549 x 246 units in
-   THIRTY-SEVEN paths, and at the stuck height it renders about 48 x 21px —
-   roughly twenty-seven square pixels per path. That is not a silhouette, it is
-   noise, and noise in a masthead is worse than a wordmark on its own. In logo2
-   the car is a single path that reaches past the script to the right edge, so
-   dropping it also takes 27% off the mark's width, which is exactly what a
-   compact bar wants.
+   THE CAR STAYS AT EVERY SIZE. A reduced lockup was built here and then taken
+   back out on Alex's instruction, 2026-09-04: the compact bar dropped the car
+   and showed the script alone. It is recorded rather than quietly deleted,
+   because the measurement that justified it is still true and someone will
+   propose it again.
 
-   Applied to BOTH candidates even though the evidence is stronger against
-   logo1's: one rule for the two of them, or the review compares a mark that got
-   a bespoke reduced lockup against one that did not.
+   What it was: in logo1 the car is 549 x 246 units across THIRTY-SEVEN paths,
+   and at the compact height it renders about 61 x 28px — some forty-six square
+   pixels per path. In logo2 it is a single path reaching past the script to the
+   right edge, so removing it also took 27% off the mark's width.
 
-   The reduced files are the client's own artwork with the car paths removed and
-   the viewBox pulled in to the script — nothing has been redrawn here. See
-   logo1-wordmark.svg and logo2-wordmark.svg.
+   Note that the case had already weakened on its own. At the first compact
+   height the car rendered about 48 x 21px, roughly twenty-seven square pixels
+   per path, which is noise; the two size increases since then moved it close to
+   the size at which it starts to resolve. The instruction and the arithmetic
+   happen to agree.
 
-   THE COST, NAMED: the lockups swap rather than tween. The two drawings differ
-   in aspect as well as in content, so a tween would be a morph, which is a
-   larger claim than a masthead should make. The cut lands on the same frame as
-   the bar taking its ground, so it reads as one state change rather than as a
-   glitch — but it is a cut, and it was chosen.
+   The two generated files are gone with it — logo1-wordmark.svg and
+   logo2-wordmark.svg, the client's own artwork with the car paths dropped and
+   the viewBox pulled in to the script. They are in git at 915cdba if the idea
+   returns, and an unused asset does not sit in this tree waiting for that.
 
-   Heights carry the increase Alex asked for on 2026-09-03 and again on
+   Heights carry the increases Alex asked for on 2026-09-03 and twice on
    2026-09-04. */
 :root {
   /* THE MARK AT REST — the page's introduction, over a transparent bar on a
      full-bleed hero. It is allowed to be large here because nothing is
      competing with it: the nav is a row of small caps and the headline is
      four hundred pixels below. */
-  --mark-h:       clamp(4rem, 6.4vw, 6rem);
+  --mark-h:       clamp(5rem, 8vw, 7.5rem);
   /* THE MARK IN THE COMPACT BAR — a wayfinding token, not an introduction.
-     Two-thirds of the resting height, and the amplitude is deliberate: a change
-     small enough to read as drift is a decision that was not taken. */
-  --mark-h-stuck: clamp(3rem, 4.4vw, 4.2rem);
+     Roughly seventy per cent of the resting height; the amplitude is deliberate,
+     because a change small enough to read as drift is a decision not taken. */
+  --mark-h-stuck: clamp(3.8rem, 5.6vw, 5.4rem);
   --mark-h-foot:  clamp(4.8rem, 7.2vw, 7.68rem);
 }
 .wordmark { display: block; line-height: 0; text-decoration: none; }
@@ -291,22 +290,21 @@ html { scroll-padding-block-start: 9rem; }
   transition: block-size var(--dur-3) var(--ease-out);
 }
 
-/* ── WHICH OF THE FOUR IS PAINTED ──────────────────────────────────────────
-   Two axes, and every image is turned on by exactly one rule, so there is no
-   specificity fight to lose later. Everything is off above; these switch one
-   thing on.
+/* ── WHICH OF THE TWO IS PAINTED ───────────────────────────────────────────
+   One axis now: the candidate. Everything is off above and exactly one rule
+   switches one image on, so there is no specificity fight to lose later.
 
-   :not([data-stuck='true']) rather than ='false' — the attribute does not exist
-   until v10.js sets it, and it never exists at all with scripts off. Written
-   the other way the masthead would have no mark for the first frame, and no
-   mark ever for a visitor without JS. */
-:is(html[data-mark='1'], html:not([data-mark])) :is(.site-foot, .site-head:not([data-stuck='true'])) .wordmark__art--m1.wordmark__art--full,
-html[data-mark='2'] :is(.site-foot, .site-head:not([data-stuck='true'])) .wordmark__art--m2.wordmark__art--full { display: block; }
+   html:not([data-mark]) is the no-JS case — the attribute is set by the inline
+   script in <head>, and without it the page still gets a mark rather than
+   nothing. */
+:is(html[data-mark='1'], html:not([data-mark])) .wordmark__art--m1,
+html[data-mark='2'] .wordmark__art--m2 { display: block; }
 
-:is(html[data-mark='1'], html:not([data-mark])) .site-head[data-stuck='true'] .wordmark__art--m1.wordmark__art--lite,
-html[data-mark='2'] .site-head[data-stuck='true'] .wordmark__art--m2.wordmark__art--lite { display: block; }
-
+/* The size is the whole of the scroll behaviour. :not([data-stuck='true'])
+   is not needed here — the resting size is the default on .wordmark__art and
+   this only overrides it once the bar has taken its ground. */
 .site-head[data-stuck='true'] .wordmark__art { block-size: var(--mark-h-stuck); }
+
 /* The footer keeps the full lockup at the size the building is. It is not a
    compact bar and it has no wayfinding job — nothing there is being scanned. */
 .wordmark--foot .wordmark__art { block-size: var(--mark-h-foot); }

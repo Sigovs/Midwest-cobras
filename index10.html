@@ -14,7 +14,15 @@
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/v10.css">
 
-<script>document.documentElement.className = 'js';</script>
+<script>
+document.documentElement.className = 'js';
+/* REVIEW ONLY — reads ?mark= before the first paint, so the mark under review
+   is the first one drawn and nothing swaps under the client's eye a moment
+   after the page appears. Goes with the .mark-switch block when the decision
+   is made. Anything that is not "2" is mark 1, including nothing at all. */
+document.documentElement.setAttribute('data-mark',
+  new URLSearchParams(location.search).get('mark') === '2' ? '2' : '1');
+</script>
 </head>
 <body>
 
@@ -24,10 +32,27 @@
      is a full-bleed frame and a bar on top of it would crop the frame. It
      takes a ground of its own once the page has scrolled past the hero. -->
 <header class="site-head" id="site-head">
-  <!-- The real logo, assets/img/logo.svg, drawn as a CSS mask so it takes the
-       page's own colour on either ground. The words stay in the markup for a
-       screen reader and for a browser that cannot mask. -->
-  <a class="wordmark" href="#top"><span>Midwest Cobras</span></a>
+  <!-- TWO MARKS, ONE PAGE. The client is choosing between them, so both ship in
+       the markup and [data-mark] on <html> decides which one is painted. Not
+       two pages: a logo is judged by flipping between candidates while the page
+       holds still, and a reload would send the client back to the top of a
+       7 MB page with the hero video restarting under them.
+
+       Clicking the mark switches to the other one, which is what was asked for.
+       The href is a real URL rather than a hook — the inline script in <head>
+       reads ?mark= back before first paint — and assets/js/mark-switch.js
+       intercepts the click so the swap costs no reload and no scroll position.
+
+       The brand name lives on the image's alt, where it belongs; the hidden
+       span says what the LINK does, because a link named "Midwest Cobras" that
+       changes the logo is a link that lies about itself. -->
+  <a class="wordmark" href="?mark=2" data-mark-to="2">
+    <img class="wordmark__art wordmark__art--1" src="assets/img/logo1.svg"
+         alt="Midwest Cobras" width="1264" height="724">
+    <img class="wordmark__art wordmark__art--2" src="assets/img/logo2.svg"
+         alt="Midwest Cobras" width="1291" height="605">
+    <span class="wordmark__swap"> — show the other mark</span>
+  </a>
   <nav class="site-nav" aria-label="Primary">
     <ul>
       <li><a href="#inventory">Inventory</a></li>
@@ -503,7 +528,15 @@
 
   <div class="site-foot__grid">
     <div class="site-foot__brand">
-      <p class="wordmark wordmark--foot"><span>Midwest Cobras</span></p>
+      <!-- The same two candidates, reading the same attribute. alt is empty
+           here on purpose: the header mark already gives the company its name,
+           and a screen reader does not need to be told twice in one document. -->
+      <p class="wordmark wordmark--foot">
+        <img class="wordmark__art wordmark__art--1" src="assets/img/logo1.svg"
+             alt="" width="1264" height="724">
+        <img class="wordmark__art wordmark__art--2" src="assets/img/logo2.svg"
+             alt="" width="1291" height="605">
+      </p>
       <p class="site-foot__line">Backdraft Cobras built,<br>sold, serviced and moved.</p>
     </div>
 
@@ -546,6 +579,31 @@
 
 </footer>
 
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     REVIEW FURNITURE — NOT PART OF THE DESIGN, AND IT LEAVES WITH THE DECISION.
+
+     Clicking the mark switches it, but a route that can only be found by
+     clicking something nobody knows is clickable is not a route. This says out
+     loud that there are two marks and that the client is the one choosing, and
+     it is drawn plainly so it is never mistaken for a component of the site.
+
+     It is a fixed panel over the page — counted, not accidental. It is here for
+     the length of one decision.
+
+     When the client picks: delete this block, the .mark-switch rules in
+     v10.css, assets/js/mark-switch.js, the losing SVG, and collapse the two
+     <img> tags in the header and footer down to the one that won.
+     ══════════════════════════════════════════════════════════════════════ -->
+<aside class="mark-switch" data-review aria-label="Logo review">
+  <p class="mark-switch__k">Mark under review</p>
+  <div class="mark-switch__row">
+    <a href="?mark=1" data-mark-to="1" aria-current="true">Mark 1</a>
+    <a href="?mark=2" data-mark-to="2" aria-current="false">Mark 2</a>
+  </div>
+</aside>
+
+<script src="assets/js/mark-switch.js" defer></script>
 <script src="assets/js/v10.js" defer></script>
 </body>
 </html>

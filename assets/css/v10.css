@@ -209,86 +209,59 @@ html { scroll-padding-block-start: 9rem; }
 }
 .site-head[data-stuck='true']::before { opacity: 0; }
 
-/* The client's own logo. Masked rather than dropped in as an image, so it
-   inherits colour and reads on the dark ground and the light one from a single
-   file. Its own paths are #AAAAAA; a mask only reads alpha, so that is ignored.
-   If mask is unsupported the span shows instead — hence @supports. */
-/* THE MARK IS THE CLIENT'S BURGUNDY. Asked for on 2026-09-03, measured, argued
-   against, and taken anyway on Alex's instruction the same day — recorded here
-   because a colour decision that reverses a measurement is exactly the one that
-   gets silently undone by whoever reads this file next.
+/* ── THE MARK, AND THE TWO CANDIDATES ──────────────────────────────────────
+   Client review opened 2026-09-03. Two drawings are on the table and this page
+   carries both: ?mark=1 is assets/img/logo1.svg, ?mark=2 is logo2.svg, and the
+   attribute that chooses between them sits on <html>, so the header and the
+   footer cannot end up disagreeing about which logo this company has.
 
-   What the measurement said, and it has not changed: #820007 on the header bar
-   is 1.69:1. Their hue cannot be lifted to a readable 4.5:1 and stay burgundy —
-   it arrives at #FF000E, a fire-engine red — because burgundy is defined by
-   being dark and so is the bar. On bone the same colour is 8.55:1.
+   THE MASK IS GONE, AND IT HAD TO GO. What this replaces — the file used as a
+   CSS mask, painted with a token gradient and lit with a two-pass drop-shadow —
+   worked because the old logo.svg is a flat six-path silhouette with no colour
+   in it. Neither candidate is that. logo1.svg carries nine flat colours across
+   43 paths (white, four greys, a near-black, a navy) on top of the burgundy
+   gradient; a mask reads alpha and nothing else, so it would collapse all of
+   that into one burgundy blob and the drawing would simply be gone. Both
+   candidates are dropped in as real images instead.
 
-   Two things make this cost less than the number alone suggests. A logo is
-   exempt from WCAG contrast: it is a mark, not text, and the accessible name is
-   carried by the <span> inside it, which screen readers read and which no colour
-   can dim. And the header is glass over the hero — the mark sits on the car for
-   most of the first screen rather than on the bar.
+   What that costs, written down rather than discovered later: the marks no
+   longer take their colour from the page, so they cannot be re-pointed for the
+   light ground the way the masked silhouette could, and the burgundy-on-glass
+   argument recorded in the commits of 2026-09-03 does not apply to them — the
+   colour now lives in the client's own file, where the client put it. The
+   masked treatment is not commented out and not kept for later; it is in git,
+   one revert away, which is the only place a superseded decision belongs.
 
-   It is still a dark red mark on a dark bar and it is quieter than the silver
-   was. That is the trade, it was made on purpose, and docs/evidence/
-   logo-burgundy-2026-09-03.jpg is the four-way comparison it was made against.
+   SIZED BY HEIGHT, NOT BY WIDTH, and that is the whole point of the exercise.
+   The candidates are 1.75:1 and 2.13:1 against the old mark's 1.45:1. Matching
+   their widths would draw the wider one smaller, and the client would answer a
+   question about sizing while believing they answered one about the drawing.
+   Equal height is equal presence.
 
-   One line to reverse: --wordmark-ink back to var(--bone-050). */
-.wordmark {
-  display: block;
-  color: var(--wordmark-ink, var(--oxblood));
-  text-decoration: none;
-  font-family: var(--script);
-  font-size: clamp(1.9rem, 2.2vw, 2.6rem);
-  line-height: 1.05;
+   The height carries a 20% increase asked for by Alex on 2026-09-03, applied to
+   both ends of the clamp and to the footer so the ratio between the header mark
+   and the footer mark is the one that was already approved. */
+:root {
+  --mark-h:      clamp(3.48rem, 5.28vw, 5.04rem);
+  --mark-h-foot: clamp(4.8rem, 7.2vw, 7.68rem);
 }
-@supports (mask-image: url('')) or (-webkit-mask-image: url('')) {
-  .wordmark {
-    inline-size: clamp(6.5rem, 7.2vw, 8.625rem);
-    /* The vendor file's own box. It is never rescaled to match a number typed
-       here: a mask sized `contain` renders identically at any intrinsic size,
-       so redrawing the paths would cost precision and buy nothing. */
-    aspect-ratio: 1496 / 1031;
-    /* A GRADIENT INSIDE THE MARK, not behind it — light falling across a badge
-       rather than a flat sticker, and the reason is contrast: the base colour
-       is 1.69:1 on the bar and the lifted stop is 2.53:1, so the letterforms
-       gain an edge without the mark stopping being burgundy.
+.wordmark { display: block; line-height: 0; text-decoration: none; }
+/* The intrinsic ratio comes off the width/height attributes in the markup, so
+   the header does not reflow between the HTML parsing and the SVG arriving. */
+.wordmark__art { display: block; block-size: var(--mark-h); inline-size: auto; }
 
-       148deg follows the script's own rise, so the light reads as light rather
-       than as a UI gradient laid over it. The client's exact colour is the
-       bottom stop and holds most of the mass; the lift is the top corner only.
+/* One at a time, and display:none rather than opacity: the hidden candidate
+   leaves the accessibility tree as well as the picture. Two images both named
+   "Midwest Cobras" in one header is one logo too many. */
+[data-mark='2'] .wordmark__art--1,
+[data-mark='1'] .wordmark__art--2 { display: none; }
+/* No attribute at all — a browser running with JS off, which never reads the
+   ?mark= in the address — still gets one mark rather than a stack of two. */
+html:not([data-mark]) .wordmark__art--2 { display: none; }
 
-       currentColor still drives the no-mask fallback, which is the <span>. */
-    background: linear-gradient(148deg,
-      var(--wordmark-lift, var(--oxblood-lift)) 0%,
-      var(--wordmark-ink, var(--oxblood)) 58%);
-    -webkit-mask: url('../img/logo.svg') no-repeat center / contain;
-    mask: url('../img/logo.svg') no-repeat center / contain;
-
-    /* A SMALL GLOW, AND IT FOLLOWS THE LETTERS. drop-shadow reads the alpha the
-       mask produced, so the halo is the shape of the script — a radial layer
-       behind it would be a blob with an edge, and an edged tint over a
-       deliberately transparent ground is the thing that draws a line nobody
-       asked for.
-
-       Two passes: a tight one that gives the strokes a lip, and a wide faint one
-       that lifts the mark off the striped wall behind it. In the lifted red
-       rather than in white, so it reads as the mark catching light instead of
-       as a bloom sitting on top of it.
-
-       This is a dialect preference set aside on Alex's instruction — the house
-       position is against decorative glow — and it is set aside for a mark whose
-       colour the client chose and which measures 1.69:1 on its own ground. The
-       invariant it may not break is the hard edge, and drop-shadow cannot make
-       one: there is no box to have an edge. */
-    filter:
-      drop-shadow(0 0 4px rgb(var(--oxblood-lift-rgb) / 0.55))
-      drop-shadow(0 0 12px rgb(var(--oxblood-lift-rgb) / 0.28));
-  }
-  .wordmark span {
-    position: absolute; inline-size: 1px; block-size: 1px;
-    margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
-  }
+.wordmark__swap {
+  position: absolute; inline-size: 1px; block-size: 1px;
+  margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
 }
 .wordmark:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
 
@@ -1164,10 +1137,10 @@ html { scroll-padding-block-start: 9rem; }
 .site-foot__grid > :nth-child(2) { grid-column: 7 / span 2; }
 .site-foot__grid > :nth-child(3) { grid-column: 9 / span 2; }
 .site-foot__grid > :nth-child(4) { grid-column: 11 / span 2; }
-.wordmark--foot { font-size: clamp(2rem, 2.4vw, 2.8rem); }
-@supports (mask-image: url('')) or (-webkit-mask-image: url('')) {
-  .wordmark--foot { inline-size: clamp(7.5rem, 9vw, 11rem); }
-}
+/* The footer mark is the same two candidates at the size the building is, and
+   it reads the same [data-mark] as the header — one attribute, so the two can
+   never end up showing different logos to the same client. */
+.wordmark--foot .wordmark__art { block-size: var(--mark-h-foot); }
 .site-foot__line {
   font-family: var(--face); font-weight: 600;
   font-size: clamp(1.15rem, 1.5vw, 1.6rem); line-height: 1.25;
@@ -1204,7 +1177,6 @@ html { scroll-padding-block-start: 9rem; }
   :root { --h1: clamp(2.2rem, 9vw, 3.2rem); --h2: clamp(2rem, 8vw, 2.9rem); }
 
   .site-head { flex-direction: column; align-items: stretch; gap: var(--sp-4); padding: var(--sp-5) var(--gutter); }
-  .site-head .wordmark { max-inline-size: none; }
   /* A strip that scrolls sideways, like the rails — and like them its own bar
      is hidden. The default one renders as a bright white slab across the top of
      a dark masthead, which is louder than anything else on the screen. The
@@ -1290,3 +1262,77 @@ html { scroll-padding-block-start: 9rem; }
 .site-foot__who a { color: var(--text); }
 .site-foot__legal a { color: var(--text-muted); text-decoration: none; border-block-end: var(--hairline) solid transparent; }
 .site-foot__legal a:hover { border-block-end-color: var(--text-muted); }
+
+/* ── REVIEW FURNITURE — DELETE WITH THE DECISION ────────────────────────────
+   Not part of the design and not trying to be. It is the control that lets the
+   client compare the two marks in TIME rather than in space — the page holds
+   still and the logo changes, which is the only way a mark is actually judged.
+
+   It is discoverable on purpose. Clicking the logo switches it, but a route
+   that can only be found by clicking something nobody knows is clickable is
+   not a route, and a client who never finds it reviews one logo and calls it
+   a review.
+
+   Counted, not accidental: this is a persistent fixed panel over live content.
+   It sits bottom-left, in the corner this page leaves emptiest, it is small,
+   and it exists for the length of one decision. It is drawn as plainly as the
+   system allows — mono, hairline, no lift, no shadow — so that it reads as an
+   instrument laid on the page rather than as a component of the site.
+
+   Deletes as one commit with .mark-switch in index10.html,
+   assets/js/mark-switch.js and the losing SVG.
+
+   z-index 60: above the header at 50, below the skip link at 100, which
+   outranks everything because it is the first thing a keyboard reaches. */
+.mark-switch {
+  position: fixed; z-index: 60;
+  inset-block-end: var(--sp-4); inset-inline-start: var(--sp-4);
+  /* ONE ROW, NOT A STACK, and the reason is where it lands. Built as a stacked
+     panel it stood 160px tall and sat straight across the hero's lead line —
+     review furniture that makes the page unreadable is not reviewing the page.
+     Laid out as a single row it clears the last line of the lead and keeps to
+     the strip of floor under it. */
+  display: flex; align-items: center; gap: var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  /* Solid, not a wash. An overlay that crosses live content and lets it show
+     through is the failure the anti-patterns list names — it produces text on
+     text. This one is opaque and it is small. */
+  background: var(--graphite-950);
+  border: var(--hairline) solid var(--graphite-700);
+  border-radius: var(--radius);
+}
+.mark-switch__k {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text-muted);
+}
+.mark-switch__row { display: flex; gap: var(--sp-2); }
+.mark-switch a {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text); text-decoration: none;
+  padding: var(--sp-2) var(--sp-4);
+  border: var(--hairline) solid var(--graphite-600);
+  border-radius: var(--radius-control);
+  transition: background-color var(--dur-2) var(--ease-out),
+              border-color var(--dur-2) var(--ease-out),
+              color var(--dur-2) var(--ease-out);
+}
+.mark-switch a:hover { border-color: var(--bone-300); }
+/* Oxblood as a FILL with a --bone-050 label, which is the documented way it is
+   allowed to appear on the dark ground — 10.76:1. It is never the text colour
+   here; on graphite that measures 2.18:1 and is a fail. */
+.mark-switch a[aria-current='true'] {
+  background-color: var(--oxblood); border-color: var(--oxblood); color: var(--bone-050);
+}
+.mark-switch a:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+
+/* The review panel is not a fact about the company. */
+@media print { .mark-switch { display: none; } }
+
+/* On a narrow screen the row ran nearly the full width and landed on the
+   inventory card's own button. The two buttons say "Mark 1" and "Mark 2" and
+   that is already the whole instruction, so the label is what goes. */
+@media (max-width: 61.99rem) {
+  .mark-switch__k { display: none; }
+}

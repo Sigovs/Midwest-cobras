@@ -1,7 +1,7 @@
 /* ============================================================================
    alt.css — the second direction, loaded ONLY by index2.html.
    ----------------------------------------------------------------------------
-   index.html is the sterile master and its stylesheet order is a contract, so
+   index1.html is the sterile master and its stylesheet order is a contract, so
    this file never edits system.css or main.css. It sits after them and does one
    thing: re-composes the three blocks where the two directions actually differ.
 

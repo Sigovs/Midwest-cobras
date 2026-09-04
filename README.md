@@ -19,7 +19,7 @@ Then open `http://localhost:8000`.
 ├── CLAUDE.md                  the rules a change has to keep
 ├── README.md                  this file
 ├── DS.html                    the design system — the contract
-├── index.html                 the sterile master; every page is a copy of it
+├── index1.html                the sterile master; every page is a copy of it
 │
 ├── inventory.html             for sale now — 2–4 cars, shown large
 ├── build.html                 CONFIGURE. the configurator, and the reason
@@ -78,7 +78,7 @@ restore it — a diff cannot give back the reasoning for a section.
 
 ## Adding a page
 
-1. Copy `index.html`. Keep the header, the footer and the stylesheet order
+1. Copy `index1.html`. Keep the header, the footer and the stylesheet order
    verbatim; replace the blocks inside `<main>`.
 2. Set `[data-ground]` on each section — dark for scene and marque surfaces,
    `light` for anything the visitor has to read a list of facts on.
@@ -95,7 +95,7 @@ restore it — a diff cannot give back the reasoning for a section.
 The chain lives in the design-DNA repo, not here:
 
 ```bash
-npm run gates -- "/path/to/Midwest Cobras, LLC" --page index.html
+npm run gates -- "/path/to/Midwest Cobras, LLC" --page index1.html
 npm run gate5 -- "/path/to/Midwest Cobras, LLC"
 ```
 

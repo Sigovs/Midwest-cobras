@@ -116,7 +116,7 @@ export function mountChoreography({ scene, mount, still, scope, reveal, isNarrow
   /* The hero pose may be declared on the mount, exactly the way a note declares
      its own. A second direction, on a second model, needs a different zero and
      a different frame; that is a property of the page, not of this module. With
-     no attributes the exported HERO_POSE stands, so index.html is unchanged. */
+     no attributes the exported HERO_POSE stands, so index1.html is unchanged. */
   const hero = mount.dataset.rot ? readPose(mount, isNarrow) : HERO_POSE;
   const ARRIVAL_POSE = arrivalFrom(hero);
 

@@ -82,7 +82,7 @@ same rhythm, same components. It is a split by **role**, never by section.
   a mass *is*. A selector naming `#hero-inventory` animates nothing on page two
   and raises no error while doing it. The page-load arrival is the one legitimate
   by-name exception.
-- **`index.html` is the sterile master.** New pages are copies of it, loading the
+- **`index1.html` is the sterile master.** New pages are copies of it, loading the
   same stylesheets in the same order; the `<main>` blocks are what gets replaced.
 - **`donot git_from client/` is the client hand-off folder and stays out of git.**
   284 MB of camera masters, a 20 MB OBJ, a 16 MB SketchUp file. Optimised

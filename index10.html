@@ -32,25 +32,32 @@ document.documentElement.setAttribute('data-mark',
      is a full-bleed frame and a bar on top of it would crop the frame. It
      takes a ground of its own once the page has scrolled past the hero. -->
 <header class="site-head" id="site-head">
-  <!-- TWO MARKS, ONE PAGE. The client is choosing between them, so both ship in
-       the markup and [data-mark] on <html> decides which one is painted. Not
-       two pages: a logo is judged by flipping between candidates while the page
-       holds still, and a reload would send the client back to the top of a
-       7 MB page with the hero video restarting under them.
+  <!-- TWO MARKS, TWO LOCKUPS, ONE PAGE.
 
-       Clicking the mark switches to the other one, which is what was asked for.
-       The href is a real URL rather than a hook — the inline script in <head>
-       reads ?mark= back before first paint — and assets/js/mark-switch.js
-       intercepts the click so the swap costs no reload and no scroll position.
+       The mark axis: the client is choosing between two logos, so both ship and
+       [data-mark] on <html> decides which is painted. Not two pages — a mark is
+       judged by flipping between candidates while the page holds still.
 
-       The brand name lives on the image's alt, where it belongs; the hidden
-       span says what the LINK does, because a link named "Midwest Cobras" that
-       changes the logo is a link that lies about itself. -->
+       The lockup axis: full while the bar is transparent over the hero, wordmark
+       only once the bar has taken its ground. Both files are the client's own
+       artwork with the car paths removed — nothing has been redrawn.
+
+       Four images, and all four are fetched at parse time precisely because
+       three of them are display:none — so the swap on scroll has nothing left
+       to load and cannot flash.
+
+       Clicking the mark switches candidate, which is what was asked for. The
+       brand name lives on alt; the hidden span says what the LINK does, because
+       a link named "Midwest Cobras" that changes the logo lies about itself. -->
   <a class="wordmark" href="?mark=2" data-mark-to="2">
-    <img class="wordmark__art wordmark__art--1" src="assets/img/logo1.svg"
+    <img class="wordmark__art wordmark__art--m1 wordmark__art--full" src="assets/img/logo1.svg"
          alt="Midwest Cobras" width="1264" height="724">
-    <img class="wordmark__art wordmark__art--2" src="assets/img/logo2.svg"
+    <img class="wordmark__art wordmark__art--m1 wordmark__art--lite" src="assets/img/logo1-wordmark.svg"
+         alt="Midwest Cobras" width="1197" height="724">
+    <img class="wordmark__art wordmark__art--m2 wordmark__art--full" src="assets/img/logo2.svg"
          alt="Midwest Cobras" width="1291" height="605">
+    <img class="wordmark__art wordmark__art--m2 wordmark__art--lite" src="assets/img/logo2-wordmark.svg"
+         alt="Midwest Cobras" width="937" height="605">
     <span class="wordmark__swap"> — show the other mark</span>
   </a>
   <nav class="site-nav" aria-label="Primary">
@@ -532,9 +539,9 @@ document.documentElement.setAttribute('data-mark',
            here on purpose: the header mark already gives the company its name,
            and a screen reader does not need to be told twice in one document. -->
       <p class="wordmark wordmark--foot">
-        <img class="wordmark__art wordmark__art--1" src="assets/img/logo1.svg"
+        <img class="wordmark__art wordmark__art--m1 wordmark__art--full" src="assets/img/logo1.svg"
              alt="" width="1264" height="724">
-        <img class="wordmark__art wordmark__art--2" src="assets/img/logo2.svg"
+        <img class="wordmark__art wordmark__art--m2 wordmark__art--full" src="assets/img/logo2.svg"
              alt="" width="1291" height="605">
       </p>
       <p class="site-foot__line">Backdraft Cobras built,<br>sold, serviced and moved.</p>

@@ -306,7 +306,7 @@ unverified lines may appear as ordinary copy and are listed here instead.
 | Footer | Evan Kunard, evan@midwestcobras.com | **sourced** | Written in the request as `Evan@midwestcobras.com` and linked as mailto. Shown in lower case to match kristi@ |
 | Footer | 913 238 6803 removed; 913 662 5000 is the only number | **sourced** | As asked |
 | Footer, gallery | Instagram, Facebook, YouTube, TikTok URLs | **sourced** | Taken from the hyperlinks in the PDF, not retyped. The v10 gallery pointed at `@midwestcobras`, which is not their account |
-| Who we are | All four paragraphs | **sourced — the client's own copy** | Set as written; two hyphens added (frame-off, long-lasting) |
+| Who we are | All four paragraphs | **sourced — the client's own copy** | Set as written; two hyphens added (frame-off, long-lasting). The commas around "Evan Kunard" were dropped in the first cut and restored 2026-09-10 |
 | Who we are | "40 years" numeral and "Forty years…" headline | **removed** | Superseded by the client's copy, which speaks about Evan rather than the shop's age |
 | Services | Section note | **proposal — client to decide** | The client is "still mulling over how we want it to read" |
 | Finance | Consent sentence under the application | **placeholder** | Written for the mockup. Needs proper wording before this form collects anything |
@@ -314,3 +314,9 @@ unverified lines may appear as ordinary copy and are listed here instead.
 | Hero | `hero-cover-day.jpg` | **the client's own photograph** | From the client folder |
 | Hero | `photo-workshop.jpg`, `photo-engine.jpg` | **stand-in** | Two of the four borrowed images in 0b; replaced by the client's glamour shoot |
 | Reviews | Section removed | **as asked** | The four accounts were mockup text; they do not return without real customers |
+| News | "Weather permitting" on both show cards | **sourced** | The client's words: "2 car shows that we'll be attending, weather permitting". Taken out in the first cut as if invented, and restored |
+| Build enquiry panel | Both "Build yours" buttons open a form to Evan | **as directed** | The client asked for a link to Evan's email; Alex chose a form in a side panel, 2026-09-10. The mailto stays as the no-script path |
+| Build enquiry panel | "He will be in touch to spec it out with you — by phone, by email or at the shop" | **sourced — paraphrase** | The client: "we just prefer that a customer call, email or come in to spec one out" |
+| Build enquiry panel | RT4 Classic Edition, RT4B Black Edition in the car list | **sourced** | backdraftracing.com, read 2026-08-24 — see the sourced list at the top of this file |
+| Build enquiry panel | The form sends to Evan | **design only** | Connected to nothing; sending it says so. Where the data goes is a later conversation |
+| Who we are | Evan Kunard's portrait | **supplied** | Added by Alex 2026-09-10 as SEPTEMBER CHANGES/evean photo.png, 1254 px square; shipped whole as assets/img/about-evan.jpg at 1000 px. Alt text is his name only — no title is on record |

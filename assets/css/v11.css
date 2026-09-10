@@ -20,6 +20,11 @@
   --mark11-h:       clamp(4.5rem, 5vw, 6rem);
   --mark11-h-stuck: clamp(3.2rem, 3.5vw, 4.2rem);
   --mark11-h-foot:  clamp(4.8rem, 6vw, 6.8rem);
+
+  /* The height of the 04 pair — v10's own value on .about__pair .shot, named
+     here because Evan's column is set from it: square, exactly as wide as the
+     row is tall. */
+  --pair-h: clamp(17rem, 23vw, 27.5rem);
 }
 
 /* ── the mark ─────────────────────────────────────────────────────────────── */
@@ -132,14 +137,16 @@
   line-height: 1.25; letter-spacing: -0.015em; color: var(--text);
   max-inline-size: 26ch;
 }
-/* Evan's portrait is 3:4 and the side pipe is 914 x 436. 327 is the width at
-   which a 3:4 frame is exactly 436 tall, so the two stand the same height and
-   neither is cropped. */
-.about__pair--portrait { grid-template-columns: minmax(0, 327fr) minmax(0, 914fr); }
-/* The plate shares the photographs' .shot class so it takes their height and
-   their scroll choreography — and with it their display, which would run the
-   name and the note into one clipped line. The frame's own layout wins back. */
-.about__pair--portrait .frame { display: grid; }
+/* The side pipe, then Evan. His column is the row's height, so the portrait
+   stands square and whole beside the pipe at the same height; the pipe takes
+   the rest and crops as it did in v10. It keeps the .shot class, so it rides
+   the pair's own scroll choreography with the pipe. */
+.about__pair--portrait { grid-template-columns: minmax(0, 1fr) var(--pair-h); }
+.about__pair--portrait .shot { block-size: var(--pair-h); }
+/* Cover, stated rather than inherited: square in a square box it changes
+   nothing, and the day the box and the photograph stop agreeing a face is
+   cropped instead of squashed. */
+.about__evan { object-fit: cover; object-position: 50% 40%; }
 
 /* ── 06 · news and events ────────────────────────────────────────────────── */
 .news__item .event__pin { margin: 0; }
@@ -208,7 +215,7 @@
 /* The border is ink-muted rather than the hairline token: a field's edge is a
    control boundary and has to clear 3:1 against the ground, and bone-200 on
    bone is about 1.2:1 — a field you cannot see is a field you cannot find. */
-.field input, .field select {
+.field input, .field select, .field textarea {
   inline-size: 100%; min-block-size: 2.75rem;
   padding: var(--sp-3) var(--sp-4);
   font: inherit; color: var(--text);
@@ -217,12 +224,13 @@
   border-radius: var(--radius-control);
   transition: border-color var(--dur-2) var(--ease-out);
 }
-.field input::placeholder { color: var(--ink-on-light-muted); opacity: 1; }
-.field input:hover, .field select:hover { border-color: var(--ink-on-light); }
-.field input:focus-visible, .field select:focus-visible {
+.field input::placeholder, .field textarea::placeholder { color: var(--ink-on-light-muted); opacity: 1; }
+.field input:hover, .field select:hover, .field textarea:hover { border-color: var(--ink-on-light); }
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible {
   outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--hairline);
   border-color: var(--ink-on-light);
 }
+.field textarea { min-block-size: 7.5rem; resize: vertical; line-height: var(--lh-body); }
 .field select {
   appearance: none; -webkit-appearance: none;
   padding-inline-end: var(--sp-8);
@@ -245,6 +253,163 @@
 .apply__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-5); margin: 0; }
 .apply .btn { cursor: pointer; }
 .apply__status { color: var(--text); line-height: 1.55; max-inline-size: 60ch; }
+
+/* ── the build enquiry ────────────────────────────────────────────────────
+   Both "Build yours" buttons open a short form in a panel from the right edge.
+   Alex, 2026-09-10: a contact form rather than the email link the client
+   suggested, "as a slide-in from the side — we have done this before". That
+   is the Sports Car Rescue drawer, and its behaviour carries over whole: a
+   layer over the page, a scrim, a panel entering from the edge it belongs to,
+   and three ways out — the ×, the scrim, Escape.
+
+   Built as a native <dialog> opened with showModal(): the top layer above the
+   sticky bar, the page behind it inert, Tab kept inside and focus handed back
+   to the button that opened it. The dialog is a transparent full-window box;
+   the scrim and the panel are ours, so both can be timed.
+
+   THE PANEL IS A NOTE, NOT A FORM TO FILL IN. Five questions to Evan, so it is
+   set like one: the raised bone surface, type at a fixed reading size rather
+   than the page's scaling body, fields drawn as a single rule under the answer
+   instead of a box around it, and the page's own section tag at the top. The
+   first cut boxed every field in a dark outline at twenty-one pixels and read
+   as paperwork; Alex called it clumsy, and it was.
+
+   The rule under each field is ink-muted — 4.97:1 on bone, over the 3:1 a
+   control's boundary needs, so the fields still read as places to type. On
+   focus it goes to full ink, doubles, and the field's label darkens with it.
+
+   MOTION. The one translate on this site larger than --travel; the reason is
+   beside that token. In: --dur-5 on --ease-panel, the Sports Car Rescue
+   drawer's own 720ms and curve — quick off the mark and a long soft settle,
+   so it arrives rather than lands. Out: --dur-4 on --ease-in, one step faster
+   and accelerating gently away. The form inside settles by --travel while the
+   panel is finishing, so the type is never read at speed. Under reduced
+   motion every duration is 1ms and --travel is zero: the panel is simply there. */
+.enquiry {
+  position: fixed; inset: 0;
+  inline-size: 100%; block-size: 100%;
+  max-inline-size: none; max-block-size: none;
+  margin: 0; padding: 0; border: 0;
+  background: transparent; color: var(--text);
+  overflow: hidden;
+}
+.enquiry::backdrop { background: transparent; }
+/* The page does not scroll behind the panel, and does not jump sideways when
+   its scrollbar goes. v11.js measures the scrollbar just before locking and
+   the page is padded by exactly that much — the fixed bar as well, which is
+   out of the flow and would otherwise widen under the scrim. Released only
+   once the panel has gone, so nothing moves while it leaves.
+
+   A permanently reserved gutter was tried first and failed twice: nothing can
+   paint over a reserved gutter, so a dark strip stood beside the panel, and
+   v10's own scrollbar measure read it as zero after a resize. */
+html[data-locked] { overflow: hidden; padding-inline-end: var(--lock-gap, 0); }
+html[data-locked] .site-head { inset-inline-end: var(--lock-gap, 0); }
+
+.enquiry__scrim {
+  position: absolute; inset: 0;
+  background: rgb(var(--graphite-950-rgb) / 0.6);
+  opacity: 0;
+  transition: opacity var(--dur-4) var(--ease-in);
+}
+.enquiry__panel {
+  position: absolute; inset-block: 0; inset-inline-end: 0;
+  inline-size: min(30rem, 100%);
+  overflow-y: auto; overscroll-behavior: contain;
+  display: grid; align-content: start; gap: var(--sp-6);
+  padding-block: var(--sp-4) var(--sp-7); padding-inline: var(--sp-7);
+  background: var(--surface); color: var(--text);
+  font-size: var(--fs-body); line-height: var(--lh-body);
+  transform: translateX(100%);
+  transition: transform var(--dur-4) var(--ease-in);
+}
+.enquiry[data-open] .enquiry__scrim { opacity: 1; transition: opacity var(--dur-5) var(--ease-out); }
+.enquiry[data-open] .enquiry__panel { transform: none; transition: transform var(--dur-5) var(--ease-panel); }
+
+.enquiry__top {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4);
+  margin-inline-end: calc(var(--sp-3) * -1);        /* the ×'s glyph, not its box, on the edge */
+}
+.enquiry__top .tag { margin: 0; }
+.enquiry__close {
+  display: grid; place-items: center;
+  inline-size: 2.75rem; block-size: 2.75rem;         /* 44 — the tap target */
+  padding: 0; border: 0; background: none; cursor: pointer;
+  color: var(--text-muted);
+  transition: color var(--dur-2) var(--ease-out);
+}
+.enquiry__close:hover { color: var(--text); }
+.enquiry__close:focus-visible {
+  outline: var(--focus-w) solid var(--ink-on-light); outline-offset: calc(var(--focus-offset) * -1);
+}
+
+.enquiry__content {
+  display: grid; gap: var(--sp-6);
+  opacity: 0; transform: translateY(var(--travel));
+  transition: opacity var(--dur-2) var(--ease-in), transform var(--dur-2) var(--ease-in);
+}
+.enquiry[data-open] .enquiry__content {
+  opacity: 1; transform: none;
+  transition: opacity var(--dur-4) var(--ease-out) var(--dur-2),
+              transform var(--dur-4) var(--ease-out) var(--dur-2);
+}
+.enquiry__head { display: grid; gap: var(--sp-3); }
+/* Focus lands here when the panel opens, so a reader hears what opened. It is
+   not a control, so it draws no ring. */
+.enquiry__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
+}
+.enquiry__title:focus { outline: none; }
+.enquiry__lede { margin: 0; color: var(--text-muted); max-inline-size: 38ch; }
+
+.enquiry__form { display: grid; gap: var(--sp-6); }
+.enquiry__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-5); }
+.enquiry .field { gap: var(--sp-1); }
+.enquiry .field label { transition: color var(--dur-2) var(--ease-out); }
+.enquiry .field:focus-within label { color: var(--text); }
+.enquiry .field :is(input, select, textarea) {
+  min-block-size: 2.75rem;
+  padding: var(--sp-2) 0;
+  background-color: transparent;
+  border: 0; border-block-end: var(--hairline) solid var(--ink-on-light-muted);
+  border-radius: 0;
+  transition: border-color var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+}
+.enquiry .field :is(input, select, textarea):hover { border-block-end-color: var(--ink-on-light); }
+/* One indicator, the rule itself, for the mouse and the keyboard alike — the
+   shared field's outline box would bring back exactly what this panel drops. */
+.enquiry .field :is(input, select, textarea):focus,
+.enquiry .field :is(input, select, textarea):focus-visible {
+  outline: none;
+  border-block-end-color: var(--ink-on-light);
+  box-shadow: 0 var(--hairline) 0 0 var(--ink-on-light);
+}
+.enquiry .field select {
+  padding-inline-end: var(--sp-6);
+  background-position: calc(100% - 0.6rem) 55%, calc(100% - 0.25rem) 55%;
+}
+.enquiry .field textarea { min-block-size: 5.5rem; }
+
+.enquiry__form .apply__actions { margin: 0; }
+.enquiry__form .btn { display: flex; justify-content: center; inline-size: 100%; }
+.enquiry__alt {
+  margin: 0; padding-block-start: var(--sp-5);
+  border-block-start: var(--hairline) solid var(--rule);
+  font-size: var(--fs-body-s); color: var(--text-muted);
+}
+.enquiry__alt a {
+  color: var(--text); text-decoration: none;
+  border-block-end: var(--hairline) solid currentColor;
+  transition: color var(--dur-2) var(--ease-out);
+}
+.enquiry__alt a:hover { color: var(--oxblood); }                 /* oxblood is text on light */
+.enquiry__alt a:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--focus-offset); }
+
+@media (max-width: 39.99rem) {
+  .enquiry__panel { padding-inline: var(--sp-5); }
+  .enquiry__fields { grid-template-columns: minmax(0, 1fr); }
+}
 
 /* ── footer ───────────────────────────────────────────────────────────────
    Five columns now: the mark, the shop, services, the four social accounts
@@ -276,9 +441,9 @@
   .finance__intro, .apply { grid-column: 1; position: static; }
   .apply__fields { grid-template-columns: minmax(0, 1fr); }
   .about__pair--portrait { grid-template-columns: minmax(0, 1fr); }
-  /* Alone in its row the plate no longer has to match the side pipe's height,
-     so it goes back to being the shape of the photograph it is waiting for. */
-  .about__pair--portrait .frame { aspect-ratio: 3 / 4; block-size: auto; max-inline-size: 16rem; }
+  /* Alone in its row the portrait no longer has to match the pipe's height,
+     so it is simply the square photograph it is. */
+  .about__pair--portrait .about__evan { aspect-ratio: 1; block-size: auto; max-inline-size: 20rem; }
   .hero__dots { inset-block-end: var(--sp-3); }
 
   /* v10 never collapsed the news grid, so on a phone its three items kept

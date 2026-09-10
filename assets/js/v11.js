@@ -1,9 +1,10 @@
-/* v11.js — three small jobs on top of v10.js. The page is finished without it.
+/* v11.js — four small jobs on top of v10.js. The page is finished without it.
 
    1 · the hero sequence: the video plays once, the stills dissolve through,
        and it comes back round — pausable, and stopped when nobody can see it
    2 · the Grand Opening count, to the minute, handing over to "open" by itself
-   3 · the credit application says it is a preview when it is sent
+   3 · the two forms say they are a preview when they are sent
+   4 · the build enquiry panel: in from the right, and back out the same way
 
    Under reduced motion the sequence never starts: v10.js has already parked
    the video on its last frame, and that still is the hero. */
@@ -190,25 +191,101 @@
     tick();
   }
 
-  /* ── 3 · the application ───────────────────────────────────────────────
-     This build is for design approval and the form is not connected to
-     anything, so sending it says exactly that instead of pretending. */
-  function apply() {
-    var form = document.querySelector('[data-apply]');
-    if (!form) return;
-    var status = form.querySelector('[data-apply-status]');
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (!status) return;
-      status.textContent = 'Thank you. This is a design preview, so nothing was sent — on the live site this application goes straight to Evan.';
-      status.hidden = false;
+  /* ── 3 · the forms ─────────────────────────────────────────────────────
+     This build is for design approval and neither form is connected to
+     anything, so sending one says exactly that instead of pretending. Each
+     form carries its own sentence in data-apply-note. */
+  function forms() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-apply]'), function (form) {
+      var status = form.querySelector('[data-apply-status]');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!status) return;
+        status.textContent = form.getAttribute('data-apply-note') ||
+          'Thank you. This is a design preview, so nothing was sent.';
+        status.hidden = false;
+      });
     });
+  }
+
+  /* ── 4 · the build enquiry ─────────────────────────────────────────────
+     Both "Build yours" buttons are mailto links to Evan in the markup — the
+     client's own suggestion, and what a visitor without scripts gets. Here
+     they open the panel instead. showModal() carries the weight: top layer,
+     inert page, focus kept inside and handed back afterwards. This only
+     times the entrance and the exit around it. */
+  function enquiry() {
+    var dlg = document.querySelector('[data-enquiry]');
+    var triggers = document.querySelectorAll('[data-enquiry-open]');
+    if (!dlg || !triggers.length || typeof dlg.showModal !== 'function') return;
+    var panel = dlg.querySelector('.enquiry__panel');
+    var root = document.documentElement;
+    var opener = null, closing = false;
+
+    /* The exit's length, read off the CSS rather than typed here twice. */
+    function exitMs() {
+      var cs = getComputedStyle(panel);
+      var d = cs.transitionDuration.split(','), w = cs.transitionDelay.split(',');
+      var ms = 0;
+      d.forEach(function (x, n) { ms = Math.max(ms, (parseFloat(x) + (parseFloat(w[n]) || 0)) * 1000); });
+      return ms;
+    }
+
+    function open(e) {
+      e.preventDefault();
+      if (dlg.open) return;
+      opener = e.currentTarget;
+      /* Lock the page, padded by the scrollbar it is about to lose — measured
+         now, while the scrollbar is still there to measure. */
+      root.style.setProperty('--lock-gap', Math.max(0, window.innerWidth - root.clientWidth) + 'px');
+      root.setAttribute('data-locked', '');
+      dlg.showModal();
+      /* showModal() puts focus on the first control, which is the ×, and
+         rings it the moment the panel appears. The title takes focus instead:
+         a reader hears what opened, and the × is one Shift+Tab away. */
+      var title = dlg.querySelector('.enquiry__title');
+      if (title) title.focus({ preventScroll: true });
+      /* Two frames: the first paints the panel at its starting edge, the
+         second lets it travel. One frame and it would simply appear. */
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () { dlg.setAttribute('data-open', ''); });
+      });
+    }
+
+    function close() {
+      if (!dlg.open || closing) return;
+      closing = true;
+      dlg.removeAttribute('data-open');
+      var timer = setTimeout(done, exitMs() + 100);
+      function onEnd(ev) {
+        if (ev.target === panel && ev.propertyName === 'transform') done();
+      }
+      function done() {
+        if (!closing) return;
+        closing = false;
+        clearTimeout(timer);
+        panel.removeEventListener('transitionend', onEnd);
+        dlg.close();
+        root.removeAttribute('data-locked');
+        root.style.removeProperty('--lock-gap');
+        if (opener) opener.focus();
+      }
+      panel.addEventListener('transitionend', onEnd);
+    }
+
+    Array.prototype.forEach.call(triggers, function (t) { t.addEventListener('click', open); });
+    Array.prototype.forEach.call(dlg.querySelectorAll('[data-enquiry-close]'), function (b) {
+      b.addEventListener('click', close);
+    });
+    /* Escape would close the dialog on the spot; it leaves the way it came. */
+    dlg.addEventListener('cancel', function (e) { e.preventDefault(); close(); });
   }
 
   function boot() {
     slides();
     countdown();
-    apply();
+    forms();
+    enquiry();
   }
 
   if (document.readyState === 'loading') {

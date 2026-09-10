@@ -180,11 +180,27 @@
   --dur-2: 200ms;   /* hover, small reveal                                    */
   --dur-3: 320ms;   /* content crossfade, panel                               */
   --dur-4: 520ms;   /* entrance of a mass                                     */
+  --dur-5: 720ms;   /* a panel crossing its own width — see --travel          */
 
   --ease-out:   cubic-bezier(0.22, 0.61, 0.36, 1);
   --ease-inout: cubic-bezier(0.65, 0.05, 0.36, 1);
+  /* Leaving. Things arriving decelerate into place and things leaving
+     accelerate away; an exit on --ease-out spends its travel in the first
+     third and reads as a snap. A gentle accelerate rather than a steep one:
+     the steep curve hangs and then flicks off. Added 2026-09-10 for the first
+     exit this site animates — the build enquiry panel closing. */
+  --ease-in:    cubic-bezier(0.4, 0, 1, 1);
+  /* A panel arriving from an edge: quick off the mark, then a long soft
+     settle. The curve and the 720ms are the Sports Car Rescue drawer's, which
+     is the one Alex pointed at — "we have done this before". */
+  --ease-panel: cubic-bezier(0.32, 0.72, 0, 1);
 
-  --travel: 8px;    /* the ceiling on translate in any interface transition   */
+  /* The ceiling on translate in any interface transition — with one named
+     exception. A panel anchored to an edge of the window enters from that edge
+     and leaves back into it: the build enquiry panel travels its own width,
+     because where it comes from is where it lives. On Alex's direction,
+     2026-09-10 ("slide in from the side"). Nothing else may borrow this. */
+  --travel: 8px;
 
   /* ── FOCUS ────────────────────────────────────────────────────────────────
      Visible on both grounds without depending on the accent, because a focus
@@ -215,6 +231,7 @@
     --dur-2: 1ms;
     --dur-3: 1ms;
     --dur-4: 1ms;
+    --dur-5: 1ms;
     --travel: 0px;
   }
 }

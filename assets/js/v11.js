@@ -127,9 +127,13 @@
 
     /* The hero is sticky and never leaves the window, so "can anyone see it"
        is answered by scroll position: once the page has slid over it, the
-       sequence stops rather than dissolving behind a wall of sections. */
+       sequence stops rather than dissolving behind a wall of sections. It
+       also stops while the build enquiry is open — pictures changing behind
+       a scrim are motion behind the thing being read. */
     function check() {
-      var now = !document.hidden && window.pageYOffset < (hero ? hero.offsetHeight : window.innerHeight);
+      var now = !document.hidden &&
+        !document.documentElement.hasAttribute('data-locked') &&
+        window.pageYOffset < (hero ? hero.offsetHeight : window.innerHeight);
       if (now === visible) return;
       visible = now;
       if (!visible) {
@@ -147,6 +151,7 @@
       window.requestAnimationFrame(function () { queued = false; check(); });
     }, { passive: true });
     document.addEventListener('visibilitychange', check);
+    document.addEventListener('enquiry', check);
 
     paint();
     /* Frame one is the video, already playing on its own autoplay. */
@@ -239,6 +244,7 @@
          now, while the scrollbar is still there to measure. */
       root.style.setProperty('--lock-gap', Math.max(0, window.innerWidth - root.clientWidth) + 'px');
       root.setAttribute('data-locked', '');
+      document.dispatchEvent(new Event('enquiry'));
       dlg.showModal();
       /* showModal() puts focus on the first control, which is the ×, and
          rings it the moment the panel appears. The title takes focus instead:
@@ -268,7 +274,9 @@
         dlg.close();
         root.removeAttribute('data-locked');
         root.style.removeProperty('--lock-gap');
-        if (opener) opener.focus();
+        document.dispatchEvent(new Event('enquiry'));
+        /* Back to the button, without scrolling the page to it. */
+        if (opener) opener.focus({ preventScroll: true });
       }
       panel.addEventListener('transitionend', onEnd);
     }

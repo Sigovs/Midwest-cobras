@@ -20,11 +20,6 @@
   --mark11-h:       clamp(4.5rem, 5vw, 6rem);
   --mark11-h-stuck: clamp(3.2rem, 3.5vw, 4.2rem);
   --mark11-h-foot:  clamp(4.8rem, 6vw, 6.8rem);
-
-  /* The height of the 04 pair — v10's own value on .about__pair .shot, named
-     here because Evan's column is set from it: square, exactly as wide as the
-     row is tall. */
-  --pair-h: clamp(17rem, 23vw, 27.5rem);
 }
 
 /* ── the mark ─────────────────────────────────────────────────────────────── */
@@ -137,16 +132,16 @@
   line-height: 1.25; letter-spacing: -0.015em; color: var(--text);
   max-inline-size: 26ch;
 }
-/* The side pipe, then Evan. His column is the row's height, so the portrait
-   stands square and whole beside the pipe at the same height; the pipe takes
-   the rest and crops as it did in v10. It keeps the .shot class, so it rides
-   the pair's own scroll choreography with the pipe. */
-.about__pair--portrait { grid-template-columns: minmax(0, 1fr) var(--pair-h); }
-.about__pair--portrait .shot { block-size: var(--pair-h); }
-/* Cover, stated rather than inherited: square in a square box it changes
-   nothing, and the day the box and the photograph stop agreeing a face is
-   cropped instead of squashed. */
-.about__evan { object-fit: cover; object-position: 50% 40%; }
+/* Evan's portrait takes the 3:4 slot the layout was built with, left of the
+   side pipe. 327 is the width at which a 3:4 frame is exactly 436 tall — the
+   pipe's height — so the two stand level. The photograph is square, so the
+   slot trims its sides; the position keeps his face, which sits left of
+   centre in the frame. Cover is stated rather than inherited, so a box and a
+   photograph that disagree crop rather than squash. */
+.about__pair--portrait { grid-template-columns: minmax(0, 327fr) minmax(0, 914fr); }
+/* Written against the pair, not the class alone: v10's .about__pair .shot sets
+   its own object-position and outranks a single class. */
+.about__pair .about__evan { object-fit: cover; object-position: 45% 40%; }
 
 /* ── 06 · news and events ────────────────────────────────────────────────── */
 .news__item .event__pin { margin: 0; }
@@ -320,6 +315,7 @@ html[data-locked] .site-head { inset-inline-end: var(--lock-gap, 0); }
   padding-block: var(--sp-4) var(--sp-7); padding-inline: var(--sp-7);
   background: var(--surface); color: var(--text);
   font-size: var(--fs-body); line-height: var(--lh-body);
+  scrollbar-width: thin; scrollbar-color: var(--bone-300) transparent;
   transform: translateX(100%);
   transition: transform var(--dur-4) var(--ease-in);
 }
@@ -343,15 +339,20 @@ html[data-locked] .site-head { inset-inline-end: var(--lock-gap, 0); }
   outline: var(--focus-w) solid var(--ink-on-light); outline-offset: calc(var(--focus-offset) * -1);
 }
 
+/* The form arrives with the panel — a beat behind it and in the same
+   direction: --travel of extra movement to the left, fading up from the
+   panel's first tenth. The first cut held it back 200ms and then raised it
+   vertically, so an empty slab slid in and the words surfaced afterwards,
+   moving at a right angle to the thing that carried them. */
 .enquiry__content {
   display: grid; gap: var(--sp-6);
-  opacity: 0; transform: translateY(var(--travel));
+  opacity: 0; transform: translateX(var(--travel));
   transition: opacity var(--dur-2) var(--ease-in), transform var(--dur-2) var(--ease-in);
 }
 .enquiry[data-open] .enquiry__content {
   opacity: 1; transform: none;
-  transition: opacity var(--dur-4) var(--ease-out) var(--dur-2),
-              transform var(--dur-4) var(--ease-out) var(--dur-2);
+  transition: opacity var(--dur-4) var(--ease-out) var(--dur-1),
+              transform var(--dur-5) var(--ease-panel) var(--dur-1);
 }
 .enquiry__head { display: grid; gap: var(--sp-3); }
 /* Focus lands here when the panel opens, so a reader hears what opened. It is
@@ -389,7 +390,22 @@ html[data-locked] .site-head { inset-inline-end: var(--lock-gap, 0); }
   padding-inline-end: var(--sp-6);
   background-position: calc(100% - 0.6rem) 55%, calc(100% - 0.25rem) 55%;
 }
-.enquiry .field textarea { min-block-size: 5.5rem; }
+.enquiry .field textarea {
+  min-block-size: 5.5rem; max-block-size: 12rem;
+  resize: none; field-sizing: content;      /* grows with the message; fixed where unsupported */
+}
+/* Unchosen, the select reads as a prompt like the empty fields beside it,
+   not as an answer. */
+.enquiry .field select:has(option[value='']:checked) { color: var(--ink-on-light-muted); }
+/* Autofill paints its own box behind a field; on a field drawn as a single
+   rule that box is the whole look, so it is painted over in the surface. */
+.enquiry .field :is(input, textarea):-webkit-autofill {
+  -webkit-text-fill-color: var(--text);
+  box-shadow: inset 0 0 0 100vmax var(--surface);
+}
+.enquiry .field :is(input, textarea):-webkit-autofill:focus {
+  box-shadow: inset 0 0 0 100vmax var(--surface), 0 var(--hairline) 0 0 var(--ink-on-light);
+}
 
 .enquiry__form .apply__actions { margin: 0; }
 .enquiry__form .btn { display: flex; justify-content: center; inline-size: 100%; }
@@ -406,6 +422,14 @@ html[data-locked] .site-head { inset-inline-end: var(--lock-gap, 0); }
 .enquiry__alt a:hover { color: var(--oxblood); }                 /* oxblood is text on light */
 .enquiry__alt a:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--focus-offset); }
 
+/* A shorter window — a laptop browser with its bars on — tightens the rhythm
+   before it resorts to scrolling the panel. */
+@media (max-height: 56rem) and (min-width: 40rem) {
+  .enquiry__panel { gap: var(--sp-5); padding-block: var(--sp-3) var(--sp-6); }
+  .enquiry__content, .enquiry__form { gap: var(--sp-5); }
+  .enquiry__fields { gap: var(--sp-4) var(--sp-5); }
+  .enquiry .field textarea { min-block-size: 4rem; }
+}
 @media (max-width: 39.99rem) {
   .enquiry__panel { padding-inline: var(--sp-5); }
   .enquiry__fields { grid-template-columns: minmax(0, 1fr); }
@@ -442,8 +466,8 @@ html[data-locked] .site-head { inset-inline-end: var(--lock-gap, 0); }
   .apply__fields { grid-template-columns: minmax(0, 1fr); }
   .about__pair--portrait { grid-template-columns: minmax(0, 1fr); }
   /* Alone in its row the portrait no longer has to match the pipe's height,
-     so it is simply the square photograph it is. */
-  .about__pair--portrait .about__evan { aspect-ratio: 1; block-size: auto; max-inline-size: 20rem; }
+     so it keeps the 3:4 of its slot at a size a phone can hold. */
+  .about__pair--portrait .about__evan { aspect-ratio: 3 / 4; block-size: auto; max-inline-size: 16rem; }
   .hero__dots { inset-block-end: var(--sp-3); }
 
   /* v10 never collapsed the news grid, so on a phone its three items kept

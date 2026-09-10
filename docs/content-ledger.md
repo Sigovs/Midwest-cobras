@@ -319,4 +319,4 @@ unverified lines may appear as ordinary copy and are listed here instead.
 | Build enquiry panel | "He will be in touch to spec it out with you — by phone, by email or at the shop" | **sourced — paraphrase** | The client: "we just prefer that a customer call, email or come in to spec one out" |
 | Build enquiry panel | RT4 Classic Edition, RT4B Black Edition in the car list | **sourced** | backdraftracing.com, read 2026-08-24 — see the sourced list at the top of this file |
 | Build enquiry panel | The form sends to Evan | **design only** | Connected to nothing; sending it says so. Where the data goes is a later conversation |
-| Who we are | Evan Kunard's portrait | **supplied** | Added by Alex 2026-09-10 as SEPTEMBER CHANGES/evean photo.png, 1254 px square; shipped whole as assets/img/about-evan.jpg at 1000 px. Alt text is his name only — no title is on record |
+| Who we are | Evan Kunard's portrait | **supplied** | Added by Alex 2026-09-10 as SEPTEMBER CHANGES/evean photo.png, 1254 px square; shipped as assets/img/about-evan.jpg at 1000 px, shown in the 3:4 portrait slot (sides trimmed, face whole). Alt text is his name only — no title is on record |

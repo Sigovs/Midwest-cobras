@@ -290,3 +290,27 @@ client's live site.
    to Basehor; index10 names no city in its body copy at all.
 3. Any figure added to the configurator (option prices, lead times, engine
    specifications) arrives with a source in the same commit as the copy.
+
+## index11 — the client's change request of 2026-09-10
+
+Source for every "sourced" row below: `SEPTEMBER CHANGES/Midwest Cobras website
+change request.pdf`, read 2026-09-10, text and hyperlinks both. This build is a
+design mockup for approval; Alex's authorisation of 2026-08-24 still stands, so
+unverified lines may appear as ordinary copy and are listed here instead.
+
+| Where | Claim | Status | Note |
+|---|---|---|---|
+| News, pinned | Grand Opening, Sunday 27 September 2026, 11:30 AM | **sourced** | "Grand Opening, September 27 at 11:30am". The weekday is computed, and the count runs on Central time because the shop is in Basehor, Kansas — the request does not say which zone |
+| News | Car shows on Saturday 12 and Saturday 19 September | **unverified — client to confirm** | The request says "this Saturday and the following Saturday". Dates inferred from its arrival on 2026-09-10; names and places not given |
+| News | Wording on the two show cards | **simulated** | Written to hold the shape; replaced when the client posts |
+| Footer | Evan Kunard, evan@midwestcobras.com | **sourced** | Written in the request as `Evan@midwestcobras.com` and linked as mailto. Shown in lower case to match kristi@ |
+| Footer | 913 238 6803 removed; 913 662 5000 is the only number | **sourced** | As asked |
+| Footer, gallery | Instagram, Facebook, YouTube, TikTok URLs | **sourced** | Taken from the hyperlinks in the PDF, not retyped. The v10 gallery pointed at `@midwestcobras`, which is not their account |
+| Who we are | All four paragraphs | **sourced — the client's own copy** | Set as written; two hyphens added (frame-off, long-lasting) |
+| Who we are | "40 years" numeral and "Forty years…" headline | **removed** | Superseded by the client's copy, which speaks about Evan rather than the shop's age |
+| Services | Section note | **proposal — client to decide** | The client is "still mulling over how we want it to read" |
+| Finance | Consent sentence under the application | **placeholder** | Written for the mockup. Needs proper wording before this form collects anything |
+| Hero, footer | Backdraft Racing logo, "Built by" | **sourced** | Client-supplied logo file (379 x 122, background keyed out); the cars are Backdraft's. No "authorized dealer" wording — that is not on record |
+| Hero | `hero-cover-day.jpg` | **the client's own photograph** | From the client folder |
+| Hero | `photo-workshop.jpg`, `photo-engine.jpg` | **stand-in** | Two of the four borrowed images in 0b; replaced by the client's glamour shoot |
+| Reviews | Section removed | **as asked** | The four accounts were mockup text; they do not return without real customers |

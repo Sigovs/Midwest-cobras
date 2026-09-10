@@ -1,0 +1,301 @@
+/* v11.css — the client's September change request, as a layer over v10.
+   ---------------------------------------------------------------------------
+   index10 stays exactly as the client last saw it, so nothing in v10.css is
+   edited: v10 loads first and everything that changed lives here. Values come
+   from tokens.css and v10's own :root; the few numbers this file adds are
+   named at the top rather than typed where they are used. */
+
+:root {
+  /* One picture becoming another. Longer than any interface duration on the
+     site because it is not interface — at --dur-4 a dissolve between two
+     photographs reads as a cut with a smear on it. */
+  --xfade: 1.6s;
+
+  /* THE MARK, BACK TO THE ORIGINAL — white, no car, as the client asked on
+     2026-09-10. Sized to the original too. The heights v10 carries were raised
+     three times for the two candidates, and both of those had a car taking
+     half their height; the script alone at those heights would be nearly twice
+     the lettering the client ever saw, which is a different logo. These are
+     the original's 104–138px width expressed as heights. */
+  --mark11-h:       clamp(4.5rem, 5vw, 6rem);
+  --mark11-h-stuck: clamp(3.2rem, 3.5vw, 4.2rem);
+  --mark11-h-foot:  clamp(4.8rem, 6vw, 6.8rem);
+}
+
+/* ── the mark ─────────────────────────────────────────────────────────────── */
+.wordmark--solo { color: var(--bone-050); }
+.wordmark--solo .wordmark__mask { display: none; }
+/* The fallback where masks are unsupported: the name, set in the script face. */
+.wordmark--solo .wordmark__name {
+  font-family: var(--script); font-size: clamp(1.9rem, 2.2vw, 2.6rem); line-height: 1.05;
+}
+@supports (mask-image: url('')) or (-webkit-mask-image: url('')) {
+  .wordmark--solo .wordmark__mask {
+    display: block;
+    block-size: var(--mark11-h);
+    aspect-ratio: 1496 / 1031;
+    background: currentColor;
+    -webkit-mask: url('../img/logo.svg') no-repeat center / contain;
+            mask: url('../img/logo.svg') no-repeat center / contain;
+    transition: block-size var(--dur-3) var(--ease-out);
+  }
+  .site-head[data-stuck='true'] .wordmark--solo .wordmark__mask { block-size: var(--mark11-h-stuck); }
+  .wordmark--foot.wordmark--solo .wordmark__mask { block-size: var(--mark11-h-foot); }
+  .wordmark--solo .wordmark__name {
+    position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+}
+/* The soft ground v10 put behind the mark existed for the burgundy, which was
+   losing its edges on the shop wall. A white mark does not need it, and the
+   original never had it. */
+.site-head::before { content: none; }
+
+/* ── 01 · the sequence ────────────────────────────────────────────────────
+   Every frame is stacked in the same box and only the current one is opaque,
+   so a change is a dissolve and nothing in the hero moves or reflows. */
+.hero__slide {
+  position: absolute; inset: 0;
+  inline-size: 100%; block-size: 100%;
+  object-fit: cover; object-position: var(--pos, 50% 50%);
+  opacity: 0;
+  transition: opacity var(--xfade) var(--ease-inout);
+}
+.hero__slide.is-on { opacity: 1; }
+/* The day shot is the only frame not taken in a dark room. Brought down a
+   little so it belongs to the same sequence rather than flashing the page. */
+.hero__slide--day { filter: brightness(0.84) saturate(0.94); }
+/* A slow settle on each still while it holds: the frame is alive and the
+   picture goes nowhere. Four per cent across the whole hold sits under the
+   point at which anyone reads it as a zoom. */
+@media (prefers-reduced-motion: no-preference) {
+  img.hero__slide.is-on { animation: hero-settle var(--hold, 7s) linear both; }
+}
+@keyframes hero-settle { from { transform: scale(1.04); } to { transform: none; } }
+
+/* The sequence's controls. Below the hero's bottom band, centred, and they
+   leave with the headline as the page is scrolled. */
+.hero__dots {
+  position: absolute; z-index: 3;
+  inset-inline: var(--edge); inset-block-end: calc(var(--pad) * 0.34);
+  display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  opacity: calc(1 - var(--hero-exit, 0));
+}
+.hero__track { display: flex; gap: var(--sp-1); margin: 0; padding: 0; list-style: none; }
+.hero__dot, .hero__pause {
+  position: relative; display: block;
+  inline-size: 2.75rem; block-size: 2.75rem;     /* 44 — the tap target */
+  padding: 0; border: 0; background: none; cursor: pointer;
+  color: var(--bone-050);
+}
+.hero__dot::before, .hero__dot::after {
+  content: ''; position: absolute;
+  inset-inline: var(--sp-1); inset-block-start: 50%;
+  block-size: calc(var(--hairline) * 2); margin-block-start: calc(var(--hairline) * -1);
+  background: rgb(var(--bone-100-rgb) / 0.28);
+}
+.hero__dot::after { background: var(--bone-050); transform: scaleX(0); transform-origin: left; }
+.hero__dot[aria-current='true']::after { animation: dot-fill var(--hold, 7s) linear both; }
+.hero__dots[data-paused] .hero__dot[aria-current='true']::after { animation-play-state: paused; }
+@keyframes dot-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.hero__pause svg { position: absolute; inset: 0; margin: auto; }
+.hero__i-play { display: none; }
+.hero__pause[aria-pressed='true'] .hero__i-pause { display: none; }
+.hero__pause[aria-pressed='true'] .hero__i-play { display: block; }
+.hero__dot:focus-visible, .hero__pause:focus-visible {
+  outline: var(--focus-w) solid var(--bone-050); outline-offset: calc(var(--focus-offset) * -1);
+}
+
+/* ── 01 · the maker's credit ──────────────────────────────────────────────
+   The lede and the Backdraft logo share the left of the bottom band. The
+   group takes the lede's place in the arrival, so the band still rises in the
+   order it did in v10. */
+.hero__left { display: grid; gap: var(--sp-5); justify-items: start; }
+.hero__foot > .hero__left { animation-delay: 400ms; }
+.mfr { display: inline-flex; align-items: center; gap: var(--sp-4); margin: 0; }
+.mfr__k {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+/* The lettering in this logo is a fifth of its height, so the height is set by
+   the lettering: below about 2.6rem "BACKDRAFT RACING" stops being words. */
+.mfr__logo { display: block; block-size: clamp(2.6rem, 3.2vw, 3.4rem); inline-size: auto; }
+
+/* ── 04 · who we are ─────────────────────────────────────────────────────
+   The client's own four paragraphs. The first is their opening line, set as a
+   statement in the display face; the rest are body. */
+.about__body > p:not(.about__lede) {
+  color: var(--text-muted); line-height: 1.6; max-inline-size: 52ch; text-wrap: pretty;
+}
+.about__lede {
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  line-height: 1.25; letter-spacing: -0.015em; color: var(--text);
+  max-inline-size: 26ch;
+}
+/* Evan's portrait is 3:4 and the side pipe is 914 x 436. 327 is the width at
+   which a 3:4 frame is exactly 436 tall, so the two stand the same height and
+   neither is cropped. */
+.about__pair--portrait { grid-template-columns: minmax(0, 327fr) minmax(0, 914fr); }
+/* The plate shares the photographs' .shot class so it takes their height and
+   their scroll choreography — and with it their display, which would run the
+   name and the note into one clipped line. The frame's own layout wins back. */
+.about__pair--portrait .frame { display: grid; }
+
+/* ── 06 · news and events ────────────────────────────────────────────────── */
+.news__item .event__pin { margin: 0; }
+.event__pin span {
+  display: inline-block; padding: var(--sp-1) var(--sp-3);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase;
+  background: var(--oxblood); color: var(--bone-050);   /* oxblood is fill on dark */
+}
+.event .frame { aspect-ratio: 4 / 3; }
+.countdown { display: flex; flex-wrap: wrap; gap: var(--sp-7); margin-block: var(--sp-4) var(--sp-2); }
+.news__item .countdown__cell { display: grid; gap: var(--sp-2); margin: 0; }
+.countdown__n {
+  font-family: var(--mono); font-weight: 500;
+  font-size: clamp(2.4rem, 3.6vw, 4rem); line-height: 1;
+  font-variant-numeric: tabular-nums; color: var(--text);
+}
+.countdown__u {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.news__item .countdown__open {
+  font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  line-height: 1.2; color: var(--text);
+}
+
+/* ── 08 · finance ────────────────────────────────────────────────────────
+   The record ground, and a form built as one: labels in the mono voice that
+   records, fields on the raised bone surface, and the title staying in view
+   while the application is worked through. */
+.finance__grid {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap); align-items: start;
+}
+.finance__intro {
+  grid-column: 1 / span 4;
+  display: grid; gap: var(--sp-5); justify-items: start; align-self: start;
+  position: sticky; inset-block-start: 9rem;       /* clears the compact bar */
+}
+.finance__note { font-family: var(--mono); font-size: var(--micro); color: var(--text-muted); }
+.apply { grid-column: 6 / span 7; display: grid; gap: var(--sp-8); }
+.apply__group { margin: 0; padding: 0; border: 0; min-inline-size: 0; }
+.apply__legend {
+  display: flex; align-items: baseline; gap: var(--sp-4);
+  padding: 0 0 var(--sp-5);
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  letter-spacing: -0.015em; color: var(--text);
+}
+.apply__legend span {
+  font-family: var(--mono); font-weight: 400; font-size: var(--micro);
+  letter-spacing: var(--track); color: var(--text-muted);
+}
+.apply__fields {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-5) var(--sp-6);
+  padding-block-start: var(--sp-5);
+  border-block-start: var(--hairline) solid var(--rule);
+}
+.field { display: grid; gap: var(--sp-2); align-content: start; }
+.field--wide { grid-column: 1 / -1; }
+.field label {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.field__req { color: var(--oxblood); }                  /* oxblood is text on light */
+/* The border is ink-muted rather than the hairline token: a field's edge is a
+   control boundary and has to clear 3:1 against the ground, and bone-200 on
+   bone is about 1.2:1 — a field you cannot see is a field you cannot find. */
+.field input, .field select {
+  inline-size: 100%; min-block-size: 2.75rem;
+  padding: var(--sp-3) var(--sp-4);
+  font: inherit; color: var(--text);
+  background-color: var(--surface);
+  border: var(--hairline) solid var(--ink-on-light-muted);
+  border-radius: var(--radius-control);
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.field input::placeholder { color: var(--ink-on-light-muted); opacity: 1; }
+.field input:hover, .field select:hover { border-color: var(--ink-on-light); }
+.field input:focus-visible, .field select:focus-visible {
+  outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--hairline);
+  border-color: var(--ink-on-light);
+}
+.field select {
+  appearance: none; -webkit-appearance: none;
+  padding-inline-end: var(--sp-8);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ink-on-light-muted) 50%),
+    linear-gradient(135deg, var(--ink-on-light-muted) 50%, transparent 50%);
+  background-position: calc(100% - 1.3rem) 50%, calc(100% - 0.95rem) 50%;
+  background-size: 0.35rem 0.35rem, 0.35rem 0.35rem;
+  background-repeat: no-repeat;
+}
+.apply__consent {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--sp-4); align-items: start;
+  padding-block-start: var(--sp-6); border-block-start: var(--hairline) solid var(--rule);
+}
+.apply__consent input {
+  inline-size: 1.25rem; block-size: 1.25rem; margin: 0.2rem 0 0;
+  accent-color: var(--ink-on-light);
+}
+.apply__consent label { color: var(--text-muted); line-height: 1.55; max-inline-size: 64ch; }
+.apply__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-5); margin: 0; }
+.apply .btn { cursor: pointer; }
+.apply__status { color: var(--text); line-height: 1.55; max-inline-size: 60ch; }
+
+/* ── footer ───────────────────────────────────────────────────────────────
+   Five columns now: the mark, the shop, services, the four social accounts
+   and contact. Contact takes three tracks, not two — it is the only column
+   carrying a line that cannot wrap, and at two tracks an email address is
+   wider than its column. Placed only at widths that have them; below that,
+   v10's single column already stacks every child in order.
+
+   The explicit width is load-bearing. v10 centres every footer child with
+   auto margins, which sizes the grid to its content; v10's five-track brand
+   column happened to fill the page, and these narrower columns do not, so the
+   whole grid shrank into the middle. */
+.site-foot__grid { inline-size: 100%; }
+@media (min-width: 62rem) {
+  .site-foot__brand { grid-column: 1 / span 3; }
+  .site-foot__grid > :nth-child(2) { grid-column: 4 / span 2; }
+  .site-foot__grid > :nth-child(3) { grid-column: 6 / span 2; }
+  .site-foot__grid > :nth-child(4) { grid-column: 8 / span 2; }
+  .site-foot__grid > :nth-child(5) { grid-column: 10 / span 3; }
+}
+.site-foot__who + .site-foot__who { margin-block-start: var(--sp-3); }
+/* Stacked here: the brand column is three tracks, and the label and the logo
+   side by side are wider than that. */
+.mfr--foot { display: grid; justify-items: start; gap: var(--sp-3); margin-block-start: var(--sp-2); }
+
+/* ── narrow ────────────────────────────────────────────────────────────────── */
+@media (max-width: 61.99rem) {
+  .finance__grid { grid-template-columns: minmax(0, 1fr); }
+  .finance__intro, .apply { grid-column: 1; position: static; }
+  .apply__fields { grid-template-columns: minmax(0, 1fr); }
+  .about__pair--portrait { grid-template-columns: minmax(0, 1fr); }
+  /* Alone in its row the plate no longer has to match the side pipe's height,
+     so it goes back to being the shape of the photograph it is waiting for. */
+  .about__pair--portrait .frame { aspect-ratio: 3 / 4; block-size: auto; max-inline-size: 16rem; }
+  .hero__dots { inset-block-end: var(--sp-3); }
+
+  /* v10 never collapsed the news grid, so on a phone its three items kept
+     their twelve-column placements and the last one hung off the right edge.
+     Inherited, not introduced here — fixed here because this is the version
+     going to the client. */
+  .news__list { grid-template-columns: minmax(0, 1fr); row-gap: var(--sp-8); }
+  .news__item--lead, .news__list > :nth-child(2), .news__list > :nth-child(3) { grid-column: 1; }
+
+  /* The service rows slide in sideways as they enter (v10's row-in), and before
+     they enter they sit at their starting offset — past the edge of a phone,
+     which gave the whole page a sideways scroll. Clipped on the list, so the
+     motion is untouched and still arrives from the edge. */
+  .rows { overflow-x: clip; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__slide { transition: none; }
+  .hero__dot[aria-current='true']::after { animation: none; transform: none; }
+}

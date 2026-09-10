@@ -20,6 +20,10 @@
   --mark11-h:       clamp(4.5rem, 5vw, 6rem);
   --mark11-h-stuck: clamp(3.2rem, 3.5vw, 4.2rem);
   --mark11-h-foot:  clamp(4.8rem, 6vw, 6.8rem);
+
+  /* Evan's figure in 04 — about half the heading column, so the heading stays
+     the widest thing in it. 520px at 1920, as Alex drew it. */
+  --who-w: clamp(17rem, 27vw, 32.5rem);
 }
 
 /* ── the mark ─────────────────────────────────────────────────────────────── */
@@ -132,16 +136,78 @@
   line-height: 1.25; letter-spacing: -0.015em; color: var(--text);
   max-inline-size: 26ch;
 }
-/* Evan's portrait takes the 3:4 slot the layout was built with, left of the
-   side pipe. 327 is the width at which a 3:4 frame is exactly 436 tall — the
-   pipe's height — so the two stand level. The photograph is square, so the
-   slot trims its sides; the position keeps his face, which sits left of
-   centre in the frame. Cover is stated rather than inherited, so a box and a
-   photograph that disagree crop rather than squash. */
-.about__pair--portrait { grid-template-columns: minmax(0, 327fr) minmax(0, 914fr); }
-/* Written against the pair, not the class alone: v10's .about__pair .shot sets
-   its own object-position and outranks a single class. */
-.about__pair .about__evan { object-fit: cover; object-position: 45% 40%; }
+/* EVAN, UNDER THE HEADING — Alex's layout, 2026-09-10. The long horizontal
+   pair goes and the section becomes a person and his words: heading and
+   portrait on the left, the client's copy on the right.
+
+   A cut-out on the section's own ground rather than a framed photograph, so
+   he stands in the room with the type instead of hanging on its wall. One low
+   oxblood light behind him — the only warm thing on this graphite, and a fill
+   on dark, the one way oxblood is allowed there. The shirt dissolves into the
+   ground below rather than stopping at an edge, which also takes care of the
+   shoulders, cut off by the photograph's own frame.
+
+   The figure sits inside the heading's column, so it rides that column's
+   scroll rate (about-mid in v10) with the heading rather than moving on its
+   own. */
+.about__grid { margin-block-end: 0; }          /* it spaced the pair, which is gone */
+.who {
+  display: grid; grid-template-columns: minmax(0, var(--who-w)) auto;
+  align-items: end; gap: var(--sp-6);
+  margin: var(--sp-6) 0 0;
+}
+.who__photo { position: relative; isolation: isolate; }
+.who__photo::before {
+  content: ''; position: absolute; z-index: -1; pointer-events: none;
+  inset: -14% -30% 2% -14%;
+  /* Eased rather than straight: a falloff that goes to nothing in a straight
+     line stops dead at its rim, and on graphite the rim draws itself as a
+     ring. Five stops on a curve leave nothing to see where it ends. */
+  background: radial-gradient(closest-side at 50% 44%,
+    rgb(var(--oxblood-rgb) / 0.52) 0%,
+    rgb(var(--oxblood-rgb) / 0.36) 22%,
+    rgb(var(--oxblood-rgb) / 0.19) 46%,
+    rgb(var(--oxblood-rgb) / 0.07) 70%,
+    rgb(var(--oxblood-rgb) / 0.02) 86%,
+    rgb(var(--oxblood-rgb) / 0) 100%);
+}
+.who__photo img {
+  display: block; inline-size: 100%; block-size: auto;
+  /* Two fades, intersected: the shirt goes into the ground at the bottom, and
+     at the sides, where the photograph's own frame cut the shoulders off
+     straight. The side fade only has shirt to act on — the head is well
+     inside it. */
+  -webkit-mask-image:
+    linear-gradient(to bottom, var(--graphite-950) 58%, transparent 94%),
+    linear-gradient(to right, transparent 0%, var(--graphite-950) 9%, var(--graphite-950) 91%, transparent 100%);
+  -webkit-mask-composite: source-in;
+          mask-image:
+    linear-gradient(to bottom, var(--graphite-950) 58%, transparent 94%),
+    linear-gradient(to right, transparent 0%, var(--graphite-950) 9%, var(--graphite-950) 91%, transparent 100%);
+          mask-composite: intersect;
+  /* One tile, exactly the image. Masks repeat by default, and at a fractional
+     height the top of the next tile — opaque — showed as a hairline of shirt
+     under the fade. */
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;   mask-size: 100% 100%;
+  /* And the outermost two pixels trimmed. The figure's width is fluid, so the
+     image ends on a fraction of a pixel; the mask is snapped to whole pixels
+     and the last half-row of the photograph was left outside it — measured
+     as one row of shirt at 28,34,43 on a ground of 26,29,33. That band is
+     already transparent under both fades, so nothing visible goes with it. */
+  clip-path: inset(calc(var(--hairline) * 2));
+}
+/* The name sits beside the fade, level with the last of the shirt — close
+   enough to belong to him, clear of the pixels it would otherwise cross. */
+.who__cap { display: grid; gap: var(--sp-1); margin: 0; padding-block-end: var(--sp-7); }
+.who__name {
+  font-family: var(--text-face); font-weight: 600; font-size: var(--fs-body);
+  line-height: var(--lh-label); color: var(--text);
+}
+.who__role {
+  font-family: var(--text-face); font-size: var(--micro);
+  line-height: var(--lh-label); color: var(--text-muted);
+}
 
 /* ── 06 · news and events ────────────────────────────────────────────────── */
 .news__item .event__pin { margin: 0; }
@@ -464,10 +530,9 @@ html[data-locked] .site-head { inset-inline-end: var(--lock-gap, 0); }
   .finance__grid { grid-template-columns: minmax(0, 1fr); }
   .finance__intro, .apply { grid-column: 1; position: static; }
   .apply__fields { grid-template-columns: minmax(0, 1fr); }
-  .about__pair--portrait { grid-template-columns: minmax(0, 1fr); }
-  /* Alone in its row the portrait no longer has to match the pipe's height,
-     so it keeps the 3:4 of its slot at a size a phone can hold. */
-  .about__pair--portrait .about__evan { aspect-ratio: 3 / 4; block-size: auto; max-inline-size: 16rem; }
+  /* One column: the portrait at a size a phone can hold, the name under it. */
+  .who { grid-template-columns: minmax(0, 20rem); gap: var(--sp-3); }
+  .who__cap { padding-block-end: 0; }
   .hero__dots { inset-block-end: var(--sp-3); }
 
   /* v10 never collapsed the news grid, so on a phone its three items kept

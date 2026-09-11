@@ -24,6 +24,20 @@
   /* Evan's figure in 04 — about half the heading column, so the heading stays
      the widest thing in it. 520px at 1920, as Alex drew it. */
   --who-w: clamp(17rem, 27vw, 32.5rem);
+
+  /* THE COPY IN 04 STARTS LEVEL WITH THE HEADING — Alex, 2026-09-10: "lower
+     the text, align it to Welcome to Midwest Cobras". Level by the tops of the
+     letters, not of the boxes: the heading is set tight and large, the lede
+     looser and smaller, so boxes aligned put the lede's letters higher.
+     Three numbers go into it, named here:
+       --title-lh    v10's .sect__title line-height, repeated so the sum can use it
+       --lede-lh     the lede's line-height, used by .about__lede itself
+       --face-rise   how far Familjen Grotesk's ascenders sit below the middle
+                     of the line, in em — measured off the render at 1440
+                     (heading 56px, lede 24.5px: both gave 0.26–0.28) */
+  --title-lh: 1.02;
+  --lede-lh:  1.25;
+  --face-rise: 0.27;
 }
 
 /* ── the mark ─────────────────────────────────────────────────────────────── */
@@ -133,8 +147,20 @@
 }
 .about__lede {
   font-family: var(--face); font-weight: 600; font-size: var(--h3);
-  line-height: 1.25; letter-spacing: -0.015em; color: var(--text);
+  line-height: var(--lede-lh); letter-spacing: -0.015em; color: var(--text);
   max-inline-size: 26ch;
+}
+/* The copy column drops by the tag and its gap, then by the difference
+   between where each first line's letters begin. Two columns only — on a
+   phone the copy follows the portrait and needs none of it. */
+@media (min-width: 62rem) {
+  .about__body {
+    margin-block-start: calc(
+      var(--micro) * var(--lh-body) + var(--sp-5)
+      + (var(--h2) * var(--title-lh) - var(--h3) * var(--lede-lh)) / 2
+      - (var(--h2) - var(--h3)) * var(--face-rise)
+    );
+  }
 }
 /* EVAN, UNDER THE HEADING — Alex's layout, 2026-09-10. The long horizontal
    pair goes and the section becomes a person and his words: heading and

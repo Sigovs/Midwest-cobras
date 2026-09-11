@@ -595,3 +595,168 @@ html[data-locked] .site-head { inset-inline-end: var(--lock-gap, 0); }
   .hero__slide { transition: none; }
   .hero__dot[aria-current='true']::after { animation: none; transform: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   VARIANT C — "GREEN FLAG". Chosen by Alex on 2026-09-10 from three variants
+   performed side by side (the genjutsu cast thesis). A Cobra answers the
+   throttle, and the page does too: sections arrive with travel and a firm
+   stop, everything under the hand gives when pressed, and three places speak
+   Cobra — the cars roll onto the floor, the Grand Opening counts on an
+   odometer, and twin Le Mans stripes chart how far down the page you are.
+
+   Roles, not instances: headings by the reveal's 'title' role, photographs
+   by a 'photo' role, controls by what they are. The hero is untouched — its
+   headline already arrives in two lines, and a second move there would
+   compete with the first. Cut, and why, is in the thesis: no counting prices
+   up, no magnetic buttons, no custom cursor, no letters splitting, no
+   parallax on every picture.
+
+   Yield, stated: motion-taste D1 keeps travel to 8px and avoids side-entries.
+   It yields here to Alex's explicit "bolder on scroll". The reduced-motion
+   floor does not yield: every piece below has a still path.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── headings leave the line ──────────────────────────────────────────────
+   v11.js cuts a revealed heading into its rendered lines once the fonts are
+   in; each line rises out of its own mask, a step apart. The heading element
+   itself no longer slides — its lines do. Padding inside each mask, cancelled
+   by a negative margin, keeps descenders and cap tops out of the clip without
+   moving a pixel of layout. When the heading has landed the script puts the
+   plain text back, so it rewraps with the window like any other text. */
+.js [data-reveal='title'].is-split { opacity: 1; transform: none; }
+.is-split .ln {
+  display: block; overflow: clip;
+  padding-block: 0.08em 0.16em; margin-block: -0.08em -0.16em;
+}
+.is-split .ln > span { display: block; transform: translateY(110%); }
+.is-split[data-in] .ln > span {
+  transform: none;
+  transition: transform var(--dur-6) var(--ease-settle);
+  transition-delay: calc(var(--reveal-delay, 0ms) + var(--i, 0) * var(--dur-1));
+}
+
+/* ── photographs open ─────────────────────────────────────────────────────
+   The 'photo' role (news pictures): a wipe from the left edge, the picture
+   settling from 1.14 to its size, sharpening out of a blur as it goes. The
+   wrapper already clips, so the scale never spills. */
+.js [data-reveal='photo'] .shot {
+  clip-path: inset(0 0 0 100%); transform: scale(1.14); filter: blur(0.5rem);
+}
+.js [data-reveal='photo'][data-in] .shot {
+  clip-path: inset(0 0 0 0); transform: none; filter: none;
+  transition:
+    clip-path var(--dur-6) var(--ease-settle),
+    transform calc(var(--dur-6) * 1.35) var(--ease-settle),
+    filter var(--dur-6) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* ── the cars roll onto the floor ─────────────────────────────────────────
+   The inventory rail drives in from the right as the section comes up, and
+   stops on the settle curve — most of the distance early, a long firm brake
+   at the end. Tied to scroll, not to a clock: scroll back and the cars back
+   out, stop and they stop. Sharp by the time they are half-way home. The
+   section clips sideways so the cars waiting off-stage never widen the page. */
+.rail--lots { --roll-from: 70vw; --roll-blur: 0.25rem; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sect:has(> .rail--lots) { overflow-x: clip; }
+    .rail--lots {
+      animation: lots-roll var(--ease-settle) both, lots-sharpen linear both;
+      animation-timeline: view(), view();
+      animation-range: entry 0% cover 42%, entry 0% cover 24%;
+    }
+  }
+}
+@keyframes lots-roll    { from { transform: translate3d(var(--roll-from), 0, 0); } to { transform: none; } }
+@keyframes lots-sharpen { from { filter: blur(var(--roll-blur)); } to { filter: none; } }
+
+/* ── the odometer ─────────────────────────────────────────────────────────
+   Each figure of the countdown is two drums of 0–9. A drum turns to its digit
+   on the settle curve, the second a step after the first, like a mechanical
+   counter; the first turn waits until the count is on screen, after that
+   only the minute moves. The reading itself is a hidden span beside the
+   drums, so a screen reader hears "16", not a column of digits. */
+.countdown__n { display: inline-flex; }
+.odo { display: inline-flex; }
+.odo__dg { display: block; block-size: 1em; inline-size: 1ch; overflow: clip; }
+.odo__dg > span {
+  display: grid;
+  transform: translateY(calc(var(--n, 0) * -1em));
+  transition: transform var(--dur-7) var(--ease-settle);
+  transition-delay: calc(var(--k, 0) * var(--dur-1));
+}
+.odo__dg b { display: block; block-size: 1em; line-height: 1; font-weight: inherit; text-align: center; }
+.v11-sr {
+  position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ── twin stripes ─────────────────────────────────────────────────────────
+   Two stripes at the left edge, as on a Cobra's bonnet, filling with the
+   page's scroll one to one — no duration of their own, so there is nothing
+   to reduce. Drawn in difference mode, so the same bone stripe reads light
+   on graphite and dark on bone. Out of the way of everything: a few pixels
+   in the gutter, beneath any open panel, never catching the pointer. Where
+   scroll timelines are missing they are not drawn at all. */
+.stripes {
+  position: fixed; z-index: 60; pointer-events: none;
+  inset-block: var(--sp-5); inset-inline-start: var(--sp-2);
+  display: flex; gap: var(--sp-1);
+  mix-blend-mode: difference;
+}
+.stripes i { inline-size: var(--sp-1); background: rgb(var(--bone-100-rgb) / 0.16); position: relative; overflow: clip; }
+.stripes i::after {
+  content: ''; position: absolute; inset: 0; background: var(--bone-050);
+  transform-origin: top; transform: scaleY(0);
+  animation: stripe-fill linear both; animation-timeline: scroll(root block);
+}
+@keyframes stripe-fill { to { transform: scaleY(1); } }
+@supports not (animation-timeline: scroll()) { .stripes { display: none; } }
+
+/* ── everything under the hand gives ─────────────────────────────────────
+   Press: 0.95 the instant a control is held. Release: back on the overshoot
+   curve. v10's own transitions are repeated beside the new one, because a
+   transition list replaces rather than adds. Revealed controls carry the
+   reveal's transition as well, so they get the same list at a specificity
+   that outranks it; the entrance of a revealed button now lands with the
+   same small overshoot, which is the variant. */
+.btn   { transition: background var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out), transform var(--dur-3) var(--ease-back); }
+.link  { transition: filter var(--dur-2) var(--ease-out), transform var(--dur-3) var(--ease-back); }
+.round { transition: border-color var(--dur-2) var(--ease-out), transform var(--dur-3) var(--ease-back); }
+.js :is(.btn, .link)[data-reveal][data-in] {
+  transition:
+    opacity var(--dur-4) var(--ease-out), transform var(--dur-3) var(--ease-back),
+    background var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out),
+    filter var(--dur-2) var(--ease-out);
+}
+:is(.btn, .link, .round:not(:disabled)):active,
+.js :is(.btn, .link)[data-reveal][data-in]:active {
+  transform: scale(0.95);
+  transition: transform var(--dur-1) var(--ease-press);
+}
+/* The arrow in a button or a pill steps toward where it goes. */
+:is(.btn, .link) span[aria-hidden='true'] { display: inline-block; transition: transform var(--dur-3) var(--ease-settle); }
+:is(.btn, .link):is(:hover, :focus-visible) span[aria-hidden='true'] { transform: translateX(var(--sp-1)); }
+
+/* A car photograph leans toward you: v10's zoom, plus the picture following a
+   fine pointer inside its frame and lifting a shade. Three signals, one
+   gesture. The pan stays inside the zoom's spare edge (1.6% against 2.25%),
+   so no frame edge ever shows. Mouse and trackpad only — v11.js sets the
+   position, and only there. */
+.lot__shot .shot { transition: transform var(--dur-3) var(--ease-out), translate var(--dur-4) var(--ease-settle), filter var(--dur-3) var(--ease-out); }
+.lot:is(:hover, :focus-within) .lot__shot .shot {
+  translate: calc(var(--px, 0) * -1.6%) calc(var(--py, 0) * -1.6%);
+  filter: brightness(1.05);
+}
+
+@media (max-width: 61.99rem) {
+  .rail--lots { --roll-from: 30vw; --roll-blur: 0rem; }
+  .stripes { gap: calc(var(--sp-1) / 2); inset-inline-start: var(--sp-1); }
+  .stripes i { inline-size: calc(var(--sp-1) / 2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .odo__dg > span { transition: none; }
+  .lot:is(:hover, :focus-within) .lot__shot .shot { translate: none; filter: none; }
+  :is(.btn, .link) span[aria-hidden='true'] { transition: none; }
+}

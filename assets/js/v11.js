@@ -1,11 +1,12 @@
-/* v11.js — five small jobs on top of v10.js. The page is finished without it.
+/* v11.js — small jobs on top of v10.js. The page is finished without it.
 
    1 · the hero sequence: the video plays once, the stills dissolve through,
        and it comes back round — pausable, and stopped when nobody can see it
    2 · the Grand Opening count, to the minute, handing over to "open" by itself
    3 · the two forms say they are a preview when they are sent
    4 · the build enquiry panel: in from the right, and back out the same way
-   5 · 04's words arrive the way every other section's do
+   5 · 04's words and the news pictures arrive the way every other section's do
+   6 · variant C: headings cut into lines, a car photo following the pointer
 
    Under reduced motion the sequence never starts: v10.js has already parked
    the video on its last frame, and that still is the hero. */
@@ -166,35 +167,84 @@
   /* ── 2 · the Grand Opening ─────────────────────────────────────────────
      Minutes, not seconds, and each update lands on the minute boundary rather
      than on a free-running interval. The date written above the count is the
-     content and is there without this; the count only ever adds to it. */
+     content and is there without this; the count only ever adds to it.
+
+     Variant C: each figure is two odometer drums (v11.css). The drums wait at
+     zero until the count is on screen, then turn once to the time left; after
+     that only the minute moves. The spoken reading is a hidden span that is
+     always right, rolled or not. Under reduced motion the drums simply show
+     the time. */
   function countdown() {
     var box = document.querySelector('[data-countdown]');
     if (!box) return;
     var open = document.querySelector('[data-countdown-open]');
     var target = Date.parse(box.getAttribute('data-countdown'));
     if (isNaN(target)) return;
-    var cell = {
-      d: box.querySelector('[data-cd="d"]'),
-      h: box.querySelector('[data-cd="h"]'),
-      m: box.querySelector('[data-cd="m"]')
-    };
-    function two(n) { return (n < 10 ? '0' : '') + n; }
-    function tick() {
+
+    var units = ['d', 'h', 'm'];
+    var cell = {};
+    units.forEach(function (u) {
+      var n = box.querySelector('[data-cd="' + u + '"]');
+      if (!n) return;
+      n.textContent = '';
+      var sr = document.createElement('span'); sr.className = 'v11-sr';
+      var drums = document.createElement('span'); drums.className = 'odo';
+      drums.setAttribute('aria-hidden', 'true');
+      var cols = [0, 1].map(function (k) {
+        var dg = document.createElement('span'); dg.className = 'odo__dg';
+        var strip = document.createElement('span'); strip.style.setProperty('--k', String(k));
+        for (var d = 0; d < 10; d++) { var b = document.createElement('b'); b.textContent = d; strip.appendChild(b); }
+        dg.appendChild(strip); drums.appendChild(dg);
+        return strip;
+      });
+      n.appendChild(sr); n.appendChild(drums);
+      cell[u] = { sr: sr, cols: cols };
+    });
+
+    function two(v) { return (v < 10 ? '0' : '') + v; }
+    var rolled = reduced;
+    function now() {
       var left = target - Date.now();
-      if (left <= 0) {
+      /* Rounded up: at 11:29:30 it should say one minute, not none. */
+      var mins = Math.ceil(left / 60000);
+      return { left: left, d: Math.floor(mins / 1440), h: Math.floor((mins % 1440) / 60), m: mins % 60 };
+    }
+    function paint(t) {
+      units.forEach(function (u) {
+        if (!cell[u]) return;
+        var s = two(Math.min(t[u], 99));
+        cell[u].sr.textContent = s;
+        if (!rolled) return;
+        cell[u].cols[0].style.setProperty('--n', s[0]);
+        cell[u].cols[1].style.setProperty('--n', s[1]);
+      });
+    }
+    function tick() {
+      var t = now();
+      if (t.left <= 0) {
         box.hidden = true;
         if (open) open.hidden = false;
         return;
       }
-      /* Rounded up: at 11:29:30 it should say one minute, not none. */
-      var mins = Math.ceil(left / 60000);
-      cell.d.textContent = two(Math.floor(mins / 1440));
-      cell.h.textContent = two(Math.floor((mins % 1440) / 60));
-      cell.m.textContent = two(mins % 60);
       box.hidden = false;
-      setTimeout(tick, (left % 60000) || 60000);
+      paint(t);
+      setTimeout(tick, (t.left % 60000) || 60000);
     }
     tick();
+
+    if (!rolled) {
+      var go = function () {
+        if (rolled) return;
+        rolled = true;
+        if (io) io.disconnect();
+        paint(now());
+      };
+      var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) go(); });
+      }, { threshold: 0.4 }) : null;
+      if (io) io.observe(box); else go();
+      window.setTimeout(go, 6000);   /* the same failsafe the reveal keeps */
+    }
   }
 
   /* ── 3 · the forms ─────────────────────────────────────────────────────
@@ -306,18 +356,18 @@
      light off at the photograph's edge. */
   function aboutReveal() {
     if (reduced || !('IntersectionObserver' in window)) return;
-    var sec = document.querySelector('#about');
-    if (!sec) return;
-
+    /* 04 by its class, and the news pictures by the new 'photo' role —
+       roles, so a second page with the same parts gets the same arrival. */
     var PICKS = [
-      ['text',  '.tag'],
-      ['title', '.sect__title'],
-      ['text',  '.who'],
-      ['text',  '.about__body > *']
+      ['text',  '.about .tag'],
+      ['title', '.about .sect__title'],
+      ['text',  '.about .who'],
+      ['text',  '.about__body > *'],
+      ['photo', '.news__item .lot__shot']
     ];
     var seen = [];
     PICKS.forEach(function (pick) {
-      Array.prototype.forEach.call(sec.querySelectorAll(pick[1]), function (el) {
+      Array.prototype.forEach.call(document.querySelectorAll(pick[1]), function (el) {
         if (el.hasAttribute('data-reveal')) return;
         /* Only what is still below the fold — never hide what is being read. */
         if (el.getBoundingClientRect().top < window.innerHeight * 0.9) return;
@@ -350,12 +400,92 @@
     }, 6000);
   }
 
+  /* ── 6a · headings leave the line ──────────────────────────────────────
+     Variant C. Every heading the reveal is holding back as a title — v10's
+     list and 04's — is cut into its rendered lines, and each line rises out
+     of its own mask (v11.css). Only headings that are plain text are cut;
+     nothing with markup inside is touched. The cut is measured after the
+     webfonts have landed, so the lines are the real ones, and once the
+     heading has arrived the plain text goes back, so it rewraps with the
+     window like any other text. */
+  function splitTitles() {
+    if (reduced) return;
+    var ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+    ready.then(function () {
+      Array.prototype.forEach.call(document.querySelectorAll('[data-reveal="title"]'), function (h) {
+        if (h.hasAttribute('data-in') || h.childElementCount) return;
+        var text = h.textContent.replace(/\s+/g, ' ').trim();
+        if (!text) return;
+
+        var words = text.split(' ');
+        h.textContent = '';
+        var spans = words.map(function (w, i) {
+          var sp = document.createElement('span');
+          sp.textContent = w;
+          h.appendChild(sp);
+          if (i < words.length - 1) h.appendChild(document.createTextNode(' '));
+          return sp;
+        });
+        var lines = [], top = null;
+        spans.forEach(function (sp) {
+          if (top === null || Math.abs(sp.offsetTop - top) > 2) { lines.push([]); top = sp.offsetTop; }
+          lines[lines.length - 1].push(sp.textContent);
+        });
+
+        h.textContent = '';
+        lines.forEach(function (ws, i) {
+          var ln = document.createElement('span'); ln.className = 'ln';
+          var inner = document.createElement('span');
+          inner.textContent = ws.join(' ');
+          inner.style.setProperty('--i', String(i));
+          ln.appendChild(inner);
+          h.appendChild(ln);
+          if (i < lines.length - 1) h.appendChild(document.createTextNode(' '));
+        });
+        h.classList.add('is-split');
+
+        var mo = new MutationObserver(function () {
+          if (!h.hasAttribute('data-in')) return;
+          mo.disconnect();
+          window.setTimeout(function () {
+            h.classList.remove('is-split');
+            h.textContent = text;
+          }, 1800 + lines.length * 160);
+        });
+        mo.observe(h, { attributes: true, attributeFilter: ['data-in'] });
+      });
+    });
+  }
+
+  /* ── 6b · the car photographs lean toward you ─────────────────────────
+     Sets where a fine pointer is over an inventory card; v11.css turns it
+     into a small pan inside the photograph's zoom. Mouse and trackpad only,
+     and not at all under reduced motion. */
+  function lotPan() {
+    var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+    if (reduced) return;
+    Array.prototype.forEach.call(document.querySelectorAll('.lot'), function (lot) {
+      lot.addEventListener('pointermove', function (e) {
+        if (!fine.matches) return;
+        var r = lot.getBoundingClientRect();
+        lot.style.setProperty('--px', (((e.clientX - r.left) / r.width) * 2 - 1).toFixed(3));
+        lot.style.setProperty('--py', (((e.clientY - r.top) / r.height) * 2 - 1).toFixed(3));
+      });
+      lot.addEventListener('pointerleave', function () {
+        lot.style.removeProperty('--px');
+        lot.style.removeProperty('--py');
+      });
+    });
+  }
+
   function boot() {
     slides();
     countdown();
     forms();
     enquiry();
     aboutReveal();
+    splitTitles();
+    lotPan();
   }
 
   if (document.readyState === 'loading') {

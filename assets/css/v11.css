@@ -185,7 +185,9 @@
 .who__photo { position: relative; isolation: isolate; }
 .who__photo::before {
   content: ''; position: absolute; z-index: -1; pointer-events: none;
-  inset: -14% -30% 2% -14%;
+  /* Wider on the left: the photograph is mirrored (below), and the light sits
+     behind the back of his head — before the flip that was the right. */
+  inset: -14% -14% 2% -30%;
   /* Eased rather than straight: a falloff that goes to nothing in a straight
      line stops dead at its rim, and on graphite the rim draws itself as a
      ring. Five stops on a curve leave nothing to see where it ends. */
@@ -223,6 +225,12 @@
      already transparent under both fades, so nothing visible goes with it. */
   clip-path: inset(calc(var(--hairline) * 2));
 }
+/* Mirrored on Alex's direction, 2026-09-10, so Evan faces into the page —
+   toward his name and the copy — rather than off its left edge. Done here
+   rather than in the file, so the supplied photograph stays as supplied and
+   the choice is one line to undo. The fades and the trim are symmetrical, so
+   they flip with it unchanged. */
+.who__photo img { scale: -1 1; }
 /* The name sits beside the fade, level with the last of the shirt — close
    enough to belong to him, clear of the pixels it would otherwise cross. */
 .who__cap { display: grid; gap: var(--sp-1); margin: 0; padding-block-end: var(--sp-7); }

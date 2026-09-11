@@ -251,7 +251,6 @@
   letter-spacing: var(--track); text-transform: uppercase;
   background: var(--oxblood); color: var(--bone-050);   /* oxblood is fill on dark */
 }
-.event .frame { aspect-ratio: 4 / 3; }
 .countdown { display: flex; flex-wrap: wrap; gap: var(--sp-7); margin-block: var(--sp-4) var(--sp-2); }
 .news__item .countdown__cell { display: grid; gap: var(--sp-2); margin: 0; }
 .countdown__n {

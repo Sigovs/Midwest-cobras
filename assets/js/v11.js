@@ -478,6 +478,108 @@
     });
   }
 
+  /* ── 8 · the footer marque assembles ──────────────────────────────────
+     Alex, 2026-09-11: the big COBRAS on the footer glitches together the
+     first time it is on screen, and does it again on hover after that.
+
+     Each letter is cut into its own span and, while it is unresolved, shows
+     a different glyph from the same face on every tick and sits a little off
+     its place. The letters settle left to right, one per --dur-2, so the
+     whole word takes --dur-7; the tick is a third of --dur-1. All three come
+     from tokens.css — nothing here has a duration of its own.
+
+     The marque is aria-hidden decoration, so cutting it up changes nothing
+     for a reader, and under reduced motion it is never cut at all: the word
+     just stands there. Hover is a second run, not a route — there is nothing
+     behind it to reach, so it has no keyboard twin. */
+  function footMark() {
+    if (reduced) return;
+    var mark = document.querySelector('.site-foot__mark');
+    if (!mark || mark.childElementCount) return;
+    var word = mark.textContent.trim();
+    if (!word) return;
+
+    var GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+/=';
+    var css = getComputedStyle(document.documentElement);
+    function ms(name) { return parseFloat(css.getPropertyValue(name)) || 0; }
+    var step = ms('--dur-2'), tick = ms('--dur-1') / 3, total = ms('--dur-7');
+    if (!step || !tick) return;
+
+    mark.textContent = '';
+    var letters = word.split('').map(function (ch) {
+      var s = document.createElement('span');
+      s.className = 'site-foot__glyph';
+      s.textContent = ch;
+      s.setAttribute('data-ch', ch);
+      mark.appendChild(s);
+      return s;
+    });
+    /* Each span is held at the width of its own letter, in em so it follows
+       the 24vw size, measured once the face is in. Otherwise an I standing
+       in for the W narrows the word and the whole centred line shuffles
+       sideways on every tick — the letters should resolve in place. */
+    var ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+    function measure() {
+      var fs = parseFloat(getComputedStyle(mark).fontSize);
+      if (!fs) return;
+      letters.forEach(function (s) {
+        s.style.inlineSize = (s.getBoundingClientRect().width / fs).toFixed(4) + 'em';
+      });
+    }
+
+    var running = false;
+    function run() {
+      if (running) return;
+      running = true;
+      var t0 = performance.now();
+      letters.forEach(function (s) { s.classList.add('is-noise'); });
+      var timer = window.setInterval(function () {
+        var t = performance.now() - t0;
+        var done = true;
+        letters.forEach(function (s, i) {
+          /* Settled at its own moment; the last letter lands at --dur-7. */
+          if (t >= Math.min((i + 1) * step, total)) {
+            if (s.classList.contains('is-noise')) {
+              s.classList.remove('is-noise');
+              s.textContent = s.getAttribute('data-ch');
+              s.style.removeProperty('translate');
+            }
+            return;
+          }
+          done = false;
+          s.textContent = GLYPHS.charAt(Math.floor(Math.random() * GLYPHS.length));
+          s.style.translate = ((Math.random() - 0.5) * 0.06).toFixed(3) + 'em ' +
+                              ((Math.random() - 0.5) * 0.04).toFixed(3) + 'em';
+        });
+        if (done) { window.clearInterval(timer); running = false; }
+      }, tick);
+    }
+
+    /* The first run, once the marque is actually on screen — the footer is
+       the last thing on the page, and "on load" means when it is seen. Then
+       on every hover. */
+    var first = function () {
+      run();
+      mark.addEventListener('pointerenter', run);
+    };
+    /* Measured before anything can run: a letter mid-noise is the wrong
+       width to pin, and a restored scroll can put the footer on screen at
+       load. */
+    ready.then(function () {
+      measure();
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          if (!entries.some(function (e) { return e.isIntersecting; })) return;
+          io.disconnect();
+          first();
+        }, { threshold: 0.4 });
+        io.observe(mark);
+      } else {
+        first();
+      }
+    });
+  }
+
   function boot() {
     slides();
     countdown();
@@ -486,6 +588,7 @@
     aboutReveal();
     splitTitles();
     lotPan();
+    footMark();
   }
 
   if (document.readyState === 'loading') {

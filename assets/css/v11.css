@@ -870,3 +870,20 @@ html[data-locked] .site-head { inset-inline-end: var(--lock-gap, 0); }
   .lot:is(:hover, :focus-within) .lot__shot .shot { translate: none; filter: none; }
   :is(.btn, .link) span[aria-hidden='true'] { transition: none; }
 }
+
+/* ── the footer marque assembles ──────────────────────────────────────────
+   v11.js cuts COBRAS into letters and runs them through the face's other
+   glyphs before each one lands (Alex, 2026-09-11). The spans are inline-block
+   so the jitter has a box to move; the word loses its kerning pairs for it,
+   which at 24vw and twelve per cent nobody will measure. A letter still in
+   noise is a little dimmer than one that has landed, so the word visibly
+   fills in from the left. No transition on the landing: the snap is the
+   point. */
+.site-foot__glyph { display: inline-block; text-align: center; }
+.site-foot__glyph.is-noise { opacity: 0.55; }
+/* Only a pointer can hover, and only then does the marque take one. Touch
+   devices keep v10's pointer-events: none, so a thumb over the word still
+   scrolls the page. */
+@media (hover: hover) and (pointer: fine) {
+  .js .site-foot__mark { pointer-events: auto; }
+}

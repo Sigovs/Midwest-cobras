@@ -1,10 +1,11 @@
-/* v11.js — four small jobs on top of v10.js. The page is finished without it.
+/* v11.js — five small jobs on top of v10.js. The page is finished without it.
 
    1 · the hero sequence: the video plays once, the stills dissolve through,
        and it comes back round — pausable, and stopped when nobody can see it
    2 · the Grand Opening count, to the minute, handing over to "open" by itself
    3 · the two forms say they are a preview when they are sent
    4 · the build enquiry panel: in from the right, and back out the same way
+   5 · 04's words arrive the way every other section's do
 
    Under reduced motion the sequence never starts: v10.js has already parked
    the video on its last frame, and that still is the hero. */
@@ -289,11 +290,72 @@
     dlg.addEventListener('cancel', function (e) { e.preventDefault(); close(); });
   }
 
+  /* ── 5 · 04's words arrive like every other section's ─────────────────
+     v10's reveal leaves 04 out on purpose: the section was built around a
+     numeral and a pair of plates on scroll timelines, and its type only
+     drifted with its columns. With the numeral and the plates gone, the
+     heading and the client's paragraphs were the only text on the page that
+     simply stood there while everything around them arrived.
+
+     Same roles, same CSS (v10's [data-reveal] rules), same once-only observer,
+     same stagger, same six-second failsafe. Only the list is here, because
+     v10.js is shared with index10 and stays as the client saw it.
+
+     Evan's figure takes the text role — a rise — not the media role. The
+     media wipe is a clip-path on the element, and it would cut the oxblood
+     light off at the photograph's edge. */
+  function aboutReveal() {
+    if (reduced || !('IntersectionObserver' in window)) return;
+    var sec = document.querySelector('#about');
+    if (!sec) return;
+
+    var PICKS = [
+      ['text',  '.tag'],
+      ['title', '.sect__title'],
+      ['text',  '.who'],
+      ['text',  '.about__body > *']
+    ];
+    var seen = [];
+    PICKS.forEach(function (pick) {
+      Array.prototype.forEach.call(sec.querySelectorAll(pick[1]), function (el) {
+        if (el.hasAttribute('data-reveal')) return;
+        /* Only what is still below the fold — never hide what is being read. */
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.9) return;
+        el.setAttribute('data-reveal', pick[0]);
+        seen.push(el);
+      });
+    });
+    if (!seen.length) return;
+
+    /* Stagger per parent, 90ms a step, capped at four steps — v10's numbers. */
+    var parents = [], counts = [];
+    seen.forEach(function (el) {
+      var k = parents.indexOf(el.parentNode);
+      if (k < 0) { k = parents.push(el.parentNode) - 1; counts[k] = 0; }
+      el.style.setProperty('--reveal-delay', (Math.min(counts[k]++, 3) * 90) + 'ms');
+    });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.setAttribute('data-in', '');
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+    seen.forEach(function (el) { io.observe(el); });
+
+    window.setTimeout(function () {
+      io.disconnect();
+      seen.forEach(function (el) { el.setAttribute('data-in', ''); });
+    }, 6000);
+  }
+
   function boot() {
     slides();
     countdown();
     forms();
     enquiry();
+    aboutReveal();
   }
 
   if (document.readyState === 'loading') {

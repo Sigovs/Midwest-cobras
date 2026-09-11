@@ -38,6 +38,12 @@
   --title-lh: 1.02;
   --lede-lh:  1.25;
   --face-rise: 0.27;
+
+  /* The build enquiry's form, at the width it had when the panel was only as
+     wide as the form. The panel now takes half the window (Alex, 2026-09-10:
+     "half the screen for the background, the form itself as it is, aligned
+     left"), and the form keeps this. */
+  --enquiry-w: 24rem;
 }
 
 /* ── the mark ─────────────────────────────────────────────────────────────── */
@@ -408,7 +414,9 @@ html[data-locked] .site-head { inset-inline-end: var(--lock-gap, 0); }
 }
 .enquiry__panel {
   position: absolute; inset-block: 0; inset-inline-end: 0;
-  inline-size: min(30rem, 100%);
+  /* Half the window, never narrower than the form needs, the whole width on
+     a phone. The form inside keeps its own width and sits on the left. */
+  inline-size: min(max(30rem, 50%), 100%);
   overflow-y: auto; overscroll-behavior: contain;
   display: grid; align-content: start; gap: var(--sp-6);
   padding-block: var(--sp-4) var(--sp-7); padding-inline: var(--sp-7);
@@ -445,6 +453,7 @@ html[data-locked] .site-head { inset-inline-end: var(--lock-gap, 0); }
    moving at a right angle to the thing that carried them. */
 .enquiry__content {
   display: grid; gap: var(--sp-6);
+  inline-size: 100%; max-inline-size: var(--enquiry-w); justify-self: start;
   opacity: 0; transform: translateX(var(--travel));
   transition: opacity var(--dur-2) var(--ease-in), transform var(--dur-2) var(--ease-in);
 }

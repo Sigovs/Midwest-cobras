@@ -44,6 +44,26 @@
      "half the screen for the background, the form itself as it is, aligned
      left"), and the form keeps this. */
   --enquiry-w: 24rem;
+
+  /* THE LIGHT IN 04 — two shafts across the ground, Alex, 2026-09-11.
+       --beam-tilt    off vertical; light from a high door, not a spotlight
+       --beam-w       the nearer band's width; the far one is set wider below
+       --beam-a       the nearer band at its brightest, bone on graphite-900.
+                      Nothing is read over it. The far band is set dimmer
+                      below, at 0.07, because the copy column crosses it:
+                      that leaves ink-on-dark at 12:1 and the muted copy at
+                      5.5:1 over the light, measured on the composite
+       --beam-blur    three radii; the band is sharp where it enters and each
+                      layer takes over further down it (masks in .about__beam)
+       --beam-travel  how far the nearer band drifts sideways over the
+                      section's whole time on screen; the far one moves half */
+  --beam-tilt:   -18deg;
+  --beam-w:      16vw;
+  --beam-a:      0.10;
+  --beam-blur-1: 0.375rem;
+  --beam-blur-2: 1.5rem;
+  --beam-blur-3: 3.5rem;
+  --beam-travel: 10vw;
 }
 
 /* ── the mark ─────────────────────────────────────────────────────────────── */
@@ -183,6 +203,96 @@
    scroll rate (about-mid in v10) with the heading rather than moving on its
    own. */
 .about__grid { margin-block-end: 0; }          /* it spaced the pair, which is gone */
+
+/* TWO SHAFTS OF LIGHT — Alex, 2026-09-11. The section is a room, and light
+   comes into it from above: two tilted bands on the ground, behind the grid,
+   clipped by the section (v10's overflow: clip on .about). Cinematic-industrial
+   doing the one job it owns here — light on the canvas — and nothing else: it
+   sets no type and touches no control.
+
+   Progressive blur, built honestly: three copies of the band, each blurred
+   more than the last, each masked to its own stretch of the band's length so
+   the light is sharp where it enters and has dissolved by the floor. One
+   blurred layer with a soft mask reads as a glow; the hand-over between three
+   reads as distance.
+
+   The band itself is a gradient across its width — there is no edge to blur
+   into a ring. The blurs are filters on the layers, not on .about__beam,
+   because a filter on the parent would blur all three the same.
+
+   The tilt is the individual `rotate` property and the drift is `translate`,
+   so the scroll animation writes one property and never overwrites the
+   other. */
+.about__light {
+  position: absolute; inset: 0; z-index: 0; overflow: clip; pointer-events: none;
+}
+.about__beam {
+  /* Well past the section both ways: the box is rotated, so its top edge is
+     a diagonal, and it has to start far enough up that the diagonal — and the
+     blur that bleeds past it — never enters the frame. */
+  position: absolute; inset-block: -30% -30%;
+  inline-size: var(--beam-w);
+  rotate: var(--beam-tilt);
+}
+/* The nearer band stands over the heading's column; the far one, wider and
+   dimmer, behind the copy. Their rest positions are the middle of the drift,
+   so the still page and the reduced-motion page get the composed frame. */
+.about__beam:nth-child(1) { inset-inline-start: 22%; }
+.about__beam:nth-child(2) {
+  inset-inline-start: 54%;
+  inline-size: calc(var(--beam-w) * 1.5);
+  --beam-a: 0.07;
+  --beam-travel: 5vw;
+}
+.about__beam > span {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right,
+    transparent,
+    rgb(var(--bone-100-rgb) / var(--beam-a)) 38% 62%,
+    transparent);
+}
+.about__beam > :nth-child(1) {
+  filter: blur(var(--beam-blur-1));
+  -webkit-mask-image: linear-gradient(to bottom, var(--graphite-950) 25%, transparent 45%);
+          mask-image: linear-gradient(to bottom, var(--graphite-950) 25%, transparent 45%);
+}
+.about__beam > :nth-child(2) {
+  filter: blur(var(--beam-blur-2));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 25%, var(--graphite-950) 45%, var(--graphite-950) 60%, transparent 78%);
+          mask-image: linear-gradient(to bottom, transparent 25%, var(--graphite-950) 45%, var(--graphite-950) 60%, transparent 78%);
+}
+.about__beam > :nth-child(3) {
+  filter: blur(var(--beam-blur-3));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 60%, var(--graphite-950) 78%, var(--graphite-950) 90%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 60%, var(--graphite-950) 78%, var(--graphite-950) 90%, transparent 100%);
+}
+/* The drift — a function of scroll position, like everything else that moves
+   in 04 (v10's three rates). Still whenever the reader is, which is what
+   lets it sit behind copy: DM9 forbids the perpetual loop, not the parallax.
+   Over the section's whole passage, not the entry, so it never finishes
+   while the section is still on screen. Not at all under reduced motion, and
+   not at all where view() is unsupported: the bands stand at rest. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .about__beam {
+      animation: beam-drift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+  }
+}
+@keyframes beam-drift {
+  from { translate: calc(-1 * var(--beam-travel)) 0; }
+  to   { translate: var(--beam-travel) 0; }
+}
+/* On a phone the section is a column three times taller than it is wide, and
+   a band sized to the width becomes a thread. Wider there — the same two
+   shafts, re-cut for the frame rather than shrunk with it. And both at the
+   far band's brightness: in one column the copy crosses either of them, and
+   0.07 is the value that was measured for copy. */
+@media (max-width: 62rem) {
+  .about__beam { --beam-w: 32vw; --beam-a: 0.07; }
+}
 .who {
   display: grid; grid-template-columns: minmax(0, var(--who-w)) auto;
   align-items: end; gap: var(--sp-6);

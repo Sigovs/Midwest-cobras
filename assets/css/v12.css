@@ -29,10 +29,13 @@
    The client, 2026-09-11: the application comes off the scrolling page and
    lives at finance.html; the section stays and sends people there. With the
    form gone the intro has nothing to stay level with, so it is no longer
-   sticky, and it takes the width the argument needs rather than the four
-   columns it shared the row with. */
+   sticky, and it stands in the middle of the row rather than at the left
+   edge of a column it no longer shares — Alex, 2026-09-11. The one centred
+   section on the page, and the only one that is a single statement with a
+   single action: a short bone block at the left margin read as a stub. */
 .finance__intro:only-child {
-  position: static; grid-column: 1 / span 7;
+  position: static; grid-column: 1 / -1;
+  justify-self: center; justify-items: center; text-align: center;
 }
 .finance__intro .btn-row { margin-block-start: var(--sp-3); }
 

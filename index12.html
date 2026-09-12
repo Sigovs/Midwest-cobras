@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="en" data-page="v10">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Midwest Cobras — Backdraft Cobras built, sold, serviced and moved</title>
+<meta name="description" content="Two to four Cobras on the floor at any one time. Built, sold, serviced and moved out of the Midwest.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2308090b'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Allura&display=swap">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/v10.css">
+<!-- v11 is the client's September change request, as a layer over v10.
+     index10 stays exactly as the client last saw it. -->
+<link rel="stylesheet" href="assets/css/v11.css">
+<!-- v12 is the next round of client changes, as a layer over v11 — the same
+     rule one step on: index11 stays exactly as the client last saw it. -->
+<link rel="stylesheet" href="assets/css/v12.css">
+
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+
+<a class="skip" href="#inventory">Skip to the cars</a>
+
+<!-- The header floats over the hero rather than sitting above it: the hero
+     is a full-bleed frame and a bar on top of it would crop the frame. It
+     takes a ground of its own once the page has scrolled past the hero. -->
+<header class="site-head" id="site-head">
+  <!-- THE MARK IS WHITE AND HAS NO CAR — the client, 2026-09-10: "let's change
+       the logo back to white without the car silhouette like you originally
+       had it." That is the original logo.svg, drawn as a mask and painted
+       bone-050. The two candidates and the switch between them retire here;
+       both are in index10 and in git. -->
+  <a class="wordmark wordmark--solo" href="#top">
+    <span class="wordmark__mask" aria-hidden="true"></span>
+    <span class="wordmark__name">Midwest Cobras</span>
+  </a>
+  <nav class="site-nav" aria-label="Primary">
+    <ul>
+      <li><a href="#inventory">Inventory</a></li>
+      <li><a href="#build">Build</a></li>
+      <li><a href="#services">Service</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#consignment">Consignment</a></li>
+      <li><a href="#finance">Finance</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <!-- The number is the one nav item that is not navigation: it leaves the
+           page. Same pill, so it does not become a badge, but it carries the
+           handset because a bare string of digits in a nav row reads as a
+           label rather than something you can press. -->
+      <li class="site-nav__tel">
+        <a href="tel:+19136625000">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+            <path d="M6.4 3.5h3l1.5 3.7-1.9 1.4a11.5 11.5 0 0 0 5.4 5.4l1.4-1.9 3.7 1.5v3a1.6 1.6 0 0 1-1.7 1.6A14.6 14.6 0 0 1 4.8 5.2a1.6 1.6 0 0 1 1.6-1.7Z"
+                  fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg><span>913 662 5000</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       01 · HERO — the Cobra scroll goes here. Placeholder for now: a silver
+       plate the size of the finished frame, so the layout below it is real.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <!-- Background, not content: the headline is what the page says and the
+         video is the room it says it in. Hence aria-hidden, and no controls.
+
+         It loops, on Alex's instruction. The headlights coming on therefore
+         switches off again every eight seconds, which is the cost; what it buys
+         is a hero that is never a still photograph by the time anyone scrolls
+         back up to it.
+
+         muted is not a preference, it is the condition every browser puts on
+         autoplay; playsinline stops iOS taking it fullscreen. The poster is
+         the first frame, so nothing flashes before the first video frame
+         paints, and it is what stands in if the file never arrives at all. -->
+    <!-- A SEQUENCE NOW, AND THE VIDEO IS STILL THE FIRST FRAME. The client:
+         "the cover photo that you have now is really cool — is there a way to
+         keep that but also have it scroll through a few other pics?" So the
+         eight seconds of headlights play once, then the frame dissolves
+         through the stills and comes back round.
+
+         The stills carry data-src and v11.js fetches them after load, so the
+         hero's first paint is exactly what it was. Without scripts the video
+         loops, as it did in v10.
+
+         The day shot is the client's own photograph. The workshop and the
+         engine stand in until the glamour shoot the client says is days away
+         — content-ledger, "index11". -->
+    <div class="hero__media" aria-hidden="true" data-slides>
+      <video class="hero__video hero__slide is-on" autoplay muted playsinline loop preload="auto"
+             poster="assets/video/hero-poster.jpg" width="1920" height="1080">
+        <source src="assets/video/hero.webm" type="video/webm">
+        <source src="assets/video/hero.mp4" type="video/mp4">
+      </video>
+      <img class="hero__slide" data-src="assets/img/photo-workshop.jpg" alt=""
+           width="1920" height="1132" style="--pos: 64% 60%">
+      <img class="hero__slide hero__slide--day" data-src="assets/img/hero-cover-day.jpg" alt=""
+           width="1920" height="1440" style="--pos: 50% 74%">
+      <img class="hero__slide" data-src="assets/img/photo-engine.jpg" alt=""
+           width="1920" height="1178" style="--pos: 50% 46%">
+    </div>
+    <!-- The sequence's own controls. Moving content that starts by itself and
+         runs past five seconds has to be stoppable, and marks that look
+         pressable have to be pressable. Shown by v11.js, so a page without
+         scripts never offers a control that does nothing. -->
+    <div class="hero__dots" data-slides-ui hidden>
+      <button class="hero__pause" type="button" data-slides-pause aria-pressed="false" aria-label="Pause the pictures">
+        <svg class="hero__i-pause" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M8 5v14M16 5v14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <svg class="hero__i-play" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>
+      </button>
+      <ol class="hero__track"></ol>
+    </div>
+
+    <div class="hero__copy">
+      <!-- Two spans rather than a <br>: the line break is still authored, but each
+           line is now an element and can arrive on its own beat. -->
+      <h1 class="hero__title" id="hero-title"><span>A Cobra</span><span>built to order.</span></h1>
+    </div>
+
+    <!-- The bottom band. Separate from .hero__copy because it is a different
+         row of the composition, not a continuation of the headline: it spans
+         the column and the headline does not. -->
+    <div class="hero__foot">
+      <div class="hero__left">
+        <!-- The Backdraft Racing logo, which the client wants "up there
+             somewhere" and not linked. A maker's credit rather than a second
+             logo in the bar: two logos side by side say partnership, "built
+             by" says what the cars are, and only the second is on record.
+             Dark grounds only — its white letters vanish on bone. -->
+        <p class="mfr">
+          <span class="mfr__k">Built by</span>
+          <img class="mfr__logo" src="assets/img/backdraft-racing.png" width="341" height="75" alt="Backdraft Racing">
+        </p>
+        <p class="lede">Two to four cars on the floor at any one time — built,
+          sold, serviced and moved out of the Midwest.</p>
+      </div>
+      <p class="btn-row">
+        <a class="btn btn--solid" href="#inventory">See what is on the floor</a>
+        <a class="btn" href="mailto:evan@midwestcobras.com?subject=Building%20a%20Cobra" data-enquiry-open aria-haspopup="dialog">Build yours</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       02 · INVENTORY — graphite-950
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--950" id="inventory" aria-labelledby="inventory-title">
+    <header class="sect__head">
+      <p class="tag"><span class="tag__dot" aria-hidden="true"></span>02 / Inventory</p>
+      <h2 class="sect__title" id="inventory-title">Four cars, not four hundred.</h2>
+      <a class="btn sect__action" href="#inventory">View all inventory <span aria-hidden="true">&rarr;</span></a>
+      <p class="rail-btns" data-rail-controls hidden>
+        <button class="round" type="button" data-rail="prev" aria-label="Previous car">&larr;</button>
+        <button class="round" type="button" data-rail="next" aria-label="Next car">&rarr;</button>
+      </p>
+      <p class="lede sect__note">Midwest holds two to four Cobras at any one
+        time. Each one gets the room a car like this needs — shown at the size
+        you would stand in front of it, not shrunk into a grid cell.</p>
+    </header>
+
+    <!-- A carousel, the same family as 07 and 08 — but one car at a time and
+         centred, cut on BOTH edges rather than only the right. The card is two
+         thirds of the window: the section promises the size you would stand in
+         front of the car at, and that promise is what sets the width. -->
+    <ul class="rail rail--lots" data-rail-track tabindex="0" aria-label="Cars on the floor, scrollable">
+      <li class="lot">
+        <span class="lot__shot">
+          <img class="shot shot--lot" src="assets/img/car-rt4-front.jpg" width="1728" height="972"
+               alt="RT4 Classic Edition" loading="lazy" decoding="async">
+        </span>
+        <p class="lot__state">Lot 01 &middot; Available</p>
+        <h3 class="lot__name">RT4 Classic Edition</h3>
+        <dl class="spec">
+          <div><dt>Price</dt><dd>From $66,900</dd></div>
+          <div><dt>Wheels</dt><dd>18 in wheels</dd></div>
+          <div><dt>Pipes</dt><dd>Ceramic-coated side pipes</dd></div>
+        </dl>
+        <a class="link" href="#inventory">Full specification <span aria-hidden="true">&rarr;</span></a>
+      </li>
+
+      <li class="lot">
+        <span class="lot__shot">
+          <img class="shot shot--lot" src="assets/img/car-rt4b-front.jpg" width="1728" height="972"
+               alt="RT4B Black Edition" loading="lazy" decoding="async">
+        </span>
+        <p class="lot__state">Lot 02 &middot; Available</p>
+        <h3 class="lot__name">RT4B Black Edition</h3>
+        <dl class="spec">
+          <div><dt>Price</dt><dd>From $70,500</dd></div>
+          <div><dt>Wheels</dt><dd>Matte black, 18 in</dd></div>
+          <div><dt>Pipes</dt><dd>Ceramic-coated black roll bars</dd></div>
+        </dl>
+        <a class="link" href="#inventory">Full specification <span aria-hidden="true">&rarr;</span></a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       03 · BUILD — bone-050. The record ground: this is where the
+       specification is written down, so it is lit.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--950 build" id="build" aria-labelledby="build-title">
+    <div class="build__top">
+      <div class="build__copy">
+        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>03 / Build</p>
+        <h2 class="sect__title" id="build-title">Yours is not built yet.</h2>
+        <p class="lede">Every car leaves this shop specified by the person who is
+          going to drive it. Colour, stance, pipes, the stitching on the seat you
+          will actually sit in — the list below is the conversation, in the order
+          it happens.</p>
+        <!-- The section's action opens the build enquiry, the panel at the foot
+             of the page. The client asked for this button to go to Evan's email;
+             Alex made it a short form instead, 2026-09-10. The href is still
+             that email, so without scripts it does exactly what the client asked. -->
+        <p class="btn-row">
+          <a class="btn btn--solid" href="mailto:evan@midwestcobras.com?subject=Building%20a%20Cobra" data-enquiry-open aria-haspopup="dialog">Build yours</a>
+        </p>
+      </div>
+      <!-- One stage, five frames stacked in it, the active one opaque. The
+           swap is CSS — the section watches which step is under the pointer
+           with :has() — so it works with scripts off and there is no state
+           being kept in two places.
+
+           The first image carries the alt text and the other four are
+           aria-hidden: to a screen reader this is one picture of the car, and
+           the five steps below already say in words what each one shows. Five
+           alt texts for five views of the same car is noise, not access. -->
+      <div class="build__stage" data-build-stage>
+        <img class="build__shot" data-build="1" src="assets/img/build-01.webp"
+             width="1600" height="900" decoding="async"
+             alt="A Backdraft Cobra, the specification the five steps below describe">
+        <img class="build__shot" data-build="2" src="assets/img/build-02.webp"
+             width="1600" height="900" loading="lazy" decoding="async" alt="" aria-hidden="true">
+        <img class="build__shot" data-build="3" src="assets/img/build-03.webp"
+             width="1600" height="900" loading="lazy" decoding="async" alt="" aria-hidden="true">
+        <img class="build__shot" data-build="4" src="assets/img/build-04.webp"
+             width="1600" height="900" loading="lazy" decoding="async" alt="" aria-hidden="true">
+        <img class="build__shot" data-build="5" src="assets/img/build-05.webp"
+             width="1600" height="900" loading="lazy" decoding="async" alt="" aria-hidden="true">
+      </div>
+    </div>
+
+    <ol class="steps" data-build-steps>
+      <li class="step" data-build-step="1" tabindex="0">
+        <p class="step__n">01</p>
+        <h3 class="step__h">Model</h3>
+        <p>RT4 Classic or RT4B Black. Everything below follows from this one.</p>
+      </li>
+      <li class="step" data-build-step="2" tabindex="0">
+        <p class="step__n">02</p>
+        <h3 class="step__h">Body and colour</h3>
+        <p>Paint, stripes, and whether the car wears them at all.</p>
+      </li>
+      <li class="step" data-build-step="3" tabindex="0">
+        <p class="step__n">03</p>
+        <h3 class="step__h">Wheels and stance</h3>
+        <p>Eighteen-inch rims, matte black among them, and what sits under the arches.</p>
+      </li>
+      <li class="step" data-build-step="4" tabindex="0">
+        <p class="step__n">04</p>
+        <h3 class="step__h">Pipes and roll bars</h3>
+        <p>Ceramic-coated, side-exit. The two parts you hear and the two you grab.</p>
+      </li>
+      <li class="step" data-build-step="5" tabindex="0">
+        <p class="step__n">05</p>
+        <h3 class="step__h">Interior</h3>
+        <p>Upholstery, stitching, gauges, wheel. The part you are actually sitting in.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       04 · WHO WE ARE — graphite-900. The client's own words, sent 2026-09-10
+       ("we're not a fan of the wording… this is what we've come up with"), set
+       as written apart from two hyphens. The "40 years" numeral and headline
+       go with the old copy: their text is about Evan, a lifelong enthusiast,
+       and the shop opens its doors on the 27th.
+
+       It stays a section on the main page and becomes a nav item as well:
+       this is the one place on the page where the company is a person.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--900 about" id="about" aria-labelledby="about-title">
+    <!-- TWO SHAFTS OF LIGHT ACROSS THE GROUND — Alex, 2026-09-11. Light coming
+         into the shop from above, the way it does through a high door: two
+         bands, tilted, each sharp where it enters and dissolving by the time
+         it reaches the floor (three blurs, masked along the band — v11.css).
+         They drift sideways with the scroll, the nearer one further, and they
+         are still whenever the reader is. Ground, not content: aria-hidden,
+         behind the grid, and nothing depends on them. -->
+    <div class="about__light" aria-hidden="true">
+      <div class="about__beam"><span></span><span></span><span></span></div>
+      <div class="about__beam"><span></span><span></span><span></span></div>
+    </div>
+    <div class="about__grid">
+      <div>
+        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>04 / Who we are</p>
+        <h2 class="sect__title" id="about-title">Welcome to Midwest Cobras.</h2>
+        <!-- Evan, under the heading — Alex's layout, 2026-09-10. A cut-out on the
+             section's own ground, a low oxblood light behind him, the shirt
+             dissolving into the ground. The client asked for "a serious picture
+             so people can put a face with the company"; this is where the face
+             goes. "Owner" is from Alex's mock and is in the content ledger. -->
+        <figure class="who">
+          <div class="who__photo">
+            <img src="assets/img/about-evan.png" width="1000" height="1000"
+                 alt="Portrait of Evan Kunard" loading="lazy" decoding="async">
+          </div>
+          <figcaption class="who__cap">
+            <span class="who__name">Evan Kunard</span>
+            <span class="who__role">Owner</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="about__body">
+        <p class="lede about__lede">Everyone knows the iconic look of a Cobra. They turn heads everywhere they go.</p>
+        <p>Lifelong car enthusiast, Evan Kunard, has a deep passion for the classics.
+          From frame-off restorations to owning his dream car, he now strives to
+          help others make their dream car a reality!</p>
+        <p>At Midwest Cobras, we genuinely cherish your choice to invest in the car
+          of your dreams. We dedicate ourselves to meticulous attention to every
+          detail, employing a focused and passionate approach to help fulfill your
+          aspirations.</p>
+        <p>We look forward to building long-lasting relationships with our
+          customers, who become part of our Cobra family.</p>
+      </div>
+    </div>
+    <!-- THE PAIR IS GONE — Alex, 2026-09-10: the long horizontal photograph
+         comes out and Evan moves under the heading. What went with it: the
+         section's only picture of a car, and v10's two-rate plate
+         choreography. To restore, copy .about__pair from index10.html; its
+         styles are still in v10.css, and about-side-pipe.png is still in
+         assets/img. -->
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       05 · SERVICES and 06 · CONSIGNMENT share one light ground, because
+       they are one continuous statement about what happens after the sale.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--bone sect--tight-b" id="services" data-ground="light" aria-labelledby="services-title">
+    <header class="sect__head sect__head--pair">
+      <p class="tag"><span class="tag__dot" aria-hidden="true"></span>05 / Services</p>
+      <h2 class="sect__title" id="services-title">After it is yours.</h2>
+      <!-- PROPOSED WORDING. The client asked for this line to change and is
+           "still mulling over how we want it to read"; this is a draft to react
+           to, not their copy. -->
+      <p class="lede sect__note">The people who build your Cobra are the ones who
+        look after it — the tune-ups, the service, and getting it where it needs
+        to go.</p>
+    </header>
+
+    <ul class="rows">
+      <li class="row">
+        <img class="row__shot" src="assets/img/service-tune-up.png" width="1254" height="1254"
+             alt="A Cobra up on the ramps with its bonnet off" loading="lazy" decoding="async">
+        <div class="row__body">
+          <p class="tag"><span class="tag__dot" aria-hidden="true"></span>01</p>
+          <h3 class="row__h">Tune-up and service</h3>
+          <p>These are not cars a general workshop sees twice a year. Setup,
+            carburetion, cooling, brakes and the annual going-over, done by people
+            with your car's own build sheet open in front of them.</p>
+        </div>
+        <a class="link" href="tel:+19136625000">Call to schedule <span aria-hidden="true">&rarr;</span></a>
+      </li>
+      <li class="row">
+        <img class="row__shot" src="assets/img/service-transport.png" width="1448" height="1086"
+             alt="A Cobra strapped down inside an enclosed transporter, ramps still out" loading="lazy" decoding="async">
+        <div class="row__body">
+          <p class="tag"><span class="tag__dot" aria-hidden="true"></span>02</p>
+          <h3 class="row__h">Transportation</h3>
+          <p>Enclosed transport to the shop, to an event, or to a new owner. The
+            car does not arrive on an open trailer behind somebody's pickup.</p>
+        </div>
+        <!-- No action here, at the client's request: transport "will be
+             discussed during the finalization of the sale… or during the custom
+             build process". -->
+      </li>
+    </ul>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       06 · NEWS AND EVENTS — graphite-950
+       Not the record, so not the light ground: this is the marque speaking
+       about its own world, which puts it with the dark family. It also breaks
+       services and consignment apart, so the page does not run three light
+       blocks together.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--950 news" id="news" aria-labelledby="news-title">
+    <header class="sect__head">
+      <p class="tag"><span class="tag__dot" aria-hidden="true"></span>06 / News and events</p>
+      <h2 class="sect__title" id="news-title">News and events.</h2>
+      <a class="btn sect__action" href="#news">All news and events <span aria-hidden="true">&rarr;</span></a>
+    </header>
+
+    <!-- THE SHOP'S OWN EVENTS NOW, NOT THE INDUSTRY'S. v10 carried three
+         auction stories from other people's sites. The client wants the Grand
+         Opening pinned with a countdown and the two shows they are taking cars
+         to. The two show cards carry stand-in pictures, on Alex's direction
+         2026-09-10, until the client posts their own from the day — both are
+         in the content ledger as stand-ins. -->
+    <ul class="news__list">
+      <li class="news__item news__item--lead event">
+        <p class="event__pin"><span>Pinned</span></p>
+        <p class="news__meta"><time datetime="2026-09-27T11:30-05:00">Sunday 27 September · 11:30 AM</time></p>
+        <h3 class="news__h">Grand Opening.</h3>
+        <p>Come and see the shop, the cars on the floor and the people who build
+          them. 14510 Parallel Lane, Basehor.</p>
+        <!-- Minutes, not seconds: a number ticking every second beside a
+             paragraph is motion in a reading zone, and the day arrives on time
+             without it. The date above is always there; the count only runs
+             with scripts and hands over to "We're open" by itself. -->
+        <div class="countdown" data-countdown="2026-09-27T11:30:00-05:00" role="timer"
+             aria-label="Time until the Grand Opening" hidden>
+          <p class="countdown__cell"><span class="countdown__n" data-cd="d">00</span><span class="countdown__u">Days</span></p>
+          <p class="countdown__cell"><span class="countdown__n" data-cd="h">00</span><span class="countdown__u">Hours</span></p>
+          <p class="countdown__cell"><span class="countdown__n" data-cd="m">00</span><span class="countdown__u">Minutes</span></p>
+        </div>
+        <p class="countdown__open" data-countdown-open hidden>We&rsquo;re open — come by.</p>
+        <a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=14510+Parallel+Lane+Basehor+Kansas+66007"
+           rel="noopener noreferrer" target="_blank">Get directions <span aria-hidden="true">&rarr;</span></a>
+      </li>
+      <li class="news__item event">
+        <span class="lot__shot">
+          <img class="shot shot--wide" src="assets/img/photo-backdraft-mark.jpg" width="1036" height="680"
+               alt="Stand-in photograph (Hinderer Cobras): the Backdraft Racing mark on a Cobra's windscreen, on display" loading="lazy" decoding="async">
+        </span>
+        <p class="news__meta"><time datetime="2026-09-12">Saturday 12 September</time> &middot; Weather permitting</p>
+        <h3 class="news__h">Out at the show.</h3>
+        <p>We&rsquo;re taking cars out to a show. Name and place to follow.</p>
+      </li>
+      <li class="news__item event">
+        <span class="lot__shot">
+          <img class="shot shot--wide" src="assets/img/photo-cobra-black.jpg" width="762" height="556"
+               alt="Stand-in photograph (Hinderer Cobras): a black Cobra parked outside" loading="lazy" decoding="async">
+        </span>
+        <p class="news__meta"><time datetime="2026-09-19">Saturday 19 September</time> &middot; Weather permitting</p>
+        <h3 class="news__h">And the week after.</h3>
+        <p>A second show the following Saturday. Look for the Cobras.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="sect sect--bone sect--bone-raised sect--tight-t" id="consignment" data-ground="light" aria-labelledby="consignment-title">
+    <div class="consign">
+      <div>
+        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>07 / Consignment</p>
+        <h2 class="sect__title" id="consignment-title">Already have one.</h2>
+      </div>
+      <div class="consign__body">
+        <p class="lede">If the car is going to change hands, it is worth it
+          changing hands properly — photographed the way it deserves, described
+          accurately, and shown to people who already know what they are looking
+          at.</p>
+        <a class="link" href="tel:+19136625000">Talk about consigning <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       REVIEWS — REMOVED at the client's request, 2026-09-10: "let's remove this
+       section for now since we haven't sold one yet!"
+
+       What went with it: the page's only section in a customer's voice. It
+       comes back when there are customers, and with real ones — the four
+       accounts it carried were written for the mockup (content-ledger, row 8
+       and "Simulated content"), and a shop that has not sold a car yet cannot
+       carry them. To restore, copy section#reviews from index10.html: its
+       styles (.card, .rail) are still in v10.css, and v10.js gives buttons to
+       any .sect holding a [data-rail-track].
+     ══════════════════════════════════════════════════════════════════════ -->
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       08 · FINANCE — bone. New in v11: the client wants "a fillable credit
+       application that would go straight to Evan@midwestcobras.com". This is
+       the design of it. It is connected to nothing — this build is for design
+       approval, where the data goes is a later conversation — so sending it
+       only says so.
+
+       On the light ground because it is the record: a form is facts being
+       written down, which is what the bone surfaces here are for. Four short
+       groups rather than one long list, so it reads as five minutes and not as
+       paperwork.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--bone finance" id="finance" data-ground="light" aria-labelledby="finance-title">
+    <div class="finance__grid">
+      <div class="finance__intro">
+        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>08 / Finance</p>
+        <h2 class="sect__title" id="finance-title">Apply for financing.</h2>
+        <p class="lede">Fill this in and it goes straight to Evan, who will be in
+          touch to talk it through. It takes about five minutes.</p>
+        <p class="finance__note">Required fields are marked with an asterisk.</p>
+      </div>
+
+      <form class="apply" data-apply method="post" novalidate
+            data-apply-note="Thank you. This is a design preview, so nothing was sent — on the live site this application goes straight to Evan.">
+        <fieldset class="apply__group">
+          <legend class="apply__legend"><span>01</span>About you</legend>
+          <div class="apply__fields">
+            <div class="field"><label for="ap-first">First name <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-first" name="first_name" autocomplete="given-name" required></div>
+            <div class="field"><label for="ap-last">Last name <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-last" name="last_name" autocomplete="family-name" required></div>
+            <div class="field"><label for="ap-email">Email <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-email" name="email" type="email" autocomplete="email" required></div>
+            <div class="field"><label for="ap-phone">Phone <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-phone" name="phone" type="tel" autocomplete="tel" required></div>
+            <div class="field"><label for="ap-dob">Date of birth <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-dob" name="dob" autocomplete="bday" placeholder="MM / DD / YYYY" inputmode="numeric" required></div>
+            <div class="field"><label for="ap-ssn">Social Security number <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-ssn" name="ssn" autocomplete="off" placeholder="000-00-0000" inputmode="numeric" required></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="apply__group">
+          <legend class="apply__legend"><span>02</span>Where you live</legend>
+          <div class="apply__fields">
+            <div class="field field--wide"><label for="ap-street">Street address <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-street" name="street" autocomplete="address-line1" required></div>
+            <div class="field"><label for="ap-city">City <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-city" name="city" autocomplete="address-level2" required></div>
+            <div class="field"><label for="ap-state">State <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-state" name="state" autocomplete="address-level1" required></div>
+            <div class="field"><label for="ap-zip">ZIP <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-zip" name="zip" autocomplete="postal-code" inputmode="numeric" required></div>
+            <div class="field"><label for="ap-since">Time at this address</label>
+              <select id="ap-since" name="time_at_address">
+                <option value="">Choose one</option><option>Less than a year</option>
+                <option>1–2 years</option><option>2–5 years</option><option>More than 5 years</option>
+              </select></div>
+            <div class="field"><label for="ap-own">Rent or own</label>
+              <select id="ap-own" name="housing">
+                <option value="">Choose one</option><option>Own</option><option>Rent</option><option>Other</option>
+              </select></div>
+            <div class="field"><label for="ap-housing">Monthly housing payment</label>
+              <input id="ap-housing" name="housing_payment" inputmode="decimal" placeholder="$"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="apply__group">
+          <legend class="apply__legend"><span>03</span>Where you work</legend>
+          <div class="apply__fields">
+            <div class="field"><label for="ap-employer">Employer <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-employer" name="employer" autocomplete="organization" required></div>
+            <div class="field"><label for="ap-title">Job title</label>
+              <input id="ap-title" name="job_title" autocomplete="organization-title"></div>
+            <div class="field"><label for="ap-income">Gross monthly income <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-income" name="income" inputmode="decimal" placeholder="$" required></div>
+            <div class="field"><label for="ap-tenure">Time at this job</label>
+              <select id="ap-tenure" name="time_at_job">
+                <option value="">Choose one</option><option>Less than a year</option>
+                <option>1–2 years</option><option>2–5 years</option><option>More than 5 years</option>
+              </select></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="apply__group">
+          <legend class="apply__legend"><span>04</span>The car</legend>
+          <div class="apply__fields">
+            <div class="field"><label for="ap-car">The car you&rsquo;re interested in</label>
+              <select id="ap-car" name="vehicle">
+                <option value="">Choose one</option><option>RT4 Classic Edition</option>
+                <option>RT4B Black Edition</option><option>A custom build</option><option>Not sure yet</option>
+              </select></div>
+            <div class="field"><label for="ap-down">Down payment</label>
+              <input id="ap-down" name="down_payment" inputmode="decimal" placeholder="$"></div>
+          </div>
+        </fieldset>
+
+        <div class="apply__consent">
+          <input id="ap-consent" name="consent" type="checkbox" required>
+          <label for="ap-consent">I confirm the information above is accurate, and I authorize
+            Midwest Cobras, LLC and its lending partners to obtain my credit report to
+            evaluate this application.</label>
+        </div>
+
+        <p class="apply__actions">
+          <button class="btn btn--solid" type="submit">Send application</button>
+        </p>
+        <p class="apply__status" data-apply-status role="status" hidden></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       09 · GALLERY — graphite-950, the darkest ground on the page, so the
+       pictures are the only thing in it.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--950" id="gallery" aria-labelledby="gallery-title">
+    <header class="sect__head sect__head--rail">
+      <p class="tag tag--ig">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+          <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/>
+        </svg>@midwestcobrasllc
+      </p>
+      <h2 class="sect__title" id="gallery-title">Live from the shop.</h2>
+      <p class="rail-btns" data-rail-controls hidden>
+        <button class="round" type="button" data-rail="prev" aria-label="Previous pictures">&larr;</button>
+        <button class="round" type="button" data-rail="next" aria-label="Next pictures">&rarr;</button>
+      </p>
+    </header>
+
+    <!-- Each picture is a link to the profile, not a decoration that merely
+         behaves like one. It lifts and carries the Instagram mark on hover, and
+         a thing that does that has to go somewhere when it is clicked. The alt
+         text is the link text, so the five links read as five different things
+         rather than five copies of the same one. -->
+    <ul class="rail rail--shots" data-rail-track tabindex="0" aria-label="Pictures from the shop, scrollable">
+      <li><a class="tile" href="https://www.instagram.com/midwestcobrasllc/">
+        <img class="shot shot--tall" src="assets/img/shot-01.jpg" width="900" height="1200"
+             alt="Bonnet and headlight, close" loading="lazy" decoding="async">
+        <span class="tile__ig" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></span>
+      </a></li>
+      <li><a class="tile" href="https://www.instagram.com/midwestcobrasllc/">
+        <img class="shot shot--tall" src="assets/img/shot-03.jpg" width="900" height="1200"
+             alt="The RT4 nose, low and angled" loading="lazy" decoding="async">
+        <span class="tile__ig" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></span>
+      </a></li>
+      <li><a class="tile" href="https://www.instagram.com/midwestcobrasllc/">
+        <img class="shot shot--tall" src="assets/img/shot-04.jpg" width="900" height="1200"
+             alt="Stripes running over the bonnet, from above" loading="lazy" decoding="async">
+        <span class="tile__ig" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></span>
+      </a></li>
+      <li><a class="tile" href="https://www.instagram.com/midwestcobrasllc/">
+        <img class="shot shot--tall" src="assets/img/shot-02.jpg" width="900" height="1200"
+             alt="The RT4B nose, low and angled" loading="lazy" decoding="async">
+        <span class="tile__ig" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></span>
+      </a></li>
+      <li><a class="tile" href="https://www.instagram.com/midwestcobrasllc/">
+        <img class="shot shot--tall" src="assets/img/shot-05.jpg" width="900" height="1200"
+             alt="The RT4B flank and side pipe" loading="lazy" decoding="async">
+        <span class="tile__ig" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg></span>
+      </a></li>
+    </ul>
+
+    <p class="gallery__follow"><a class="link" href="https://www.instagram.com/midwestcobrasllc/">Follow on Instagram <span aria-hidden="true">&rarr;</span></a></p>
+  </section>
+
+</main>
+
+<!-- Every line here is off the client's own dealer form — content-ledger rows
+     10, 10b, 10c, read 2026-08-28. The form's Fax field is empty, so there is no
+     fax. "Part of a group or other dealer: No" is why it says independent. -->
+<footer class="site-foot" id="contact">
+  <!-- The photograph is the ground the footer stands on, not a band under it.
+       aria-hidden and no alt job: everything the footer says is in the text
+       above it, and the picture is the room that text is said in. -->
+  <div class="site-foot__media" aria-hidden="true">
+    <img src="assets/img/footer.jpg" width="1920" height="960" alt="" loading="lazy" decoding="async">
+  </div>
+
+  <!-- The marque at the size the building is. It is decoration and it is
+       already said by the wordmark, so it is hidden from the reader. -->
+  <p class="site-foot__mark" aria-hidden="true">Cobras</p>
+
+  <div class="site-foot__grid">
+    <div class="site-foot__brand">
+      <!-- The same mark as the header. Hidden from the reader here: the header
+           has already given the company its name. -->
+      <p class="wordmark wordmark--foot wordmark--solo" aria-hidden="true"><span class="wordmark__mask"></span></p>
+      <p class="site-foot__line">Backdraft Cobras built,<br>sold, serviced and moved.</p>
+      <p class="mfr mfr--foot"><span class="mfr__k">Built by</span><img class="mfr__logo" src="assets/img/backdraft-racing.png" width="341" height="75" alt="Backdraft Racing"></p>
+    </div>
+
+    <nav class="site-foot__col" aria-label="The shop">
+      <p class="site-foot__k">The shop</p>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#inventory">Inventory</a></li>
+        <li><a href="#build">Build</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+      </ul>
+    </nav>
+
+    <nav class="site-foot__col" aria-label="Services">
+      <p class="site-foot__k">Services</p>
+      <ul>
+        <li><a href="#services">Tune-Up / Service</a></li>
+        <li><a href="#services">Transportation</a></li>
+        <li><a href="#consignment">Consignment</a></li>
+        <li><a href="#finance">Finance</a></li>
+      </ul>
+    </nav>
+    <!-- The four accounts, from the links in the client's change request. -->
+    <nav class="site-foot__col" aria-label="Follow">
+      <p class="site-foot__k">Follow</p>
+      <ul>
+        <li><a href="https://www.instagram.com/midwestcobrasllc/" rel="noopener noreferrer" target="_blank">Instagram</a></li>
+        <li><a href="https://www.facebook.com/profile.php?id=61579691830492" rel="noopener noreferrer" target="_blank">Facebook</a></li>
+        <li><a href="https://www.youtube.com/@MidwestCobrasLLC" rel="noopener noreferrer" target="_blank">YouTube</a></li>
+        <li><a href="https://www.tiktok.com/@midwestcobrasllc" rel="noopener noreferrer" target="_blank">TikTok</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-foot__col">
+      <p class="site-foot__k">Contact</p>
+      <!-- One number, the shop's, and the two people by email — Evan first. The
+           client, 2026-09-10: "add Evan's name & email before mine and not
+           include cell numbers… our main number should be the only one shown." -->
+      <address>
+        <p>14510 Parallel Lane<br>Basehor, Kansas 66007</p>
+        <p><a href="tel:+19136625000">913 662 5000</a></p>
+        <p class="site-foot__who">Evan Kunard<br>
+          <a href="mailto:evan@midwestcobras.com">evan@midwestcobras.com</a></p>
+        <p class="site-foot__who">Kristi Kunard<br>
+          <a href="mailto:kristi@midwestcobras.com">kristi@midwestcobras.com</a></p>
+      </address>
+    </div>
+  </div>
+
+  <p class="site-foot__legal">
+    <span>&copy; 2026 Midwest Cobras, LLC</span>
+    <span>Powered by All Auto Network</span>
+  </p>
+
+</footer>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       THE BUILD ENQUIRY — a panel from the right edge, opened by both "Build
+       yours" buttons. A short form to Evan instead of an email link, on Alex's
+       direction, 2026-09-10. It keeps what the client asked for — "we just
+       prefer that a customer call, email or come in to spec one out" — by
+       starting that conversation rather than replacing it, and it says the
+       other two ways in underneath.
+
+       Design only: sending it says so. Without scripts the buttons are plain
+       mailto links to Evan and this never opens.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <dialog class="enquiry" id="build-enquiry" data-enquiry aria-labelledby="enquiry-title">
+    <div class="enquiry__scrim" data-enquiry-close></div>
+    <div class="enquiry__panel" data-ground="light">
+      <div class="enquiry__top">
+        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Build yours</p>
+        <button class="enquiry__close" type="button" data-enquiry-close aria-label="Close">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <div class="enquiry__content">
+        <header class="enquiry__head">
+          <h2 class="enquiry__title" id="enquiry-title" tabindex="-1">Start your build.</h2>
+          <p class="enquiry__lede">Tell Evan what you have in mind and he will be in
+            touch to spec it out with you — by phone, by email or at the shop.</p>
+        </header>
+
+        <form class="enquiry__form" data-apply method="post" novalidate
+              data-apply-note="Thank you. This is a design preview, so nothing was sent — on the live site this goes straight to Evan.">
+          <div class="enquiry__fields">
+            <div class="field field--wide"><label for="en-name">Name <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="en-name" name="name" autocomplete="name" required></div>
+            <div class="field"><label for="en-email">Email <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="en-email" name="email" type="email" autocomplete="email" required></div>
+            <div class="field"><label for="en-phone">Phone</label>
+              <input id="en-phone" name="phone" type="tel" autocomplete="tel"></div>
+            <div class="field field--wide"><label for="en-car">The car</label>
+              <select id="en-car" name="vehicle">
+                <option value="">Choose one</option><option>RT4 Classic Edition</option>
+                <option>RT4B Black Edition</option><option>Not sure yet</option>
+              </select></div>
+            <div class="field field--wide"><label for="en-msg">What you have in mind</label>
+              <textarea id="en-msg" name="message" rows="3" placeholder="Colour, stripes, wheels, timing"></textarea></div>
+          </div>
+          <p class="apply__actions">
+            <button class="btn btn--solid" type="submit">Send to Evan</button>
+          </p>
+          <p class="apply__status" data-apply-status role="status" hidden></p>
+        </form>
+
+        <p class="enquiry__alt">Rather talk it through? Call
+          <a href="tel:+19136625000">913 662 5000</a>, or come by the shop at
+          14510 Parallel Lane, Basehor.</p>
+      </div>
+    </div>
+  </dialog>
+
+<!-- Twin Le Mans stripes at the left edge, filling with the page's scroll —
+     variant C. Decorative orientation, so hidden from assistive tech; drawn
+     and driven entirely by v11.css. -->
+<div class="stripes" aria-hidden="true"><i></i><i></i></div>
+
+<script src="assets/js/v10.js" defer></script>
+<script src="assets/js/v11.js" defer></script>
+<script src="assets/js/v12.js" defer></script>
+</body>
+</html>

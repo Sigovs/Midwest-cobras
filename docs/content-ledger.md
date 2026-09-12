@@ -322,3 +322,17 @@ unverified lines may appear as ordinary copy and are listed here instead.
 | Who we are | Evan Kunard's portrait | **supplied** | Cut-out added by Alex 2026-09-10 as SEPTEMBER CHANGES/a0bbe15e-8909-45b2-b523-ec858e9e980f.png (1254 px, transparent ground), shipped as assets/img/about-evan.png at 1000 px. Replaces the square studio shot added earlier the same day. Shown mirrored, on Alex's direction (CSS, not the file) |
 | Who we are | "Owner" under Evan's name | **unverified — client to confirm** | From Alex's layout mock, 2026-09-10. Not stated in the change request, which calls him a "lifelong car enthusiast" |
 | News | `photo-backdraft-mark.jpg` (12 Sep card), `photo-cobra-black.jpg` (19 Sep card) | **stand-in** | On Alex's direction, 2026-09-10 ("simulate images"). Two of the four borrowed images in 0b — Hinderer Cobras' photography, a different dealer's cars — so the alt text says stand-in. Replaced by the client's own photos from each show |
+
+## index12 — the client's second request of 2026-09-11
+
+Source for every "sourced" row below: the client's message of 2026-09-11,
+relayed by Alex ("Just a couple of other changes please"), four numbered
+points. Same footing as index11: a design mockup for approval, under Alex's
+authorisation of 2026-08-24.
+
+| Where | Claim | Status | Note |
+|---|---|---|---|
+| Build enquiry panel | "Rather talk it through in person? Call 913 662 5000 to schedule an appointment in our shop." | **sourced — the client's own copy** | Point 1, set as written. Replaces v11's line, which offered the street address as a place to come by |
+| Build enquiry panel | "(That's only because we're not always in town – so it's all by appointment only.)" | **sourced — the client's own copy, and a promise** | Point 1, set as written apart from the hyphen. "By appointment only" is a standing condition the client has to honour on every page that gives the address |
+| Build, Build enquiry panel | "colour" → "color", three places | **as asked** | Point 3. The render only; source comments, docs and this ledger keep their spelling |
+| Header, footer | "Home" in the navigation | **as asked** | Point 4, Evan's request. Goes to the top of the page, the same place the mark goes |

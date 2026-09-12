@@ -7,3 +7,10 @@
 
 :root {
 }
+
+/* ── the build enquiry's closing lines ────────────────────────────────────
+   The client's second line is a parenthesis on the first, and it is set like
+   one: inside the same block, so the panel's gap does not open between them,
+   at the same small size and muted ink, one step of space below the line it
+   explains. */
+.enquiry__aside { display: block; padding-block-start: var(--sp-2); text-wrap: pretty; }

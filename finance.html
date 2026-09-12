@@ -262,8 +262,10 @@
 
 </footer>
 
+<!-- v12.js FIRST: it marks the reveal elements before v10.js looks at them, so
+     v10's failsafe never owns them — the reason is at the top of v12.js. -->
+<script src="assets/js/v12.js" defer></script>
 <script src="assets/js/v10.js" defer></script>
 <script src="assets/js/v11.js" defer></script>
-<script src="assets/js/v12.js" defer></script>
 </body>
 </html>

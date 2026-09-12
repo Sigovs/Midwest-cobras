@@ -48,3 +48,18 @@
 .page-finance main > .sect:first-of-type {   /* v10.js puts its marker div first */
   padding-block-start: calc(var(--bar-h, var(--bar-clear)) + var(--pad));
 }
+
+/* ── the build panel arrives evenly ───────────────────────────────────────
+   Alex, 2026-09-11: "remove the bouncing effect from the slide-in form, make
+   the transition smooth". Measured: on --ease-panel the panel covered 72% of
+   its travel in the first 140ms and spent the next 500ms creeping to the
+   edge — no overshoot, but a sprint and a crawl read as a spring. Now
+   --ease-out over the same --dur-5: one deceleration, evenly spent. The
+   form no longer trails the panel by its own --travel and a beat's delay;
+   it rides in with it and only fades up, so there is one motion to watch
+   rather than two finishing at different moments. Exit unchanged. */
+.enquiry[data-open] .enquiry__panel { transition: transform var(--dur-5) var(--ease-out); }
+.enquiry__content { transform: none; }
+.enquiry[data-open] .enquiry__content {
+  transition: opacity var(--dur-4) var(--ease-out) var(--dur-1);
+}

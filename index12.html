@@ -51,7 +51,7 @@
       <li><a href="#services">Service</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#consignment">Consignment</a></li>
-      <li><a href="#finance">Finance</a></li>
+      <li><a href="finance.html">Finance</a></li>
       <li><a href="#gallery">Gallery</a></li>
       <!-- The number is the one nav item that is not navigation: it leaves the
            page. Same pill, so it does not become a badge, but it carries the
@@ -500,98 +500,21 @@
       <div class="finance__intro">
         <p class="tag"><span class="tag__dot" aria-hidden="true"></span>08 / Finance</p>
         <h2 class="sect__title" id="finance-title">Apply for financing.</h2>
-        <p class="lede">Fill this in and it goes straight to Evan, who will be in
-          touch to talk it through. It takes about five minutes.</p>
-        <p class="finance__note">Required fields are marked with an asterisk.</p>
+        <p class="lede">Financing through the shop. The application goes straight
+          to Evan, who will be in touch to talk it through. It takes about five
+          minutes.</p>
+        <p class="btn-row">
+          <a class="btn btn--solid" href="finance.html">Apply for financing</a>
+        </p>
       </div>
 
-      <form class="apply" data-apply method="post" novalidate
-            data-apply-note="Thank you. This is a design preview, so nothing was sent — on the live site this application goes straight to Evan.">
-        <fieldset class="apply__group">
-          <legend class="apply__legend"><span>01</span>About you</legend>
-          <div class="apply__fields">
-            <div class="field"><label for="ap-first">First name <span class="field__req" aria-hidden="true">*</span></label>
-              <input id="ap-first" name="first_name" autocomplete="given-name" required></div>
-            <div class="field"><label for="ap-last">Last name <span class="field__req" aria-hidden="true">*</span></label>
-              <input id="ap-last" name="last_name" autocomplete="family-name" required></div>
-            <div class="field"><label for="ap-email">Email <span class="field__req" aria-hidden="true">*</span></label>
-              <input id="ap-email" name="email" type="email" autocomplete="email" required></div>
-            <div class="field"><label for="ap-phone">Phone <span class="field__req" aria-hidden="true">*</span></label>
-              <input id="ap-phone" name="phone" type="tel" autocomplete="tel" required></div>
-            <div class="field"><label for="ap-dob">Date of birth <span class="field__req" aria-hidden="true">*</span></label>
-              <input id="ap-dob" name="dob" autocomplete="bday" placeholder="MM / DD / YYYY" inputmode="numeric" required></div>
-            <div class="field"><label for="ap-ssn">Social Security number <span class="field__req" aria-hidden="true">*</span></label>
-              <input id="ap-ssn" name="ssn" autocomplete="off" placeholder="000-00-0000" inputmode="numeric" required></div>
-          </div>
-        </fieldset>
-
-        <fieldset class="apply__group">
-          <legend class="apply__legend"><span>02</span>Where you live</legend>
-          <div class="apply__fields">
-            <div class="field field--wide"><label for="ap-street">Street address <span class="field__req" aria-hidden="true">*</span></label>
-              <input id="ap-street" name="street" autocomplete="address-line1" required></div>
-            <div class="field"><label for="ap-city">City <span class="field__req" aria-hidden="true">*</span></label>
-              <input id="ap-city" name="city" autocomplete="address-level2" required></div>
-            <div class="field"><label for="ap-state">State <span class="field__req" aria-hidden="true">*</span></label>
-              <input id="ap-state" name="state" autocomplete="address-level1" required></div>
-            <div class="field"><label for="ap-zip">ZIP <span class="field__req" aria-hidden="true">*</span></label>
-              <input id="ap-zip" name="zip" autocomplete="postal-code" inputmode="numeric" required></div>
-            <div class="field"><label for="ap-since">Time at this address</label>
-              <select id="ap-since" name="time_at_address">
-                <option value="">Choose one</option><option>Less than a year</option>
-                <option>1–2 years</option><option>2–5 years</option><option>More than 5 years</option>
-              </select></div>
-            <div class="field"><label for="ap-own">Rent or own</label>
-              <select id="ap-own" name="housing">
-                <option value="">Choose one</option><option>Own</option><option>Rent</option><option>Other</option>
-              </select></div>
-            <div class="field"><label for="ap-housing">Monthly housing payment</label>
-              <input id="ap-housing" name="housing_payment" inputmode="decimal" placeholder="$"></div>
-          </div>
-        </fieldset>
-
-        <fieldset class="apply__group">
-          <legend class="apply__legend"><span>03</span>Where you work</legend>
-          <div class="apply__fields">
-            <div class="field"><label for="ap-employer">Employer <span class="field__req" aria-hidden="true">*</span></label>
-              <input id="ap-employer" name="employer" autocomplete="organization" required></div>
-            <div class="field"><label for="ap-title">Job title</label>
-              <input id="ap-title" name="job_title" autocomplete="organization-title"></div>
-            <div class="field"><label for="ap-income">Gross monthly income <span class="field__req" aria-hidden="true">*</span></label>
-              <input id="ap-income" name="income" inputmode="decimal" placeholder="$" required></div>
-            <div class="field"><label for="ap-tenure">Time at this job</label>
-              <select id="ap-tenure" name="time_at_job">
-                <option value="">Choose one</option><option>Less than a year</option>
-                <option>1–2 years</option><option>2–5 years</option><option>More than 5 years</option>
-              </select></div>
-          </div>
-        </fieldset>
-
-        <fieldset class="apply__group">
-          <legend class="apply__legend"><span>04</span>The car</legend>
-          <div class="apply__fields">
-            <div class="field"><label for="ap-car">The car you&rsquo;re interested in</label>
-              <select id="ap-car" name="vehicle">
-                <option value="">Choose one</option><option>RT4 Classic Edition</option>
-                <option>RT4B Black Edition</option><option>A custom build</option><option>Not sure yet</option>
-              </select></div>
-            <div class="field"><label for="ap-down">Down payment</label>
-              <input id="ap-down" name="down_payment" inputmode="decimal" placeholder="$"></div>
-          </div>
-        </fieldset>
-
-        <div class="apply__consent">
-          <input id="ap-consent" name="consent" type="checkbox" required>
-          <label for="ap-consent">I confirm the information above is accurate, and I authorize
-            Midwest Cobras, LLC and its lending partners to obtain my credit report to
-            evaluate this application.</label>
-        </div>
-
-        <p class="apply__actions">
-          <button class="btn btn--solid" type="submit">Send application</button>
-        </p>
-        <p class="apply__status" data-apply-status role="status" hidden></p>
-      </form>
+      <!-- THE FORM WENT TO ITS OWN PAGE — the client, 2026-09-11: "take the
+           application off of the main scrolling page and just keep it to the
+           navigation bar". The section stays, as Alex directed; the four
+           groups, the consent line and the send-nothing status are all on
+           finance.html, unchanged, and the Finance item in both navs goes
+           there. To restore it here, copy the form back from that page:
+           its styles are still in v11.css. -->
     </div>
   </section>
 
@@ -694,7 +617,7 @@
         <li><a href="#services">Tune-Up / Service</a></li>
         <li><a href="#services">Transportation</a></li>
         <li><a href="#consignment">Consignment</a></li>
-        <li><a href="#finance">Finance</a></li>
+        <li><a href="finance.html">Finance</a></li>
       </ul>
     </nav>
     <!-- The four accounts, from the links in the client's change request. -->

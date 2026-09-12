@@ -6,6 +6,16 @@
    this file adds are named at the top rather than typed where they are used. */
 
 :root {
+  /* THE FINANCE PAGE STARTS UNDER A FIXED BAR. The home page hides the bar's
+     height inside the hero; finance.html has no hero, so its first section
+     has to clear the bar itself. v12.js measures the bar and writes --bar-h;
+     this is the fallback for a page without scripts — v10's scroll-padding
+     number (9rem, 12rem on a phone where the bar is logo-over-nav), the
+     site's own measure of "past the bar", not a new one. */
+  --bar-clear: 9rem;
+}
+@media (max-width: 62rem) {
+  :root { --bar-clear: 12rem; }
 }
 
 /* ── the build enquiry's closing lines ────────────────────────────────────
@@ -14,3 +24,24 @@
    at the same small size and muted ink, one step of space below the line it
    explains. */
 .enquiry__aside { display: block; padding-block-start: var(--sp-2); text-wrap: pretty; }
+
+/* ── 08 · finance, without its form ───────────────────────────────────────
+   The client, 2026-09-11: the application comes off the scrolling page and
+   lives at finance.html; the section stays and sends people there. With the
+   form gone the intro has nothing to stay level with, so it is no longer
+   sticky, and it takes the width the argument needs rather than the four
+   columns it shared the row with. */
+.finance__intro:only-child {
+  position: static; grid-column: 1 / span 7;
+}
+.finance__intro .btn-row { margin-block-start: var(--sp-3); }
+
+/* ── finance.html ─────────────────────────────────────────────────────────
+   The application as a whole page. The first section sits below the fixed
+   bar and keeps its own top padding under it, so the page opens with the
+   same air every section on the home page has. The bar is two rows on a
+   laptop and three on a phone, which is why it is measured rather than
+   guessed. */
+.page-finance main > .sect:first-of-type {   /* v10.js puts its marker div first */
+  padding-block-start: calc(var(--bar-h, var(--bar-clear)) + var(--pad));
+}

@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en" data-page="v10">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Apply for financing — Midwest Cobras</title>
+<meta name="description" content="The credit application, straight to Evan at Midwest Cobras. Four short groups; about five minutes.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2308090b'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Allura&display=swap">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/v10.css">
+<!-- v11 is the client's September change request, as a layer over v10.
+     index10 stays exactly as the client last saw it. -->
+<link rel="stylesheet" href="assets/css/v11.css">
+<!-- v12 is the next round of client changes, as a layer over v11 — the same
+     rule one step on: index11 stays exactly as the client last saw it. -->
+<link rel="stylesheet" href="assets/css/v12.css">
+
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body class="page-finance">
+
+<a class="skip" href="#finance">Skip to the application</a>
+
+<!-- THE APPLICATION HAS ITS OWN PAGE — the client, 2026-09-11: "take the
+     application off of the main scrolling page and just keep it to the
+     navigation bar". Same shell as index12 — head, bar, footer, stylesheets
+     in the same order, v12's layers over v11's — with the application as
+     the whole of main. Finance on the home page keeps its section and sends
+     people here. -->
+<header class="site-head" id="site-head">
+  <!-- THE MARK IS WHITE AND HAS NO CAR — the client, 2026-09-10: "let's change
+       the logo back to white without the car silhouette like you originally
+       had it." That is the original logo.svg, drawn as a mask and painted
+       bone-050. The two candidates and the switch between them retire here;
+       both are in index10 and in git. -->
+  <a class="wordmark wordmark--solo" href="index12.html">
+    <span class="wordmark__mask" aria-hidden="true"></span>
+    <span class="wordmark__name">Midwest Cobras</span>
+  </a>
+  <nav class="site-nav" aria-label="Primary">
+    <ul>
+      <!-- HOME, SAID IN WORDS — Evan, 2026-09-11: he would never have known
+           the logo goes back to the top, and neither will the "old guys" he
+           expects to be reading this. The mark keeps its link; this is the
+           same route with a name on it. -->
+      <li><a href="index12.html">Home</a></li>
+      <li><a href="index12.html#inventory">Inventory</a></li>
+      <li><a href="index12.html#build">Build</a></li>
+      <li><a href="index12.html#services">Service</a></li>
+      <li><a href="index12.html#about">About</a></li>
+      <li><a href="index12.html#consignment">Consignment</a></li>
+      <li><a href="finance.html" aria-current="page">Finance</a></li>
+      <li><a href="index12.html#gallery">Gallery</a></li>
+      <!-- The number is the one nav item that is not navigation: it leaves the
+           page. Same pill, so it does not become a badge, but it carries the
+           handset because a bare string of digits in a nav row reads as a
+           label rather than something you can press. -->
+      <li class="site-nav__tel">
+        <a href="tel:+19136625000">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+            <path d="M6.4 3.5h3l1.5 3.7-1.9 1.4a11.5 11.5 0 0 0 5.4 5.4l1.4-1.9 3.7 1.5v3a1.6 1.6 0 0 1-1.7 1.6A14.6 14.6 0 0 1 4.8 5.2a1.6 1.6 0 0 1 1.6-1.7Z"
+                  fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg><span>913 662 5000</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       08 · FINANCE — bone. New in v11: the client wants "a fillable credit
+       application that would go straight to Evan@midwestcobras.com". This is
+       the design of it. It is connected to nothing — this build is for design
+       approval, where the data goes is a later conversation — so sending it
+       only says so.
+
+       On the light ground because it is the record: a form is facts being
+       written down, which is what the bone surfaces here are for. Four short
+       groups rather than one long list, so it reads as five minutes and not as
+       paperwork.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--bone finance finance--page" id="finance" data-ground="light" aria-labelledby="finance-title">
+    <div class="finance__grid">
+      <div class="finance__intro">
+        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Finance</p>
+        <h1 class="sect__title" id="finance-title">Apply for financing.</h1>
+        <p class="lede">Fill this in and it goes straight to Evan, who will be in
+          touch to talk it through. It takes about five minutes.</p>
+        <p class="finance__note">Required fields are marked with an asterisk.</p>
+      </div>
+
+      <form class="apply" data-apply method="post" novalidate
+            data-apply-note="Thank you. This is a design preview, so nothing was sent — on the live site this application goes straight to Evan.">
+        <fieldset class="apply__group">
+          <legend class="apply__legend"><span>01</span>About you</legend>
+          <div class="apply__fields">
+            <div class="field"><label for="ap-first">First name <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-first" name="first_name" autocomplete="given-name" required></div>
+            <div class="field"><label for="ap-last">Last name <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-last" name="last_name" autocomplete="family-name" required></div>
+            <div class="field"><label for="ap-email">Email <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-email" name="email" type="email" autocomplete="email" required></div>
+            <div class="field"><label for="ap-phone">Phone <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-phone" name="phone" type="tel" autocomplete="tel" required></div>
+            <div class="field"><label for="ap-dob">Date of birth <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-dob" name="dob" autocomplete="bday" placeholder="MM / DD / YYYY" inputmode="numeric" required></div>
+            <div class="field"><label for="ap-ssn">Social Security number <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-ssn" name="ssn" autocomplete="off" placeholder="000-00-0000" inputmode="numeric" required></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="apply__group">
+          <legend class="apply__legend"><span>02</span>Where you live</legend>
+          <div class="apply__fields">
+            <div class="field field--wide"><label for="ap-street">Street address <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-street" name="street" autocomplete="address-line1" required></div>
+            <div class="field"><label for="ap-city">City <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-city" name="city" autocomplete="address-level2" required></div>
+            <div class="field"><label for="ap-state">State <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-state" name="state" autocomplete="address-level1" required></div>
+            <div class="field"><label for="ap-zip">ZIP <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-zip" name="zip" autocomplete="postal-code" inputmode="numeric" required></div>
+            <div class="field"><label for="ap-since">Time at this address</label>
+              <select id="ap-since" name="time_at_address">
+                <option value="">Choose one</option><option>Less than a year</option>
+                <option>1–2 years</option><option>2–5 years</option><option>More than 5 years</option>
+              </select></div>
+            <div class="field"><label for="ap-own">Rent or own</label>
+              <select id="ap-own" name="housing">
+                <option value="">Choose one</option><option>Own</option><option>Rent</option><option>Other</option>
+              </select></div>
+            <div class="field"><label for="ap-housing">Monthly housing payment</label>
+              <input id="ap-housing" name="housing_payment" inputmode="decimal" placeholder="$"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="apply__group">
+          <legend class="apply__legend"><span>03</span>Where you work</legend>
+          <div class="apply__fields">
+            <div class="field"><label for="ap-employer">Employer <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-employer" name="employer" autocomplete="organization" required></div>
+            <div class="field"><label for="ap-title">Job title</label>
+              <input id="ap-title" name="job_title" autocomplete="organization-title"></div>
+            <div class="field"><label for="ap-income">Gross monthly income <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="ap-income" name="income" inputmode="decimal" placeholder="$" required></div>
+            <div class="field"><label for="ap-tenure">Time at this job</label>
+              <select id="ap-tenure" name="time_at_job">
+                <option value="">Choose one</option><option>Less than a year</option>
+                <option>1–2 years</option><option>2–5 years</option><option>More than 5 years</option>
+              </select></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="apply__group">
+          <legend class="apply__legend"><span>04</span>The car</legend>
+          <div class="apply__fields">
+            <div class="field"><label for="ap-car">The car you&rsquo;re interested in</label>
+              <select id="ap-car" name="vehicle">
+                <option value="">Choose one</option><option>RT4 Classic Edition</option>
+                <option>RT4B Black Edition</option><option>A custom build</option><option>Not sure yet</option>
+              </select></div>
+            <div class="field"><label for="ap-down">Down payment</label>
+              <input id="ap-down" name="down_payment" inputmode="decimal" placeholder="$"></div>
+          </div>
+        </fieldset>
+
+        <div class="apply__consent">
+          <input id="ap-consent" name="consent" type="checkbox" required>
+          <label for="ap-consent">I confirm the information above is accurate, and I authorize
+            Midwest Cobras, LLC and its lending partners to obtain my credit report to
+            evaluate this application.</label>
+        </div>
+
+        <p class="apply__actions">
+          <button class="btn btn--solid" type="submit">Send application</button>
+        </p>
+        <p class="apply__status" data-apply-status role="status" hidden></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot" id="contact">
+  <!-- The photograph is the ground the footer stands on, not a band under it.
+       aria-hidden and no alt job: everything the footer says is in the text
+       above it, and the picture is the room that text is said in. -->
+  <div class="site-foot__media" aria-hidden="true">
+    <img src="assets/img/footer.jpg" width="1920" height="960" alt="" loading="lazy" decoding="async">
+  </div>
+
+  <!-- The marque at the size the building is. It is decoration and it is
+       already said by the wordmark, so it is hidden from the reader. -->
+  <p class="site-foot__mark" aria-hidden="true">Cobras</p>
+
+  <div class="site-foot__grid">
+    <div class="site-foot__brand">
+      <!-- The same mark as the header. Hidden from the reader here: the header
+           has already given the company its name. -->
+      <p class="wordmark wordmark--foot wordmark--solo" aria-hidden="true"><span class="wordmark__mask"></span></p>
+      <p class="site-foot__line">Backdraft Cobras built,<br>sold, serviced and moved.</p>
+      <p class="mfr mfr--foot"><span class="mfr__k">Built by</span><img class="mfr__logo" src="assets/img/backdraft-racing.png" width="341" height="75" alt="Backdraft Racing"></p>
+    </div>
+
+    <nav class="site-foot__col" aria-label="The shop">
+      <p class="site-foot__k">The shop</p>
+      <ul>
+        <li><a href="index12.html">Home</a></li>
+        <li><a href="index12.html#about">About</a></li>
+        <li><a href="index12.html#inventory">Inventory</a></li>
+        <li><a href="index12.html#build">Build</a></li>
+        <li><a href="index12.html#gallery">Gallery</a></li>
+      </ul>
+    </nav>
+
+    <nav class="site-foot__col" aria-label="Services">
+      <p class="site-foot__k">Services</p>
+      <ul>
+        <li><a href="index12.html#services">Tune-Up / Service</a></li>
+        <li><a href="index12.html#services">Transportation</a></li>
+        <li><a href="index12.html#consignment">Consignment</a></li>
+        <li><a href="finance.html">Finance</a></li>
+      </ul>
+    </nav>
+    <!-- The four accounts, from the links in the client's change request. -->
+    <nav class="site-foot__col" aria-label="Follow">
+      <p class="site-foot__k">Follow</p>
+      <ul>
+        <li><a href="https://www.instagram.com/midwestcobrasllc/" rel="noopener noreferrer" target="_blank">Instagram</a></li>
+        <li><a href="https://www.facebook.com/profile.php?id=61579691830492" rel="noopener noreferrer" target="_blank">Facebook</a></li>
+        <li><a href="https://www.youtube.com/@MidwestCobrasLLC" rel="noopener noreferrer" target="_blank">YouTube</a></li>
+        <li><a href="https://www.tiktok.com/@midwestcobrasllc" rel="noopener noreferrer" target="_blank">TikTok</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-foot__col">
+      <p class="site-foot__k">Contact</p>
+      <!-- One number, the shop's, and the two people by email — Evan first. The
+           client, 2026-09-10: "add Evan's name & email before mine and not
+           include cell numbers… our main number should be the only one shown." -->
+      <address>
+        <p>14510 Parallel Lane<br>Basehor, Kansas 66007</p>
+        <p><a href="tel:+19136625000">913 662 5000</a></p>
+        <p class="site-foot__who">Evan Kunard<br>
+          <a href="mailto:evan@midwestcobras.com">evan@midwestcobras.com</a></p>
+        <p class="site-foot__who">Kristi Kunard<br>
+          <a href="mailto:kristi@midwestcobras.com">kristi@midwestcobras.com</a></p>
+      </address>
+    </div>
+  </div>
+
+  <p class="site-foot__legal">
+    <span>&copy; 2026 Midwest Cobras, LLC</span>
+    <span>Powered by All Auto Network</span>
+  </p>
+
+</footer>
+
+<script src="assets/js/v10.js" defer></script>
+<script src="assets/js/v11.js" defer></script>
+<script src="assets/js/v12.js" defer></script>
+</body>
+</html>

@@ -91,10 +91,14 @@
   font-family: var(--face); font-weight: 600; font-size: var(--h3);
   line-height: var(--lh-heading); letter-spacing: var(--ls-heading);
 }
+/* The running total, as in the summary: drums, and what a choice cost beside
+   them — bone here, because oxblood is never text on the dark. */
 .cfg-base__price {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-1) var(--sp-3);
   font-family: var(--face); font-weight: 600; font-size: var(--lot);
   line-height: var(--lh-tight); letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums;
 }
+.cfg-base__bar .cfg-delta { color: var(--ink-on-dark); }
 @container (min-width: 48rem) {
   .cfg-base__bar {
     position: absolute; inset-block-start: 50%; inset-inline-end: var(--sp-6);

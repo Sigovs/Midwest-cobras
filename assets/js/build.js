@@ -97,7 +97,10 @@
       }
     };
   }
-  var totalMeter = meter(totalEl), barMeter = meter(barTotal);
+  /* The card on the base picture carries the same number: Alex, 2026-09-14,
+     "the price there has to change with the choice". */
+  var baseLabel = q('[data-base-label]'), baseName = q('[data-base-name]');
+  var totalMeter = meter(totalEl), barMeter = meter(barTotal), baseMeter = meter(q('[data-base-price]'));
   var seen = {}, lastTotal = null, lastModel = null;
 
   function read(group) {
@@ -176,12 +179,16 @@
     var prefix = model ? '' : 'From';
     if (totalMeter) totalMeter.set(prefix, total, turn);
     if (barMeter) barMeter.set(prefix, total, turn);
+    if (baseMeter) baseMeter.set(prefix, total, turn);
+    if (baseName) baseName.textContent = model ? model.value : 'Backdraft RT4';
+    if (baseLabel) baseLabel.textContent = !model ? 'Start here' : (missing ? 'Configured so far' : 'Estimated price');
     /* What the choice cost, beside the price. Not while a model is being
        picked for the first time or cleared: "From $66,900" becoming "$70,500"
        is a starting price turning into a price, not a charge. */
     if (loud && model && lastModel && total !== lastTotal) {
       if (totalMeter) totalMeter.delta(total - lastTotal);
       if (barMeter) barMeter.delta(total - lastTotal);
+      if (baseMeter) baseMeter.delta(total - lastTotal);
     }
     lastTotal = total; lastModel = model;
 

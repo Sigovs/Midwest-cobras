@@ -259,72 +259,72 @@ details[open] > summary .facets__caret { transform: translateY(25%) rotate(-135d
   .results { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* ── Text: the car sent to a phone ────────────────────────────────────────────
-   The home page's slide-in panel (v11's .enquiry) on its record ground, with
-   what the dealer platform puts there: the car, a phone number to send it to,
-   and a code to scan. The number is one line like every field in that panel —
-   +1, the digits, and the send at the end of the rule. The code is drawn in
-   ink on the raised bone; a phone has no use for a code to scan with itself,
-   so it is only shown where the panel is beside a page. */
-.textcar__car {
-  display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: var(--sp-4); align-items: center;
-  padding-block: var(--sp-4); border-block: var(--hairline) solid var(--rule);
+/* ── Text: the car, sent to a phone ───────────────────────────────────────────
+   Alex, 2026-09-14: "not like AI slop — the styles exist; make it expensive".
+   So the panel is set the way this site sets a car. The photograph first, on
+   its own dark frame. The car's name is the title — it is what opened — and
+   its price is in the display face. The facts are the home page's spec rows.
+   One field, the number written large on a single rule, as every field in
+   this panel is a rule rather than a box. The site's solid button, full
+   width, its arrow stepping on hover. The scan code is an aside under a
+   hairline, ink on the surface, not a boxed widget. Nothing is boxed that a
+   rule can part. On a phone there is nothing to scan with, so no code. */
+.textcar .enquiry__content { max-inline-size: 32rem; }
+.textcar__plate { margin: 0; overflow: clip; border-radius: var(--radius-media); background: var(--graphite-900); }
+.textcar__plate img { display: block; inline-size: 100%; block-size: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+.textcar__head { gap: var(--sp-3); }
+.textcar__k {
+  margin: 0; font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
 }
-.textcar__shot {
-  display: block; inline-size: 100%; block-size: auto; aspect-ratio: 4 / 3; object-fit: cover;
-  border-radius: var(--radius-control); background: var(--bone-200);
+.textcar .enquiry__title { text-wrap: balance; }
+.textcar__price {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums; color: var(--text);
 }
-.textcar__facts { display: grid; gap: var(--sp-1); min-inline-size: 0; }
-.textcar__name { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--news-h); line-height: var(--lh-heading); color: var(--text); }
-.textcar__price { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-body); font-variant-numeric: tabular-nums; color: var(--text); }
-.textcar__meta {
-  margin: 0; font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
-  font-variant-numeric: tabular-nums; color: var(--text-muted);
+.textcar__spec { margin: 0; }
+.textcar__spec > div:last-child { border-block-end: var(--hairline) solid var(--rule); }
+.textcar__spec dd { margin: 0; font-variant-numeric: tabular-nums; }
+
+.textcar__form { display: grid; gap: var(--sp-3); }
+.textcar__label {
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text-muted); transition: color var(--dur-2) var(--ease-out);
 }
-.textcar__form { display: grid; gap: var(--sp-2); }
+.textcar__form:focus-within .textcar__label { color: var(--text); }
 .textcar .phone {
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--sp-3);
+  display: flex; align-items: baseline; gap: var(--sp-3);
   border-block-end: var(--hairline) solid var(--ink-on-light-muted);
-  transition: border-color var(--dur-2) var(--ease-out);
+  transition: border-color var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
 }
 .textcar .phone:hover { border-block-end-color: var(--ink-on-light); }
-.textcar .phone:focus-within { border-block-end: calc(var(--hairline) * 2) solid var(--ink-on-light); }
-.textcar .phone__cc { font-family: var(--mono); font-size: var(--fs-body); color: var(--text); }
-.textcar .field .phone input,
-.textcar .field .phone input:is(:hover, :focus, :focus-visible) {
-  min-block-size: 2.75rem; padding-inline: 0; border: 0; outline: none; background: transparent;
-  box-shadow: none;              /* v11 draws focus as a shadow under the field; the rule under the row does it here */
-  font-variant-numeric: tabular-nums;
+/* The rule doubles on focus, the panel's one focus indicator for a field. */
+.textcar .phone:focus-within { border-block-end-color: var(--ink-on-light); box-shadow: 0 var(--hairline) 0 0 var(--ink-on-light); }
+.phone__cc { font-family: var(--mono); font-size: var(--fs-body); color: var(--text-muted); }
+.textcar .phone input {
+  flex: 1; min-inline-size: 0; min-block-size: 3.25rem; padding: var(--sp-2) 0;
+  border: 0; outline: none; background: transparent; color: var(--text);
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums;
 }
+.textcar .phone input::placeholder { color: var(--ink-on-light-muted); opacity: 1; font-weight: 500; }
 .textcar .phone input[aria-invalid='true'] { color: var(--oxblood); }
-.phone__send {
-  display: grid; place-items: center; inline-size: 2.75rem; block-size: 2.75rem; margin-block-end: var(--sp-1);
-  padding: 0; border: 0; cursor: pointer;
-  background: var(--ink-on-light); color: var(--bone-050);
-  transition: transform var(--dur-3) var(--ease-back);
-}
-.phone__send svg { transition: transform var(--dur-3) var(--ease-settle); }
-.phone__send:is(:hover, :focus-visible) svg { transform: translateX(var(--sp-1)); }
-.phone__send:active { transform: scale(0.95); transition: transform var(--dur-1) var(--ease-press); }
-.phone__send:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--focus-offset); }
-.textcar__note { margin: 0; font-size: var(--fs-body-s); color: var(--text-muted); }
+.textcar__note { margin: 0; font-size: var(--fs-body-s); line-height: var(--lh-body); color: var(--text-muted); }
 .textcar__note[data-state='sent'] { color: var(--text); }
 .textcar__note[data-state='error'] { color: var(--oxblood); }            /* oxblood is text on light */
-.textcar__qr {
-  margin: 0; display: grid; justify-items: center; gap: var(--sp-3);
-  padding: var(--sp-5); background: var(--bone-050); border: var(--hairline) solid var(--rule);
+.textcar__send { inline-size: 100%; justify-content: space-between; margin-block-start: var(--sp-3); cursor: pointer; }
+
+.textcar__scan {
+  display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--sp-5); align-items: center;
+  padding-block-start: var(--sp-5); border-block-start: var(--hairline) solid var(--rule);
 }
-.textcar__qr[hidden] { display: none; }
-.textcar__code { inline-size: 9rem; }
 .textcar__code svg { display: block; inline-size: 100%; block-size: auto; }
-.textcar__code svg rect { fill: var(--bone-050); }
+.textcar__code svg rect { fill: transparent; }
 .textcar__code svg path { fill: var(--ink-on-light); }
-.textcar__qr figcaption {
-  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
-  text-align: center; color: var(--text-muted);
-}
+.textcar__scan p { margin: 0; display: grid; gap: var(--sp-1); font-size: var(--fs-body-s); line-height: var(--lh-body); color: var(--text-muted); max-inline-size: 32ch; }
+.textcar__scan .textcar__k { color: var(--text); }
 @media (max-width: 61.99rem) {
-  .textcar__qr { display: none; }
+  .textcar__scan { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

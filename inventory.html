@@ -404,43 +404,46 @@
       </button>
     </div>
 
+    <!-- Set as this site sets a car, not as a widget: the photograph first on
+         its own dark frame, the car's name as the title and its price in the
+         display face, the facts as the home page's spec rows, one number
+         written large on a single rule, the site's solid button, and the
+         scan code as an aside on a hairline. Alex, 2026-09-14: "not like AI
+         slop — the styles exist; make it expensive". -->
     <div class="enquiry__content">
-      <header class="enquiry__head">
-        <h2 class="enquiry__title" id="enquiry-title" tabindex="-1">Send this car to your phone.</h2>
-        <p class="enquiry__lede">A text with a link to it, so it is with you when you are away from the screen.</p>
-      </header>
-
-      <div class="textcar__car" data-textcar>
-        <img class="textcar__shot" src="assets/img/srp/inv-rt4b-red.jpg" alt="" width="1200" height="900" decoding="async" data-textcar-shot>
-        <div class="textcar__facts">
-          <p class="textcar__name" data-textcar-name>2024 Backdraft Racing RT4B Black Edition</p>
-          <p class="textcar__price" data-textcar-price>$78,900</p>
-          <p class="textcar__meta" data-textcar-meta>420 mi · Stock MC-1024</p>
-        </div>
-      </div>
-
-      <form class="textcar__form" data-textcar-form novalidate>
-        <div class="field">
-          <label for="tc-phone">Send to phone</label>
-          <div class="phone">
-            <span class="phone__cc" aria-hidden="true">+1</span>
-            <input id="tc-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national"
-                   placeholder="(913) 555-0100" aria-describedby="tc-status" required>
-            <button class="phone__send" type="submit" aria-label="Send the link to this phone">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M5 12h13m0 0-5-5m5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
-        </div>
-        <p class="textcar__note" id="tc-status" data-textcar-status role="status">A ten-digit US number.</p>
-      </form>
-
-      <figure class="textcar__qr">
-        <div class="textcar__code" data-textcar-qr aria-hidden="true"></div>
-        <figcaption>Or scan it with your phone</figcaption>
+      <figure class="textcar__plate" data-textcar>
+        <img src="assets/img/srp/inv-rt4b-red.jpg" alt="" width="1200" height="900" decoding="async" data-textcar-shot>
       </figure>
 
-      <p class="enquiry__alt">Rather text the shop about it?
-        <a href="sms:+19136625000" data-textcar-sms>913 662 5000</a></p>
+      <header class="enquiry__head textcar__head">
+        <p class="textcar__k">Send to your phone</p>
+        <h2 class="enquiry__title" id="enquiry-title" tabindex="-1" data-textcar-name>2024 Backdraft Racing RT4B Black Edition</h2>
+        <p class="textcar__price" data-textcar-price>$78,900</p>
+      </header>
+
+      <dl class="spec textcar__spec">
+        <div><dt>Mileage</dt><dd data-textcar-miles>420 mi</dd></div>
+        <div><dt>Stock</dt><dd data-textcar-stock>MC-1024</dd></div>
+      </dl>
+
+      <form class="textcar__form" data-textcar-form novalidate>
+        <label class="textcar__label" for="tc-phone">Your mobile number</label>
+        <div class="phone">
+          <span class="phone__cc" aria-hidden="true">+1</span>
+          <input id="tc-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national"
+                 placeholder="(913) 555-0100" aria-describedby="tc-status" required>
+        </div>
+        <p class="textcar__note" id="tc-status" data-textcar-status role="status">One text, with a link to this car.</p>
+        <button class="btn btn--solid textcar__send" type="submit">Text me the link <span aria-hidden="true">&rarr;</span></button>
+      </form>
+
+      <div class="textcar__scan">
+        <div class="textcar__code" data-textcar-qr aria-hidden="true"></div>
+        <p><span class="textcar__k">Or scan it</span>Point a phone's camera at the code and this car opens there.</p>
+      </div>
+
+      <p class="enquiry__alt">Rather talk it through? Call or text
+        <a href="sms:+19136625000" data-textcar-sms>913 662 5000</a>.</p>
     </div>
   </div>
 </dialog>

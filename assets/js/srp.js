@@ -102,9 +102,11 @@
       if (!trigger) return;
       trigger.addEventListener('click', function () {
         var img = card.querySelector('.car__media img');
+        var facts = [].slice.call(card.querySelectorAll('.car__meta > span:not([aria-hidden])')).map(function (x) { return x.textContent; });
         tcPick('[data-textcar-name]').textContent = card.querySelector('.car__title').textContent;
         tcPick('[data-textcar-price]').textContent = card.querySelector('.car__price').textContent;
-        tcPick('[data-textcar-meta]').textContent = [].slice.call(card.querySelectorAll('.car__meta > span:not([aria-hidden])')).map(function (x) { return x.textContent.replace(/-/g, '\u2011'); }).join(' \u00b7 ');   /* a stock number does not break at its hyphen */
+        tcPick('[data-textcar-miles]').textContent = facts[0] || '';
+        tcPick('[data-textcar-stock]').textContent = (facts[1] || '').replace(/^Stock\s+/i, '');
         tcPick('[data-textcar-shot]').src = img.currentSrc || img.src;
         tcPick('[data-textcar-sms]').href = trigger.getAttribute('href');
         drawCode(window.location.href.split('#')[0] + '#' + card.id);
@@ -128,7 +130,7 @@
       }
       tcPhone.removeAttribute('aria-invalid');
       tcStatus.setAttribute('data-state', 'sent');
-      tcStatus.textContent = 'Link sent to ' + pretty(d) + '.';
+      tcStatus.textContent = 'Sent. The link is on its way to ' + pretty(d) + '.';
     });
   }
 

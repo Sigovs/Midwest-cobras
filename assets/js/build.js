@@ -99,7 +99,7 @@
   }
   /* The card on the base picture carries the same number: Alex, 2026-09-14,
      "the price there has to change with the choice". */
-  var baseLabel = q('[data-base-label]'), baseName = q('[data-base-name]');
+  var baseLabel = q('[data-base-label]'), baseNext = q('[data-base-next]');
   var totalMeter = meter(totalEl), barMeter = meter(barTotal), baseMeter = meter(q('[data-base-price]'));
   var seen = {}, lastTotal = null, lastModel = null;
 
@@ -163,16 +163,20 @@
       var text = picks.length ? picks.map(function (p) { return p.label; }).join(', ') : 'Not selected';
       if (picks.length) group.setAttribute('data-answered', ''); else group.removeAttribute('data-answered');
 
-      var chosen = group.querySelector('[data-chosen]');
-      chosen.querySelector('strong').textContent = text;
-      var old = chosen.querySelector('.cfg-num');
-      if (old) old.remove();
       var cost = id === 'model' ? (model ? base : 0) : sum;
-      if (cost > 0) {
-        var span = document.createElement('span');
-        span.className = 'cfg-num';
-        span.textContent = money(cost);
-        chosen.appendChild(span);
+      /* The model has no head of its own any more — it is chosen on the
+         picture — so only the groups in the list write their choice there. */
+      var chosen = group.querySelector('[data-chosen]');
+      if (chosen) {
+        chosen.querySelector('strong').textContent = text;
+        var old = chosen.querySelector('.cfg-num');
+        if (old) old.remove();
+        if (cost > 0) {
+          var span = document.createElement('span');
+          span.className = 'cfg-num';
+          span.textContent = money(cost);
+          chosen.appendChild(span);
+        }
       }
 
       var row = root.querySelector('[data-row="' + id + '"]');
@@ -195,7 +199,7 @@
       seen[id] = mark;
 
       if (picks.length) {
-        lines.push(group.querySelector('.cfg-group__name').textContent + ': ' + text + (cost ? ' (' + money(cost) + ')' : ''));
+        lines.push((group.querySelector('.cfg-group__name') || { textContent: 'Model' }).textContent + ': ' + text + (cost ? ' (' + money(cost) + ')' : ''));
       }
     });
 
@@ -207,8 +211,8 @@
     if (totalMeter) totalMeter.set(prefix, total, turn);
     if (barMeter) barMeter.set(prefix, total, turn);
     if (baseMeter) baseMeter.set(prefix, total, turn);
-    if (baseName) baseName.textContent = model ? model.value : 'Backdraft RT4';
-    if (baseLabel) baseLabel.textContent = !model ? 'Start here' : (missing ? 'Configured so far' : 'Estimated price');
+    if (baseLabel) baseLabel.textContent = labelEl.textContent;
+    if (baseNext) baseNext.hidden = !model;
     /* What the choice cost, beside the price. Not while a model is being
        picked for the first time or cleared: "From $66,900" becoming "$70,500"
        is a starting price turning into a price, not a charge. */
@@ -256,6 +260,12 @@
   root.addEventListener('change', function (e) {
     var t = e.target;
     /* The photograph of what was just chosen settles into its frame. */
+    /* Step 01 answered on the picture: the list's first group opens, so the
+       build rolls straight on. It is not scrolled to — the reader moves on. */
+    if (t.name === 'model' && t.checked) {
+      var next = root.querySelector('details.cfg-group');
+      if (next && !root.querySelector('details.cfg-group[open]')) next.open = true;
+    }
     if (t.checked && t.closest) {
       var card = t.closest('.cfg-opt');
       restart(card && card.querySelector('.cfg-opt__frame img'), 'is-just');
@@ -305,6 +315,7 @@
      restored after it, instantly — a correction that animates is a second jump. */
   groups.forEach(function (g) {
     var head = g.querySelector('.cfg-group__head');
+    if (!head) return;
     head.addEventListener('click', function () {
       var before = head.getBoundingClientRect().top;
       requestAnimationFrame(function () {
@@ -318,7 +329,7 @@
      chosen card clears the group — a visitor who opened Stitching out of
      curiosity should not be left holding $1,875 they never wanted. */
   root.addEventListener('mousedown', function (e) {
-    var card = e.target.closest ? e.target.closest('.cfg-opt') : null;
+    var card = e.target.closest ? e.target.closest('.cfg-opt, .cfg-model') : null;
     if (!card) return;
     var field = card.querySelector('input[type="radio"]');
     if (field && field.checked) {
@@ -337,13 +348,12 @@
   if (reset) {
     reset.addEventListener('click', function () {
       [].slice.call(root.querySelectorAll('.cfg__main input:checked')).forEach(function (i) { i.checked = false; });
-      groups.forEach(function (g, n) { g.open = n === 0; });
+      groups.forEach(function (g) { if (g.tagName === 'DETAILS') g.open = false; });
       paint(true);
-      var first = groups[0] && groups[0].querySelector('.cfg-group__head');
-      if (first) {
-        first.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
-        first.focus({ preventScroll: true });
-      }
+      /* Back to step 01, on the picture. */
+      var baseFig = q('.cfg-base'), first = q('input[name="model"]');
+      if (baseFig) baseFig.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+      if (first) first.focus({ preventScroll: true });
     });
   }
 

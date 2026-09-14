@@ -99,19 +99,42 @@
         <header class="cfg__intro">
           <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Build</p>
           <h1 class="sect__title" id="build-title">Build your Cobra.</h1>
-          <!-- The one picture above the list, in Hinderer's slot (their
-               build-base): the car the build starts from, and where the price
-               starts. Two generated pictures, one per model, one hall, one
-               light (Alex, 2026-09-14): the picture follows the model. -->
+          <!-- STEP 01 IS THE PICTURE — Alex, 2026-09-14: merge the main picture and
+               the Start here choice, "you choose right there and roll on with
+               the build". In Hinderer's slot (their build-base), the card on the
+               picture now holds the two models as real radios: the picture, the
+               summary and the running total follow the choice, and the first
+               group of step 02 opens. "01 Start here" is set large and the steps
+               after it at their own size, as Alex asked. The pictures are two
+               generated frames of one hall, one per model (content ledger). -->
           <figure class="cfg-base">
             <img class="cfg-base__img" src="assets/img/build/gen-build-hero-rt4b.jpg"
                  alt="A black Cobra roadster with blacked-out pipes and roll bar in a concrete hall" width="2400" height="1018"
                  fetchpriority="high" decoding="async">
-            <figcaption class="cfg-base__bar">
-              <span class="cfg-base__step" data-base-label>Start here</span>
-              <span class="cfg-base__name" data-base-name>Backdraft RT4</span>
-              <span class="cfg-base__price" data-base-price>From $66,900</span>
-            </figcaption>
+            <div class="cfg-base__bar" data-group="model" data-mech="one" data-required>
+              <h2 class="cfg-base__step" id="step-01"><span>01</span>Start here</h2>
+              <div class="cfg-models" role="radiogroup" aria-labelledby="step-01">
+                <label class="cfg-model">
+                  <input type="radio" name="model" id="model-1" value="RT4 Classic Edition" data-price="0" data-base="66900" data-shot="assets/img/car-rt4b-front.jpg"
+                         data-hero="assets/img/build/gen-build-hero-rt4-classic.jpg" data-hero-alt="A navy Cobra roadster with white stripes and polished side pipes in a concrete hall">
+                  <span class="cfg-model__mark" aria-hidden="true"></span>
+                  <span class="cfg-model__name">RT4 Classic Edition</span>
+                  <span class="cfg-model__price">From $66,900</span>
+                </label>
+                <label class="cfg-model">
+                  <input type="radio" name="model" id="model-2" value="RT4B Black Edition" data-price="0" data-base="70500" data-shot="assets/img/car-rt4-front.jpg"
+                         data-hero="assets/img/build/gen-build-hero-rt4b.jpg" data-hero-alt="A black Cobra roadster with blacked-out pipes and roll bar in a concrete hall">
+                  <span class="cfg-model__mark" aria-hidden="true"></span>
+                  <span class="cfg-model__name">RT4B Black Edition</span>
+                  <span class="cfg-model__price">From $70,500</span>
+                </label>
+              </div>
+              <p class="cfg-base__sum">
+                <span class="cfg-base__sum-k" data-base-label>Starting price</span>
+                <span class="cfg-base__price" data-base-price>From $66,900</span>
+              </p>
+              <a class="cfg-base__next" href="#step-02" data-base-next hidden>Next: body and color <span aria-hidden="true">&darr;</span></a>
+            </div>
           </figure>
           <!-- One line — Alex, 2026-09-14: "make it smaller, more compact". What
                went: that nothing is pre-chosen and that standard fitment costs
@@ -125,38 +148,6 @@
             </div>
           </div>
         </header>
-
-      <section class="cfg-step" aria-labelledby="step-01">
-        <h2 class="cfg-step__h" id="step-01"><span>01</span>Start here</h2>
-        <details class="cfg-group" name="cfg-group" data-group="model" data-mech="one" data-required open>
-          <summary class="cfg-group__head">
-            <span class="cfg-group__mark" aria-hidden="true"></span>
-            <span class="cfg-group__name">Model</span>
-            <span class="cfg-group__chosen" data-chosen><strong>Not selected</strong></span>
-            <span class="cfg-group__caret" aria-hidden="true"></span>
-          </summary>
-          <div class="cfg-group__body">
-            <div class="cfg-options cfg-options--wide">
-              <label class="cfg-opt cfg-opt--one">
-                <input type="radio" name="model" id="model-1" value="RT4 Classic Edition" data-price="0" data-base="66900" data-shot="assets/img/car-rt4b-front.jpg"
-                       data-hero="assets/img/build/gen-build-hero-rt4-classic.jpg" data-hero-alt="A navy Cobra roadster with white stripes and polished side pipes in a concrete hall">
-                <span class="cfg-opt__frame"><img src="assets/img/car-rt4b-front.jpg" alt="" width="1728" height="972" loading="lazy" decoding="async"></span>
-                <span class="cfg-opt__mark" aria-hidden="true"></span>
-                <span class="cfg-opt__name">RT4 Classic Edition</span>
-                <span class="cfg-opt__price">From $66,900</span>
-              </label>
-              <label class="cfg-opt cfg-opt--one">
-                <input type="radio" name="model" id="model-2" value="RT4B Black Edition" data-price="0" data-base="70500" data-shot="assets/img/car-rt4-front.jpg"
-                       data-hero="assets/img/build/gen-build-hero-rt4b.jpg" data-hero-alt="A black Cobra roadster with blacked-out pipes and roll bar in a concrete hall">
-                <span class="cfg-opt__frame"><img src="assets/img/car-rt4-front.jpg" alt="" width="1728" height="972" loading="lazy" decoding="async"></span>
-                <span class="cfg-opt__mark" aria-hidden="true"></span>
-                <span class="cfg-opt__name">RT4B Black Edition</span>
-                <span class="cfg-opt__price">From $70,500</span>
-              </label>
-            </div>
-          </div>
-        </details>
-      </section>
 
       <section class="cfg-step" aria-labelledby="step-02">
         <h2 class="cfg-step__h" id="step-02"><span>02</span>Body and color</h2>

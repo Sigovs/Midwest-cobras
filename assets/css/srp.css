@@ -198,7 +198,17 @@ details[open] > summary .facets__caret { transform: translateY(25%) rotate(-135d
 .car__save[aria-pressed='true'] svg path { fill: currentColor; }
 .car__save:active { transform: scale(0.95); transition: transform var(--dur-1) var(--ease-press); }
 .car__save:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--hairline); }
-.car__body { display: grid; align-content: start; gap: var(--sp-2); padding: var(--sp-4) var(--sp-5) var(--sp-5); }
+.car__body { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-4) var(--sp-5) var(--sp-5); }
+.car__shot { display: block; }
+.car__title a { color: inherit; text-decoration: none; }
+.car__title a:hover { text-decoration: underline; text-decoration-thickness: var(--hairline); text-underline-offset: 0.2em; }
+.car__title a:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+/* The card's one primary action: the site's solid button, bone on the dark,
+   full width, pushed to the foot of the body so it sits at the same height on
+   every card whatever the length of the name above it. Text and Share stay the
+   quieter row under it. */
+.car__meta { margin-block-end: var(--sp-4); }
+.car__details { margin-block-start: auto; inline-size: 100%; justify-content: space-between; }
 .car__title {
   margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--news-h);
   line-height: var(--lh-heading); color: var(--text); text-wrap: balance;
@@ -345,6 +355,50 @@ details[open] > summary .facets__caret { transform: translateY(25%) rotate(-135d
   .textcar__plate img { aspect-ratio: 16 / 9; }
 }
 
+/* ── Share: the menu beside the button ───────────────────────────────────────
+   A small raised card on the bone surface — it floats, so it takes the site's
+   one shadow, --lift, kept for exactly this. The car's name at the top, so the
+   visitor knows what they are sharing; Copy link on its own row, parted by a
+   hairline, then the four places. Each row is a 2.75rem target, an ink icon
+   that darkens with the label on hover and focus. It arrives by half of
+   --travel and a fade; under reduced motion it is simply there. */
+.sharepop {
+  position: fixed; inset: auto; margin: 0; padding: 0; overflow: visible;
+  inline-size: 17rem; max-inline-size: calc(100vw - var(--sp-5));
+  background: var(--bone-050); color: var(--ink-on-light);
+  border: var(--hairline) solid var(--bone-200); border-radius: var(--radius-control);
+  box-shadow: var(--lift);
+  opacity: 0; transform: translateY(calc(var(--travel) / -2));
+  transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out),
+    overlay var(--dur-2) allow-discrete, display var(--dur-2) allow-discrete;
+}
+.sharepop:popover-open { opacity: 1; transform: none; }
+@starting-style { .sharepop:popover-open { opacity: 0; transform: translateY(calc(var(--travel) / -2)); } }
+.sharepop::backdrop { background: transparent; }
+.sharepop__head { display: grid; gap: var(--sp-1); padding: var(--sp-4) var(--sp-4) var(--sp-3); border-block-end: var(--hairline) solid var(--bone-200); }
+.sharepop__k {
+  margin: 0; font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--ink-on-light-muted);
+}
+.sharepop__name { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-body-s); line-height: var(--lh-heading); color: var(--ink-on-light); }
+.sharepop__list { list-style: none; margin: 0; padding: var(--sp-2) 0; }
+.sharepop__copy { margin-block-end: var(--sp-2); padding-block-end: var(--sp-2); border-block-end: var(--hairline) solid var(--bone-200); }
+.sharepop__item {
+  display: flex; align-items: center; gap: var(--sp-3); inline-size: 100%; min-block-size: 2.75rem;
+  padding: 0 var(--sp-4); background: none; border: 0; cursor: pointer; text-align: start;
+  font-family: var(--body); font-size: var(--fs-body-s); color: var(--ink-on-light); text-decoration: none;
+  transition: background-color var(--dur-2) var(--ease-out);
+}
+.sharepop__item svg { flex: none; color: var(--ink-on-light-muted); transition: color var(--dur-2) var(--ease-out); }
+.sharepop__item:is(:hover, :focus-visible) { background: var(--bone-100); }
+.sharepop__item:is(:hover, :focus-visible) svg { color: var(--ink-on-light); }
+.sharepop__item:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: calc(var(--focus-w) * -1); }
+.sharepop__hint {
+  margin-inline-start: auto; font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--ink-on-light-muted);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .car:is(:hover, :focus-within) .car__media img { transform: none; }
+  .sharepop { transition: none; transform: none; }
 }

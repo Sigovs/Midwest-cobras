@@ -47,24 +47,131 @@
     });
   });
 
-  /* ── share: the device's sheet, or the link on the clipboard ─────────── */
+  /* ── share ────────────────────────────────────────────────────────────── */
+  /* Alex, 2026-09-14: share to social media, "as you see fit". Where the
+     pointer is a finger and the device has a share sheet — a phone — the
+     sheet is the better menu and Share hands straight over to it. Elsewhere
+     Share opens the menu beside the button (inventory.html, #share-pop):
+     Copy link, then Facebook, X, WhatsApp and Email, each set for this car.
+     The places open in a small centred window, as they are designed to.
+     Focus goes to the first row, the arrow keys walk the rows, and when the
+     menu goes focus returns to the button that opened it. */
+  var pop = document.querySelector('[data-sharepop]');
+  var coarse = window.matchMedia('(pointer: coarse)');
+  var popBtn = null;
+  var carLink = function (card) { return window.location.href.split('#')[0] + '#' + card.id; };
+  var carName = function (card) { return card.querySelector('.car__title').textContent.trim(); };
+  var popItems = function () { return [].slice.call(pop.querySelectorAll('.sharepop__item')); };
+
+  var placePop = function () {
+    if (!popBtn) return;
+    var r = popBtn.getBoundingClientRect(), gap = 8;
+    var w = pop.offsetWidth, h = pop.offsetHeight;
+    var left = Math.min(Math.max(gap, r.right - w), window.innerWidth - w - gap);
+    var top = r.bottom + gap;
+    if (top + h > window.innerHeight - gap) top = Math.max(gap, r.top - h - gap);
+    pop.style.left = Math.round(left) + 'px';
+    pop.style.top = Math.round(top) + 'px';
+  };
+
+  var fillPop = function (card) {
+    var name = carName(card), url = carLink(card), text = name + ' — Midwest Cobras', e = encodeURIComponent;
+    var to = {
+      facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + e(url),
+      x: 'https://x.com/intent/post?text=' + e(text) + '&url=' + e(url),
+      whatsapp: 'https://wa.me/?text=' + e(text + ' ' + url),
+      email: 'mailto:?subject=' + e(text) + '&body=' + e(name + '\n' + url)
+    };
+    pop.querySelector('[data-sharepop-name]').textContent = name;
+    pop.querySelector('[data-share-copy-state]').textContent = '';
+    pop.setAttribute('data-url', url);
+    [].slice.call(pop.querySelectorAll('[data-share-to]')).forEach(function (a) { a.href = to[a.getAttribute('data-share-to')]; });
+  };
+
+  if (pop && typeof pop.showPopover === 'function') {
+    pop.addEventListener('toggle', function (ev) {
+      if (ev.newState !== 'closed' || !popBtn) return;
+      popBtn.setAttribute('aria-expanded', 'false');
+      /* Back to the button — unless the visitor has clicked on to something
+         else, which keeps its focus. */
+      if (!document.activeElement || document.activeElement === document.body || pop.contains(document.activeElement)) {
+        popBtn.focus({ preventScroll: true });
+      }
+    });
+    pop.addEventListener('keydown', function (ev) {
+      var items = popItems(), at = items.indexOf(document.activeElement);
+      if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') {
+        ev.preventDefault();
+        var next = at < 0 ? 0 : (at + (ev.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+        items[next].focus();
+      } else if (ev.key === 'Home' || ev.key === 'End') {
+        ev.preventDefault();
+        items[ev.key === 'Home' ? 0 : items.length - 1].focus();
+      }
+    });
+    pop.querySelector('[data-share-copy]').addEventListener('click', function () {
+      var state = pop.querySelector('[data-share-copy-state]'), url = pop.getAttribute('data-url');
+      var said = function (ok) { state.textContent = ok ? 'Copied' : 'Copy failed'; };
+      if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { said(true); }, function () { said(false); });
+      else said(false);
+    });
+    [].slice.call(pop.querySelectorAll('[data-share-to]')).forEach(function (a) {
+      if (a.getAttribute('data-share-to') === 'email') {
+        a.addEventListener('click', function () { pop.hidePopover(); });
+        return;
+      }
+      a.addEventListener('click', function (ev) {
+        var w = 600, h = 560;
+        var x = Math.round(window.screenX + (window.outerWidth - w) / 2), y = Math.round(window.screenY + (window.outerHeight - h) / 2);
+        var win = window.open(a.href, 'midwest-share', 'popup,width=' + w + ',height=' + h + ',left=' + x + ',top=' + y);
+        if (win) { ev.preventDefault(); pop.hidePopover(); }
+      });
+    });
+    window.addEventListener('scroll', function () { if (pop.matches(':popover-open')) placePop(); }, { passive: true });
+    window.addEventListener('resize', function () { if (pop.matches(':popover-open')) placePop(); });
+  }
+
   cards.forEach(function (card) {
     var btn = card.querySelector('[data-share]');
     if (!btn) return;
     var labelEl = btn.querySelector('[data-share-label]');
+    /* The browser dismisses an open menu on the press itself, before this
+       button's click runs — so whether the menu was open is read here, at
+       the press, not afterwards. */
+    var wasOpen = false;
+    btn.addEventListener('pointerdown', function () {
+      wasOpen = !!(pop && pop.matches && pop.matches(':popover-open') && popBtn === btn);
+    });
     btn.addEventListener('click', function () {
-      var url = window.location.href.split('#')[0] + '#' + card.id;
-      var title = card.querySelector('.car__title').textContent;
-      var said = function (text) {
-        if (!labelEl) return;
-        labelEl.textContent = text;
-        window.setTimeout(function () { labelEl.textContent = 'Share'; }, 2000);
-      };
-      if (navigator.share) {
-        navigator.share({ title: title + ' — Midwest Cobras', url: url }).catch(function () {});
-      } else if (navigator.clipboard) {
-        navigator.clipboard.writeText(url).then(function () { said('Link copied'); }, function () { said('Copy failed'); });
+      if (navigator.share && coarse.matches) {
+        navigator.share({ title: carName(card) + ' — Midwest Cobras', url: carLink(card) }).catch(function () {});
+        return;
       }
+      if (!pop || typeof pop.showPopover !== 'function') {
+        /* No popover support: the link goes to the clipboard, said on the button. */
+        if (navigator.clipboard && labelEl) {
+          navigator.clipboard.writeText(carLink(card)).then(function () {
+            labelEl.textContent = 'Link copied';
+            window.setTimeout(function () { labelEl.textContent = 'Share'; }, 2000);
+          });
+        }
+        return;
+      }
+      /* A second press on the same Share closes the menu rather than opening
+         it again: by pointer (read at the press) or by keyboard. */
+      var openNow = pop.matches(':popover-open') && popBtn === btn;
+      if (openNow || wasOpen) {
+        if (openNow) pop.hidePopover();
+        wasOpen = false;
+        return;
+      }
+      popBtn = btn;
+      fillPop(card);
+      pop.showPopover();
+      btn.setAttribute('aria-expanded', 'true');
+      placePop();
+      var first = popItems()[0];
+      if (first) first.focus({ preventScroll: true });
     });
   });
 

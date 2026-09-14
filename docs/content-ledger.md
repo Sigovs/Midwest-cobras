@@ -402,3 +402,6 @@ The photographs are cropped to 4:3 into `assets/img/srp/`. The alt text says
 what each photograph shows, not what the card claims the car is.
 | Text panel | "Send this car to your phone", "Link sent to (…) …-…." | **design only** | Alex, 2026-09-14: Text slides in like Contact, with the dealer platform's Send to Phone and QR. Nothing is sent; the confirmation is the design of the state. The QR encodes the car's own link on this page, drawn by qrcode-generator (MIT, Kazuhiko Arase), vendored in `assets/js/vendor/qrcode-generator/` with its licence |
 | Text panel | "Rather text the shop about it? 913 662 5000" | **sourced** | the shop's number, row 10 |
+| Card | "View details", and the photograph and name, go to `vehicle.html?car=…` | **design only — the page is next** | Alex, 2026-09-14: View details is a separate VDP page. Until it exists, those links lead nowhere |
+| Share menu | Copy link, Facebook, X, WhatsApp, Email; the phone share sheet on a phone | **design only** | Alex, 2026-09-14: "as you see fit". Each place receives the car's link on this page and its name; Instagram is not offered because it accepts no link from a web page |
+

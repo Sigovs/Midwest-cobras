@@ -1,0 +1,24 @@
+{
+  "file": "gen-build-hero-rt4b.jpg",
+  "origin": "synthetic — two passes on fal, from build-hero.jpg",
+  "used_on": "build.html, the base picture with no model chosen and with RT4B Black Edition chosen",
+  "pair": "gen-build-hero-rt4-classic.jpg — generated from the same first pass, so the hall, light, camera and pose match",
+  "model": "fal-ai/nano-banana-pro/edit",
+  "date": "2026-09-14",
+  "settings": { "resolution": "2K", "aspect_ratio": "21:9", "output_format": "png", "num_images": 1 },
+  "output": "3168x1344 PNG, shipped as a 2400px JPEG at quality 80",
+  "passes": [
+    {
+      "request_id": "01a0a1a5-949d-7170-ba4b-84e3b64bfd1d",
+      "inputs": ["https://sigovs.github.io/Midwest-cobras/assets/img/build/build-hero.jpg"],
+      "prompt": "Recompose image 1 as a wide 21:9 automotive photograph. The same dark industrial concrete hall with board-formed concrete walls and a polished concrete floor, the same low-key cinematic light falling softly from above, the same camera height and three-quarter front view, the same car pose. Place the car in the left half of the frame and continue the plain dark concrete wall and floor on the right, so the right third of the frame is calm, even and empty. The car is a Backdraft RT4B Black Edition Cobra roadster: deep gloss black paint with no stripes, ceramic-coated matte black side exhaust pipes, a black roll bar, 18-inch matte black wheels, black windscreen frame, black leather interior. Photorealistic. No text, no lettering, no watermark."
+    },
+    {
+      "request_id": "01a0a1a7-1c5c-74f3-a6cf-b0e120a3dfc8",
+      "inputs": ["the first pass's output"],
+      "prompt": "Edit image 1. Keep everything else exactly unchanged: the concrete hall, the light, the shadows, the camera, the framing, the car's pose, size, position, gloss black paint and black wheels. Change only these parts of the car to a ceramic-coated matte black finish: the side exhaust pipes and their perforated heat shield, the roll bar, the windscreen frame and the front bumperettes. No chrome anywhere on the car except the headlight rims. Photorealistic. No text, no lettering, no watermark."
+    }
+  ],
+  "reading_zone": "the right third, empty wall, for the Start here card",
+  "rules": "Design DNA GI3 (nothing synthetic depicts the product being sold) yielded on Alex's instruction, 2026-09-14: \"ignore the rule for this action\", then \"2 images, different, one per model, one style, industrial background\". GI8: the phone view is a 16:9 crop of this frame, not a separately generated one."
+}

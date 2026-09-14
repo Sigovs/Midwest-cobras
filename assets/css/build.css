@@ -148,6 +148,66 @@
 .cfg-opt__name { font-size: var(--fs-body-s); line-height: var(--lh-label); color: var(--text); }
 .cfg-opt__price { font-family: var(--mono); font-size: var(--micro); font-variant-numeric: tabular-nums; color: var(--text-muted); }
 
+/* ── motion: variant C ──────────────────────────────────────────────────────
+   Alex's pick, 2026-09-14, from the genjutsu cast of this page: the home
+   page's Green flag — settle, press, overshoot — at the tempo of a tool that
+   takes twenty clicks. build.js adds the classes; this is what they do.
+
+   The options arrive when their group opens, in reading order. The group
+   itself opens at once: its height is never animated (motion-taste I4), only
+   the cards move, and no further than --travel. `backwards`, not `both` — a
+   held end frame would pin the transform, and the press could not act. */
+.cfg-opt:nth-child(2) { --i: 1; }
+.cfg-opt:nth-child(3) { --i: 2; }
+.cfg-opt:nth-child(4) { --i: 3; }
+.cfg-opt:nth-child(5) { --i: 4; }
+.cfg-group[open] .cfg-opt {
+  animation: cfg-arrive var(--dur-4) var(--ease-back) backwards;
+  animation-delay: calc(var(--i, 0) * var(--stagger));
+}
+@keyframes cfg-arrive { from { opacity: 0; transform: translateY(var(--travel)); } }
+
+/* A card gives under the hand as every control on the site does (v11.css). */
+.cfg-opt { transition: transform var(--dur-3) var(--ease-back); }
+.cfg-opt:active { transform: scale(0.95); transition: transform var(--dur-1) var(--ease-press); }
+
+/* The photograph just chosen settles into its frame. On `scale`, not
+   `transform`, so it composes with the hover zoom instead of fighting it. */
+.cfg-opt__frame img.is-just { animation: cfg-settle var(--dur-6) var(--ease-settle); }
+@keyframes cfg-settle { from { scale: 1.08; } }
+
+/* The price is drums (v11.css's odometer), turning at a tool's pace: shorter
+   than the Grand Opening's, one step apart. */
+.cfg-odo { display: inline-flex; align-items: baseline; column-gap: 0.25em; }
+.cfg-odo__pre:empty { display: none; }
+.cfg-odo__ch { display: block; block-size: 1em; line-height: 1; }
+.cfg-odo .odo__dg > span { transition-duration: var(--dur-6); transition-delay: calc(var(--k, 0) * var(--stagger)); }
+
+/* What the choice cost, beside the price: up into place, held, gone. Oxblood,
+   because it is a mark on light; on the phone bar it is bone. */
+.cfg-delta {
+  display: inline-block; opacity: 0;
+  font-family: var(--mono); font-weight: 400; font-size: var(--micro); letter-spacing: 0;
+  font-variant-numeric: tabular-nums; color: var(--oxblood);
+}
+.cfg-delta.is-on { animation: cfg-delta calc(var(--dur-7) + var(--dur-3)) var(--ease-out) both; }
+@keyframes cfg-delta {
+  0%   { opacity: 0; transform: translateY(var(--travel)); }
+  18%  { opacity: 1; transform: none; }
+  75%  { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(calc(var(--travel) / -2)); }
+}
+
+/* Only what changed rolls in: the group's head and its summary line, with a
+   brief wash behind the line. The roll never leaves its own box — each of
+   them clips — which is why it may travel its own height. */
+.cfg-group__chosen { overflow: clip; }
+.cfg-line.is-flash { animation: cfg-flash var(--dur-7) var(--ease-out); }
+@keyframes cfg-flash { from { background: var(--bone-200); } to { background: transparent; } }
+.cfg-line.is-new dd,
+.cfg-group.is-new .cfg-group__chosen > * { animation: cfg-roll var(--dur-4) var(--ease-settle) both; }
+@keyframes cfg-roll { from { opacity: 0; transform: translateY(100%); } }
+
 /* ── the running build ──────────────────────────────────────────────────────
    The raised bone surface, held beside the list while it is worked through —
    sticky, as on Hinderer, and without a scroll of its own. The first cut
@@ -171,14 +231,18 @@
   line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
 }
 .cfg-sum__price {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-1) var(--sp-3);
   font-family: var(--face); font-weight: 600; font-size: var(--lot);
   line-height: var(--lh-tight); letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums;
   color: var(--text); padding-block-end: var(--sp-4); border-block-end: var(--hairline) solid var(--ink-on-light);
 }
 .cfg-lines { display: grid; margin: 0; }
+/* The line reaches a step past the text on each side, so the wash behind a
+   changed line has an edge to it; it clips, so its value can roll in. */
 .cfg-line {
   display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-1) var(--sp-3);
-  padding-block: var(--sp-3); border-block-end: var(--hairline) solid var(--rule);
+  margin-inline: calc(var(--sp-2) * -1); padding: var(--sp-3) var(--sp-2); overflow: clip;
+  border-block-end: var(--hairline) solid var(--rule);
 }
 .cfg-line dt {
   grid-column: 1 / -1; font-family: var(--mono); font-size: var(--micro);
@@ -223,9 +287,12 @@
     border-block-start: var(--hairline) solid var(--graphite-700);
   }
   .cfg-bar__total {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 var(--sp-3);
     font-family: var(--face); font-weight: 600; font-size: var(--h3);
     line-height: var(--lh-tight); font-variant-numeric: tabular-nums;
   }
+  /* Oxblood is never text on the dark ground. */
+  .cfg-bar .cfg-delta { color: var(--ink-on-dark); }
   .cfg-bar__count {
     font-family: var(--mono); font-size: var(--micro);
     letter-spacing: var(--track); text-transform: uppercase; color: var(--ink-on-dark-muted);
@@ -238,4 +305,9 @@
   .cfg-progress__fill, .cfg-group__mark, .cfg-group__mark::after, .cfg-group__caret,
   .cfg-opt__frame, .cfg-opt__frame img, .cfg-opt__mark::after { transition: none; }
   .cfg-opt:hover .cfg-opt__frame img { transform: none; }
+  /* Every answer still arrives — the ring, the filled mark, the figures —
+     it just does not move to get there. build.js adds none of the classes. */
+  .cfg-opt { transition: none; }
+  .cfg-group[open] .cfg-opt, .cfg-opt__frame img.is-just, .cfg-delta.is-on, .cfg-line.is-flash,
+  .cfg-line.is-new dd, .cfg-group.is-new .cfg-group__chosen > * { animation: none; }
 }

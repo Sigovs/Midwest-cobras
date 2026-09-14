@@ -31,15 +31,89 @@
     return Math.min(m, parseInt(i.getAttribute('data-base'), 10) || Infinity);
   }, Infinity);
 
+  /* ── motion: variant C ──────────────────────────────────────────────────
+     Alex's pick, 2026-09-14, from the genjutsu cast of this page: the home
+     page's Green flag at a tool's tempo. Each answer is confirmed where the
+     eye already is — the photograph settles into its frame, the price drums
+     turn, what the choice cost rises beside the price, and the lines it
+     changed roll in. None of it is needed to read the page; under reduced
+     motion none of it runs and every figure is simply right. */
+  function restart(el, cls) {
+    if (!el || reduced) return;
+    el.classList.remove(cls);
+    void el.offsetWidth;
+    el.classList.add(cls);
+  }
+
+  /* A price as drums (v11.css's odometer): one per figure, the dollar sign
+     and the comma static. The reading is a hidden span beside them, so a
+     screen reader hears "$70,500", not a column of digits. When the figure
+     changes shape — a sixth digit — the drums are rebuilt without a turn. */
+  function meter(el) {
+    if (!el) return null;
+    el.textContent = '';
+    var make = function (tag, cls) { var n = document.createElement(tag); if (cls) n.className = cls; return n; };
+    var sr = make('span', 'v11-sr');
+    var face = make('span', 'cfg-odo'), pre = make('span', 'cfg-odo__pre'), drums = make('span', 'odo');
+    var delta = make('span', 'cfg-delta');
+    face.setAttribute('aria-hidden', 'true');
+    delta.setAttribute('aria-hidden', 'true');
+    face.appendChild(pre); face.appendChild(drums);
+    el.appendChild(sr); el.appendChild(face); el.appendChild(delta);
+    var shape = '';
+
+    return {
+      set: function (prefix, n, turn) {
+        var s = money(n), digits = s.replace(/\D/g, '');
+        sr.textContent = (prefix ? prefix + ' ' : '') + s;
+        pre.textContent = prefix;
+        if (s.replace(/\d/g, '#') !== shape) {
+          shape = s.replace(/\d/g, '#');
+          turn = false;
+          drums.textContent = '';
+          s.split('').forEach(function (ch) {
+            if (!/\d/.test(ch)) { var c = make('span', 'cfg-odo__ch'); c.textContent = ch; drums.appendChild(c); return; }
+            var dg = make('span', 'odo__dg'), strip = make('span');
+            for (var d = 0; d < 10; d++) { var b = make('b'); b.textContent = d; strip.appendChild(b); }
+            dg.appendChild(strip); drums.appendChild(dg);
+          });
+        }
+        var strips = [].slice.call(drums.querySelectorAll('.odo__dg > span'));
+        strips.forEach(function (st, i) {
+          /* The last figure turns first, as on a counter. */
+          st.style.setProperty('--k', String(strips.length - 1 - i));
+          if (!turn) st.style.transition = 'none';
+          st.style.setProperty('--n', digits[i]);
+        });
+        if (!turn) {
+          void drums.offsetWidth;
+          strips.forEach(function (st) { st.style.transition = ''; });
+        }
+      },
+      delta: function (d) {
+        if (!d || reduced) return;
+        delta.textContent = (d > 0 ? '+' : '−') + money(Math.abs(d));
+        restart(delta, 'is-on');
+      }
+    };
+  }
+  var totalMeter = meter(totalEl), barMeter = meter(barTotal);
+  var seen = {}, lastTotal = null, lastModel = null;
+
   function read(group) {
     return [].slice.call(group.querySelectorAll('input:checked')).map(function (i) {
       return { label: i.value, price: parseInt(i.getAttribute('data-price'), 10) || 0 };
     });
   }
 
-  function paint() {
+  /* `quiet` is Start over: the price still turns back, but ten lines rolling
+     at once would be noise, not an answer. */
+  function paint(quiet) {
     var model = root.querySelector('[data-group="model"] input:checked');
     var base = model ? parseInt(model.getAttribute('data-base'), 10) : lowestBase;
+    /* The first paint is the page arriving: figures are set, nothing turns. */
+    var turn = lastTotal !== null && !reduced;
+    var loud = turn && quiet !== true;
     /* `missing` is REQUIRED groups still open, which decides whether the number
        is an estimate; `answered` is every group with a decision, which is what
        the progress reports. Two groups are optional, so one count cannot do
@@ -81,6 +155,15 @@
         row.classList.toggle('cfg-line--empty', !picks.length);
       }
 
+      /* Only what changed rolls in: the group's head, and its line in the
+         summary with a brief wash behind it. */
+      var mark = text + '|' + cost;
+      if (loud && seen[id] !== undefined && seen[id] !== mark) {
+        restart(group, 'is-new');
+        if (row) { restart(row, 'is-new'); restart(row, 'is-flash'); }
+      }
+      seen[id] = mark;
+
       if (picks.length) {
         lines.push(group.querySelector('.cfg-group__name').textContent + ': ' + text + (cost ? ' (' + money(cost) + ')' : ''));
       }
@@ -90,7 +173,18 @@
        no model, a partial sum while required groups are open, an estimate only
        when every one has an answer. */
     labelEl.textContent = !model ? 'Starting price' : (missing ? 'Configured so far' : 'Estimated price');
-    totalEl.textContent = (model ? '' : 'From ') + money(total);
+    var prefix = model ? '' : 'From';
+    if (totalMeter) totalMeter.set(prefix, total, turn);
+    if (barMeter) barMeter.set(prefix, total, turn);
+    /* What the choice cost, beside the price. Not while a model is being
+       picked for the first time or cleared: "From $66,900" becoming "$70,500"
+       is a starting price turning into a price, not a charge. */
+    if (loud && model && lastModel && total !== lastTotal) {
+      if (totalMeter) totalMeter.delta(total - lastTotal);
+      if (barMeter) barMeter.delta(total - lastTotal);
+    }
+    lastTotal = total; lastModel = model;
+
     modelEl.textContent = model ? model.value : 'Your Cobra';
     if (model && shotEl) {
       var src = model.getAttribute('data-shot');
@@ -114,7 +208,6 @@
       ? 'Your ' + answered + ' of ' + groups.length + ' choices travel with this message. Evan will price the rest with you.'
       : 'All ' + groups.length + ' choices travel with this message, so you do not have to list them again.';
 
-    if (barTotal) barTotal.textContent = (model ? '' : 'From ') + money(total);
     if (barCount) {
       barCount.textContent = !model ? 'Choose a model'
         : (added ? added + (added === 1 ? ' option added' : ' options added') : 'Base only');
@@ -124,7 +217,40 @@
     }
   }
 
-  root.addEventListener('change', paint);
+  root.addEventListener('change', function (e) {
+    var t = e.target;
+    /* The photograph of what was just chosen settles into its frame. */
+    if (t.checked && t.closest) {
+      var card = t.closest('.cfg-opt');
+      restart(card && card.querySelector('.cfg-opt__frame img'), 'is-just');
+    }
+    paint();
+  });
+
+  /* Each flourish takes its class off when it ends, so the next paint starts
+     clean — the head's price is rebuilt on every paint and would otherwise
+     roll in again under a class left behind. Cancelled counts as ended: a
+     group that closes mid-settle cancels its photograph's animation, and the
+     class left on it would replay the settle when the group reopens. */
+  function done(e) {
+    var t = e.target, host;
+    if (e.animationName === 'cfg-roll') { host = t.closest('.is-new'); if (host) host.classList.remove('is-new'); }
+    else if (e.animationName === 'cfg-flash') t.classList.remove('is-flash');
+    else if (e.animationName === 'cfg-settle') t.classList.remove('is-just');
+    else if (e.animationName === 'cfg-delta') t.classList.remove('is-on');
+  }
+  document.addEventListener('animationend', done);
+  document.addEventListener('animationcancel', done);
+  /* A closed <details> pauses what is inside it rather than ending it, so a
+     group that closes mid-settle is cleared here — else the photograph would
+     finish its settle whenever the group is opened again. */
+  groups.forEach(function (g) {
+    g.addEventListener('toggle', function () {
+      if (g.open) return;
+      [].slice.call(g.querySelectorAll('.is-just, .is-new')).forEach(function (n) { n.classList.remove('is-just', 'is-new'); });
+      g.classList.remove('is-new');
+    });
+  });
 
   /* ONE GROUP OPEN AT A TIME — native, through the shared `name` on every
      <details>. The fallback is for browsers that predate it. */
@@ -175,7 +301,7 @@
     reset.addEventListener('click', function () {
       [].slice.call(root.querySelectorAll('.cfg__main input:checked')).forEach(function (i) { i.checked = false; });
       groups.forEach(function (g, n) { g.open = n === 0; });
-      paint();
+      paint(true);
       var first = groups[0] && groups[0].querySelector('.cfg-group__head');
       if (first) {
         first.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });

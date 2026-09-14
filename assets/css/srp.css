@@ -1,0 +1,236 @@
+/* srp.css — the search results page, inventory.html.
+   ---------------------------------------------------------------------------
+   Loaded after v12.css on one page. The layout is Hinderer's inventory — the
+   title and the sort on one line, the filters in a column beside the results,
+   a card per car — on Alex's word, 2026-09-14: "only the layout, not the
+   design". The design is this site's: the record ground, the three voices,
+   hairlines rather than boxes where a rule will do, oxblood only as a mark on
+   light or a fill on dark. Values come from tokens.css and the earlier
+   layers; fields are v11's .field. */
+
+/* ── the head ─────────────────────────────────────────────────────────────── */
+.srp-head {
+  display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between;
+  gap: var(--sp-5) var(--sp-7);
+  padding-block-end: var(--sp-6); border-block-end: var(--hairline) solid var(--ink-on-light);
+}
+.srp-head__title { display: grid; gap: var(--sp-4); justify-items: start; }
+.srp-head__sort { display: flex; align-items: center; gap: var(--sp-3); }
+.srp-head__sort label { white-space: nowrap; }
+.srp-head__sort select { inline-size: auto; min-inline-size: 15rem; }
+
+/* ── the two columns ──────────────────────────────────────────────────────── */
+.srp {
+  display: grid; grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr);
+  gap: var(--sp-7) var(--col-gap); align-items: start;
+  margin-block-start: var(--sp-7);
+}
+.srp__results { min-inline-size: 0; }
+
+/* ── the filters ──────────────────────────────────────────────────────────────
+   The raised bone surface, held beside the results under the bar. Each group
+   is a fieldset under a mono legend, parted by a hairline. */
+.facets {
+  position: sticky; inset-block-start: calc(var(--bar-h, var(--bar-clear)) + var(--sp-5));
+  background: var(--surface); border: var(--hairline) solid var(--rule);
+}
+.facets__summary, .facets__more > summary {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3);
+  min-block-size: 3.5rem; cursor: pointer; list-style: none;
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text);
+}
+.facets__summary::-webkit-details-marker, .facets__more > summary::-webkit-details-marker { display: none; }
+.facets__summary { padding: var(--sp-3) var(--sp-5); }
+.facets__summary:focus-visible, .facets__more > summary:focus-visible {
+  outline: var(--focus-w) solid var(--ink-on-light); outline-offset: calc(var(--focus-offset) * -1);
+}
+.facets__active {
+  margin-inline-end: auto; padding: 0 var(--sp-2);
+  background: var(--ink-on-light); color: var(--bone-050); font-variant-numeric: tabular-nums;
+}
+.facets__caret {
+  inline-size: 0.625rem; block-size: 0.625rem; margin-inline: var(--sp-2);
+  border-inline-end: calc(var(--hairline) * 2) solid var(--ink-on-light-muted);
+  border-block-end: calc(var(--hairline) * 2) solid var(--ink-on-light-muted);
+  transform: translateY(-25%) rotate(45deg);
+  transition: transform var(--dur-3) var(--ease-out);
+}
+details[open] > summary .facets__caret { transform: translateY(25%) rotate(-135deg); }
+.facets__form { display: grid; padding: var(--sp-5); }
+.facet { margin: 0; padding: var(--sp-5) 0; border: 0; border-block-end: var(--hairline) solid var(--rule); min-inline-size: 0; }
+.facets__form > .facet:first-child { padding-block-start: 0; }
+.facet__legend {
+  padding: 0; margin-block-end: var(--sp-3);
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text-muted);
+}
+.facet__body { display: grid; gap: var(--sp-3); }
+.facet__pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); }
+.facets__clear {
+  justify-self: start; min-block-size: 2.75rem; margin-block-start: var(--sp-3); padding: 0;
+  background: none; border: 0; cursor: pointer;
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--oxblood);
+}
+.facets__clear:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--focus-offset); }
+.facets__clear[hidden] { display: none; }
+.facets__more { border-block-end: 0; }
+.facets__more .facet:last-child { border-block-end: 0; padding-block-end: 0; }
+
+/* A switch: the checkbox stays a real checkbox, hidden but focusable; the
+   track is its picture. Off, an outline that clears 3:1 on the surface; on,
+   the ink fills and the knob crosses on the overshoot. */
+.switch { display: flex; align-items: center; gap: var(--sp-3); min-block-size: 2.75rem; cursor: pointer; font-size: var(--fs-body-s); color: var(--text); }
+.switch input {
+  position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; opacity: 0;
+}
+.switch__track {
+  position: relative; flex: none; inline-size: 2.5rem; block-size: 1.5rem; border-radius: 0.75rem;
+  border: calc(var(--hairline) * 2) solid var(--ink-on-light-muted);
+  transition: background-color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
+}
+.switch__track::after {
+  content: ''; position: absolute; inset-block-start: 0.1875rem; inset-inline-start: 0.1875rem;
+  inline-size: 0.875rem; block-size: 0.875rem; border-radius: 50%;
+  background: var(--ink-on-light-muted);
+  transition: transform var(--dur-3) var(--ease-back), background-color var(--dur-2) var(--ease-out);
+}
+.switch input:checked + .switch__track { background: var(--ink-on-light); border-color: var(--ink-on-light); }
+.switch input:checked + .switch__track::after { transform: translateX(1rem); background: var(--bone-050); }
+.switch input:focus-visible + .switch__track { outline: var(--focus-w) solid var(--oxblood); outline-offset: var(--hairline); }
+
+/* Two handles on one rail. The inputs are stacked, so only the thumbs take
+   the pointer; the ink between them is the range chosen (srp.js sets --lo and
+   --hi). The target is 2.75rem tall around a 1.25rem handle. */
+.range { position: relative; block-size: 2.75rem; --thumb: 1.25rem; --lo: 0; --hi: 1; }
+.range::before, .range::after {
+  content: ''; position: absolute; inset-block-start: 50%; translate: 0 -50%;
+  block-size: calc(var(--hairline) * 3);
+}
+.range::before { inset-inline: calc(var(--thumb) / 2); background: var(--ink-on-light-muted); }
+.range::after {
+  inset-inline-start: calc(var(--thumb) / 2 + (100% - var(--thumb)) * var(--lo));
+  inset-inline-end: calc(var(--thumb) / 2 + (100% - var(--thumb)) * (1 - var(--hi)));
+  background: var(--ink-on-light);
+}
+.range input {
+  position: absolute; inset: 0; z-index: 1; inline-size: 100%; block-size: 100%; margin: 0; padding: 0;
+  background: none; appearance: none; -webkit-appearance: none; pointer-events: none;
+}
+.range input::-webkit-slider-runnable-track { block-size: 100%; background: none; }
+.range input::-moz-range-track { background: none; }
+.range input::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; pointer-events: auto; cursor: grab;
+  inline-size: var(--thumb); block-size: var(--thumb); margin-block-start: calc((2.75rem - var(--thumb)) / 2);
+  border-radius: 50%; background: var(--ink-on-light); border: calc(var(--hairline) * 2) solid var(--bone-050);
+}
+.range input::-moz-range-thumb {
+  pointer-events: auto; cursor: grab;
+  inline-size: var(--thumb); block-size: var(--thumb);
+  border-radius: 50%; background: var(--ink-on-light); border: calc(var(--hairline) * 2) solid var(--bone-050);
+}
+.range input:focus-visible::-webkit-slider-thumb { outline: var(--focus-w) solid var(--oxblood); outline-offset: var(--hairline); }
+.range input:focus-visible::-moz-range-thumb { outline: var(--focus-w) solid var(--oxblood); outline-offset: var(--hairline); }
+
+/* ── the results ──────────────────────────────────────────────────────────────
+   A card per car: the photograph on its dark frame with the status and the
+   save on it — the car lives in the dark — and the facts under it on the
+   light, name in the display face, price, then mileage and stock in the mono
+   that records. Text and Share share the foot, parted by a hairline. */
+.results {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: var(--sp-6) var(--sp-5);
+}
+.car {
+  position: relative; display: grid; grid-template-rows: auto 1fr auto; min-inline-size: 0;
+  background: var(--surface); border: var(--hairline) solid var(--rule);
+}
+.car[hidden] { display: none; }
+.car__media { position: relative; overflow: clip; background: var(--graphite-900); }
+.car__media img {
+  display: block; inline-size: 100%; block-size: auto; aspect-ratio: 4 / 3; object-fit: cover;
+  transition: transform var(--dur-3) var(--ease-out), filter var(--dur-3) var(--ease-out);
+}
+.car:is(:hover, :focus-within) .car__media img { transform: scale(1.045); }
+.car--sold .car__media img { filter: saturate(0.3) brightness(0.8); }
+.car__status {
+  position: absolute; inset-block-start: var(--sp-3); inset-inline-start: var(--sp-3); margin: 0;
+  padding: var(--sp-1) var(--sp-3);
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  background: var(--bone-050); color: var(--ink-on-light);
+}
+.car--just .car__status { background: var(--oxblood); color: var(--bone-050); }
+.car--sold .car__status, .car--consign .car__status { background: var(--graphite-950); color: var(--bone-050); }
+.car__save {
+  position: absolute; inset-block-start: var(--sp-2); inset-inline-end: var(--sp-2);
+  display: grid; place-items: center; inline-size: 2.75rem; block-size: 2.75rem; padding: 0;
+  border: 0; border-radius: 50%; cursor: pointer;
+  background: rgb(var(--graphite-950-rgb) / 0.62); color: var(--bone-050);
+  transition: background-color var(--dur-2) var(--ease-out), transform var(--dur-3) var(--ease-back);
+}
+.car__save svg path { fill: none; transition: fill var(--dur-2) var(--ease-out); }
+.car__save:hover { background: rgb(var(--graphite-950-rgb) / 0.86); }
+.car__save[aria-pressed='true'] svg path { fill: currentColor; }
+.car__save:active { transform: scale(0.95); transition: transform var(--dur-1) var(--ease-press); }
+.car__save:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--hairline); }
+.car__body { display: grid; align-content: start; gap: var(--sp-2); padding: var(--sp-4) var(--sp-5) var(--sp-5); }
+.car__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--news-h);
+  line-height: var(--lh-heading); color: var(--text); text-wrap: balance;
+}
+.car__price {
+  margin: var(--sp-1) 0 0; font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums; color: var(--text);
+}
+.car__meta {
+  margin: 0; display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-2);
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  font-variant-numeric: tabular-nums; color: var(--text-muted);
+}
+.car__actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-block-start: var(--hairline) solid var(--rule); }
+.car__act {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  min-block-size: 3rem; padding: 0 var(--sp-3); background: none; border: 0; cursor: pointer;
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text); text-decoration: none;
+  transition: background-color var(--dur-2) var(--ease-out);
+}
+.car__act + .car__act { border-inline-start: var(--hairline) solid var(--rule); }
+.car__act:hover { background: var(--ground-deep); }
+.car__act:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: calc(var(--focus-w) * -1); }
+
+.results-empty {
+  display: grid; justify-items: start; gap: var(--sp-4);
+  padding: var(--sp-7) var(--sp-6); background: var(--surface); border: var(--hairline) solid var(--rule);
+}
+.results-empty[hidden] { display: none; }
+.results-empty__title { font-family: var(--face); font-weight: 600; font-size: var(--h3); line-height: var(--lh-heading); color: var(--text); }
+.results-empty__body { max-inline-size: 52ch; color: var(--text-muted); }
+
+.pager {
+  margin: var(--sp-7) 0 0; text-align: center;
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text-muted); font-variant-numeric: tabular-nums;
+}
+.pager strong { font-weight: 500; color: var(--text); }
+
+/* ── wide: the filters are always open, so their summary says nothing ─────── */
+@media (min-width: 62rem) {
+  .facets__summary { display: none; }
+}
+
+/* ── narrow ───────────────────────────────────────────────────────────────── */
+@media (max-width: 61.99rem) {
+  .srp { grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
+  .facets { position: static; }
+  .facets__form { padding-block-start: 0; }
+  .srp-head__sort { inline-size: 100%; }
+  .srp-head__sort select { flex: 1; min-inline-size: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .car:is(:hover, :focus-within) .car__media img { transform: none; }
+}

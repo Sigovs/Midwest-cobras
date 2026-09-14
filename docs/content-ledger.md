@@ -374,3 +374,30 @@ is one of those, in that order; the labels are set in sentence case.
 | Form | "Photographs, up to 8" | **sourced — the screenshot's "Upload images (up to 8)"** | |
 | Home, nav, footer | Consignment links to consignment.html; the home section's link reads "Consign your car" | **design only** | It was "Talk about consigning", a call to the shop |
 | Build summary | The summary picture | **synthetic — the same two frames** | Alex, 2026-09-14: the Black Edition on the right has to match the one above in colour. The summary now shows the step 01 picture for the chosen model; the studio shots `car-rt4-front.jpg` / `car-rt4b-front.jpg` no longer appear on build.html |
+
+## inventory.html — the search results page, 2026-09-14
+
+Alex: "we need an SRP page … take the layout from Hinderer, only the layout,
+not the design", and for the cars: "simulate; take any from the projects in
+WORK". **Every car on this page is simulated.** The photographs are real, from
+Alex's other projects, and none of them is a car Midwest has; every year,
+price, mileage and stock number is made up.
+
+| Card | Claim | Status | Photograph from |
+|---|---|---|---|
+| MC-1024 | 2024 Backdraft Racing RT4B Black Edition, $78,900, 420 mi, New | **simulated** | this project, `car-rt4-front.jpg` (the Black Edition shot) |
+| MC-1025 | 2024 Backdraft Racing RT4 Classic Edition, $74,500, 180 mi, New | **simulated** | this project, `car-rt4b-front.jpg` (the Classic shot) |
+| MC-0981 | 2022 Backdraft Racing RT4B Roadster, $69,900, 2,140 mi, Just in | **simulated** | HINDERER, `vehicle-1.jpg` |
+| MC-0952 | 2021 Backdraft Racing RT4 Roadster, $64,500, 3,860 mi | **simulated** | HINDERER, `inventory-1.jpg` |
+| MC-0934 | 2020 Backdraft Racing RT4 Roadster, $61,900, 5,210 mi | **simulated** | HINDERER, `hero-cobra.jpg` |
+| MC-0917 | 2019 Backdraft Racing RT4 Roadster, $58,900, 6,420 mi, Sold | **simulated** | HINDERER, `build-base.jpg` |
+| MC-C112 | 1965 Shelby GT350, $185,000, 48,200 mi, Consignment | **simulated** | Sports Car Rescue, `rescued/shelby-gt350.jpg` |
+| MC-C108 | 1967 Porsche 911S, $159,500, 71,300 mi, Consignment | **simulated** | Sports Car Rescue, `rescued/porsche-911s-1967.jpg` |
+| MC-C104 | 1956 Chevrolet Corvette, $98,500, 34,900 mi, Consignment, Sold | **simulated** | GULLWIMNG, client photo "1956 Corvette Blue" |
+| MC-C101 | 1959 Elva Mk V race car, $89,000, Consignment | **simulated** | Sports Car Rescue, `rescued/elva-racecar.jpg` |
+| Head | "On the floor." | **design only** | |
+| Card | Text opens a message to 913 662 5000 | **sourced** | the shop's number, footer row 10 |
+
+The photographs are cropped to 4:3 into `assets/img/srp/`. The alt text says
+what each photograph shows, not what the card claims the car is.
+

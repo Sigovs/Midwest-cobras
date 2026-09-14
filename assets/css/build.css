@@ -356,16 +356,36 @@
 @keyframes cfg-roll { from { opacity: 0; transform: translateY(100%); } }
 
 /* ── the running build ──────────────────────────────────────────────────────
-   The raised bone surface, held beside the list while it is worked through —
-   sticky, as on Hinderer, and without a scroll of its own. The first cut
-   capped its height and scrolled inside, which put a second scrollbar beside
-   the page's; Alex, 2026-09-14: Hinderer has no such bar. The panel sticks
-   under the bar with the total and the lines in view, and its form comes up
-   as the list runs out. */
+   The raised bone surface, held beside the list while it is worked through.
+   Sticky, and exactly as tall as the window under the bar: it scrolls inside
+   itself, but only under the pointer — Alex, 2026-09-14: "when the mouse is on
+   the right panel it scrolls inside; on the left, with the steps, the left
+   scrolls". overscroll-behavior keeps a scroll that reaches the panel's end
+   from carrying on into the page.
+
+   No scrollbar: the first cut showed one beside the page's, and Alex struck
+   it ("Hinderer has no such bar"). What stands in for it is a wash at the
+   foot of the panel while there is more below, gone at the end. Keyboard
+   reach is unaffected — every control in the panel scrolls itself into view
+   when it takes focus. On a phone none of this applies: the panel is static. */
 .cfg-sum {
   position: sticky; inset-block-start: calc(var(--bar-h, var(--bar-clear)) + var(--sp-5));
+  max-block-size: calc(100dvh - var(--bar-h, var(--bar-clear)) - var(--sp-5) * 2);
+  overflow-y: auto; overscroll-behavior: contain;
+  scrollbar-width: none;
   display: grid; gap: var(--sp-4); align-content: start;
   padding: var(--sp-5); background: var(--bone-050); border: var(--hairline) solid var(--rule);
+}
+.cfg-sum::-webkit-scrollbar { display: none; }
+.cfg-sum::after {
+  content: ''; position: sticky; inset-block-end: calc(var(--sp-5) * -1); pointer-events: none;
+  block-size: var(--sp-7); margin-block: calc(var(--sp-7) * -1) calc(var(--sp-5) * -1);
+  margin-inline: calc(var(--sp-5) * -1);
+  background: linear-gradient(to bottom, transparent, var(--bone-050));
+}
+@supports (animation-timeline: scroll()) {
+  .cfg-sum::after { animation: cfg-sum-end linear both; animation-timeline: scroll(nearest block); animation-range: calc(100% - var(--sp-8)) 100%; }
+  @keyframes cfg-sum-end { to { opacity: 0; } }
 }
 .cfg-sum__shot { aspect-ratio: 16 / 9; overflow: clip; border-radius: var(--radius-media); background: var(--bone-200); }
 /* The summary shows the same picture as step 01 — Alex, 2026-09-14: the Black
@@ -424,6 +444,7 @@
   .cfg { grid-template-columns: minmax(0, 1fr); }
   .cfg-base__img { aspect-ratio: 16 / 9; }
   .cfg-sum { position: static; max-block-size: none; overflow: visible; }
+  .cfg-sum::after { display: none; }
   .cfg-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cfg-options--wide { grid-template-columns: minmax(0, 1fr); }
   .cfg-group__head { grid-template-columns: auto minmax(0, 1fr) auto; }

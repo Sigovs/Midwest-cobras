@@ -68,6 +68,15 @@
     ROLES.forEach(function (role, r) {
       Array.prototype.forEach.call(document.querySelectorAll(role[1]), function (el) {
         if (el.closest('.hero') || el.closest('.rail') || el.closest('.row')) return;
+        /* A box that scrolls inside itself (build.html's summary, 2026-09-14)
+           is not scrolled to by the page, so an observer watching the window
+           would leave what is inside it blank until the six-second failsafe.
+           Its contents are marked as already arrived — marked, so v10 and
+           v11 leave them alone too. */
+        if (el.closest('[data-no-reveal]')) {
+          if (!el.hasAttribute('data-reveal')) { el.setAttribute('data-reveal', role[0]); el.setAttribute('data-in', ''); }
+          return;
+        }
         /* v10 leaves 04 to its scroll timeline; v11 then takes 04's parts by
            name. Same split here: the first three roles skip 04, the rest
            are 04's. */

@@ -22,7 +22,8 @@
      three depending on width. */
   function barHeight() {
     var bar = document.getElementById('site-head');
-    if (!bar || !document.body.classList.contains('page-finance')) return;
+    /* finance.html and build.html both open straight onto a section. */
+    if (!bar || !document.body.matches('.page-finance, .page-build')) return;
     function take() {
       document.documentElement.style.setProperty('--bar-h', bar.getBoundingClientRect().height + 'px');
     }

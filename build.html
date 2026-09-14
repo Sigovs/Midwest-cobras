@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en" data-page="v10">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Build your Cobra — Midwest Cobras</title>
+<meta name="description" content="Choose the model, work down the list, and send the build to Evan at Midwest Cobras. Every choice and its price, added up as you go.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2308090b'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Allura&display=swap">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/v10.css">
+<!-- v11 is the client's September change request, as a layer over v10.
+     index10 stays exactly as the client last saw it. -->
+<link rel="stylesheet" href="assets/css/v11.css">
+<!-- v12 is the next round of client changes, as a layer over v11 — the same
+     rule one step on: index11 stays exactly as the client last saw it. -->
+<link rel="stylesheet" href="assets/css/v12.css">
+<!-- The configurator's own layer: the page is v12's shell, this is the build. -->
+<link rel="stylesheet" href="assets/css/build.css">
+
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body class="page-build">
+
+<a class="skip" href="#configure">Skip to the configurator</a>
+
+<!-- BUILD YOUR COBRA — its own page, Alex, 2026-09-14: the mechanics of the
+     Build-your-own page on Hinderer Cobras (our project, the aandemo build),
+     in Midwest's design. Same shell as finance.html and index12 — head, bar,
+     footer, the stylesheets in the same order — with the configurator as the
+     whole of main. The Build section on the home page stays. -->
+<header class="site-head" id="site-head">
+  <!-- THE MARK IS WHITE AND HAS NO CAR — the client, 2026-09-10: "let's change
+       the logo back to white without the car silhouette like you originally
+       had it." That is the original logo.svg, drawn as a mask and painted
+       bone-050. The two candidates and the switch between them retire here;
+       both are in index10 and in git. -->
+  <a class="wordmark wordmark--solo" href="index12.html">
+    <span class="wordmark__mask" aria-hidden="true"></span>
+    <span class="wordmark__name">Midwest Cobras</span>
+  </a>
+  <nav class="site-nav" aria-label="Primary">
+    <ul>
+      <!-- HOME, SAID IN WORDS — Evan, 2026-09-11: he would never have known
+           the logo goes back to the top, and neither will the "old guys" he
+           expects to be reading this. The mark keeps its link; this is the
+           same route with a name on it. -->
+      <li><a href="index12.html">Home</a></li>
+      <li><a href="index12.html#inventory">Inventory</a></li>
+      <li><a href="build.html" aria-current="page">Build</a></li>
+      <li><a href="index12.html#services">Service</a></li>
+      <li><a href="index12.html#about">About</a></li>
+      <li><a href="index12.html#consignment">Consignment</a></li>
+      <li><a href="finance.html">Finance</a></li>
+      <li><a href="index12.html#gallery">Gallery</a></li>
+      <!-- The number is the one nav item that is not navigation: it leaves the
+           page. Same pill, so it does not become a badge, but it carries the
+           handset because a bare string of digits in a nav row reads as a
+           label rather than something you can press. -->
+      <li class="site-nav__tel">
+        <a href="tel:+19136625000">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+            <path d="M6.4 3.5h3l1.5 3.7-1.9 1.4a11.5 11.5 0 0 0 5.4 5.4l1.4-1.9 3.7 1.5v3a1.6 1.6 0 0 1-1.7 1.6A14.6 14.6 0 0 1 4.8 5.2a1.6 1.6 0 0 1 1.6-1.7Z"
+                  fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg><span>913 662 5000</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       THE CONFIGURATOR — bone, because it is the record: a car being written
+       down one decision at a time. Two columns, as on Hinderer: the list on
+       the left, the running build on the right.
+
+       HOW IT WORKS, carried over whole from the Hinderer build (main.js,
+       "Configurator"). The price of every option lives on the input that
+       selects it, so the summary reads what the page already says rather than
+       a second price list that could disagree with it. Every group is a
+       <details> sharing one name, a native one-open-at-a-time accordion; every
+       option is a real radio (one of these) or checkbox (as many as you like).
+       With scripts off it all still works and the summary shows the start.
+
+       WHAT IS MIDWEST'S. The spine is the home page's five steps, and step one
+       is the model — RT4 Classic or RT4B Black — which sets the base. The
+       options, their prices and their photographs are Hinderer's, standing in
+       until Midwest's own list arrives: content-ledger, "build.html".
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--bone cfg-page" id="configure" data-ground="light" aria-labelledby="build-title">
+    <div class="cfg">
+      <div class="cfg__main">
+        <header class="cfg__intro">
+          <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Build</p>
+          <h1 class="sect__title" id="build-title">Build your Cobra.</h1>
+          <p class="lede">Choose the model, then work down the list. Nothing is chosen
+            for you — the standard fitment is an answer like any other, and it
+            costs nothing. What you pick travels to Evan with your message, and he
+            prices the rest with you.</p>
+          <div class="cfg-progress">
+            <p class="cfg-progress__count"><strong data-progress-done>0</strong> of <span data-progress-total>10</span> chosen</p>
+            <div class="cfg-progress__track" role="progressbar" aria-labelledby="build-title"
+                 aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" aria-valuetext="0 of 10 chosen" data-progress>
+              <span class="cfg-progress__fill" data-progress-fill></span>
+            </div>
+          </div>
+        </header>
+
+      <section class="cfg-step" aria-labelledby="step-01">
+        <h2 class="cfg-step__h" id="step-01"><span>01</span>Start here</h2>
+        <details class="cfg-group" name="cfg-group" data-group="model" data-mech="one" data-required open>
+          <summary class="cfg-group__head">
+            <span class="cfg-group__mark" aria-hidden="true"></span>
+            <span class="cfg-group__name">Model</span>
+            <span class="cfg-group__chosen" data-chosen><strong>Not selected</strong></span>
+            <span class="cfg-group__caret" aria-hidden="true"></span>
+          </summary>
+          <div class="cfg-group__body">
+            <div class="cfg-options cfg-options--wide">
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="model" id="model-1" value="RT4 Classic Edition" data-price="0" data-base="66900" data-shot="assets/img/car-rt4-front.jpg">
+                <span class="cfg-opt__frame"><img src="assets/img/car-rt4-front.jpg" alt="" width="1728" height="972" loading="lazy" decoding="async"></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">RT4 Classic Edition</span>
+                <span class="cfg-opt__price">From $66,900</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="model" id="model-2" value="RT4B Black Edition" data-price="0" data-base="70500" data-shot="assets/img/car-rt4b-front.jpg">
+                <span class="cfg-opt__frame"><img src="assets/img/car-rt4b-front.jpg" alt="" width="1728" height="972" loading="lazy" decoding="async"></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">RT4B Black Edition</span>
+                <span class="cfg-opt__price">From $70,500</span>
+              </label>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="cfg-step" aria-labelledby="step-02">
+        <h2 class="cfg-step__h" id="step-02"><span>02</span>Body and color</h2>
+        <details class="cfg-group" name="cfg-group" data-group="body" data-mech="one" data-required>
+          <summary class="cfg-group__head">
+            <span class="cfg-group__mark" aria-hidden="true"></span>
+            <span class="cfg-group__name">Body</span>
+            <span class="cfg-group__chosen" data-chosen><strong>Not selected</strong></span>
+            <span class="cfg-group__caret" aria-hidden="true"></span>
+          </summary>
+          <div class="cfg-group__body">
+            <div class="cfg-options">
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="body" id="body-1" value="Standard body" data-price="0">
+                <span class="cfg-opt__frame"><span class="frame"><span class="frame__slug">Photo</span><span class="frame__sub">to come</span></span></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Standard body</span>
+                <span class="cfg-opt__price">Included</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="body" id="body-2" value="GT body" data-price="2000">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-body-gt.png" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">GT body</span>
+                <span class="cfg-opt__price">$2,000</span>
+              </label>
+            </div>
+          </div>
+        </details>
+        <details class="cfg-group" name="cfg-group" data-group="paint" data-mech="one" data-required>
+          <summary class="cfg-group__head">
+            <span class="cfg-group__mark" aria-hidden="true"></span>
+            <span class="cfg-group__name">Paint</span>
+            <span class="cfg-group__chosen" data-chosen><strong>Not selected</strong></span>
+            <span class="cfg-group__caret" aria-hidden="true"></span>
+          </summary>
+          <div class="cfg-group__body">
+            <div class="cfg-options">
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="paint" id="paint-1" value="Standard paint" data-price="0">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-ext-standard.png" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Standard paint</span>
+                <span class="cfg-opt__price">Included</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="paint" id="paint-2" value="Two-tone with stripe" data-price="0">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-ext-twotone.png" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Two-tone with stripe</span>
+                <span class="cfg-opt__price">Included</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="paint" id="paint-3" value="Custom color match" data-price="0">
+                <span class="cfg-opt__frame"><span class="frame"><span class="frame__slug">Photo</span><span class="frame__sub">to come</span></span></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Custom color match</span>
+                <span class="cfg-opt__price">Included</span>
+              </label>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="cfg-step" aria-labelledby="step-03">
+        <h2 class="cfg-step__h" id="step-03"><span>03</span>Wheels and stance</h2>
+        <details class="cfg-group" name="cfg-group" data-group="wheels" data-mech="one" data-required>
+          <summary class="cfg-group__head">
+            <span class="cfg-group__mark" aria-hidden="true"></span>
+            <span class="cfg-group__name">Wheels</span>
+            <span class="cfg-group__chosen" data-chosen><strong>Not selected</strong></span>
+            <span class="cfg-group__caret" aria-hidden="true"></span>
+          </summary>
+          <div class="cfg-group__body">
+            <div class="cfg-options">
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="wheels" id="wheels-1" value="Standard 17-inch" data-price="0">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-susp-17.png" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Standard 17-inch</span>
+                <span class="cfg-opt__price">Included</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="wheels" id="wheels-2" value="18-inch knock-off rims and tires" data-price="0">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-susp-18.png" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">18-inch knock-off rims and tires</span>
+                <span class="cfg-opt__price">Included</span>
+              </label>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="cfg-step" aria-labelledby="step-04">
+        <h2 class="cfg-step__h" id="step-04"><span>04</span>Pipes and roll bars</h2>
+        <details class="cfg-group" name="cfg-group" data-group="pipes" data-mech="any">
+          <summary class="cfg-group__head">
+            <span class="cfg-group__mark" aria-hidden="true"></span>
+            <span class="cfg-group__name">Pipes and engine bay</span>
+            <span class="cfg-group__chosen" data-chosen><strong>Not selected</strong></span>
+            <span class="cfg-group__caret" aria-hidden="true"></span>
+          </summary>
+          <div class="cfg-group__body">
+            <p class="cfg-group__mech">Choose as many as you like</p>
+            <div class="cfg-options">
+              <label class="cfg-opt cfg-opt--any">
+                <input type="checkbox" name="pipes" id="pipes-1" value="Ceramic-coated headers" data-price="400">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-hood-headers.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Ceramic-coated headers</span>
+                <span class="cfg-opt__price">$400</span>
+              </label>
+              <label class="cfg-opt cfg-opt--any">
+                <input type="checkbox" name="pipes" id="pipes-2" value="Polished valve covers" data-price="0">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-hood-valvecovers.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Polished valve covers</span>
+                <span class="cfg-opt__price">Included</span>
+              </label>
+              <label class="cfg-opt cfg-opt--any">
+                <input type="checkbox" name="pipes" id="pipes-3" value="Roll bar padding" data-price="0">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-extra-rollbar.webp" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Roll bar padding</span>
+                <span class="cfg-opt__price">Included</span>
+              </label>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="cfg-step" aria-labelledby="step-05">
+        <h2 class="cfg-step__h" id="step-05"><span>05</span>Interior</h2>
+        <details class="cfg-group" name="cfg-group" data-group="upholstery" data-mech="one" data-required>
+          <summary class="cfg-group__head">
+            <span class="cfg-group__mark" aria-hidden="true"></span>
+            <span class="cfg-group__name">Upholstery</span>
+            <span class="cfg-group__chosen" data-chosen><strong>Not selected</strong></span>
+            <span class="cfg-group__caret" aria-hidden="true"></span>
+          </summary>
+          <div class="cfg-group__body">
+            <div class="cfg-options">
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="upholstery" id="upholstery-1" value="Red interior" data-price="950">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-uph-red.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Red interior</span>
+                <span class="cfg-opt__price">$950</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="upholstery" id="upholstery-2" value="Gray interior" data-price="950">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-uph-grey.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Gray interior</span>
+                <span class="cfg-opt__price">$950</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="upholstery" id="upholstery-3" value="Tan interior" data-price="950">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-uph-tan.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Tan interior</span>
+                <span class="cfg-opt__price">$950</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="upholstery" id="upholstery-4" value="Dove interior" data-price="950">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-uph-dove.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Dove interior</span>
+                <span class="cfg-opt__price">$950</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="upholstery" id="upholstery-5" value="Brown interior" data-price="950">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-uph-brown.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Brown interior</span>
+                <span class="cfg-opt__price">$950</span>
+              </label>
+            </div>
+          </div>
+        </details>
+        <details class="cfg-group" name="cfg-group" data-group="stitching" data-mech="one" data-required>
+          <summary class="cfg-group__head">
+            <span class="cfg-group__mark" aria-hidden="true"></span>
+            <span class="cfg-group__name">Stitching</span>
+            <span class="cfg-group__chosen" data-chosen><strong>Not selected</strong></span>
+            <span class="cfg-group__caret" aria-hidden="true"></span>
+          </summary>
+          <div class="cfg-group__body">
+            <div class="cfg-options">
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="stitching" id="stitching-1" value="Diamond stitch" data-price="1875">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-stitch-diamond.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Diamond stitch</span>
+                <span class="cfg-opt__price">$1,875</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="stitching" id="stitching-2" value="Double diamond with seat eyes" data-price="3200">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-stitch-eyes.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Double diamond with seat eyes</span>
+                <span class="cfg-opt__price">$3,200</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="stitching" id="stitching-3" value="Ribbed" data-price="2400">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-stitch-ribbed.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Ribbed</span>
+                <span class="cfg-opt__price">$2,400</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="stitching" id="stitching-4" value="Double diamond Alcantara" data-price="4200">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-stitch-alcantara.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Double diamond Alcantara</span>
+                <span class="cfg-opt__price">$4,200</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="stitching" id="stitching-5" value="Diagonal" data-price="5200">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-stitch-diagonal.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Diagonal</span>
+                <span class="cfg-opt__price">$5,200</span>
+              </label>
+            </div>
+          </div>
+        </details>
+        <details class="cfg-group" name="cfg-group" data-group="dash" data-mech="one" data-required>
+          <summary class="cfg-group__head">
+            <span class="cfg-group__mark" aria-hidden="true"></span>
+            <span class="cfg-group__name">Dash and gauges</span>
+            <span class="cfg-group__chosen" data-chosen><strong>Not selected</strong></span>
+            <span class="cfg-group__caret" aria-hidden="true"></span>
+          </summary>
+          <div class="cfg-group__body">
+            <div class="cfg-options">
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="dash" id="dash-1" value="Carbon fiber dash, Moal gauges" data-price="3500">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-dash-moal.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Carbon fiber dash, Moal gauges</span>
+                <span class="cfg-opt__price">$3,500</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="dash" id="dash-2" value="Carbon fiber dash, GT gauges" data-price="3000">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-dash-gt.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Carbon fiber dash, GT gauges</span>
+                <span class="cfg-opt__price">$3,000</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="dash" id="dash-3" value="Carbon fiber dash, Auto X gauges" data-price="3380">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-dash-autox.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Carbon fiber dash, Auto X gauges</span>
+                <span class="cfg-opt__price">$3,380</span>
+              </label>
+            </div>
+          </div>
+        </details>
+        <details class="cfg-group" name="cfg-group" data-group="steering" data-mech="one" data-required>
+          <summary class="cfg-group__head">
+            <span class="cfg-group__mark" aria-hidden="true"></span>
+            <span class="cfg-group__name">Steering wheel</span>
+            <span class="cfg-group__chosen" data-chosen><strong>Not selected</strong></span>
+            <span class="cfg-group__caret" aria-hidden="true"></span>
+          </summary>
+          <div class="cfg-group__body">
+            <div class="cfg-options">
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="steering" id="steering-1" value="Standard three-spoke" data-price="0">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-steer-standard.png" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Standard three-spoke</span>
+                <span class="cfg-opt__price">Included</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="steering" id="steering-2" value="Moto-Lita style wood" data-price="0">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-steer-motolita.png" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Moto-Lita style wood</span>
+                <span class="cfg-opt__price">Included</span>
+              </label>
+              <label class="cfg-opt cfg-opt--one">
+                <input type="radio" name="steering" id="steering-3" value="Billet aluminum" data-price="0">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-steer-billet.png" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Billet aluminum</span>
+                <span class="cfg-opt__price">Included</span>
+              </label>
+            </div>
+          </div>
+        </details>
+        <details class="cfg-group" name="cfg-group" data-group="extras" data-mech="any">
+          <summary class="cfg-group__head">
+            <span class="cfg-group__mark" aria-hidden="true"></span>
+            <span class="cfg-group__name">Other interior options</span>
+            <span class="cfg-group__chosen" data-chosen><strong>Not selected</strong></span>
+            <span class="cfg-group__caret" aria-hidden="true"></span>
+          </summary>
+          <div class="cfg-group__body">
+            <p class="cfg-group__mech">Choose as many as you like</p>
+            <div class="cfg-options">
+              <label class="cfg-opt cfg-opt--any">
+                <input type="checkbox" name="extras" id="extras-1" value="Can-Lock seat belts" data-price="490">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-extra-seatbelts.png" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Can-Lock seat belts</span>
+                <span class="cfg-opt__price">$490</span>
+              </label>
+              <label class="cfg-opt cfg-opt--any">
+                <input type="checkbox" name="extras" id="extras-2" value="Heater" data-price="800">
+                <span class="cfg-opt__frame"><img src="assets/img/build/opt-extra-heater.jpg" alt="" width="800" height="600" loading="lazy" decoding="async" data-stand-in></span>
+                <span class="cfg-opt__mark" aria-hidden="true"></span>
+                <span class="cfg-opt__name">Heater</span>
+                <span class="cfg-opt__price">$800</span>
+              </label>
+            </div>
+          </div>
+        </details>
+      </section>
+      </div>
+
+      <aside class="cfg-sum" id="summary" aria-labelledby="sum-title" data-cfg-summary>
+        <div class="cfg-sum__shot"><img src="assets/img/car-rt4-front.jpg" alt="" width="1728" height="972" decoding="async" data-sum-shot></div>
+        <p class="cfg-sum__k" data-total-label>Starting price</p>
+        <h2 class="cfg-sum__title" id="sum-title" data-sum-model>Your Cobra</h2>
+        <p class="cfg-sum__price" data-total>From $66,900</p>
+
+        <dl class="cfg-lines">
+            <div class="cfg-line cfg-line--empty" data-row="model">
+              <dt>Model</dt>
+              <dd data-value>Not selected</dd>
+              <dd class="cfg-line__cost" data-cost>—</dd>
+            </div>
+            <div class="cfg-line cfg-line--empty" data-row="body">
+              <dt>Body</dt>
+              <dd data-value>Not selected</dd>
+              <dd class="cfg-line__cost" data-cost>—</dd>
+            </div>
+            <div class="cfg-line cfg-line--empty" data-row="paint">
+              <dt>Paint</dt>
+              <dd data-value>Not selected</dd>
+              <dd class="cfg-line__cost" data-cost>—</dd>
+            </div>
+            <div class="cfg-line cfg-line--empty" data-row="wheels">
+              <dt>Wheels</dt>
+              <dd data-value>Not selected</dd>
+              <dd class="cfg-line__cost" data-cost>—</dd>
+            </div>
+            <div class="cfg-line cfg-line--empty" data-row="pipes">
+              <dt>Pipes and engine bay</dt>
+              <dd data-value>Not selected</dd>
+              <dd class="cfg-line__cost" data-cost>—</dd>
+            </div>
+            <div class="cfg-line cfg-line--empty" data-row="upholstery">
+              <dt>Upholstery</dt>
+              <dd data-value>Not selected</dd>
+              <dd class="cfg-line__cost" data-cost>—</dd>
+            </div>
+            <div class="cfg-line cfg-line--empty" data-row="stitching">
+              <dt>Stitching</dt>
+              <dd data-value>Not selected</dd>
+              <dd class="cfg-line__cost" data-cost>—</dd>
+            </div>
+            <div class="cfg-line cfg-line--empty" data-row="dash">
+              <dt>Dash and gauges</dt>
+              <dd data-value>Not selected</dd>
+              <dd class="cfg-line__cost" data-cost>—</dd>
+            </div>
+            <div class="cfg-line cfg-line--empty" data-row="steering">
+              <dt>Steering wheel</dt>
+              <dd data-value>Not selected</dd>
+              <dd class="cfg-line__cost" data-cost>—</dd>
+            </div>
+            <div class="cfg-line cfg-line--empty" data-row="extras">
+              <dt>Other interior options</dt>
+              <dd data-value>Not selected</dd>
+              <dd class="cfg-line__cost" data-cost>—</dd>
+            </div>
+        </dl>
+
+        <p class="cfg-sum__note" data-remaining>8 groups still need an answer.</p>
+        <button class="cfg-sum__reset" type="button" data-cfg-reset>Start over</button>
+
+        <form class="cfg-form" data-apply method="post" novalidate
+              data-apply-note="Thank you. This is a design preview, so nothing was sent — on the live site your build goes straight to Evan.">
+          <h3 class="cfg-form__title">Get your estimate</h3>
+          <p class="cfg-sum__note" data-attached>Your 0 of 10 choices travel with this message. Evan will price the rest with you.</p>
+          <div class="field"><label for="cf-name">Name <span class="field__req" aria-hidden="true">*</span></label>
+            <input id="cf-name" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="cf-email">Email <span class="field__req" aria-hidden="true">*</span></label>
+            <input id="cf-email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="cf-phone">Phone</label>
+            <input id="cf-phone" name="phone" type="tel" autocomplete="tel"></div>
+          <div class="field"><label for="cf-msg">Message</label>
+            <textarea id="cf-msg" name="message" rows="3"></textarea></div>
+          <!-- The build travels with the message, the way a stock number does. -->
+          <input type="hidden" name="configuration" data-config-field>
+          <p class="apply__actions"><button class="btn btn--solid" type="submit" data-submit>Send this build</button></p>
+          <p class="apply__status" data-apply-status role="status" hidden></p>
+        </form>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<!-- The total rides the foot of a phone screen: while choosing, the visitor
+     needs one number, not the whole list, and the list is one tap away. Shown
+     by build.js, so a page without scripts never offers a button that does
+     nothing. -->
+<div class="cfg-bar" data-cfg-bar hidden>
+  <div>
+    <p class="cfg-bar__total" data-bar-total>From $66,900</p>
+    <p class="cfg-bar__count" data-bar-count>Choose a model</p>
+  </div>
+  <button class="btn btn--solid" type="button" data-bar-open>Summary</button>
+</div>
+
+<footer class="site-foot" id="contact">
+  <!-- The photograph is the ground the footer stands on, not a band under it.
+       aria-hidden and no alt job: everything the footer says is in the text
+       above it, and the picture is the room that text is said in. -->
+  <div class="site-foot__media" aria-hidden="true">
+    <img src="assets/img/footer.jpg" width="1920" height="960" alt="" loading="lazy" decoding="async">
+  </div>
+
+  <!-- The marque at the size the building is. It is decoration and it is
+       already said by the wordmark, so it is hidden from the reader. -->
+  <p class="site-foot__mark" aria-hidden="true">Cobras</p>
+
+  <div class="site-foot__grid">
+    <div class="site-foot__brand">
+      <!-- The same mark as the header. Hidden from the reader here: the header
+           has already given the company its name. -->
+      <p class="wordmark wordmark--foot wordmark--solo" aria-hidden="true"><span class="wordmark__mask"></span></p>
+      <p class="site-foot__line">Backdraft Cobras built,<br>sold, serviced and moved.</p>
+      <p class="mfr mfr--foot"><span class="mfr__k">Built by</span><img class="mfr__logo" src="assets/img/backdraft-racing.png" width="341" height="75" alt="Backdraft Racing"></p>
+    </div>
+
+    <nav class="site-foot__col" aria-label="The shop">
+      <p class="site-foot__k">The shop</p>
+      <ul>
+        <li><a href="index12.html">Home</a></li>
+        <li><a href="index12.html#about">About</a></li>
+        <li><a href="index12.html#inventory">Inventory</a></li>
+        <li><a href="build.html">Build</a></li>
+        <li><a href="index12.html#gallery">Gallery</a></li>
+      </ul>
+    </nav>
+
+    <nav class="site-foot__col" aria-label="Services">
+      <p class="site-foot__k">Services</p>
+      <ul>
+        <li><a href="index12.html#services">Tune-Up / Service</a></li>
+        <li><a href="index12.html#services">Transportation</a></li>
+        <li><a href="index12.html#consignment">Consignment</a></li>
+        <li><a href="finance.html">Finance</a></li>
+      </ul>
+    </nav>
+    <!-- The four accounts, from the links in the client's change request. -->
+    <nav class="site-foot__col" aria-label="Follow">
+      <p class="site-foot__k">Follow</p>
+      <ul>
+        <li><a href="https://www.instagram.com/midwestcobrasllc/" rel="noopener noreferrer" target="_blank">Instagram</a></li>
+        <li><a href="https://www.facebook.com/profile.php?id=61579691830492" rel="noopener noreferrer" target="_blank">Facebook</a></li>
+        <li><a href="https://www.youtube.com/@MidwestCobrasLLC" rel="noopener noreferrer" target="_blank">YouTube</a></li>
+        <li><a href="https://www.tiktok.com/@midwestcobrasllc" rel="noopener noreferrer" target="_blank">TikTok</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-foot__col">
+      <p class="site-foot__k">Contact</p>
+      <!-- One number, the shop's, and the two people by email — Evan first. The
+           client, 2026-09-10: "add Evan's name & email before mine and not
+           include cell numbers… our main number should be the only one shown." -->
+      <address>
+        <p>14510 Parallel Lane<br>Basehor, Kansas 66007</p>
+        <p><a href="tel:+19136625000">913 662 5000</a></p>
+        <p class="site-foot__who">Evan Kunard<br>
+          <a href="mailto:evan@midwestcobras.com">evan@midwestcobras.com</a></p>
+        <p class="site-foot__who">Kristi Kunard<br>
+          <a href="mailto:kristi@midwestcobras.com">kristi@midwestcobras.com</a></p>
+      </address>
+    </div>
+  </div>
+
+  <p class="site-foot__legal">
+    <span>&copy; 2026 Midwest Cobras, LLC</span>
+    <span>Powered by All Auto Network</span>
+  </p>
+
+</footer>
+
+<!-- v12.js FIRST: it marks the reveal elements before v10.js looks at them, so
+     v10's failsafe never owns them — the reason is at the top of v12.js. -->
+<script src="assets/js/v12.js" defer></script>
+<script src="assets/js/v10.js" defer></script>
+<script src="assets/js/v11.js" defer></script>
+<script src="assets/js/build.js" defer></script>
+</body>
+</html>

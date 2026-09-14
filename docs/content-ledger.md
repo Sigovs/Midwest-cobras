@@ -339,3 +339,18 @@ authorisation of 2026-08-24.
 | Finance | The application on its own page, finance.html; the section stays with a button | **as asked — Alex's reading** | Point 2. The client: "take the application off of the main scrolling page and just keep it to the Navigation bar". Alex, 2026-09-11: the section stays, the form goes, the page is its own. The Finance item in both navs goes to the page. Form copy, fields and the placeholder consent line unchanged — that row above still stands |
 | Finance | "Financing through the shop. The application goes straight to Evan…" | **rewritten** | The v11 lede said "Fill this in", and there is nothing on the section to fill in now. Same facts, re-pointed at the button |
 | Services | "Arrange transport →" on the Transportation row | **restored — Alex, 2026-09-11** | v11 removed it on the client's line that transport is discussed at the sale or during the build. Back on Alex's instruction, index10's link to the shop number. The client's line still stands as a fact about the process; whether the row carries a call is Alex's call until the client says otherwise |
+
+## build.html — the configurator, 2026-09-14
+
+Alex: "the mechanics of Build your Cobra from Hinderer, adapted to our design,
+as a separate Build page for Midwest". The spine is Midwest's (the home page's
+five steps, the model first); the option list is Hinderer's, standing in.
+
+| Where | Claim | Status | Note |
+|---|---|---|---|
+| Step 01 | RT4 Classic Edition from $66,900 · RT4B Black Edition from $70,500 | **sourced** | backdraftracing.com, read 2026-08-24 — the base the total starts from |
+| Steps 02–05 | Every option name and price (e.g. Diamond stitch $1,875, GT body $2,000, Heater $800) | **stand-in — Hinderer Motor Company's list** | Taken from the Hinderer build page (hinderercobras.aandemo.com/build/, read 2026-09-14). A different dealer's prices for a different base; replaced by Midwest's own list before anyone relies on a figure |
+| Steps 02–05 | 26 option photographs, `assets/img/build/opt-*` | **stand-in — Hinderer's photography** | Same source. The images carry `data-stand-in` and an empty alt: the option's name already labels the control, so an alt would read the name twice. "Standard body" and "Custom color match" have no photograph there either — plates |
+| Summary | "This estimate excludes tax, title and delivery." | **unverified — client to confirm** | Hinderer's wording, about what a price includes |
+| Summary | "Evan will price the rest with you" | **sourced — paraphrase** | The client: "we just prefer that a customer call, email or come in to spec one out" |
+| Summary form | The build is sent to Evan | **design only** | Connected to nothing; sending says so |

@@ -1,0 +1,240 @@
+/* build.css — the configurator, build.html.
+   ---------------------------------------------------------------------------
+   Loaded after v12.css on one page. The shell (bar, footer, type, fields,
+   buttons, the reveal) is v10–v12's; this file is the configurator itself.
+   Its mechanics are the Hinderer build's, set in Midwest's system: the record
+   ground, the three voices, hairlines rather than boxes where a rule will do,
+   and oxblood only as a mark on light. Values come from tokens.css and the
+   earlier layers' :root; the few this file adds are named first. */
+
+:root {
+  /* The running build beside the list. Wide enough for a price and a line of
+     choices without wrapping either; narrow enough that the option photographs
+     keep most of the page. */
+  --cfg-aside: clamp(22rem, 28vw, 27rem);
+}
+
+/* ── layout ─────────────────────────────────────────────────────────────── */
+.cfg {
+  display: grid; grid-template-columns: minmax(0, 1fr) var(--cfg-aside);
+  gap: var(--sp-8) var(--col-gap); align-items: start;
+}
+.cfg__main { display: grid; gap: var(--sp-7); min-inline-size: 0; }
+.cfg__intro { display: grid; gap: var(--sp-5); justify-items: start; }
+.cfg__intro .lede { max-inline-size: 58ch; }
+
+/* ── progress ───────────────────────────────────────────────────────────────
+   The words are the fact, the bar is a picture of it. Filled by transform, so
+   nothing reflows as it grows. */
+.cfg-progress { inline-size: 100%; display: grid; gap: var(--sp-3); margin-block-start: var(--sp-2); }
+.cfg-progress__count {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.cfg-progress__count strong { color: var(--text); font-weight: 500; }
+.cfg-progress__track { display: block; block-size: calc(var(--hairline) * 3); background: var(--bone-200); overflow: clip; }
+.cfg-progress__fill {
+  display: block; block-size: 100%; background: var(--ink-on-light);
+  transform-origin: left; transform: scaleX(var(--done, 0));
+  transition: transform var(--dur-4) var(--ease-settle);
+}
+
+/* ── steps and groups ───────────────────────────────────────────────────────
+   The five steps are the home page's own, numbered because they are a real
+   order. Each group is a <details>: the head says what the group is and what
+   has been chosen in it; the circle fills when it has an answer. */
+.cfg-step { display: grid; gap: var(--sp-4); }
+.cfg-step__h {
+  display: flex; align-items: baseline; gap: var(--sp-4);
+  padding-block-end: var(--sp-3); border-block-end: var(--hairline) solid var(--ink-on-light);
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
+}
+.cfg-step__h span {
+  font-family: var(--mono); font-weight: 400; font-size: var(--micro);
+  letter-spacing: var(--track); color: var(--text-muted);
+}
+
+.cfg-group { background: var(--surface); border: var(--hairline) solid var(--rule); }
+.cfg-group__head {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center; gap: var(--sp-4);
+  min-block-size: 3.5rem; padding: var(--sp-3) var(--sp-5);
+  cursor: pointer; list-style: none;
+}
+.cfg-group__head::-webkit-details-marker { display: none; }
+.cfg-group__head:focus-visible {
+  outline: var(--focus-w) solid var(--ink-on-light); outline-offset: calc(var(--focus-offset) * -1);
+}
+.cfg-group__mark {
+  display: grid; place-items: center;
+  inline-size: 1.125rem; block-size: 1.125rem; border-radius: 50%;
+  border: calc(var(--hairline) * 2) solid var(--ink-on-light-muted);
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.cfg-group__mark::after {
+  content: ''; inline-size: 0.5rem; block-size: 0.5rem; border-radius: 50%;
+  background: var(--oxblood); transform: scale(0);
+  transition: transform var(--dur-2) var(--ease-back);
+}
+.cfg-group[data-answered] .cfg-group__mark { border-color: var(--oxblood); }
+.cfg-group[data-answered] .cfg-group__mark::after { transform: scale(1); }
+.cfg-group__name {
+  font-family: var(--face); font-weight: 600; font-size: var(--news-h);
+  line-height: var(--lh-heading); color: var(--text);
+}
+.cfg-group__chosen {
+  display: grid; justify-items: end; gap: var(--sp-1); text-align: end;
+  font-size: var(--fs-body-s); line-height: var(--lh-label); color: var(--text-muted);
+}
+.cfg-group__chosen strong { font-weight: 400; }
+.cfg-group[data-answered] .cfg-group__chosen strong { color: var(--text); }
+.cfg-group__chosen .cfg-num { font-family: var(--mono); font-size: var(--micro); font-variant-numeric: tabular-nums; }
+.cfg-group__caret {
+  inline-size: 0.625rem; block-size: 0.625rem; margin-inline: var(--sp-2);
+  border-inline-end: calc(var(--hairline) * 2) solid var(--ink-on-light-muted);
+  border-block-end: calc(var(--hairline) * 2) solid var(--ink-on-light-muted);
+  transform: translateY(-25%) rotate(45deg);
+  transition: transform var(--dur-3) var(--ease-out);
+}
+.cfg-group[open] .cfg-group__caret { transform: translateY(25%) rotate(-135deg); }
+.cfg-group__body { display: grid; gap: var(--sp-4); padding: 0 var(--sp-5) var(--sp-5); }
+.cfg-group__mech {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+
+/* ── option cards ───────────────────────────────────────────────────────────
+   The input stays a real input, hidden but focusable; the card is its label.
+   The mark says the rule before anything is chosen — a circle is one of
+   these, a square is as many as you like — and fills when chosen, while the
+   photograph takes a ring. Hover and keyboard focus answer the same way. */
+.cfg-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 10.5rem), 1fr)); gap: var(--sp-5) var(--sp-4); }
+.cfg-options--wide { grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); }
+.cfg-opt { position: relative; display: grid; gap: var(--sp-2); align-content: start; cursor: pointer; }
+.cfg-opt input {
+  position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; opacity: 0;
+}
+.cfg-opt__frame {
+  position: relative; display: block; aspect-ratio: 4 / 3; overflow: clip;
+  border-radius: var(--radius-media);
+  border: var(--hairline) solid var(--rule); background: var(--bone-200);
+  transition: outline-color var(--dur-2) var(--ease-out);
+  outline: calc(var(--hairline) * 2) solid transparent; outline-offset: calc(var(--hairline) * 2);
+}
+.cfg-options--wide .cfg-opt__frame { aspect-ratio: 16 / 9; }
+.cfg-opt__frame img {
+  display: block; inline-size: 100%; block-size: 100%; object-fit: cover;
+  transition: transform var(--dur-3) var(--ease-out);
+}
+.cfg-opt__frame .frame { inline-size: 100%; block-size: 100%; border: 0; }
+.cfg-opt:hover .cfg-opt__frame img { transform: scale(1.04); }
+.cfg-opt:has(input:checked) .cfg-opt__frame { outline-color: var(--ink-on-light); }
+.cfg-opt:has(input:focus-visible) .cfg-opt__frame { outline: var(--focus-w) solid var(--oxblood); }
+.cfg-opt__mark {
+  position: absolute; inset-block-start: var(--sp-2); inset-inline-end: var(--sp-2);
+  display: grid; place-items: center;
+  inline-size: 1.5rem; block-size: 1.5rem; border-radius: 50%;
+  background: var(--bone-050); border: calc(var(--hairline) * 2) solid var(--ink-on-light);
+}
+.cfg-opt--any .cfg-opt__mark { border-radius: var(--radius-control); }
+.cfg-opt__mark::after {
+  content: ''; inline-size: 0.625rem; block-size: 0.625rem; border-radius: inherit;
+  background: var(--ink-on-light); transform: scale(0);
+  transition: transform var(--dur-2) var(--ease-back);
+}
+.cfg-opt:has(input:checked) .cfg-opt__mark::after { transform: scale(1); }
+.cfg-opt__name { font-size: var(--fs-body-s); line-height: var(--lh-label); color: var(--text); }
+.cfg-opt__price { font-family: var(--mono); font-size: var(--micro); font-variant-numeric: tabular-nums; color: var(--text-muted); }
+
+/* ── the running build ──────────────────────────────────────────────────────
+   The raised bone surface, held beside the list while it is worked through.
+   Taller than a laptop screen once the form is in it, so it scrolls inside
+   itself rather than hiding its own bottom until the page ends. */
+.cfg-sum {
+  position: sticky; inset-block-start: calc(var(--bar-h, var(--bar-clear)) + var(--sp-5));
+  display: grid; gap: var(--sp-4); align-content: start;
+  max-block-size: calc(100vh - var(--bar-h, var(--bar-clear)) - var(--sp-7));
+  overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
+  padding: var(--sp-5); background: var(--bone-050); border: var(--hairline) solid var(--rule);
+}
+.cfg-sum__shot { aspect-ratio: 16 / 9; overflow: clip; border-radius: var(--radius-media); background: var(--bone-200); }
+.cfg-sum__shot img { display: block; inline-size: 100%; block-size: 100%; object-fit: cover; }
+.cfg-sum__k {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.cfg-sum__title {
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
+}
+.cfg-sum__price {
+  font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums;
+  color: var(--text); padding-block-end: var(--sp-4); border-block-end: var(--hairline) solid var(--ink-on-light);
+}
+.cfg-lines { display: grid; margin: 0; }
+.cfg-line {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-1) var(--sp-3);
+  padding-block: var(--sp-3); border-block-end: var(--hairline) solid var(--rule);
+}
+.cfg-line dt {
+  grid-column: 1 / -1; font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.cfg-line dd { margin: 0; font-size: var(--fs-body-s); line-height: var(--lh-label); color: var(--text); }
+.cfg-line__cost { font-family: var(--mono); font-size: var(--micro); font-variant-numeric: tabular-nums; text-align: end; white-space: nowrap; }
+.cfg-line--empty [data-value] { color: var(--text-muted); }
+.cfg-sum__note { font-size: var(--fs-body-s); line-height: var(--lh-body); color: var(--text-muted); }
+.cfg-sum__reset {
+  justify-self: start; min-block-size: 2.75rem; padding: 0; background: none; border: 0; cursor: pointer;
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text-muted); transition: color var(--dur-2) var(--ease-out);
+}
+.cfg-sum__reset:hover { color: var(--text); }
+.cfg-sum__reset:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--focus-offset); }
+.cfg-form { display: grid; gap: var(--sp-4); padding-block-start: var(--sp-5); border-block-start: var(--hairline) solid var(--ink-on-light); }
+.cfg-form__title {
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
+}
+.cfg-form .apply__actions { margin: 0; }
+.cfg-form .btn { inline-size: 100%; justify-content: center; }
+
+/* ── the phone bar ──────────────────────────────────────────────────────── */
+.cfg-bar { display: none; }
+
+@media (max-width: 61.99rem) {
+  .cfg { grid-template-columns: minmax(0, 1fr); }
+  .cfg-sum { position: static; max-block-size: none; overflow: visible; }
+  .cfg-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cfg-options--wide { grid-template-columns: minmax(0, 1fr); }
+  .cfg-group__head { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .cfg-group__chosen { grid-column: 2 / -1; grid-row: 2; justify-items: start; text-align: start; }
+
+  .cfg-bar:not([hidden]) {
+    position: fixed; z-index: 45; inset-inline: 0; inset-block-end: 0;
+    display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4);
+    padding-block: var(--sp-3) calc(var(--sp-3) + env(safe-area-inset-bottom, 0));
+    padding-inline: var(--sp-5);
+    background: var(--graphite-950); color: var(--ink-on-dark);
+    border-block-start: var(--hairline) solid var(--graphite-700);
+  }
+  .cfg-bar__total {
+    font-family: var(--face); font-weight: 600; font-size: var(--h3);
+    line-height: var(--lh-tight); font-variant-numeric: tabular-nums;
+  }
+  .cfg-bar__count {
+    font-family: var(--mono); font-size: var(--micro);
+    letter-spacing: var(--track); text-transform: uppercase; color: var(--ink-on-dark-muted);
+  }
+  /* The footer's last line stays above the bar. */
+  .page-build .site-foot { padding-block-end: calc(var(--pad) + var(--sp-10)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cfg-progress__fill, .cfg-group__mark, .cfg-group__mark::after, .cfg-group__caret,
+  .cfg-opt__frame, .cfg-opt__frame img, .cfg-opt__mark::after { transition: none; }
+  .cfg-opt:hover .cfg-opt__frame img { transform: none; }
+}

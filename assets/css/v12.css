@@ -45,7 +45,7 @@
    same air every section on the home page has. The bar is two rows on a
    laptop and three on a phone, which is why it is measured rather than
    guessed. */
-.page-finance main > .sect:first-of-type {   /* v10.js puts its marker div first */
+:is(.page-finance, .page-build) main > .sect:first-of-type {   /* v10.js puts its marker div first */
   padding-block-start: calc(var(--bar-h, var(--bar-clear)) + var(--pad));
 }
 

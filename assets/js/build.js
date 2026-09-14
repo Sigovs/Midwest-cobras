@@ -390,30 +390,46 @@
     });
   }
 
-  /* Sticky to the end, and the form in reach — Alex, 2026-09-14: sticky to
-     the end of the list, and at the end "don't hide the form, carry on down
-     the page and make it visible; when there is no need to scroll inside, we
-     don't". The panel sticks the whole length of the list and scrolls inside
-     under the pointer. Over the last window of the list the panel's own
-     scroll follows the page: by the time the list ends, the panel has
-     arrived at its foot — the estimate and Send in view — and from there it
-     leaves with the page as any sticky box does. Scrolling back up runs the
-     same stretch in reverse, back to the photograph and the total. Outside
-     that stretch the panel is left exactly where the reader put it, and
-     there is no empty tail under the list. Nothing runs where the panel is
-     not sticky (a phone). */
+  /* Sticky to the end, and the form in reach — Alex, 2026-09-14: sticky the
+     whole length of the list; at the end "don't hide the form, carry on down
+     the page and make it visible"; and the panel hangs on past the list a
+     little — "that's ok". While the list runs on, the panel holds still and
+     scrolls inside only when the reader scrolls it. When the end of the list
+     reaches the panel's foot, the panel stops being a window and rides with
+     the page: the foot of its contents is pinned to the end of the column,
+     so carrying on down shows the rest — the form — in full. The hand-over
+     keeps the contents where they are on screen, and scrolling back up
+     returns the panel to exactly where the reader left it. The column runs
+     on past the list by what the panel still has to show, and no further.
+     Nothing runs where the panel is not sticky (a phone). */
   if (sum) {
-    var fitQueued = false, lastLeg = 0;
+    var fitQueued = false, riding = false, held = 0;
     var fit = function () {
       fitQueued = false;
       var cs = getComputedStyle(sum);
-      if (cs.position !== 'sticky') { lastLeg = 0; return; }
-      var top = parseFloat(cs.top) || 0;
-      var stretch = sum.offsetHeight;
-      var leg = (top + stretch * 2 - root.getBoundingClientRect().bottom) / stretch;
-      leg = Math.max(0, Math.min(1, leg));
-      if (leg > 0 || lastLeg > 0) sum.scrollTop = leg * (sum.scrollHeight - sum.clientHeight);
-      lastLeg = leg;
+      if (cs.position !== 'sticky') {
+        sum.style.maxBlockSize = ''; sum.style.top = ''; root.style.minBlockSize = '';
+        riding = false;
+        return;
+      }
+      sum.style.top = '';
+      var top = parseFloat(getComputedStyle(sum).top) || 0;
+      var whole = sum.scrollHeight + (sum.offsetHeight - sum.clientHeight);
+      var full = window.innerHeight - top - (parseFloat(cs.paddingTop) || 0);
+      var shown = riding ? held : sum.scrollTop;
+      if (!riding) {
+        var list = root.querySelector('.cfg__main').offsetHeight;
+        root.style.minBlockSize = Math.max(whole, list + Math.max(0, whole - full - shown)) + 'px';
+      }
+      var end = root.getBoundingClientRect().bottom;
+      if (end < top - shown + whole) {
+        if (!riding) { riding = true; held = shown; sum.style.maxBlockSize = 'none'; sum.scrollTop = 0; }
+        sum.style.top = (end - whole) + 'px';
+      } else if (riding) {
+        riding = false;
+        sum.style.maxBlockSize = '';
+        sum.scrollTop = held;
+      }
       if (foot) foot();
     };
     var queueFit = function () {
@@ -422,6 +438,7 @@
       requestAnimationFrame(fit);
     };
     window.addEventListener('scroll', queueFit, { passive: true });
+    sum.addEventListener('scroll', queueFit, { passive: true });
     window.addEventListener('resize', queueFit);
     root.addEventListener('toggle', queueFit, true);
     fit();

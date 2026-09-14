@@ -260,34 +260,51 @@ details[open] > summary .facets__caret { transform: translateY(25%) rotate(-135d
 }
 
 /* ── Text: the car, sent to a phone ───────────────────────────────────────────
-   Alex, 2026-09-14: "not like AI slop — the styles exist; make it expensive".
-   So the panel is set the way this site sets a car. The photograph first, on
-   its own dark frame. The car's name is the title — it is what opened — and
-   its price is in the display face. The facts are the home page's spec rows.
-   One field, the number written large on a single rule, as every field in
-   this panel is a rule rather than a box. The site's solid button, full
-   width, its arrow stepping on hover. The scan code is an aside under a
-   hairline, ink on the surface, not a boxed widget. Nothing is boxed that a
-   rule can part. On a phone there is nothing to scan with, so no code. */
-.textcar .enquiry__content { max-inline-size: 32rem; }
+   Alex, 2026-09-14: "not like AI slop — the styles exist; make it expensive",
+   then "no scroll inside". So the panel is set the way this site sets a car,
+   in two columns that stand in the window whole. On the left, the car: the
+   photograph on its dark frame, its name as the title (what focus lands on),
+   the price in the display face, mileage and stock as one spec row. On the
+   right, the action: one field with the number written large on a single rule
+   that doubles on focus, the site's solid button with its stepping arrow, the
+   scan code as an aside under a hairline, and the shop's number. Nothing is
+   boxed that a rule can part. The panel is wider than the Contact note so the
+   two columns have room; where it is narrow they stack, and on a phone there
+   is nothing to scan with, so no code. */
+.textcar .enquiry__panel {
+  inline-size: min(max(46rem, 50%), 100%);
+  gap: var(--sp-5); padding-block: var(--sp-4) var(--sp-6);
+  container-type: inline-size;
+}
+.textcar .enquiry__content { max-inline-size: none; gap: var(--sp-6) var(--sp-7); align-items: start; }
+@container (min-width: 36rem) {
+  .textcar .enquiry__content { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.textcar__car, .textcar__act { display: grid; gap: var(--sp-5); align-content: start; min-inline-size: 0; }
+.textcar__car { gap: var(--sp-4); }
 .textcar__plate { margin: 0; overflow: clip; border-radius: var(--radius-media); background: var(--graphite-900); }
-.textcar__plate img { display: block; inline-size: 100%; block-size: auto; aspect-ratio: 3 / 2; object-fit: cover; }
-.textcar__head { gap: var(--sp-3); }
+.textcar__plate img { display: block; inline-size: 100%; block-size: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.textcar__head { gap: var(--sp-2); }
 .textcar__k {
   margin: 0; font-family: var(--mono); font-size: var(--micro);
-  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text);
 }
-.textcar .enquiry__title { text-wrap: balance; }
+.textcar .enquiry__title { font-size: var(--h3); line-height: var(--lh-heading); text-wrap: balance; }
 .textcar__price {
-  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--lot);
   line-height: var(--lh-tight); letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums; color: var(--text);
 }
-.textcar__spec { margin: 0; }
-.textcar__spec > div:last-child { border-block-end: var(--hairline) solid var(--rule); }
+/* Mileage and stock side by side: one row of the home page's spec, not two. */
+.textcar__spec {
+  margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--sp-5);
+  border-block: var(--hairline) solid var(--rule);
+}
+.textcar__spec > div { display: grid; grid-template-columns: none; gap: var(--sp-1); padding-block: var(--sp-3); border: 0; }
 .textcar__spec dd { margin: 0; font-variant-numeric: tabular-nums; }
 
 .textcar__form { display: grid; gap: var(--sp-3); }
 .textcar__label {
+  margin-block-start: var(--sp-2);
   font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
   color: var(--text-muted); transition: color var(--dur-2) var(--ease-out);
 }
@@ -298,7 +315,6 @@ details[open] > summary .facets__caret { transform: translateY(25%) rotate(-135d
   transition: border-color var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
 }
 .textcar .phone:hover { border-block-end-color: var(--ink-on-light); }
-/* The rule doubles on focus, the panel's one focus indicator for a field. */
 .textcar .phone:focus-within { border-block-end-color: var(--ink-on-light); box-shadow: 0 var(--hairline) 0 0 var(--ink-on-light); }
 .phone__cc { font-family: var(--mono); font-size: var(--fs-body); color: var(--text-muted); }
 .textcar .phone input {
@@ -312,19 +328,21 @@ details[open] > summary .facets__caret { transform: translateY(25%) rotate(-135d
 .textcar__note { margin: 0; font-size: var(--fs-body-s); line-height: var(--lh-body); color: var(--text-muted); }
 .textcar__note[data-state='sent'] { color: var(--text); }
 .textcar__note[data-state='error'] { color: var(--oxblood); }            /* oxblood is text on light */
-.textcar__send { inline-size: 100%; justify-content: space-between; margin-block-start: var(--sp-3); cursor: pointer; }
+.textcar__send { inline-size: 100%; justify-content: space-between; margin-block-start: var(--sp-2); cursor: pointer; }
 
 .textcar__scan {
-  display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--sp-5); align-items: center;
+  display: grid; grid-template-columns: 5rem minmax(0, 1fr); gap: var(--sp-4); align-items: center;
   padding-block-start: var(--sp-5); border-block-start: var(--hairline) solid var(--rule);
 }
 .textcar__code svg { display: block; inline-size: 100%; block-size: auto; }
 .textcar__code svg rect { fill: transparent; }
 .textcar__code svg path { fill: var(--ink-on-light); }
-.textcar__scan p { margin: 0; display: grid; gap: var(--sp-1); font-size: var(--fs-body-s); line-height: var(--lh-body); color: var(--text-muted); max-inline-size: 32ch; }
-.textcar__scan .textcar__k { color: var(--text); }
+.textcar__scan p { margin: 0; display: grid; gap: var(--sp-1); font-size: var(--fs-body-s); line-height: var(--lh-body); color: var(--text-muted); }
+.textcar .enquiry__alt { padding-block-start: var(--sp-4); }
+.textcar .enquiry__alt a { white-space: nowrap; }   /* the number is not broken across a line */
 @media (max-width: 61.99rem) {
   .textcar__scan { display: none; }
+  .textcar__plate img { aspect-ratio: 16 / 9; }
 }
 
 @media (prefers-reduced-motion: reduce) {

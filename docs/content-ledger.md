@@ -333,7 +333,7 @@ authorisation of 2026-08-24.
 | Where | Claim | Status | Note |
 |---|---|---|---|
 | Build enquiry panel | "Rather talk it through in person? Call 913 662 5000 to schedule an appointment in our shop." | **sourced — the client's own copy** | Point 1, set as written. Replaces v11's line, which offered the street address as a place to come by |
-| Build enquiry panel | "(That's only because we're not always in town – so it's all by appointment only.)" | **sourced — the client's own copy, and a promise** | Point 1, set as written apart from the hyphen. "By appointment only" is a standing condition the client has to honour on every page that gives the address |
+| Build enquiry panel | ~~"(That's only because we're not always in town – so it's all by appointment only.)"~~ | **removed 2026-09-14** | Was the client's own copy (point 1). Alex had it taken off every page it appeared on; only index12's panel carried it. The line before it — call to schedule an appointment — stays |
 | Build, Build enquiry panel | "colour" → "color", three places | **as asked** | Point 3. The render only; source comments, docs and this ledger keep their spelling |
 | Header, footer | "Home" in the navigation | **as asked** | Point 4, Evan's request. Goes to the top of the page, the same place the mark goes |
 | Finance | The application on its own page, finance.html; the section stays with a button | **as asked — Alex's reading** | Point 2. The client: "take the application off of the main scrolling page and just keep it to the Navigation bar". Alex, 2026-09-11: the section stays, the form goes, the page is its own. The Finance item in both navs goes to the page. Form copy, fields and the placeholder consent line unchanged — that row above still stands |

@@ -118,15 +118,8 @@
       <details class="facets" id="facets" open>
         <summary class="facets__summary">Filter <span class="facets__active" data-facets-active hidden></span><span class="facets__caret" aria-hidden="true"></span></summary>
         <form class="facets__form" data-facets novalidate>
-          <fieldset class="facet">
-            <legend class="facet__legend">Condition</legend>
-            <div class="facet__body">
-              <label class="switch"><input type="checkbox" name="condition" value="new" checked data-facet="condition"><span class="switch__track" aria-hidden="true"></span><span class="switch__label">New</span></label>
-              <label class="switch"><input type="checkbox" name="condition" value="pre-owned" checked data-facet="condition"><span class="switch__track" aria-hidden="true"></span><span class="switch__label">Pre-owned</span></label>
-              <label class="switch"><input type="checkbox" name="condition" value="consignment" checked data-facet="condition"><span class="switch__track" aria-hidden="true"></span><span class="switch__label">Consignment</span></label>
-            </div>
-          </fieldset>
-
+          <!-- No condition switches — Alex, 2026-09-14: "remove New, Pre-owned,
+               Consignment". The status still shows on each photograph. -->
           <fieldset class="facet">
             <legend class="facet__legend">Year</legend>
             <div class="facet__body">

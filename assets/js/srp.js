@@ -83,8 +83,14 @@
   };
 
   var matches = function (card) {
-    var conditions = [].slice.call(form.querySelectorAll('[data-facet="condition"]:checked')).map(function (i) { return i.value; });
-    if (conditions.indexOf(card.getAttribute('data-condition')) === -1) return false;
+    /* Condition switches, where the page has them (inventory.html dropped
+       its own on Alex's word): none on the page means no condition filter,
+       not "no condition allowed". */
+    var switches = form.querySelectorAll('[data-facet="condition"]');
+    if (switches.length) {
+      var conditions = [].slice.call(form.querySelectorAll('[data-facet="condition"]:checked')).map(function (i) { return i.value; });
+      if (conditions.indexOf(card.getAttribute('data-condition')) === -1) return false;
+    }
     var year = num(card, 'data-year');
     if (year < bound('yearFrom', -Infinity) || year > bound('yearTo', Infinity)) return false;
     var make = form.elements.make.value, model = form.elements.model.value;

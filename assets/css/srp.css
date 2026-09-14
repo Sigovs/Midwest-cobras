@@ -259,6 +259,74 @@ details[open] > summary .facets__caret { transform: translateY(25%) rotate(-135d
   .results { grid-template-columns: minmax(0, 1fr); }
 }
 
+/* ── Text: the car sent to a phone ────────────────────────────────────────────
+   The home page's slide-in panel (v11's .enquiry) on its record ground, with
+   what the dealer platform puts there: the car, a phone number to send it to,
+   and a code to scan. The number is one line like every field in that panel —
+   +1, the digits, and the send at the end of the rule. The code is drawn in
+   ink on the raised bone; a phone has no use for a code to scan with itself,
+   so it is only shown where the panel is beside a page. */
+.textcar__car {
+  display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: var(--sp-4); align-items: center;
+  padding-block: var(--sp-4); border-block: var(--hairline) solid var(--rule);
+}
+.textcar__shot {
+  display: block; inline-size: 100%; block-size: auto; aspect-ratio: 4 / 3; object-fit: cover;
+  border-radius: var(--radius-control); background: var(--bone-200);
+}
+.textcar__facts { display: grid; gap: var(--sp-1); min-inline-size: 0; }
+.textcar__name { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--news-h); line-height: var(--lh-heading); color: var(--text); }
+.textcar__price { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-body); font-variant-numeric: tabular-nums; color: var(--text); }
+.textcar__meta {
+  margin: 0; font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  font-variant-numeric: tabular-nums; color: var(--text-muted);
+}
+.textcar__form { display: grid; gap: var(--sp-2); }
+.textcar .phone {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--sp-3);
+  border-block-end: var(--hairline) solid var(--ink-on-light-muted);
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.textcar .phone:hover { border-block-end-color: var(--ink-on-light); }
+.textcar .phone:focus-within { border-block-end: calc(var(--hairline) * 2) solid var(--ink-on-light); }
+.textcar .phone__cc { font-family: var(--mono); font-size: var(--fs-body); color: var(--text); }
+.textcar .field .phone input,
+.textcar .field .phone input:is(:hover, :focus, :focus-visible) {
+  min-block-size: 2.75rem; padding-inline: 0; border: 0; outline: none; background: transparent;
+  box-shadow: none;              /* v11 draws focus as a shadow under the field; the rule under the row does it here */
+  font-variant-numeric: tabular-nums;
+}
+.textcar .phone input[aria-invalid='true'] { color: var(--oxblood); }
+.phone__send {
+  display: grid; place-items: center; inline-size: 2.75rem; block-size: 2.75rem; margin-block-end: var(--sp-1);
+  padding: 0; border: 0; cursor: pointer;
+  background: var(--ink-on-light); color: var(--bone-050);
+  transition: transform var(--dur-3) var(--ease-back);
+}
+.phone__send svg { transition: transform var(--dur-3) var(--ease-settle); }
+.phone__send:is(:hover, :focus-visible) svg { transform: translateX(var(--sp-1)); }
+.phone__send:active { transform: scale(0.95); transition: transform var(--dur-1) var(--ease-press); }
+.phone__send:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--focus-offset); }
+.textcar__note { margin: 0; font-size: var(--fs-body-s); color: var(--text-muted); }
+.textcar__note[data-state='sent'] { color: var(--text); }
+.textcar__note[data-state='error'] { color: var(--oxblood); }            /* oxblood is text on light */
+.textcar__qr {
+  margin: 0; display: grid; justify-items: center; gap: var(--sp-3);
+  padding: var(--sp-5); background: var(--bone-050); border: var(--hairline) solid var(--rule);
+}
+.textcar__qr[hidden] { display: none; }
+.textcar__code { inline-size: 9rem; }
+.textcar__code svg { display: block; inline-size: 100%; block-size: auto; }
+.textcar__code svg rect { fill: var(--bone-050); }
+.textcar__code svg path { fill: var(--ink-on-light); }
+.textcar__qr figcaption {
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  text-align: center; color: var(--text-muted);
+}
+@media (max-width: 61.99rem) {
+  .textcar__qr { display: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .car:is(:hover, :focus-within) .car__media img { transform: none; }
 }

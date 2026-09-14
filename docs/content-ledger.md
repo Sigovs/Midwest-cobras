@@ -400,4 +400,5 @@ price, mileage and stock number is made up.
 
 The photographs are cropped to 4:3 into `assets/img/srp/`. The alt text says
 what each photograph shows, not what the card claims the car is.
-
+| Text panel | "Send this car to your phone", "Link sent to (…) …-…." | **design only** | Alex, 2026-09-14: Text slides in like Contact, with the dealer platform's Send to Phone and QR. Nothing is sent; the confirmation is the design of the state. The QR encodes the car's own link on this page, drawn by qrcode-generator (MIT, Kazuhiko Arase), vendored in `assets/js/vendor/qrcode-generator/` with its licence |
+| Text panel | "Rather text the shop about it? 913 662 5000" | **sourced** | the shop's number, row 10 |

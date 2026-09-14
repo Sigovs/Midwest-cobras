@@ -68,6 +68,70 @@
     });
   });
 
+  /* ── Text: send this car to a phone ─────────────────────────────────── */
+  /* Alex, 2026-09-14: Text opens a panel from the side, as Contact does on
+     the home page, with what the dealer platform offers there — the car sent
+     to a phone, or a code to scan. v11.js opens and closes the panel for
+     every [data-enquiry-open]; this fills it with the car that was pressed
+     and draws the code for that car's link. Design only: nothing is sent. */
+  var tcCar = document.querySelector('[data-textcar]');
+  if (tcCar) {
+    var tc = tcCar.closest('dialog');
+    var tcPick = function (sel) { return tc.querySelector(sel); };
+    var tcForm = tcPick('[data-textcar-form]'), tcPhone = tcForm.querySelector('input[type="tel"]');
+    var tcStatus = tcPick('[data-textcar-status]'), tcHint = tcStatus.textContent;
+    var tcQr = tcPick('[data-textcar-qr]');
+
+    var drawCode = function (url) {
+      var fig = tcQr.closest('figure');
+      if (typeof window.qrcode !== 'function') { if (fig) fig.hidden = true; return; }
+      var code = window.qrcode(0, 'M');
+      code.addData(url);
+      code.make();
+      tcQr.innerHTML = code.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+    };
+    var digits = function (v) { return v.replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '').slice(0, 10); };
+    var pretty = function (d) {
+      if (d.length < 4) return d;
+      if (d.length < 7) return '(' + d.slice(0, 3) + ') ' + d.slice(3);
+      return '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
+    };
+
+    cards.forEach(function (card) {
+      var trigger = card.querySelector('[data-enquiry-open]');
+      if (!trigger) return;
+      trigger.addEventListener('click', function () {
+        var img = card.querySelector('.car__media img');
+        tcPick('[data-textcar-name]').textContent = card.querySelector('.car__title').textContent;
+        tcPick('[data-textcar-price]').textContent = card.querySelector('.car__price').textContent;
+        tcPick('[data-textcar-meta]').textContent = [].slice.call(card.querySelectorAll('.car__meta > span:not([aria-hidden])')).map(function (x) { return x.textContent.replace(/-/g, '\u2011'); }).join(' \u00b7 ');   /* a stock number does not break at its hyphen */
+        tcPick('[data-textcar-shot]').src = img.currentSrc || img.src;
+        tcPick('[data-textcar-sms]').href = trigger.getAttribute('href');
+        drawCode(window.location.href.split('#')[0] + '#' + card.id);
+        tcPhone.removeAttribute('aria-invalid');
+        tcStatus.removeAttribute('data-state');
+        tcStatus.textContent = tcHint;
+      });
+    });
+
+    /* The number is written the way it is said, as it is typed. */
+    tcPhone.addEventListener('input', function () { tcPhone.value = pretty(digits(tcPhone.value)); });
+    tcForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var d = digits(tcPhone.value);
+      if (d.length !== 10) {
+        tcPhone.setAttribute('aria-invalid', 'true');
+        tcStatus.setAttribute('data-state', 'error');
+        tcStatus.textContent = 'Enter a ten-digit US number.';
+        tcPhone.focus();
+        return;
+      }
+      tcPhone.removeAttribute('aria-invalid');
+      tcStatus.setAttribute('data-state', 'sent');
+      tcStatus.textContent = 'Link sent to ' + pretty(d) + '.';
+    });
+  }
+
   /* ── the filters ─────────────────────────────────────────────────────── */
   /* A blank endpoint is not a filter: read as 0, an empty "price from" would
      quietly exclude every car. */

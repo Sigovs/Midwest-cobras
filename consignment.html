@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en" data-page="v10">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Consign your car — Midwest Cobras</title>
+<meta name="description" content="Consign your car with Midwest Cobras: tell us about it, add up to eight photographs, and it goes straight to Evan.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2308090b'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Allura&display=swap">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/v10.css">
+<!-- v11 is the client's September change request, as a layer over v10.
+     index10 stays exactly as the client last saw it. -->
+<link rel="stylesheet" href="assets/css/v11.css">
+<!-- v12 is the next round of client changes, as a layer over v11 — the same
+     rule one step on: index11 stays exactly as the client last saw it. -->
+<link rel="stylesheet" href="assets/css/v12.css">
+
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body class="page-consignment">
+
+<a class="skip" href="#consignment">Skip to the form</a>
+
+<!-- CONSIGNMENT HAS ITS OWN PAGE — Alex, 2026-09-14. Same shell as
+     finance.html and build.html — head, bar, footer, the stylesheets in the
+     same order — with the consignment form as the whole of main. The
+     Consignment section on the home page stays and sends people here. -->
+<header class="site-head" id="site-head">
+  <!-- THE MARK IS WHITE AND HAS NO CAR — the client, 2026-09-10: "let's change
+       the logo back to white without the car silhouette like you originally
+       had it." That is the original logo.svg, drawn as a mask and painted
+       bone-050. The two candidates and the switch between them retire here;
+       both are in index10 and in git. -->
+  <a class="wordmark wordmark--solo" href="index12.html">
+    <span class="wordmark__mask" aria-hidden="true"></span>
+    <span class="wordmark__name">Midwest Cobras</span>
+  </a>
+  <nav class="site-nav" aria-label="Primary">
+    <ul>
+      <!-- HOME, SAID IN WORDS — Evan, 2026-09-11: he would never have known
+           the logo goes back to the top, and neither will the "old guys" he
+           expects to be reading this. The mark keeps its link; this is the
+           same route with a name on it. -->
+      <li><a href="index12.html">Home</a></li>
+      <li><a href="index12.html#inventory">Inventory</a></li>
+      <li><a href="build.html">Build</a></li>
+      <li><a href="index12.html#services">Service</a></li>
+      <li><a href="index12.html#about">About</a></li>
+      <li><a href="consignment.html" aria-current="page">Consignment</a></li>
+      <li><a href="finance.html">Finance</a></li>
+      <li><a href="index12.html#gallery">Gallery</a></li>
+      <!-- The number is the one nav item that is not navigation: it leaves the
+           page. Same pill, so it does not become a badge, but it carries the
+           handset because a bare string of digits in a nav row reads as a
+           label rather than something you can press. -->
+      <li class="site-nav__tel">
+        <a href="tel:+19136625000">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+            <path d="M6.4 3.5h3l1.5 3.7-1.9 1.4a11.5 11.5 0 0 0 5.4 5.4l1.4-1.9 3.7 1.5v3a1.6 1.6 0 0 1-1.7 1.6A14.6 14.6 0 0 1 4.8 5.2a1.6 1.6 0 0 1 1.6-1.7Z"
+                  fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg><span>913 662 5000</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       CONSIGNMENT — its own page, Alex, 2026-09-14: "make the consignment page
+       design, in our Midwest style; here are the form fields". The fields are
+       the ones in Alex's screenshot, in its order — the car, its photographs,
+       additional options, then the person — set as the finance application is
+       set: the record ground, mono labels, fields on the raised bone surface,
+       the title held in view while the form is worked through.
+
+       Design only, like every form in this build: it is connected to nothing.
+       On Alex's word of 2026-09-14 no form says "design preview" any more, so
+       sending simply does nothing visible. Content ledger, "consignment.html".
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--bone finance finance--page" id="consignment" data-ground="light" aria-labelledby="consignment-title">
+    <div class="finance__grid">
+      <div class="finance__intro">
+        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Consignment</p>
+        <h1 class="sect__title" id="consignment-title">Consign your car.</h1>
+        <p class="lede">If the car is going to change hands, it is worth it
+          changing hands properly — photographed the way it deserves, described
+          accurately, and shown to people who already know what they are looking
+          at.</p>
+        <p class="lede">Tell us about it here and it goes straight to Evan, who
+          will be in touch.</p>
+        <p class="finance__note">Required fields are marked with an asterisk.</p>
+      </div>
+
+      <form class="apply" data-apply method="post" enctype="multipart/form-data" novalidate>
+        <fieldset class="apply__group">
+          <legend class="apply__legend"><span>01</span>The car</legend>
+          <div class="apply__fields">
+            <div class="field"><label for="cs-year">Year <span class="field__req" aria-hidden="true">*</span></label>
+              <select id="cs-year" name="year" required>
+                <option value="">Choose one</option><option>2027</option><option>2026</option>
+                <option>2025</option><option>2024</option><option>2023</option><option>2022</option>
+                <option>2021</option><option>2020</option><option>2019</option><option>2018</option>
+                <option>2017</option><option>2016</option><option>2015</option><option>2014</option>
+                <option>2013</option><option>2012</option><option>2011</option><option>2010</option>
+                <option>2009</option><option>2008</option><option>2007</option><option>2006</option>
+                <option>2005</option><option>2004</option><option>2003</option><option>2002</option>
+                <option>2001</option><option>2000</option><option>1999</option><option>1998</option>
+                <option>1997</option><option>1996</option><option>1995</option><option>1994</option>
+                <option>1993</option><option>1992</option><option>1991</option><option>1990</option>
+                <option>1989</option><option>1988</option><option>1987</option><option>1986</option>
+                <option>1985</option><option>1984</option><option>1983</option><option>1982</option>
+                <option>1981</option><option>1980</option><option>1979</option><option>1978</option>
+                <option>1977</option><option>1976</option><option>1975</option><option>1974</option>
+                <option>1973</option><option>1972</option><option>1971</option><option>1970</option>
+                <option>1969</option><option>1968</option><option>1967</option><option>1966</option>
+                <option>1965</option><option>1964</option><option>1963</option><option>1962</option>
+                <option>1961</option><option>1960</option><option>1959</option><option>1958</option>
+                <option>1957</option><option>1956</option><option>1955</option><option>1954</option>
+                <option>1953</option><option>1952</option><option>1951</option><option>1950</option>
+              </select></div>
+            <div class="field"><label for="cs-make">Make <span class="field__req" aria-hidden="true">*</span></label>
+              <select id="cs-make" name="make" required>
+                <option value="">Choose one</option><option>Backdraft Racing</option>
+                <option>Shelby</option><option>Superformance</option><option>Factory Five</option>
+                <option>AC Cars</option><option>Ford</option><option>Chevrolet</option>
+                <option>Dodge</option><option>Porsche</option><option>Jaguar</option>
+                <option>Other</option>
+              </select></div>
+            <div class="field"><label for="cs-model">Model <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="cs-model" name="model" required></div>
+            <div class="field"><label for="cs-trim">Trim</label>
+              <input id="cs-trim" name="trim"></div>
+            <div class="field"><label for="cs-ext">Exterior color</label>
+              <input id="cs-ext" name="exterior_color"></div>
+            <div class="field"><label for="cs-int">Interior color</label>
+              <input id="cs-int" name="interior_color"></div>
+            <div class="field"><label for="cs-cyl">Cylinders</label>
+              <input id="cs-cyl" name="cylinders" inputmode="numeric"></div>
+            <div class="field"><label for="cs-liters">Liters</label>
+              <input id="cs-liters" name="liters" inputmode="decimal"></div>
+            <div class="field"><label for="cs-miles">Mileage</label>
+              <input id="cs-miles" name="mileage" inputmode="numeric"></div>
+            <div class="field"><label for="cs-trans">Transmission</label>
+              <select id="cs-trans" name="transmission">
+                <option value="">Choose one</option><option>Manual</option><option>Automatic</option>
+              </select></div>
+            <div class="field field--wide"><label for="cs-lien">Lien holder</label>
+              <input id="cs-lien" name="lien_holder"></div>
+
+            <!-- Up to eight photographs. The input is a real file input, so
+                 without scripts it still takes files; consign.js adds the drop,
+                 the previews, the count and the eight-file limit. -->
+            <div class="field field--wide drop" data-drop data-drop-max="8">
+              <label for="cs-photos">Photographs, up to 8</label>
+              <label class="drop__zone" for="cs-photos">
+                <span class="drop__title">Drop photographs here</span>
+                <span class="drop__or">or</span>
+                <span class="btn drop__btn">Choose files</span>
+              </label>
+              <input class="drop__input" id="cs-photos" name="photos" type="file" accept="image/*" multiple>
+              <p class="drop__note" data-drop-note data-empty="Up to 8 photographs." aria-live="polite">Up to 8 photographs.</p>
+              <ul class="drop__list" data-drop-list></ul>
+            </div>
+
+            <div class="field field--wide"><label for="cs-options">Additional options</label>
+              <textarea id="cs-options" name="additional_options" rows="4"></textarea></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="apply__group">
+          <legend class="apply__legend"><span>02</span>About you</legend>
+          <div class="apply__fields">
+            <div class="field"><label for="cs-first">First name <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="cs-first" name="first_name" autocomplete="given-name" required></div>
+            <div class="field"><label for="cs-last">Last name <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="cs-last" name="last_name" autocomplete="family-name" required></div>
+            <div class="field"><label for="cs-street">Address</label>
+              <input id="cs-street" name="address" autocomplete="street-address"></div>
+            <div class="field"><label for="cs-city">City</label>
+              <input id="cs-city" name="city" autocomplete="address-level2"></div>
+            <div class="field"><label for="cs-state">State <span class="field__req" aria-hidden="true">*</span></label>
+              <select id="cs-state" name="state" autocomplete="address-level1" required>
+                <option value="">Choose one</option><option>Alabama</option><option>Alaska</option>
+                <option>Arizona</option><option>Arkansas</option><option>California</option>
+                <option>Colorado</option><option>Connecticut</option><option>Delaware</option>
+                <option>District of Columbia</option><option>Florida</option>
+                <option>Georgia</option><option>Hawaii</option><option>Idaho</option>
+                <option>Illinois</option><option>Indiana</option><option>Iowa</option>
+                <option>Kansas</option><option>Kentucky</option><option>Louisiana</option>
+                <option>Maine</option><option>Maryland</option><option>Massachusetts</option>
+                <option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
+                <option>Missouri</option><option>Montana</option><option>Nebraska</option>
+                <option>Nevada</option><option>New Hampshire</option><option>New Jersey</option>
+                <option>New Mexico</option><option>New York</option><option>North Carolina</option>
+                <option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
+                <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option>
+                <option>South Carolina</option><option>South Dakota</option>
+                <option>Tennessee</option><option>Texas</option><option>Utah</option>
+                <option>Vermont</option><option>Virginia</option><option>Washington</option>
+                <option>West Virginia</option><option>Wisconsin</option><option>Wyoming</option>
+              </select></div>
+            <div class="field"><label for="cs-zip">ZIP <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="cs-zip" name="zip" autocomplete="postal-code" inputmode="numeric" required></div>
+            <div class="field"><label for="cs-email">Email <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="cs-email" name="email" type="email" autocomplete="email" required></div>
+            <div class="field"><label for="cs-phone">Phone <span class="field__req" aria-hidden="true">*</span></label>
+              <input id="cs-phone" name="phone" type="tel" autocomplete="tel" required></div>
+          </div>
+        </fieldset>
+
+        <div class="apply__consent">
+          <input id="cs-consent" name="consent" type="checkbox">
+          <label for="cs-consent">Please note that by completing this form, you agree
+            to being contacted via text, phone and email.</label>
+        </div>
+
+        <p class="apply__actions">
+          <button class="btn btn--solid" type="submit">Send</button>
+        </p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot" id="contact">
+  <!-- The photograph is the ground the footer stands on, not a band under it.
+       aria-hidden and no alt job: everything the footer says is in the text
+       above it, and the picture is the room that text is said in. -->
+  <div class="site-foot__media" aria-hidden="true">
+    <img src="assets/img/footer.jpg" width="1920" height="960" alt="" loading="lazy" decoding="async">
+  </div>
+
+  <!-- The marque at the size the building is. It is decoration and it is
+       already said by the wordmark, so it is hidden from the reader. -->
+  <p class="site-foot__mark" aria-hidden="true">Cobras</p>
+
+  <div class="site-foot__grid">
+    <div class="site-foot__brand">
+      <!-- The same mark as the header. Hidden from the reader here: the header
+           has already given the company its name. -->
+      <p class="wordmark wordmark--foot wordmark--solo" aria-hidden="true"><span class="wordmark__mask"></span></p>
+      <p class="site-foot__line">Backdraft Cobras built,<br>sold, serviced and moved.</p>
+      <p class="mfr mfr--foot"><span class="mfr__k">Built by</span><img class="mfr__logo" src="assets/img/backdraft-racing.png" width="341" height="75" alt="Backdraft Racing"></p>
+    </div>
+
+    <nav class="site-foot__col" aria-label="The shop">
+      <p class="site-foot__k">The shop</p>
+      <ul>
+        <li><a href="index12.html">Home</a></li>
+        <li><a href="index12.html#about">About</a></li>
+        <li><a href="index12.html#inventory">Inventory</a></li>
+        <li><a href="build.html">Build</a></li>
+        <li><a href="index12.html#gallery">Gallery</a></li>
+      </ul>
+    </nav>
+
+    <nav class="site-foot__col" aria-label="Services">
+      <p class="site-foot__k">Services</p>
+      <ul>
+        <li><a href="index12.html#services">Tune-Up / Service</a></li>
+        <li><a href="index12.html#services">Transportation</a></li>
+        <li><a href="consignment.html">Consignment</a></li>
+        <li><a href="finance.html">Finance</a></li>
+      </ul>
+    </nav>
+    <!-- The four accounts, from the links in the client's change request. -->
+    <nav class="site-foot__col" aria-label="Follow">
+      <p class="site-foot__k">Follow</p>
+      <ul>
+        <li><a href="https://www.instagram.com/midwestcobrasllc/" rel="noopener noreferrer" target="_blank">Instagram</a></li>
+        <li><a href="https://www.facebook.com/profile.php?id=61579691830492" rel="noopener noreferrer" target="_blank">Facebook</a></li>
+        <li><a href="https://www.youtube.com/@MidwestCobrasLLC" rel="noopener noreferrer" target="_blank">YouTube</a></li>
+        <li><a href="https://www.tiktok.com/@midwestcobrasllc" rel="noopener noreferrer" target="_blank">TikTok</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-foot__col">
+      <p class="site-foot__k">Contact</p>
+      <!-- One number, the shop's, and the two people by email — Evan first. The
+           client, 2026-09-10: "add Evan's name & email before mine and not
+           include cell numbers… our main number should be the only one shown." -->
+      <address>
+        <p>14510 Parallel Lane<br>Basehor, Kansas 66007</p>
+        <p><a href="tel:+19136625000">913 662 5000</a></p>
+        <p class="site-foot__who">Evan Kunard<br>
+          <a href="mailto:evan@midwestcobras.com">evan@midwestcobras.com</a></p>
+        <p class="site-foot__who">Kristi Kunard<br>
+          <a href="mailto:kristi@midwestcobras.com">kristi@midwestcobras.com</a></p>
+      </address>
+    </div>
+  </div>
+
+  <p class="site-foot__legal">
+    <span>&copy; 2026 Midwest Cobras, LLC</span>
+    <span>Powered by All Auto Network</span>
+  </p>
+
+</footer>
+
+<!-- v12.js FIRST: it marks the reveal elements before v10.js looks at them, so
+     v10's failsafe never owns them — the reason is at the top of v12.js. -->
+<script src="assets/js/v12.js" defer></script>
+<script src="assets/js/v10.js" defer></script>
+<script src="assets/js/v11.js" defer></script>
+<script src="assets/js/consign.js" defer></script>
+</body>
+</html>

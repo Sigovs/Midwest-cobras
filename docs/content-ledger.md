@@ -357,3 +357,20 @@ five steps, the model first); the option list is Hinderer's, standing in.
 | Intro | The base picture above the list, "Start here · Backdraft RT4 · From $66,900" | **photo supplied by Alex · sourced price** | Hinderer's build-base slot, added on Alex's word 2026-09-14. The photograph is Alex's `build_hero.png` (shipped as `build-hero.jpg`); where it came from is not recorded, and the car in it is not confirmed as a Backdraft, so its alt says "Cobra roadster". The price is the RT4 Classic Edition figure above. The picture follows the model (Alex, "logically it has to change"): each model has its own generated picture of the same hall — see the next row. Alex's build_hero is the source both were made from and no longer ships on the page |
 | Intro, the base picture per model | `gen-build-hero-rt4b.jpg` (black, blacked-out pipes, roll bar and wheels; also shown with no model chosen) · `gen-build-hero-rt4-classic.jpg` (navy, white stripes, polished pipes and halibrand-style wheels) | **synthetic — known compromise, authorised by Alex 2026-09-14** | Alex: "2 images, different, one per model, one style, industrial background". Generated on fal (nano-banana-pro/edit) as a pair from one 21:9 pass on build-hero.jpg, so hall, light, camera and pose match; the finishes follow backdraftracing.com's own description of each model. Model, date and exact prompts in the `.json` beside each file. Design DNA GI3 says nothing synthetic may depict the product being sold; Alex, asked, said "ignore the rule for this action". They show what each model looks like, not cars Midwest has; replace them with photographs when those exist |
 | Build, model cards and summary | Which photograph is which model | **corrected 2026-09-14** | backdraftracing.com (read 2026-09-14): the Classic Edition has "polished stainless steel side pipes" and "halibrand style wheels"; the Black Edition "ceramic coated black side pipes and roll bars" and "18" matte black coated rims". The two front shots are named the wrong way round: `car-rt4-front.jpg` is red with black pipes, black wheels and a black roll bar (a Black Edition), `car-rt4b-front.jpg` is blue with polished pipes and wheels (a Classic). The side shots are named right. build.html now pairs them by what they show; the file names are unchanged |
+
+## consignment.html — the consignment form, 2026-09-14
+
+Alex: "make the consignment page design, in our Midwest style; here are the
+form fields" — a screenshot of a dealer-platform form. Every field on the page
+is one of those, in that order; the labels are set in sentence case.
+
+| Where | Claim | Status | Note |
+|---|---|---|---|
+| Intro | "If the car is going to change hands, it is worth it changing hands properly…" | **the home page's own copy** | The Consignment section of index12, carried over word for word |
+| Intro | "Tell us about it here and it goes straight to Evan, who will be in touch." | **design only** | The form is connected to nothing, as on finance.html |
+| Form | The fields, required marks and the consent sentence | **sourced — Alex's screenshot, 2026-09-14** | Year, make, model are required; so are first and last name, state, ZIP, email and phone. The consent sentence is the screenshot's, word for word; it is not marked required there, so it is not here |
+| Form | The Make list (Backdraft Racing, Shelby, Superformance, Factory Five, AC Cars, Ford, Chevrolet, Dodge, Porsche, Jaguar, Other) | **stand-in** | The screenshot shows a select without its options. A list for a Cobra shop, to be replaced by whatever the live platform offers |
+| Form | Year 2027 back to 1950, and Manual / Automatic | **stand-in** | Same reason |
+| Form | "Photographs, up to 8" | **sourced — the screenshot's "Upload images (up to 8)"** | |
+| Home, nav, footer | Consignment links to consignment.html; the home section's link reads "Consign your car" | **design only** | It was "Talk about consigning", a call to the shop |
+

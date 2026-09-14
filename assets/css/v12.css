@@ -38,9 +38,60 @@
    same air every section on the home page has. The bar is two rows on a
    laptop and three on a phone, which is why it is measured rather than
    guessed. */
-:is(.page-finance, .page-build) main > .sect:first-of-type {   /* v10.js puts its marker div first */
+:is(.page-finance, .page-build, .page-consignment) main > .sect:first-of-type {   /* v10.js puts its marker div first */
   padding-block-start: calc(var(--bar-h, var(--bar-clear)) + var(--pad));
 }
+
+/* ── consignment.html — the photographs ──────────────────────────────────
+   Alex, 2026-09-14: the consignment form takes up to eight photographs. The
+   drop zone is the form's own surface with a dashed edge — the one field on
+   the page that is a place rather than a line — and it answers a drag the way
+   a field answers a hover. The file input stays real and focusable; its focus
+   is shown on the zone. Previews sit under it in a grid of small frames. */
+.drop { position: relative; }
+.drop .drop__input {
+  position: absolute; inline-size: 1px; block-size: 1px; min-block-size: 0; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.drop__zone {
+  display: grid; justify-items: center; gap: var(--sp-3);
+  padding: var(--sp-7) var(--sp-5); text-align: center; cursor: pointer;
+  background: var(--surface);
+  border: var(--hairline) dashed var(--ink-on-light-muted); border-radius: var(--radius-control);
+  transition: border-color var(--dur-2) var(--ease-out), background-color var(--dur-2) var(--ease-out);
+}
+.drop .drop__zone { font-family: var(--body); letter-spacing: 0; text-transform: none; color: var(--text); }
+.drop__zone:hover, .drop.is-over .drop__zone { border-color: var(--ink-on-light); }
+.drop.is-over .drop__zone { border-style: solid; background: var(--ground-deep); }
+.drop:has(.drop__input:focus-visible) .drop__zone {
+  outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--hairline);
+}
+.drop__title { font-family: var(--face); font-weight: 600; font-size: var(--news-h); line-height: var(--lh-heading); }
+.drop__or { font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted); }
+.drop__btn { pointer-events: none; }
+.drop.is-full .drop__zone { opacity: 0.6; }
+.drop__note { font-family: var(--mono); font-size: var(--micro); color: var(--text-muted); }
+.drop__list {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 8rem), 1fr)); gap: var(--sp-4);
+}
+.drop__list:empty { display: none; }
+.drop__item { position: relative; display: grid; gap: var(--sp-2); min-inline-size: 0; }
+.drop__item img {
+  display: block; inline-size: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+  border-radius: var(--radius-media); background: var(--bone-200);
+}
+.drop__name {
+  font-family: var(--mono); font-size: var(--micro); color: var(--text-muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.drop__remove {
+  position: absolute; inset-block-start: var(--sp-1); inset-inline-end: var(--sp-1);
+  display: grid; place-items: center; inline-size: 2.75rem; block-size: 2.75rem; padding: 0;
+  border: 0; border-radius: 50%; cursor: pointer;
+  background: rgb(var(--graphite-950-rgb) / 0.72); color: var(--bone-050);
+}
+.drop__remove:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--hairline); }
 
 /* ── the build panel arrives evenly ───────────────────────────────────────
    Alex, 2026-09-11: "remove the bouncing effect from the slide-in form, make

@@ -23,7 +23,7 @@
   function barHeight() {
     var bar = document.getElementById('site-head');
     /* finance.html and build.html both open straight onto a section. */
-    if (!bar || !document.body.matches('.page-finance, .page-build')) return;
+    if (!bar || !document.body.matches('.page-finance, .page-build, .page-consignment')) return;
     function take() {
       document.documentElement.style.setProperty('--bar-h', bar.getBoundingClientRect().height + 'px');
     }

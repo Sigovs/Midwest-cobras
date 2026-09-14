@@ -149,14 +149,15 @@
 .cfg-opt__price { font-family: var(--mono); font-size: var(--micro); font-variant-numeric: tabular-nums; color: var(--text-muted); }
 
 /* ── the running build ──────────────────────────────────────────────────────
-   The raised bone surface, held beside the list while it is worked through.
-   Taller than a laptop screen once the form is in it, so it scrolls inside
-   itself rather than hiding its own bottom until the page ends. */
+   The raised bone surface, held beside the list while it is worked through —
+   sticky, as on Hinderer, and without a scroll of its own. The first cut
+   capped its height and scrolled inside, which put a second scrollbar beside
+   the page's; Alex, 2026-09-14: Hinderer has no such bar. The panel sticks
+   under the bar with the total and the lines in view, and its form comes up
+   as the list runs out. */
 .cfg-sum {
   position: sticky; inset-block-start: calc(var(--bar-h, var(--bar-clear)) + var(--sp-5));
   display: grid; gap: var(--sp-4); align-content: start;
-  max-block-size: calc(100vh - var(--bar-h, var(--bar-clear)) - var(--sp-7));
-  overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
   padding: var(--sp-5); background: var(--bone-050); border: var(--hairline) solid var(--rule);
 }
 .cfg-sum__shot { aspect-ratio: 16 / 9; overflow: clip; border-radius: var(--radius-media); background: var(--bone-200); }

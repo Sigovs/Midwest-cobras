@@ -39,6 +39,29 @@
   transition: transform var(--dur-4) var(--ease-settle);
 }
 
+/* ── the base ───────────────────────────────────────────────────────────────
+   Hinderer's one picture above the list: the car the build starts from, and a
+   bar saying where the price starts. Alex, 2026-09-14: "one more image, as on
+   Hinderer — a placeholder on ours". The bar sits under the picture, not on
+   it: a plate has nothing to lie over, and on Hinderer's photograph the
+   overlay had to be moved off the bright part to be read at all. */
+.cfg-base { display: grid; margin: 0; inline-size: 100%; }
+.cfg-base__frame { aspect-ratio: 16 / 6; border-radius: var(--radius-media) var(--radius-media) 0 0; }
+.cfg-base__bar {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-2) var(--sp-5);
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--surface); border: var(--hairline) solid var(--rule); border-block-start: 0;
+}
+.cfg-base__step {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.cfg-base__name, .cfg-base__price {
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
+}
+.cfg-base__price { margin-inline-start: auto; font-variant-numeric: tabular-nums; }
+
 /* ── steps and groups ───────────────────────────────────────────────────────
    The five steps are the home page's own, numbered because they are a real
    order. Each group is a <details>: the head says what the group is and what
@@ -272,6 +295,7 @@
 
 @media (max-width: 61.99rem) {
   .cfg { grid-template-columns: minmax(0, 1fr); }
+  .cfg-base__frame { aspect-ratio: 16 / 9; }
   .cfg-sum { position: static; max-block-size: none; overflow: visible; }
   .cfg-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cfg-options--wide { grid-template-columns: minmax(0, 1fr); }

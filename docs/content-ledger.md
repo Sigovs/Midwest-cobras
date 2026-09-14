@@ -353,4 +353,5 @@ five steps, the model first); the option list is Hinderer's, standing in.
 | Steps 02–05 | 26 option photographs, `assets/img/build/opt-*` | **stand-in — Hinderer's photography** | Same source. The images carry `data-stand-in` and an empty alt: the option's name already labels the control, so an alt would read the name twice. "Standard body" and "Custom color match" have no photograph there either — plates |
 | Summary | "This estimate excludes tax, title and delivery." | **unverified — client to confirm** | Hinderer's wording, about what a price includes |
 | Summary | "Evan will price the rest with you" | **sourced — paraphrase** | The client: "we just prefer that a customer call, email or come in to spec one out" |
-| Summary form | The build is sent to Evan | **design only** | Connected to nothing; sending says so |
+| Summary form | The build is sent to Evan | **design only** | Connected to nothing. Sending used to say so; Alex had the sentence removed 2026-09-14, so a send now shows nothing |
+| Intro | The base picture above the list, "Start here · Backdraft RT4 · From $66,900" | **placeholder photo · sourced price** | Hinderer's build-base slot, added on Alex's word 2026-09-14. The plate waits for Midwest's own photograph; the price is the RT4 Classic Edition figure above |

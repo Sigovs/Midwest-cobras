@@ -369,5 +369,26 @@
     }
   }
 
+  /* The foot of the summary: more below. Shown while the panel has more to
+     show and the estimate form is not yet in view; the button takes the
+     panel to the form. On a phone the panel does not scroll, so it never
+     shows (and CSS hides it there as well). */
+  var sum = q('.cfg-sum'), more = q('[data-sum-more]'), estimate = q('.cfg-form');
+  if (sum && more && estimate) {
+    var foot = function () {
+      var room = sum.scrollHeight - sum.clientHeight;
+      var formTop = estimate.getBoundingClientRect().top - sum.getBoundingClientRect().top;
+      more.classList.toggle('is-done', room < 8 || sum.scrollTop >= room - 8 || formTop < sum.clientHeight * 0.75);
+    };
+    sum.addEventListener('scroll', foot, { passive: true });
+    window.addEventListener('resize', foot);
+    root.addEventListener('toggle', foot, true);
+    foot();
+    more.querySelector('button').addEventListener('click', function () {
+      var top = estimate.getBoundingClientRect().top - sum.getBoundingClientRect().top + sum.scrollTop - 16;
+      sum.scrollTo({ top: top, behavior: reduced ? 'auto' : 'smooth' });
+    });
+  }
+
   paint();
 })();

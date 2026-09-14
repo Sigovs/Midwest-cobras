@@ -364,8 +364,8 @@
    from carrying on into the page.
 
    No scrollbar: the first cut showed one beside the page's, and Alex struck
-   it ("Hinderer has no such bar"). What stands in for it is a wash at the
-   foot of the panel while there is more below, gone at the end. Keyboard
+   it ("Hinderer has no such bar"). What stands in for it is the foot of the
+   panel: a wash and a button while there is more below (see .cfg-sum__more). Keyboard
    reach is unaffected — every control in the panel scrolls itself into view
    when it takes focus. On a phone none of this applies: the panel is static. */
 .cfg-sum {
@@ -377,16 +377,35 @@
   padding: var(--sp-5); background: var(--bone-050); border: var(--hairline) solid var(--rule);
 }
 .cfg-sum::-webkit-scrollbar { display: none; }
-.cfg-sum::after {
-  content: ''; position: sticky; inset-block-end: calc(var(--sp-5) * -1); pointer-events: none;
-  block-size: var(--sp-7); margin-block: calc(var(--sp-7) * -1) calc(var(--sp-5) * -1);
-  margin-inline: calc(var(--sp-5) * -1);
-  background: linear-gradient(to bottom, transparent, var(--bone-050));
+/* More below. A deep wash rising from the foot of the panel, and on it one
+   button that names what is further down and takes the panel there — Alex,
+   2026-09-14: "show at the bottom of the right panel that it scrolls, with a
+   gradient". Sticky to the foot of the scrollport and laid over the content
+   rather than adding to it; build.js retires it once the estimate form is in
+   view or there is nothing more to show, so it never sits on Send. */
+.cfg-sum__more {
+  position: sticky; inset-block-end: calc(var(--sp-5) * -1); z-index: 1;
+  display: grid; justify-items: center; align-content: end;
+  block-size: var(--sp-9); padding-block-end: var(--sp-5);
+  margin-block: calc(var(--sp-9) * -1) calc(var(--sp-5) * -1); margin-inline: calc(var(--sp-5) * -1);
+  background: linear-gradient(to bottom, transparent, var(--bone-050) 62%);
+  pointer-events: none;
+  transition: opacity var(--dur-3) var(--ease-out), visibility var(--dur-3);
 }
-@supports (animation-timeline: scroll()) {
-  .cfg-sum::after { animation: cfg-sum-end linear both; animation-timeline: scroll(nearest block); animation-range: calc(100% - var(--sp-8)) 100%; }
-  @keyframes cfg-sum-end { to { opacity: 0; } }
+.cfg-sum__more.is-done { opacity: 0; visibility: hidden; }
+.cfg-sum__more-btn {
+  pointer-events: auto;
+  display: inline-flex; align-items: center; gap: var(--sp-3);
+  min-block-size: 2.75rem; padding: 0 var(--sp-5); cursor: pointer;
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--bone-050); background: var(--ink-on-light);
+  border: 0; border-radius: var(--radius-control);
+  transition: transform var(--dur-3) var(--ease-back);
 }
+.cfg-sum__more-btn span { display: inline-block; transition: transform var(--dur-3) var(--ease-settle); }
+.cfg-sum__more-btn:is(:hover, :focus-visible) span { transform: translateY(var(--sp-1)); }
+.cfg-sum__more-btn:active { transform: scale(0.95); transition: transform var(--dur-1) var(--ease-press); }
+.cfg-sum__more-btn:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--focus-offset); }
 .cfg-sum__shot { aspect-ratio: 16 / 9; overflow: clip; border-radius: var(--radius-media); background: var(--bone-200); }
 /* The summary shows the same picture as step 01 — Alex, 2026-09-14: the Black
    Edition on the right has to match the one above in colour. The frames are
@@ -444,7 +463,7 @@
   .cfg { grid-template-columns: minmax(0, 1fr); }
   .cfg-base__img { aspect-ratio: 16 / 9; }
   .cfg-sum { position: static; max-block-size: none; overflow: visible; }
-  .cfg-sum::after { display: none; }
+  .cfg-sum__more { display: none; }
   .cfg-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cfg-options--wide { grid-template-columns: minmax(0, 1fr); }
   .cfg-group__head { grid-template-columns: auto minmax(0, 1fr) auto; }

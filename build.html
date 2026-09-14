@@ -552,6 +552,13 @@
           <input type="hidden" name="configuration" data-config-field>
           <p class="apply__actions"><button class="btn btn--solid" type="submit" data-submit>Send this build</button></p>
         </form>
+        <!-- The foot of the panel says there is more below — Alex, 2026-09-14:
+             "show at the bottom of the right panel that it scrolls, with a
+             gradient". The button takes the panel to the estimate; build.js
+             retires both once the form is in view. -->
+        <div class="cfg-sum__more" data-sum-more>
+          <button class="cfg-sum__more-btn" type="button">Get your estimate <span aria-hidden="true">&darr;</span></button>
+        </div>
       </aside>
     </div>
   </section>

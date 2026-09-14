@@ -3,21 +3,42 @@
    Loaded after v12.css on one page. The layout is Hinderer's inventory — the
    title and the sort on one line, the filters in a column beside the results,
    a card per car — on Alex's word, 2026-09-14: "only the layout, not the
-   design". The design is this site's: the record ground, the three voices,
-   hairlines rather than boxes where a rule will do, oxblood only as a mark on
-   light or a fill on dark. Values come from tokens.css and the earlier
-   layers; fields are v11's .field. */
+   design". The design is this site's, and on its DARK ground, like the home
+   page's own Inventory (Alex, the same day: "make the SRP dark, like home;
+   three cars in a row, not four — he has little inventory"). The car lives
+   in the dark here, the facts beside it in bone ink; oxblood only as a filled
+   mark. Values come from tokens.css; fields are v11's .field, re-inked below
+   for the dark because v11 set them for the record ground. */
+
+.srp-page { color-scheme: dark; }
 
 /* ── the head ─────────────────────────────────────────────────────────────── */
 .srp-head {
   display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between;
   gap: var(--sp-5) var(--sp-7);
-  padding-block-end: var(--sp-6); border-block-end: var(--hairline) solid var(--ink-on-light);
+  padding-block-end: var(--sp-6); border-block-end: var(--hairline) solid var(--rule);
 }
 .srp-head__title { display: grid; gap: var(--sp-4); justify-items: start; }
 .srp-head__sort { display: flex; align-items: center; gap: var(--sp-3); }
 .srp-head__sort label { white-space: nowrap; }
 .srp-head__sort select { inline-size: auto; min-inline-size: 15rem; }
+
+/* ── fields on the dark ───────────────────────────────────────────────────────
+   v11 inks a field for bone: an ink-on-light edge that measures about 2.3:1 on
+   graphite, a placeholder and an arrow in the same muted light ink, a focus
+   ring that vanishes. Here the edge, the placeholder and the arrow take the
+   muted dark ink (past 3:1), hover and focus the full bone. */
+.srp-page .field input, .srp-page .field select {
+  background-color: var(--graphite-950); border-color: var(--ink-on-dark-muted);
+}
+.srp-page .field input::placeholder { color: var(--ink-on-dark-muted); }
+.srp-page .field :is(input, select):hover { border-color: var(--ink-on-dark); }
+.srp-page .field :is(input, select):focus-visible { outline-color: var(--bone-050); border-color: var(--bone-050); }
+.srp-page .field select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ink-on-dark-muted) 50%),
+    linear-gradient(135deg, var(--ink-on-dark-muted) 50%, transparent 50%);
+}
 
 /* ── the two columns ──────────────────────────────────────────────────────── */
 .srp {
@@ -28,11 +49,12 @@
 .srp__results { min-inline-size: 0; }
 
 /* ── the filters ──────────────────────────────────────────────────────────────
-   The raised bone surface, held beside the results under the bar. Each group
-   is a fieldset under a mono legend, parted by a hairline. */
+   The ground's own graphite, a step up from the section, held beside the
+   results under the bar. Each group a fieldset under a mono legend, parted by
+   a hairline. */
 .facets {
   position: sticky; inset-block-start: calc(var(--bar-h, var(--bar-clear)) + var(--sp-5));
-  background: var(--surface); border: var(--hairline) solid var(--rule);
+  background: var(--graphite-900); border: var(--hairline) solid var(--rule);
 }
 .facets__summary, .facets__more > summary {
   display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3);
@@ -43,16 +65,16 @@
 .facets__summary::-webkit-details-marker, .facets__more > summary::-webkit-details-marker { display: none; }
 .facets__summary { padding: var(--sp-3) var(--sp-5); }
 .facets__summary:focus-visible, .facets__more > summary:focus-visible {
-  outline: var(--focus-w) solid var(--ink-on-light); outline-offset: calc(var(--focus-offset) * -1);
+  outline: var(--focus-w) solid var(--bone-050); outline-offset: calc(var(--focus-offset) * -1);
 }
 .facets__active {
   margin-inline-end: auto; padding: 0 var(--sp-2);
-  background: var(--ink-on-light); color: var(--bone-050); font-variant-numeric: tabular-nums;
+  background: var(--bone-050); color: var(--graphite-950); font-variant-numeric: tabular-nums;
 }
 .facets__caret {
   inline-size: 0.625rem; block-size: 0.625rem; margin-inline: var(--sp-2);
-  border-inline-end: calc(var(--hairline) * 2) solid var(--ink-on-light-muted);
-  border-block-end: calc(var(--hairline) * 2) solid var(--ink-on-light-muted);
+  border-inline-end: calc(var(--hairline) * 2) solid var(--ink-on-dark-muted);
+  border-block-end: calc(var(--hairline) * 2) solid var(--ink-on-dark-muted);
   transform: translateY(-25%) rotate(45deg);
   transition: transform var(--dur-3) var(--ease-out);
 }
@@ -71,16 +93,15 @@ details[open] > summary .facets__caret { transform: translateY(25%) rotate(-135d
   justify-self: start; min-block-size: 2.75rem; margin-block-start: var(--sp-3); padding: 0;
   background: none; border: 0; cursor: pointer;
   font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
-  color: var(--oxblood);
+  color: var(--bone-050);
 }
-.facets__clear:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--focus-offset); }
+.facets__clear:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
 .facets__clear[hidden] { display: none; }
-.facets__more { border-block-end: 0; }
 .facets__more .facet:last-child { border-block-end: 0; padding-block-end: 0; }
 
 /* A switch: the checkbox stays a real checkbox, hidden but focusable; the
-   track is its picture. Off, an outline that clears 3:1 on the surface; on,
-   the ink fills and the knob crosses on the overshoot. */
+   track is its picture. Off, a muted outline that clears 3:1 on graphite; on,
+   bone fills it and the knob crosses on the overshoot. */
 .switch { display: flex; align-items: center; gap: var(--sp-3); min-block-size: 2.75rem; cursor: pointer; font-size: var(--fs-body-s); color: var(--text); }
 .switch input {
   position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
@@ -88,32 +109,32 @@ details[open] > summary .facets__caret { transform: translateY(25%) rotate(-135d
 }
 .switch__track {
   position: relative; flex: none; inline-size: 2.5rem; block-size: 1.5rem; border-radius: 0.75rem;
-  border: calc(var(--hairline) * 2) solid var(--ink-on-light-muted);
+  border: calc(var(--hairline) * 2) solid var(--ink-on-dark-muted);
   transition: background-color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
 }
 .switch__track::after {
   content: ''; position: absolute; inset-block-start: 0.1875rem; inset-inline-start: 0.1875rem;
   inline-size: 0.875rem; block-size: 0.875rem; border-radius: 50%;
-  background: var(--ink-on-light-muted);
+  background: var(--ink-on-dark-muted);
   transition: transform var(--dur-3) var(--ease-back), background-color var(--dur-2) var(--ease-out);
 }
-.switch input:checked + .switch__track { background: var(--ink-on-light); border-color: var(--ink-on-light); }
-.switch input:checked + .switch__track::after { transform: translateX(1rem); background: var(--bone-050); }
-.switch input:focus-visible + .switch__track { outline: var(--focus-w) solid var(--oxblood); outline-offset: var(--hairline); }
+.switch input:checked + .switch__track { background: var(--bone-050); border-color: var(--bone-050); }
+.switch input:checked + .switch__track::after { transform: translateX(1rem); background: var(--graphite-950); }
+.switch input:focus-visible + .switch__track { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
 
 /* Two handles on one rail. The inputs are stacked, so only the thumbs take
-   the pointer; the ink between them is the range chosen (srp.js sets --lo and
-   --hi). The target is 2.75rem tall around a 1.25rem handle. */
+   the pointer; the bone between them is the range chosen (srp.js sets --lo
+   and --hi). The target is 2.75rem tall around a 1.25rem handle. */
 .range { position: relative; block-size: 2.75rem; --thumb: 1.25rem; --lo: 0; --hi: 1; }
 .range::before, .range::after {
   content: ''; position: absolute; inset-block-start: 50%; translate: 0 -50%;
   block-size: calc(var(--hairline) * 3);
 }
-.range::before { inset-inline: calc(var(--thumb) / 2); background: var(--ink-on-light-muted); }
+.range::before { inset-inline: calc(var(--thumb) / 2); background: var(--graphite-600); }
 .range::after {
   inset-inline-start: calc(var(--thumb) / 2 + (100% - var(--thumb)) * var(--lo));
   inset-inline-end: calc(var(--thumb) / 2 + (100% - var(--thumb)) * (1 - var(--hi)));
-  background: var(--ink-on-light);
+  background: var(--bone-050);
 }
 .range input {
   position: absolute; inset: 0; z-index: 1; inline-size: 100%; block-size: 100%; margin: 0; padding: 0;
@@ -124,38 +145,39 @@ details[open] > summary .facets__caret { transform: translateY(25%) rotate(-135d
 .range input::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none; pointer-events: auto; cursor: grab;
   inline-size: var(--thumb); block-size: var(--thumb); margin-block-start: calc((2.75rem - var(--thumb)) / 2);
-  border-radius: 50%; background: var(--ink-on-light); border: calc(var(--hairline) * 2) solid var(--bone-050);
+  border-radius: 50%; background: var(--bone-050); border: calc(var(--hairline) * 2) solid var(--graphite-950);
 }
 .range input::-moz-range-thumb {
   pointer-events: auto; cursor: grab;
   inline-size: var(--thumb); block-size: var(--thumb);
-  border-radius: 50%; background: var(--ink-on-light); border: calc(var(--hairline) * 2) solid var(--bone-050);
+  border-radius: 50%; background: var(--bone-050); border: calc(var(--hairline) * 2) solid var(--graphite-950);
 }
-.range input:focus-visible::-webkit-slider-thumb { outline: var(--focus-w) solid var(--oxblood); outline-offset: var(--hairline); }
-.range input:focus-visible::-moz-range-thumb { outline: var(--focus-w) solid var(--oxblood); outline-offset: var(--hairline); }
+.range input:focus-visible::-webkit-slider-thumb { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+.range input:focus-visible::-moz-range-thumb { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
 
 /* ── the results ──────────────────────────────────────────────────────────────
-   A card per car: the photograph on its dark frame with the status and the
-   save on it — the car lives in the dark — and the facts under it on the
-   light, name in the display face, price, then mileage and stock in the mono
-   that records. Text and Share share the foot, parted by a hairline. */
+   Three cars to a row at most — a shop with two to four cars on the floor is
+   not a catalogue, and four across made each one a thumbnail. Two where the
+   column narrows, one on a small phone. A card: the photograph with its status
+   and the save on it; under it the name in the display face, the price, then
+   mileage and stock in the mono that records; Text and Share at the foot. */
 .results {
   list-style: none; margin: 0; padding: 0;
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--sp-6) var(--sp-5);
 }
 .car {
   position: relative; display: grid; grid-template-rows: auto 1fr auto; min-inline-size: 0;
-  background: var(--surface); border: var(--hairline) solid var(--rule);
+  background: var(--graphite-900); border: var(--hairline) solid var(--rule);
 }
 .car[hidden] { display: none; }
-.car__media { position: relative; overflow: clip; background: var(--graphite-900); }
+.car__media { position: relative; overflow: clip; background: var(--graphite-950); }
 .car__media img {
   display: block; inline-size: 100%; block-size: auto; aspect-ratio: 4 / 3; object-fit: cover;
   transition: transform var(--dur-3) var(--ease-out), filter var(--dur-3) var(--ease-out);
 }
 .car:is(:hover, :focus-within) .car__media img { transform: scale(1.045); }
-.car--sold .car__media img { filter: saturate(0.3) brightness(0.8); }
+.car--sold .car__media img { filter: saturate(0.3) brightness(0.7); }
 .car__status {
   position: absolute; inset-block-start: var(--sp-3); inset-inline-start: var(--sp-3); margin: 0;
   padding: var(--sp-1) var(--sp-3);
@@ -199,12 +221,12 @@ details[open] > summary .facets__caret { transform: translateY(25%) rotate(-135d
   transition: background-color var(--dur-2) var(--ease-out);
 }
 .car__act + .car__act { border-inline-start: var(--hairline) solid var(--rule); }
-.car__act:hover { background: var(--ground-deep); }
-.car__act:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: calc(var(--focus-w) * -1); }
+.car__act:hover { background: var(--graphite-800); }
+.car__act:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: calc(var(--focus-w) * -1); }
 
 .results-empty {
   display: grid; justify-items: start; gap: var(--sp-4);
-  padding: var(--sp-7) var(--sp-6); background: var(--surface); border: var(--hairline) solid var(--rule);
+  padding: var(--sp-7) var(--sp-6); background: var(--graphite-900); border: var(--hairline) solid var(--rule);
 }
 .results-empty[hidden] { display: none; }
 .results-empty__title { font-family: var(--face); font-weight: 600; font-size: var(--h3); line-height: var(--lh-heading); color: var(--text); }
@@ -222,13 +244,19 @@ details[open] > summary .facets__caret { transform: translateY(25%) rotate(-135d
   .facets__summary { display: none; }
 }
 
-/* ── narrow ───────────────────────────────────────────────────────────────── */
+/* ── narrower ─────────────────────────────────────────────────────────────── */
+@media (max-width: 74.99rem) {
+  .results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 61.99rem) {
   .srp { grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
   .facets { position: static; }
   .facets__form { padding-block-start: 0; }
   .srp-head__sort { inline-size: 100%; }
   .srp-head__sort select { flex: 1; min-inline-size: 0; }
+}
+@media (max-width: 39.99rem) {
+  .results { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (prefers-reduced-motion: reduce) {

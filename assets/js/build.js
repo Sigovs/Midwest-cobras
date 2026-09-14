@@ -390,5 +390,36 @@
     });
   }
 
+  /* Sticky to the end — Alex, 2026-09-14. A sticky box cannot outrun its
+     column: once the end of the list comes up the window, CSS pushes the
+     whole panel up with it and the photograph and the total slide under the
+     bar. So near the end the panel gives up height instead of position: its
+     top stays under the bar, its foot follows the end of the list, and it
+     keeps scrolling inside. Only when it is shorter than 20rem does it leave
+     with the list. Nothing happens where the panel is not sticky (a phone). */
+  if (sum) {
+    var fitQueued = false;
+    var fit = function () {
+      fitQueued = false;
+      var cs = getComputedStyle(sum);
+      if (cs.position !== 'sticky') { sum.style.maxBlockSize = ''; return; }
+      var top = parseFloat(cs.top) || 0;
+      var full = window.innerHeight - top - (parseFloat(cs.paddingTop) || 0);
+      var room = root.getBoundingClientRect().bottom - top;
+      var least = parseFloat(getComputedStyle(document.documentElement).fontSize) * 20;
+      sum.style.maxBlockSize = room < full ? Math.max(room, least) + 'px' : '';
+      if (foot) foot();
+    };
+    var queueFit = function () {
+      if (fitQueued) return;
+      fitQueued = true;
+      requestAnimationFrame(fit);
+    };
+    window.addEventListener('scroll', queueFit, { passive: true });
+    window.addEventListener('resize', queueFit);
+    root.addEventListener('toggle', queueFit, true);
+    fit();
+  }
+
   paint();
 })();

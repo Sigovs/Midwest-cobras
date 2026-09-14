@@ -59,7 +59,8 @@
   var pop = document.querySelector('[data-sharepop]');
   var coarse = window.matchMedia('(pointer: coarse)');
   var popBtn = null;
-  var carLink = function (card) { return window.location.href.split('#')[0] + '#' + card.id; };
+  /* A car's link is its own page, so a shared link previews that car. */
+  var carLink = function (card) { return new URL('vehicle-' + card.id + '.html', window.location.href).href; };
   var carName = function (card) { return card.querySelector('.car__title').textContent.trim(); };
   var popItems = function () { return [].slice.call(pop.querySelectorAll('.sharepop__item')); };
 
@@ -216,7 +217,7 @@
         tcPick('[data-textcar-stock]').textContent = (facts[1] || '').replace(/^Stock\s+/i, '');
         tcPick('[data-textcar-shot]').src = img.currentSrc || img.src;
         tcPick('[data-textcar-sms]').href = trigger.getAttribute('href');
-        drawCode(window.location.href.split('#')[0] + '#' + card.id);
+        drawCode(new URL('vehicle-' + card.id + '.html', window.location.href).href);
         tcPhone.removeAttribute('aria-invalid');
         tcStatus.removeAttribute('data-state');
         tcStatus.textContent = tcHint;

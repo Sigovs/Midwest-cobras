@@ -1,0 +1,171 @@
+/* vdp.css — a car's own page, vehicle-*.html.
+   ---------------------------------------------------------------------------
+   Loaded after srp.css, whose card actions, cards, Text panel, share menu and
+   dark fields it shares. Alex, 2026-09-14: "View details is a separate VDP
+   page" — and "Hinderer is not the model for the VDP". So the page is set as
+   this site sets a lot, in its own grounds: the car first and large on the
+   dark, with the lot line under it; the specification on bone, where
+   specifications live, beside a held card to ask Evan; every photograph on
+   the dark; three more cars from the floor. Values come from tokens.css. */
+
+/* ── the bar: back to the inventory, and this car's actions ────────────────── */
+.vdp-bar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--sp-3) var(--sp-5); margin-block-end: var(--sp-5);
+}
+.vdp-back {
+  display: inline-flex; align-items: center; gap: var(--sp-3); min-block-size: 2.75rem;
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text); text-decoration: none;
+}
+.vdp-back span { display: inline-block; transition: transform var(--dur-3) var(--ease-settle); }
+.vdp-back:is(:hover, :focus-visible) span { transform: translateX(calc(var(--sp-1) * -1)); }
+.vdp-back:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+.vdp-bar__acts { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.vdp-bar__acts .car__act { border: var(--hairline) solid var(--rule); padding-inline: var(--sp-4); }
+.vdp-save svg path { fill: none; transition: fill var(--dur-2) var(--ease-out); }
+.vdp-save[aria-pressed='true'] svg path { fill: currentColor; }
+
+/* ── the car, large ───────────────────────────────────────────────────────────
+   One photograph at the width of the page, as the home page shows a lot "at
+   the size you would stand in front of it". Upright photographs are shown
+   whole on the frame's own graphite rather than cut to the frame. */
+.stage { display: grid; gap: var(--sp-3); min-inline-size: 0; }
+.stage:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+.stage__frame { position: relative; overflow: clip; border-radius: var(--radius-media); background: var(--graphite-900); }
+.stage__frame img {
+  display: block; inline-size: 100%; block-size: auto; aspect-ratio: 16 / 9; max-block-size: 72vh;
+  object-fit: cover;
+}
+.stage__frame img[data-portrait] { object-fit: contain; }
+.stage__nav {
+  position: absolute; inset-block-start: 50%; translate: 0 -50%;
+  display: grid; place-items: center; inline-size: 3rem; block-size: 3rem; padding: 0;
+  border: 0; border-radius: 50%; cursor: pointer;
+  background: rgb(var(--graphite-950-rgb) / 0.62); color: var(--bone-050);
+  transition: background-color var(--dur-2) var(--ease-out), transform var(--dur-3) var(--ease-back);
+}
+.stage__nav--prev { inset-inline-start: var(--sp-5); }
+.stage__nav--next { inset-inline-end: var(--sp-5); }
+.stage__nav:hover { background: rgb(var(--graphite-950-rgb) / 0.86); }
+.stage__nav:active { transform: scale(0.95); transition: transform var(--dur-1) var(--ease-press); }
+.stage__nav:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--hairline); }
+.stage__index {
+  position: absolute; inset-block-end: var(--sp-5); inset-inline-end: var(--sp-5); margin: 0;
+  padding: var(--sp-1) var(--sp-3); background: rgb(var(--graphite-950-rgb) / 0.62); color: var(--bone-050);
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); font-variant-numeric: tabular-nums;
+}
+/* A strip, not a grid: small frames in one row that scrolls sideways when
+   there are more than fit, so six photographs never take half a phone. */
+.thumbs {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 7rem; gap: var(--sp-3);
+  overflow-x: auto; padding: var(--sp-1); margin: calc(var(--sp-1) * -1);
+  scrollbar-width: thin; scrollbar-color: var(--graphite-600) transparent;
+}
+.thumb {
+  display: block; padding: 0; border: 0; cursor: pointer; overflow: clip;
+  background: var(--graphite-900); border-radius: var(--radius-control); opacity: 0.55;
+  outline: calc(var(--hairline) * 2) solid transparent; outline-offset: var(--hairline);
+  transition: opacity var(--dur-2) var(--ease-out), outline-color var(--dur-2) var(--ease-out);
+}
+.thumb img { display: block; inline-size: 100%; block-size: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.thumb:hover { opacity: 0.85; }
+.thumb[aria-current='true'] { opacity: 1; outline-color: var(--bone-050); }
+.thumb:focus-visible { opacity: 1; outline: var(--focus-w) solid var(--bone-050); }
+
+/* ── the lot line ─────────────────────────────────────────────────────────────
+   Under the photograph, as on the home page's lots: stock and status in mono,
+   the name in the display face at the section-title size, and on the right
+   the price and the one action. */
+.vdp-lot {
+  display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--sp-5) var(--sp-7);
+  margin-block-start: var(--sp-6); padding-block-start: var(--sp-6); border-block-start: var(--hairline) solid var(--rule);
+}
+.vdp-lot__name { display: grid; gap: var(--sp-3); min-inline-size: 0; max-inline-size: 48rem; }
+.vdp-lot__line {
+  margin: 0; font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text-muted);
+}
+.vdp-lot__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--h2, var(--lot));
+  line-height: var(--lh-tight); letter-spacing: var(--ls-heading); color: var(--text); text-wrap: balance;
+}
+.vdp-lot__buy { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-5); }
+.vdp-lot__price {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums; color: var(--text);
+}
+
+/* ── the record ───────────────────────────────────────────────────────────── */
+.vdp-record__grid {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(20rem, 26rem);
+  gap: var(--sp-8) var(--col-gap); align-items: start;
+}
+.vdp-record__main { display: grid; gap: var(--sp-5); justify-items: start; min-inline-size: 0; }
+.vdp-record__main .lede { max-inline-size: 60ch; }
+.vdp-spec { inline-size: 100%; margin: var(--sp-3) 0 0; border-block-end: var(--hairline) solid var(--rule); }
+.vdp-spec > div { grid-template-columns: minmax(0, 10rem) minmax(0, 1fr); }
+.vdp-spec dd { margin: 0; font-variant-numeric: tabular-nums; }
+.vdp-record__note { margin: 0; font-size: var(--fs-body-s); line-height: var(--lh-body); color: var(--text-muted); max-inline-size: 60ch; }
+
+/* The held card: the raised bone, as the build page's summary — stock, the
+   question, the price, the call, and a short note to Evan. */
+.vdp-ask {
+  position: sticky; inset-block-start: calc(var(--bar-h, var(--bar-clear)) + var(--sp-5));
+  display: grid; gap: var(--sp-4); padding: var(--sp-6);
+  background: var(--surface); border: var(--hairline) solid var(--rule);
+}
+.vdp-ask__k {
+  margin: 0; font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text-muted);
+}
+.vdp-ask__title { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--h3); line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text); }
+.vdp-ask__price {
+  margin: 0; padding-block-end: var(--sp-4); border-block-end: var(--hairline) solid var(--ink-on-light);
+  font-family: var(--face); font-weight: 600; font-size: var(--lot); line-height: var(--lh-tight);
+  letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums; color: var(--text);
+}
+.vdp-ask__call { justify-content: space-between; }
+.vdp-form { display: grid; gap: var(--sp-4); padding-block-start: var(--sp-4); border-block-start: var(--hairline) solid var(--rule); }
+.vdp-form textarea { min-block-size: 5.5rem; }
+.vdp-form__note { margin: 0; font-size: var(--fs-body-s); color: var(--text-muted); }
+.vdp-form__send { justify-content: space-between; cursor: pointer; }
+
+/* ── every photograph ─────────────────────────────────────────────────────── */
+.vdp-photos__head { display: grid; gap: var(--sp-4); justify-items: start; margin-block-end: var(--sp-6); }
+.photos__grid { columns: 3 16rem; column-gap: var(--sp-4); }
+.photos__item {
+  display: block; inline-size: 100%; margin: 0 0 var(--sp-4); padding: 0; border: 0; cursor: zoom-in;
+  overflow: clip; break-inside: avoid; background: var(--graphite-900); border-radius: var(--radius-media);
+}
+.photos__item img { display: block; inline-size: 100%; block-size: auto; transition: transform var(--dur-3) var(--ease-out); }
+.photos__item:hover img { transform: scale(1.03); }
+.photos__item:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+
+/* ── three more from the floor ────────────────────────────────────────────── */
+.vdp-more__head {
+  display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--sp-5);
+  margin-block-end: var(--sp-6);
+}
+.vdp-more__head > div { display: grid; gap: var(--sp-4); justify-items: start; }
+.vdp-more .results { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.vdp-more .car { grid-template-rows: auto 1fr; }
+
+.textcar__scan[hidden] { display: none; }
+
+@media (max-width: 61.99rem) {
+  .vdp-record__grid { grid-template-columns: minmax(0, 1fr); }
+  .vdp-ask { position: static; }
+  .vdp-more .results { grid-template-columns: minmax(0, 1fr); }
+  .stage__nav { inline-size: 2.75rem; block-size: 2.75rem; }
+  .thumbs { grid-auto-columns: 5.5rem; }
+  .stage__nav--prev { inset-inline-start: var(--sp-3); }
+  .stage__nav--next { inset-inline-end: var(--sp-3); }
+  .vdp-spec > div { grid-template-columns: minmax(0, 7rem) minmax(0, 1fr); }
+}
+@media (max-width: 74.99rem) and (min-width: 62rem) {
+  .vdp-more .results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photos__item:hover img { transform: none; }
+}

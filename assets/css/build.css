@@ -69,11 +69,33 @@
    rather than the bonnet. Dark, because the car lives in the dark; oxblood
    only as a filled mark there. Where the picture is too narrow to hold a
    card beside its subject, the card drops under it. */
-.cfg-base { position: relative; display: grid; margin: 0; inline-size: 100%; container-type: inline-size; }
+.cfg-base {
+  position: relative; display: grid; margin: 0; inline-size: 100%; container-type: inline-size;
+  overflow: clip; border-radius: var(--radius-media);
+}
 .cfg-base__img {
   display: block; inline-size: 100%; block-size: auto; aspect-ratio: 1832 / 859;
   object-fit: cover; object-position: 45% 50%;
   border-radius: var(--radius-media); background: var(--graphite-900);
+}
+/* The picture follows the model (build.js). A studio shot whose car fills its
+   frame edge to edge is contained at the left on the graphite it was shot
+   against, so the card on the right keeps a wall to sit on instead of a
+   fender. A swap settles in out of the dark — never through bone, which is
+   what fading to transparent here would show. */
+.cfg-base__img[data-fit='contain'] { object-fit: contain; object-position: 0% 50%; background: var(--graphite-950); }
+.cfg-base__img.is-swap { animation: cfg-swap var(--dur-6) var(--ease-settle); }
+@keyframes cfg-swap { from { filter: brightness(0.25); scale: 1.04; } }
+/* Contained at the frame's own ratio, a 16:9 studio shot always ends at 83.4%
+   of the width, and its ground is not quite graphite-950: a hard seam. A
+   wash from past the car to that edge hides it. Only where the frame is wider
+   than 16:9 — on a phone the shot fills the frame and there is no seam. */
+@media (min-width: 62rem) {
+  .cfg-base:has(> .cfg-base__img[data-fit='contain'])::before {
+    content: ''; position: absolute; z-index: 1; inset-block-start: 0; inset-inline: 0;
+    aspect-ratio: 1832 / 859; pointer-events: none;
+    background: linear-gradient(to right, transparent 70%, var(--graphite-950) 83.4%);
+  }
 }
 .cfg-base__bar {
   display: grid; justify-items: start; gap: var(--sp-1);
@@ -102,7 +124,7 @@
 @container (min-width: 48rem) {
   .cfg-base__bar {
     position: absolute; inset-block-start: 50%; inset-inline-end: var(--sp-6);
-    translate: 0 -50%; margin: 0; max-inline-size: 20rem;
+    translate: 0 -50%; margin: 0; max-inline-size: 20rem; z-index: 2;
   }
 }
 
@@ -376,6 +398,6 @@
   /* Every answer still arrives — the ring, the filled mark, the figures —
      it just does not move to get there. build.js adds none of the classes. */
   .cfg-opt { transition: none; }
-  .cfg-group[open] .cfg-opt, .cfg-opt__frame img.is-just, .cfg-delta.is-on, .cfg-line.is-flash,
+  .cfg-group[open] .cfg-opt, .cfg-opt__frame img.is-just, .cfg-base__img.is-swap, .cfg-delta.is-on, .cfg-line.is-flash,
   .cfg-line.is-new dd, .cfg-group.is-new .cfg-group__chosen > * { animation: none; }
 }

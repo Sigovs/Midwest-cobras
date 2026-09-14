@@ -103,6 +103,33 @@
   var totalMeter = meter(totalEl), barMeter = meter(barTotal), baseMeter = meter(q('[data-base-price]'));
   var seen = {}, lastTotal = null, lastModel = null;
 
+  /* The base picture follows the model: Alex, 2026-09-14, "logically it has
+     to change". Each model input names its picture in data-hero; with no
+     model chosen the page's own picture stands. The next picture is decoded
+     before it is shown and then settles in out of the dark, so a swap never
+     flashes an empty frame; a quicker second choice wins over a slow first. */
+  var heroEl = q('.cfg-base__img');
+  var heroDefault = heroEl && { src: heroEl.getAttribute('src'), alt: heroEl.getAttribute('alt'), fit: '' };
+  var heroWant = heroDefault && heroDefault.src;
+  function hero(model, animate) {
+    if (!heroEl) return;
+    var next = model && model.getAttribute('data-hero')
+      ? { src: model.getAttribute('data-hero'), alt: model.getAttribute('data-hero-alt') || '', fit: model.getAttribute('data-hero-fit') || '' }
+      : heroDefault;
+    if (next.src === heroWant) return;
+    heroWant = next.src;
+    var show = function () {
+      if (heroWant !== next.src) return;
+      heroEl.setAttribute('src', next.src);
+      heroEl.setAttribute('alt', next.alt);
+      if (next.fit) heroEl.setAttribute('data-fit', next.fit); else heroEl.removeAttribute('data-fit');
+      if (animate) restart(heroEl, 'is-swap');
+    };
+    var probe = new Image();
+    probe.src = next.src;
+    if (probe.decode) probe.decode().then(show, show); else show();
+  }
+
   function read(group) {
     return [].slice.call(group.querySelectorAll('input:checked')).map(function (i) {
       return { label: i.value, price: parseInt(i.getAttribute('data-price'), 10) || 0 };
@@ -193,6 +220,7 @@
     lastTotal = total; lastModel = model;
 
     modelEl.textContent = model ? model.value : 'Your Cobra';
+    hero(model, turn);
     if (model && shotEl) {
       var src = model.getAttribute('data-shot');
       if (src && shotEl.getAttribute('src') !== src) shotEl.setAttribute('src', src);
@@ -246,6 +274,7 @@
     else if (e.animationName === 'cfg-flash') t.classList.remove('is-flash');
     else if (e.animationName === 'cfg-settle') t.classList.remove('is-just');
     else if (e.animationName === 'cfg-delta') t.classList.remove('is-on');
+    else if (e.animationName === 'cfg-swap') t.classList.remove('is-swap');
   }
   document.addEventListener('animationend', done);
   document.addEventListener('animationcancel', done);

@@ -151,7 +151,7 @@
       </div>
       <p class="btn-row">
         <a class="btn btn--solid" href="#inventory">See what is on the floor</a>
-        <a class="btn" href="mailto:evan@midwestcobras.com?subject=Building%20a%20Cobra" data-enquiry-open aria-haspopup="dialog">Build yours</a>
+        <a class="btn" href="build.html">Build yours</a>
       </p>
     </div>
   </section>
@@ -223,12 +223,12 @@
           going to drive it. Color, stance, pipes, the stitching on the seat you
           will actually sit in — the list below is the conversation, in the order
           it happens.</p>
-        <!-- The section's action opens the build enquiry, the panel at the foot
-             of the page. The client asked for this button to go to Evan's email;
-             Alex made it a short form instead, 2026-09-10. The href is still
-             that email, so without scripts it does exactly what the client asked. -->
+        <!-- The section's action goes to the configurator — Alex, 2026-09-14:
+             "Build yours" links to build.html. It used to open the build
+             enquiry panel (a short form, 2026-09-10, in place of the client's
+             email link); that panel is now the "Contact me" in Who we are. -->
         <p class="btn-row">
-          <a class="btn btn--solid" href="mailto:evan@midwestcobras.com?subject=Building%20a%20Cobra" data-enquiry-open aria-haspopup="dialog">Build yours</a>
+          <a class="btn btn--solid" href="build.html">Build yours</a>
         </p>
       </div>
       <!-- One stage, five frames stacked in it, the active one opaque. The
@@ -337,6 +337,12 @@
           aspirations.</p>
         <p>We look forward to building long-lasting relationships with our
           customers, who become part of our Cobra family.</p>
+        <!-- CONTACT ME — Alex, 2026-09-14: the section that puts a face to the
+             company ends on a way to reach him. It opens the slide-in panel at
+             the foot of the page; without scripts it is a plain email to Evan. -->
+        <p class="btn-row">
+          <a class="btn btn--solid" href="mailto:evan@midwestcobras.com?subject=Hello%20from%20the%20website" data-enquiry-open aria-haspopup="dialog">Contact me</a>
+        </p>
       </div>
     </div>
     <!-- THE PAIR IS GONE — Alex, 2026-09-10: the long horizontal photograph
@@ -673,7 +679,11 @@
     <div class="enquiry__scrim" data-enquiry-close></div>
     <div class="enquiry__panel" data-ground="light">
       <div class="enquiry__top">
-        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Build yours</p>
+        <!-- Opened from "Contact me" in Who we are since 2026-09-14, when
+             "Build yours" moved to build.html — so it is titled as a contact,
+             not as a build. The car list stays: it is still the likeliest
+             reason to write. -->
+        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Contact</p>
         <button class="enquiry__close" type="button" data-enquiry-close aria-label="Close">
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
         </button>
@@ -681,9 +691,9 @@
 
       <div class="enquiry__content">
         <header class="enquiry__head">
-          <h2 class="enquiry__title" id="enquiry-title" tabindex="-1">Start your build.</h2>
+          <h2 class="enquiry__title" id="enquiry-title" tabindex="-1">Talk to Evan.</h2>
           <p class="enquiry__lede">Tell Evan what you have in mind and he will be in
-            touch to spec it out with you — by phone, by email or at the shop.</p>
+            touch — by phone, by email or at the shop.</p>
         </header>
 
         <form class="enquiry__form" data-apply method="post" novalidate

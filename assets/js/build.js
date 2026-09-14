@@ -390,24 +390,30 @@
     });
   }
 
-  /* Sticky to the end — Alex, 2026-09-14. A sticky box cannot outrun its
-     column: once the end of the list comes up the window, CSS pushes the
-     whole panel up with it and the photograph and the total slide under the
-     bar. So near the end the panel gives up height instead of position: its
-     top stays under the bar, its foot follows the end of the list, and it
-     keeps scrolling inside. Only when it is shorter than 20rem does it leave
-     with the list. Nothing happens where the panel is not sticky (a phone). */
+  /* Sticky to the end, and the form in reach — Alex, 2026-09-14: sticky to
+     the end of the list, and at the end "don't hide the form, carry on down
+     the page and make it visible; when there is no need to scroll inside, we
+     don't". The panel sticks the whole length of the list and scrolls inside
+     under the pointer. Over the last window of the list the panel's own
+     scroll follows the page: by the time the list ends, the panel has
+     arrived at its foot — the estimate and Send in view — and from there it
+     leaves with the page as any sticky box does. Scrolling back up runs the
+     same stretch in reverse, back to the photograph and the total. Outside
+     that stretch the panel is left exactly where the reader put it, and
+     there is no empty tail under the list. Nothing runs where the panel is
+     not sticky (a phone). */
   if (sum) {
-    var fitQueued = false;
+    var fitQueued = false, lastLeg = 0;
     var fit = function () {
       fitQueued = false;
       var cs = getComputedStyle(sum);
-      if (cs.position !== 'sticky') { sum.style.maxBlockSize = ''; return; }
+      if (cs.position !== 'sticky') { lastLeg = 0; return; }
       var top = parseFloat(cs.top) || 0;
-      var full = window.innerHeight - top - (parseFloat(cs.paddingTop) || 0);
-      var room = root.getBoundingClientRect().bottom - top;
-      var least = parseFloat(getComputedStyle(document.documentElement).fontSize) * 20;
-      sum.style.maxBlockSize = room < full ? Math.max(room, least) + 'px' : '';
+      var stretch = sum.offsetHeight;
+      var leg = (top + stretch * 2 - root.getBoundingClientRect().bottom) / stretch;
+      leg = Math.max(0, Math.min(1, leg));
+      if (leg > 0 || lastLeg > 0) sum.scrollTop = leg * (sum.scrollHeight - sum.clientHeight);
+      lastLeg = leg;
       if (foot) foot();
     };
     var queueFit = function () {

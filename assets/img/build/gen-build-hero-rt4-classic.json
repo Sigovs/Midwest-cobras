@@ -1,0 +1,16 @@
+{
+  "file": "gen-build-hero-rt4-classic.jpg",
+  "origin": "synthetic — an edit of build-hero.jpg",
+  "used_on": "build.html, the base picture when RT4 Classic Edition is chosen",
+  "model": "fal-ai/nano-banana-pro/edit",
+  "date": "2026-09-14",
+  "request_id": "01a0a1a0-e455-71b3-a77c-c112e383a553",
+  "settings": { "resolution": "2K", "output_format": "png", "aspect_ratio": "auto", "num_images": 1 },
+  "output": "2752x1536 PNG, shipped as a 1920px JPEG at quality 80",
+  "inputs": [
+    "https://sigovs.github.io/Midwest-cobras/assets/img/build/build-hero.jpg (image 1: the hall, the light, the pose)",
+    "https://sigovs.github.io/Midwest-cobras/assets/img/car-rt4b-front.jpg (image 2: the Classic finish — polished pipes and wheels; the file name is wrong way round, see the content ledger)"
+  ],
+  "prompt": "Edit image 1. Keep the concrete hall, the wall, the floor, the light, the shadows, the camera position, the lens, the framing and the car's exact pose, size and placement completely unchanged. Change only the car's finish so it becomes the roadster shown in image 2: deep metallic navy blue paint with two white racing stripes running over the bonnet and boot, polished stainless steel side exhaust pipes with a perforated polished heat shield, polished silver halibrand-style wheels, chrome roll bar, chrome windscreen frame and chrome bumperettes, tan leather interior. Photorealistic, the same low-key cinematic light as image 1, the car still lit softly from above in the dark hall. No text, no watermark, no added lettering or badges.",
+  "rules": "Design DNA GI3 (nothing synthetic depicts the product being sold) yielded for this image on Alex's instruction, 2026-09-14: \"ignore the rule for this action\". GI4: the model left faint lettering on the bonnet scoop, illegible at the size shown."
+}

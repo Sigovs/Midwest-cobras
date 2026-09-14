@@ -1,17 +1,20 @@
 {
   "file": "gen-build-hero-rt4-classic.jpg",
-  "origin": "synthetic — an edit on fal of the first RT4B pass (see gen-build-hero-rt4b.json)",
-  "used_on": "build.html, the base picture with RT4 Classic Edition chosen",
+  "origin": "synthetic — an edit on fal of the re-composed RT4B frame (see gen-build-hero-rt4b.json, third pass)",
+  "used_on": "build.html: the step 01 picture and the summary picture with RT4 Classic Edition chosen",
   "pair": "gen-build-hero-rt4b.jpg — same hall, light, camera and pose",
   "model": "fal-ai/nano-banana-pro/edit",
   "date": "2026-09-14",
-  "request_id": "01a0a1a6-ab49-7ba1-b943-70b92058ffe8",
+  "request_id": "01a0a1c5-5c6f-7642-9314-428e5cb6197c",
   "settings": { "resolution": "2K", "aspect_ratio": "21:9", "output_format": "png", "num_images": 1 },
   "output": "3168x1344 PNG, shipped as a 2400px JPEG at quality 80",
-  "inputs": ["https://v3b.fal.media/files/b/0aaa6f8d/xZxrrUA411KLCtA_qwI-Y_ordtdTlI.png (the first RT4B pass)"],
-  "prompt": "Edit image 1. Keep the concrete hall, the wall, the floor, the light, the shadows, the camera, the framing and the car's exact pose, size and position completely unchanged. Change only the car into a Backdraft RT4 Classic Edition Cobra roadster: deep metallic navy blue paint with two white racing stripes running over the bonnet and boot, polished stainless steel side exhaust pipes with a perforated polished heat shield, polished silver halibrand-style wheels, a chrome roll bar, chrome windscreen frame and chrome bumperettes, tan leather interior. Photorealistic, the same low-key cinematic light falling softly from above. No text, no lettering, no watermark.",
+  "inputs": ["https://v3b.fal.media/files/b/0aaa7056/Ch7apLh5-f42f-BmLM--9_EQB3PwfD.png (the re-composed RT4B)"],
+  "prompt": "Edit image 1. Keep the concrete hall, the wall, the floor, the light, the shadows, the camera, the framing and the car's exact pose, size and position completely unchanged, including the empty dark wall on the left. Change only the car into a Backdraft RT4 Classic Edition Cobra roadster: deep metallic navy blue paint with two white racing stripes running over the bonnet and boot, polished stainless steel side exhaust pipes with a perforated polished heat shield, polished silver halibrand-style wheels, a chrome roll bar, chrome windscreen frame and chrome bumperettes, tan leather interior, left-hand drive. Photorealistic, the same low-key cinematic light falling softly from above. No text, no lettering, no watermark.",
   "finish_source": "backdraftracing.com, read 2026-09-14: the Classic Edition has polished stainless steel side pipes and halibrand style wheels",
-  "superseded": "A first Classic, request 01a0a1a0-e455-71b3-a77c-c112e383a553, was a 16:9 edit of build-hero.jpg; replaced the same day because it did not match its pair's frame.",
-  "reading_zone": "the right third, empty wall, for the Start here card",
-  "rules": "Design DNA GI3 yielded on Alex's instruction, 2026-09-14 (\"ignore the rule for this action\"). GI8: the phone view is a 16:9 crop of this frame."
+  "superseded": [
+    "01a0a1a0-e455-71b3-a77c-c112e383a553 — a 16:9 edit of build-hero.jpg; did not match its pair's frame",
+    "01a0a1a6-ab49-7ba1-b943-70b92058ffe8 — the car on the left; replaced when step 01 moved to the left of the picture"
+  ],
+  "reading_zone": "the left third, empty wall, for the step 01 card",
+  "rules": "Design DNA GI3 yielded on Alex's instruction, 2026-09-14 (\"ignore the rule for this action\"). GI8: the phone view and the summary are 16:9 crops of this frame."
 }

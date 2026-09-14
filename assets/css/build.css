@@ -62,20 +62,17 @@
    Hinderer's one picture above the list: the car the build starts from, and a
    card on it saying where the price starts. Alex, 2026-09-14: "one more image,
    as on Hinderer — a placeholder on ours", then, pointing at Hinderer's card
-   on their photograph: "this was on Hinderer". So the card sits on the
-   picture, level with its middle, as theirs does — but on the right: theirs
-   is at the left because their chassis stands right, and in build_hero the
-   car stands left with empty wall beside it, so the card takes the wall
-   rather than the bonnet — and both generated frames keep that wall empty. Dark, because the car lives in the dark; oxblood
-   only as a filled mark there. Where the picture is too narrow to hold a
-   card beside its subject, the card drops under it. */
+   on their photograph: "this was on Hinderer". Since then the card became
+   step 01 itself (see below), and Alex moved it to the left; the generated
+   frames stand the car on the right so the card has the wall. Where the
+   picture is too narrow to hold a card beside its subject, the card drops under it. */
 .cfg-base {
   position: relative; display: grid; margin: 0; inline-size: 100%; container-type: inline-size;
   overflow: clip; border-radius: var(--radius-media);
 }
 .cfg-base__img {
   display: block; inline-size: 100%; block-size: auto; aspect-ratio: 2400 / 1018;
-  object-fit: cover; object-position: 42% 50%;
+  object-fit: cover; object-position: 64% 50%;
   border-radius: var(--radius-media); background: var(--graphite-900);
 }
 /* The picture follows the model (build.js): two generated frames of the same
@@ -84,34 +81,31 @@
    transparent here would show. */
 .cfg-base__img.is-swap { animation: cfg-swap var(--dur-6) var(--ease-settle); }
 @keyframes cfg-swap { from { filter: brightness(0.25); scale: 1.04; } }
-.cfg-base__bar {
-  display: grid; gap: var(--sp-2);
-  margin-block-start: var(--sp-3); padding: var(--sp-4);
-  background: var(--graphite-950); color: var(--ink-on-dark);
-  border: var(--hairline) solid var(--graphite-700); border-radius: var(--radius-media);
-}
-/* Step 01 is chosen here — Alex, 2026-09-14: the main picture and the Start
-   here choice are one thing. "01 Start here" is large; 02 onward keep the
-   step size they have in the list. */
+/* Step 01 — Alex, 2026-09-14: the main picture and the Start here choice are
+   one thing. Two dresses for one piece of markup. Where the frame is narrow
+   (a phone, a small laptop) it sits under the photograph dressed as every
+   other step in the list — "in a row with all the steps". Where the frame is
+   wide it is a dark card on the picture's empty left wall, with "01 Start
+   here" set large. */
+.cfg-base__bar { display: grid; gap: var(--sp-4); margin-block-start: var(--sp-6); color: var(--text); }
 .cfg-base__step {
-  display: flex; align-items: baseline; gap: var(--sp-3); margin: 0;
-  font-family: var(--face); font-weight: 600; font-size: var(--lot);
-  line-height: var(--lh-tight); letter-spacing: var(--ls-heading);
+  display: flex; align-items: baseline; gap: var(--sp-4); margin: 0;
+  padding-block-end: var(--sp-3); border-block-end: var(--hairline) solid var(--ink-on-light);
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
 }
 .cfg-base__step span {
   font-family: var(--mono); font-weight: 400; font-size: var(--micro);
-  letter-spacing: var(--track); color: var(--ink-on-dark-muted);
+  letter-spacing: var(--track); color: var(--text-muted);
 }
 .cfg-models { display: grid; gap: var(--sp-2); }
-/* A model is a row: the mark says one of these, the name, where its price
-   starts. Chosen, the row takes a bone edge and the mark fills — oxblood as a
-   filled mark on the dark, never as text. It gives under the hand like every
-   control on the site. */
+/* A model is a row: the mark says one of these, the name over where its
+   price starts. It gives under the hand like every control on the site. */
 .cfg-model {
   position: relative;
   display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0 var(--sp-3);
-  min-block-size: 3rem; padding: var(--sp-2) var(--sp-3); cursor: pointer;
-  border: var(--hairline) solid var(--graphite-700); border-radius: var(--radius-control);
+  min-block-size: 3rem; padding: var(--sp-3) var(--sp-4); cursor: pointer;
+  background: var(--surface); border: var(--hairline) solid var(--rule); border-radius: var(--radius-control);
   transition: border-color var(--dur-2) var(--ease-out), background-color var(--dur-2) var(--ease-out),
     transform var(--dur-3) var(--ease-back);
 }
@@ -119,15 +113,14 @@
   position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
   overflow: hidden; clip-path: inset(50%); white-space: nowrap; opacity: 0;
 }
-.cfg-model:hover { border-color: var(--ink-on-dark-muted); }
+.cfg-model:hover { border-color: var(--ink-on-light-muted); }
 .cfg-model:active { transform: scale(0.97); transition: transform var(--dur-1) var(--ease-press); }
-.cfg-model:has(input:checked) { border-color: var(--bone-050); background: rgb(var(--bone-100-rgb) / 0.08); }
-.cfg-model:has(input:focus-visible) { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--hairline); }
-/* Name over price, so the card stays narrow enough to leave the car alone. */
+.cfg-model:has(input:checked) { border-color: var(--ink-on-light); }
+.cfg-model:has(input:focus-visible) { outline: var(--focus-w) solid var(--oxblood); outline-offset: var(--hairline); }
 .cfg-model__mark {
   grid-row: span 2;
   display: grid; place-items: center; inline-size: 1.25rem; block-size: 1.25rem; border-radius: 50%;
-  border: calc(var(--hairline) * 2) solid var(--ink-on-dark-muted);
+  border: calc(var(--hairline) * 2) solid var(--ink-on-light-muted);
   transition: border-color var(--dur-2) var(--ease-out);
 }
 .cfg-model__mark::after {
@@ -135,47 +128,62 @@
   background: var(--oxblood); transform: scale(0);
   transition: transform var(--dur-2) var(--ease-back);
 }
-.cfg-model:has(input:checked) .cfg-model__mark { border-color: var(--bone-050); }
+.cfg-model:has(input:checked) .cfg-model__mark { border-color: var(--oxblood); }
 .cfg-model:has(input:checked) .cfg-model__mark::after { transform: scale(1); }
-.cfg-model__name { font-family: var(--face); font-weight: 600; font-size: var(--fs-body); line-height: var(--lh-heading); }
+.cfg-model__name { font-family: var(--face); font-weight: 600; font-size: var(--fs-body); line-height: var(--lh-heading); color: var(--text); }
 .cfg-model__price {
   grid-column: 2;
   font-family: var(--mono); font-size: var(--micro); font-variant-numeric: tabular-nums;
-  color: var(--ink-on-dark-muted); white-space: nowrap;
+  color: var(--text-muted); white-space: nowrap;
 }
 /* The running total, as in the summary: drums, and what a choice cost beside
-   them — bone here, because oxblood is never text on the dark. */
+   them — oxblood on light, bone on the dark card. */
 .cfg-base__sum {
   display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--sp-1) var(--sp-3);
-  margin: 0; padding-block-start: var(--sp-3); border-block-start: var(--hairline) solid var(--graphite-700);
+  margin: 0; padding-block-start: var(--sp-3); border-block-start: var(--hairline) solid var(--rule);
 }
 .cfg-base__sum-k {
   font-family: var(--mono); font-size: var(--micro);
-  letter-spacing: var(--track); text-transform: uppercase; color: var(--ink-on-dark-muted);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
 }
 .cfg-base__price {
   display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-1) var(--sp-3);
-  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  font-family: var(--face); font-weight: 600; font-size: var(--h3); color: var(--text);
   line-height: var(--lh-tight); letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums;
 }
-.cfg-base__bar .cfg-delta { color: var(--ink-on-dark); }
 .cfg-base__next {
   justify-self: start; display: inline-flex; align-items: center; gap: var(--sp-2); min-block-size: 2.75rem;
   margin-block: calc(var(--sp-2) * -1);
   font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
-  color: var(--ink-on-dark); text-decoration: none;
+  color: var(--text); text-decoration: none;
 }
 .cfg-base__next[hidden] { display: none; }
-.cfg-base__next:hover { color: var(--bone-050); }
-.cfg-base__next:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
-/* On the picture only where the picture is tall enough to hold the card and
-   wide enough to leave the car its two thirds: 50rem of frame. The card is
-   17rem, which ends short of the tail in both generated frames. */
+.cfg-base__next:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--focus-offset); }
+
+/* On the picture only where it is tall enough to hold the card and wide
+   enough to leave the car its two thirds: 50rem of frame. 17rem, on the
+   empty wall at the left — the car stands right in both generated frames. */
 @container (min-width: 50rem) {
   .cfg-base__bar {
-    position: absolute; inset-block-start: 50%; inset-inline-end: var(--sp-5); z-index: 2;
-    translate: 0 -50%; margin: 0; inline-size: 17rem;
+    position: absolute; inset-block-start: 50%; inset-inline-start: var(--sp-5); z-index: 2;
+    translate: 0 -50%; margin: 0; inline-size: 17rem; gap: var(--sp-2); padding: var(--sp-4);
+    background: var(--graphite-950); color: var(--ink-on-dark);
+    border: var(--hairline) solid var(--graphite-700); border-radius: var(--radius-media);
   }
+  .cfg-base__step { padding: 0; border: 0; font-size: var(--lot); line-height: var(--lh-tight); color: var(--ink-on-dark); }
+  .cfg-base__step span { color: var(--ink-on-dark-muted); }
+  .cfg-model { padding: var(--sp-2) var(--sp-3); background: transparent; border-color: var(--graphite-700); }
+  .cfg-model:hover { border-color: var(--ink-on-dark-muted); }
+  .cfg-model:has(input:checked) { border-color: var(--bone-050); background: rgb(var(--bone-100-rgb) / 0.08); }
+  .cfg-model:has(input:focus-visible) { outline-color: var(--bone-050); }
+  .cfg-model__mark { border-color: var(--ink-on-dark-muted); }
+  .cfg-model:has(input:checked) .cfg-model__mark { border-color: var(--bone-050); }
+  .cfg-model__name, .cfg-base__price, .cfg-base__next { color: var(--ink-on-dark); }
+  .cfg-model__price, .cfg-base__sum-k { color: var(--ink-on-dark-muted); }
+  .cfg-base__sum { border-color: var(--graphite-700); }
+  .cfg-base__bar .cfg-delta { color: var(--ink-on-dark); }
+  .cfg-base__next:hover { color: var(--bone-050); }
+  .cfg-base__next:focus-visible { outline-color: var(--bone-050); }
 }
 
 /* ── steps and groups ───────────────────────────────────────────────────────
@@ -360,7 +368,10 @@
   padding: var(--sp-5); background: var(--bone-050); border: var(--hairline) solid var(--rule);
 }
 .cfg-sum__shot { aspect-ratio: 16 / 9; overflow: clip; border-radius: var(--radius-media); background: var(--bone-200); }
-.cfg-sum__shot img { display: block; inline-size: 100%; block-size: 100%; object-fit: cover; }
+/* The summary shows the same picture as step 01 — Alex, 2026-09-14: the Black
+   Edition on the right has to match the one above in colour. The frames are
+   21:9 with the car on the right, so the 16:9 crop keeps to the car. */
+.cfg-sum__shot img { display: block; inline-size: 100%; block-size: 100%; object-fit: cover; object-position: 64% 50%; }
 .cfg-sum__k {
   font-family: var(--mono); font-size: var(--micro);
   letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);

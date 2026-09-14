@@ -198,6 +198,7 @@
     progressDone.textContent = answered;
     progressTotal.textContent = groups.length;
     progressFill.style.setProperty('--done', (answered / groups.length).toFixed(4));
+    progressFill.parentNode.style.setProperty('--steps', groups.length);
     progressBox.setAttribute('aria-valuenow', answered);
     progressBox.setAttribute('aria-valuetext', answered + ' of ' + groups.length + ' chosen');
 

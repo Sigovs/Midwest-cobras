@@ -26,13 +26,32 @@
 /* ── progress ───────────────────────────────────────────────────────────────
    The words are the fact, the bar is a picture of it. Filled by transform, so
    nothing reflows as it grows. */
+/* Alex, 2026-09-14: "it can't be seen at all". The first cut was a 3px
+   bone-200 line on bone-100 — about 1.2:1, a rule rather than a gauge. Now
+   the count leads in the display face, and the track is a scale of one cell
+   per group, dark enough to read empty (graphite at 0.16 on bone, past the
+   3:1 a meaningful graphic needs once filled). build.js sets --steps. */
 .cfg-progress { inline-size: 100%; display: grid; gap: var(--sp-3); margin-block-start: var(--sp-2); }
 .cfg-progress__count {
   font-family: var(--mono); font-size: var(--micro);
   letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
 }
-.cfg-progress__count strong { color: var(--text); font-weight: 500; }
-.cfg-progress__track { display: block; block-size: calc(var(--hairline) * 3); background: var(--bone-200); overflow: clip; }
+.cfg-progress__count strong {
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-heading);
+  font-variant-numeric: tabular-nums; color: var(--text); margin-inline-end: var(--sp-1);
+}
+.cfg-progress__track {
+  position: relative; display: block; block-size: var(--sp-2);
+  background: rgb(var(--graphite-950-rgb) / 0.16); overflow: clip;
+}
+/* The cells: a ground-coloured gap after every step, drawn over the fill. */
+.cfg-progress__track::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(to right,
+    transparent 0 calc(100% / var(--steps, 10) - var(--hairline) * 3),
+    var(--ground) calc(100% / var(--steps, 10) - var(--hairline) * 3) calc(100% / var(--steps, 10)));
+}
 .cfg-progress__fill {
   display: block; block-size: 100%; background: var(--ink-on-light);
   transform-origin: left; transform: scaleX(var(--done, 0));
@@ -41,26 +60,41 @@
 
 /* ── the base ───────────────────────────────────────────────────────────────
    Hinderer's one picture above the list: the car the build starts from, and a
-   bar saying where the price starts. Alex, 2026-09-14: "one more image, as on
-   Hinderer — a placeholder on ours". The bar sits under the picture, not on
-   it: a plate has nothing to lie over, and on Hinderer's photograph the
-   overlay had to be moved off the bright part to be read at all. */
-.cfg-base { display: grid; margin: 0; inline-size: 100%; }
-.cfg-base__frame { aspect-ratio: 16 / 6; border-radius: var(--radius-media) var(--radius-media) 0 0; }
+   card on it saying where the price starts. Alex, 2026-09-14: "one more image,
+   as on Hinderer — a placeholder on ours", then, pointing at Hinderer's card
+   on their photograph: "this was on Hinderer". So the card sits on the
+   picture, at the left and level with its middle, as theirs does. Dark,
+   because the car lives in the dark; oxblood only as a filled mark there.
+   Where the picture is too narrow to hold a card beside its subject, the card
+   drops under it. */
+.cfg-base { position: relative; display: grid; margin: 0; inline-size: 100%; container-type: inline-size; }
+.cfg-base__frame { aspect-ratio: 16 / 6; border-radius: var(--radius-media); }
 .cfg-base__bar {
-  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-2) var(--sp-5);
-  padding: var(--sp-4) var(--sp-5);
-  background: var(--surface); border: var(--hairline) solid var(--rule); border-block-start: 0;
+  display: grid; justify-items: start; gap: var(--sp-1);
+  margin-block-start: var(--sp-3); padding: var(--sp-4) var(--sp-5);
+  background: var(--graphite-950); color: var(--ink-on-dark);
+  border: var(--hairline) solid var(--graphite-700); border-radius: var(--radius-media);
 }
 .cfg-base__step {
+  display: inline-flex; align-items: center; gap: var(--sp-2); margin-block-end: var(--sp-2);
   font-family: var(--mono); font-size: var(--micro);
-  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--ink-on-dark-muted);
 }
-.cfg-base__name, .cfg-base__price {
+.cfg-base__step::before { content: ''; inline-size: var(--sp-2); block-size: var(--sp-2); background: var(--oxblood); }
+.cfg-base__name {
   font-family: var(--face); font-weight: 600; font-size: var(--h3);
-  line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-heading);
 }
-.cfg-base__price { margin-inline-start: auto; font-variant-numeric: tabular-nums; }
+.cfg-base__price {
+  font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums;
+}
+@container (min-width: 48rem) {
+  .cfg-base__bar {
+    position: absolute; inset-block-start: 50%; inset-inline-start: var(--sp-6);
+    translate: 0 -50%; margin: 0; max-inline-size: 20rem;
+  }
+}
 
 /* ── steps and groups ───────────────────────────────────────────────────────
    The five steps are the home page's own, numbered because they are a real

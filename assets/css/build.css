@@ -63,12 +63,18 @@
    card on it saying where the price starts. Alex, 2026-09-14: "one more image,
    as on Hinderer — a placeholder on ours", then, pointing at Hinderer's card
    on their photograph: "this was on Hinderer". So the card sits on the
-   picture, at the left and level with its middle, as theirs does. Dark,
-   because the car lives in the dark; oxblood only as a filled mark there.
-   Where the picture is too narrow to hold a card beside its subject, the card
-   drops under it. */
+   picture, level with its middle, as theirs does — but on the right: theirs
+   is at the left because their chassis stands right, and in build_hero the
+   car stands left with empty wall beside it, so the card takes the wall
+   rather than the bonnet. Dark, because the car lives in the dark; oxblood
+   only as a filled mark there. Where the picture is too narrow to hold a
+   card beside its subject, the card drops under it. */
 .cfg-base { position: relative; display: grid; margin: 0; inline-size: 100%; container-type: inline-size; }
-.cfg-base__frame { aspect-ratio: 16 / 6; border-radius: var(--radius-media); }
+.cfg-base__img {
+  display: block; inline-size: 100%; block-size: auto; aspect-ratio: 1832 / 859;
+  object-fit: cover; object-position: 45% 50%;
+  border-radius: var(--radius-media); background: var(--graphite-900);
+}
 .cfg-base__bar {
   display: grid; justify-items: start; gap: var(--sp-1);
   margin-block-start: var(--sp-3); padding: var(--sp-4) var(--sp-5);
@@ -91,7 +97,7 @@
 }
 @container (min-width: 48rem) {
   .cfg-base__bar {
-    position: absolute; inset-block-start: 50%; inset-inline-start: var(--sp-6);
+    position: absolute; inset-block-start: 50%; inset-inline-end: var(--sp-6);
     translate: 0 -50%; margin: 0; max-inline-size: 20rem;
   }
 }
@@ -329,7 +335,7 @@
 
 @media (max-width: 61.99rem) {
   .cfg { grid-template-columns: minmax(0, 1fr); }
-  .cfg-base__frame { aspect-ratio: 16 / 9; }
+  .cfg-base__img { aspect-ratio: 16 / 9; }
   .cfg-sum { position: static; max-block-size: none; overflow: visible; }
   .cfg-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cfg-options--wide { grid-template-columns: minmax(0, 1fr); }

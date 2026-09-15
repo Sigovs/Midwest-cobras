@@ -98,12 +98,23 @@
 .about-sheet__side { grid-column: 7 / span 6; grid-row: 3; display: grid; justify-items: start; padding-block-start: var(--sp-2); }
 
 /* ── about.html · the shop ────────────────────────────────────────────────────
-   One strip: the client's photograph, the address, the opening and its count,
-   and the two ways there. */
+   Alex, 2026-09-14: "under the hero, this part can be more compact, not the
+   whole screen's width". One block held to a measure and set at the left
+   edge, under Evan: the client's photograph, and beside it the address, the
+   opening with its count and the two ways there, stacked close. At any width
+   the four parts read as one thing instead of four stops across a field. */
 .shop-strip {
-  display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 3fr) minmax(0, 3fr) auto;
-  gap: var(--sp-6) var(--col-gap); align-items: center;
+  display: grid; grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
+  gap: var(--sp-5) var(--sp-7); align-items: start;
+  max-inline-size: 62rem; margin-inline: 0;
 }
+.shop-strip__photo { grid-column: 1; grid-row: 1 / span 3; align-self: center; }
+.shop-strip__place { grid-column: 2; grid-row: 1; }
+.shop-strip__open {
+  grid-column: 2; grid-row: 2; inline-size: 100%;
+  padding-block: var(--sp-4); border-block: var(--hairline) solid var(--rule);
+}
+.shop-strip__acts { grid-column: 2; grid-row: 3; }
 .shop-strip__photo { margin: 0; }
 .shop-strip__photo img {
   display: block; inline-size: 100%; block-size: auto; aspect-ratio: 4 / 3; object-fit: cover;
@@ -126,14 +137,7 @@
 .shop .countdown__cell { display: grid; gap: var(--sp-1); margin: 0; }
 .shop .countdown__n { font-size: var(--lot); }
 .shop .countdown__open { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-body); color: var(--text); }
-.shop-strip__acts { margin: 0; display: grid; gap: var(--sp-3); }
-.shop-strip__acts .btn { justify-content: space-between; }
-
-@media (max-width: 74.99rem) {
-  .shop-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .shop-strip__photo { grid-row: 1 / span 3; align-self: start; }
-  .shop-strip__acts { justify-items: start; }
-}
+.shop-strip__acts { margin: 0; display: flex; flex-wrap: wrap; gap: var(--sp-3); }
 @media (max-width: 61.99rem) {
   .svc-sheet, .about-sheet, .shop-strip { grid-template-columns: minmax(0, 1fr); }
   .svc-sheet > *, .about-sheet > *, .shop-strip > * { grid-column: 1; grid-row: auto; }

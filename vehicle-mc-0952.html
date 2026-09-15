@@ -83,92 +83,244 @@
 <main id="top">
 
   <!-- ══════════════════════════════════════════════════════════════════════
-       A CAR'S OWN PAGE — Alex, 2026-09-14: "View details is a separate VDP
-       page", and "Hinderer is not the model for the VDP". So it is set as
-       this site sets a lot: the car first, large, on the dark, with its lot
-       line under it — stock and status in the mono that records, the name in
-       the display face, the price; then the record on bone, where the
-       specification lives, beside a held card to ask Evan about it; every
-       photograph on the dark; and three more cars from the floor.
+       A CAR'S OWN PAGE. The order is Alex's own Chicago Motor Cars VDP —
+       Alex, 2026-09-14: "VDP, where is the rest? description, finance,
+       shipping… and PHOTOS should be called Gallery". The gallery beside the
+       price and the specification; an action bar; the car's record in panels
+       (about, walkaround, ask, financing, shipping); the standards every car
+       here comes with; the gallery; related cars. The parts are that page's,
+       the grounds are this site's: the car on the dark, its record on bone.
 
        Generated per car (so a shared link previews this car), and SIMULATED
        like the inventory: real photographs from Alex's other projects, every
-       figure made up. Content ledger, "inventory.html".
+       figure made up. Content ledger, "vehicle-*.html".
      ══════════════════════════════════════════════════════════════════════ -->
   <section class="sect sect--950 srp-page vdp-page" id="vehicle" aria-labelledby="vdp-title" data-vdp="mc-0952">
-    <div class="vdp-bar">
-      <a class="vdp-back" href="inventory.html"><span aria-hidden="true">&larr;</span>Inventory</a>
-      <div class="vdp-bar__acts">
+    <div class="vdp-top">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="index12.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="inventory.html">Inventory</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">2021 Backdraft Racing RT4 Roadster</span>
+      </nav>
+      <div class="vdp-top__acts">
         <a class="car__act" data-enquiry-open aria-haspopup="dialog" href="sms:+19136625000?&amp;body=Hi%20Evan,%20is%20the%202021%20Backdraft%20Racing%20RT4%20Roadster%20(stock%20MC-0952)%20still%20available?"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H10l-4 3v-3H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Text</a>
         <button class="car__act" type="button" data-share aria-haspopup="true" aria-expanded="false" aria-controls="share-pop"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M12 15V4m0 0L8 8m4-4 4 4M6 12v7a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-share-label>Share</span></button>
         <button class="car__act vdp-save" type="button" aria-pressed="false" data-save><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M7 4h10a1 1 0 0 1 1 1v15l-6-4-6 4V5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span data-save-label>Save</span></button>
       </div>
     </div>
 
-    <div class="stage" data-stage tabindex="-1">
-      <div class="stage__frame">
-        <img src="assets/img/vdp/mc-0952-1.jpg" alt="2021 Backdraft Racing RT4 Roadster, three-quarter front" width="762" height="556" data-stage-img fetchpriority="high">
+    <div class="vdp-sum">
+      <div class="stage" data-stage tabindex="-1">
+        <div class="stage__frame">
+          <img src="assets/img/vdp/mc-0952-1.jpg" alt="2021 Backdraft Racing RT4 Roadster, three-quarter front" width="762" height="556" data-stage-img fetchpriority="high">
+        </div>
       </div>
-    </div>
 
-    <header class="vdp-lot">
-      <div class="vdp-lot__name">
-        <p class="vdp-lot__line">Lot MC-0952 <span aria-hidden="true">&middot;</span> Available</p>
-        <h1 class="vdp-lot__title" id="vdp-title" data-vdp-name>2021 Backdraft Racing RT4 Roadster</h1>
-      </div>
-      <div class="vdp-lot__buy">
-        <p class="vdp-lot__price">$64,500</p>
-        <a class="btn btn--solid" href="#enquire">Enquire <span aria-hidden="true">&rarr;</span></a>
-      </div>
-    </header>
-  </section>
-
-  <!-- The record: the specification on bone, beside a held card to ask. -->
-  <section class="sect sect--bone vdp-record" id="specification" data-ground="light" aria-labelledby="spec-title">
-    <div class="vdp-record__grid">
-      <div class="vdp-record__main">
-        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Specification</p>
-        <h2 class="sect__title" id="spec-title">2021 Backdraft Racing RT4 Roadster.</h2>
-        <p class="lede">A 2021 RT4 Roadster in black with a red pinstripe, over black leather. 3,860 miles.</p>
-        <dl class="spec vdp-spec">
-          <div><dt>Year</dt><dd>2021</dd></div>
-          <div><dt>Make</dt><dd>Backdraft Racing</dd></div>
-          <div><dt>Model</dt><dd>RT4 Roadster</dd></div>
-          <div><dt>Engine</dt><dd>Ford Coyote 5.0L V8</dd></div>
-          <div><dt>Transmission</dt><dd>Tremec TKX five-speed manual</dd></div>
-          <div><dt>Exterior</dt><dd>Black, red pinstripe</dd></div>
-          <div><dt>Interior</dt><dd>Black leather</dd></div>
-          <div><dt>Mileage</dt><dd>3,860 mi</dd></div>
-          <div><dt>Stock</dt><dd>MC-0952</dd></div>
-          <div><dt>Condition</dt><dd>Pre-owned</dd></div>
-          <div><dt>Status</dt><dd>Available</dd></div>
+      <div class="vdp-panel">
+        <p class="vdp-panel__k">Stock MC-0952 <span aria-hidden="true">&middot;</span> Available</p>
+        <h1 class="vdp-panel__title" id="vdp-title" data-vdp-name>2021 Backdraft Racing RT4 Roadster</h1>
+        <div class="vdp-panel__price">
+          <p class="vdp-panel__figure">$64,500</p>
+          <p class="vdp-panel__note">Plus tax, title and delivery.</p>
+        </div>
+        <dl class="spec vdp-panel__specs">
+            <div><dt>Mileage</dt><dd>3,860 mi</dd></div>
+            <div><dt>Engine</dt><dd>Ford Coyote 5.0L V8</dd></div>
+            <div><dt>Transmission</dt><dd>Tremec TKX five-speed manual</dd></div>
+            <div><dt>Drivetrain</dt><dd>Rear-wheel drive</dd></div>
+            <div><dt>Exterior</dt><dd>Black, red pinstripe</dd></div>
+            <div><dt>Interior</dt><dd>Black leather</dd></div>
+            <div><dt>Stock</dt><dd>MC-0952</dd></div>
         </dl>
-        <p class="vdp-record__note">It is on the floor at the shop in Basehor, Kansas. The price excludes tax, title and delivery.</p>
+        <a class="btn btn--solid vdp-panel__cta" href="#ask" data-ask-msg="I would like to know more about stock MC-0952.">Enquire about this car <span aria-hidden="true">&rarr;</span></a>
       </div>
+    </div>
 
-      <aside class="vdp-ask" id="enquire" aria-labelledby="enquire-title">
-        <p class="vdp-ask__k">Stock MC-0952</p>
-        <h2 class="vdp-ask__title" id="enquire-title">Ask Evan about it.</h2>
-        <p class="vdp-ask__price">$64,500</p>
-        <a class="btn btn--solid vdp-ask__call" href="tel:+19136625000">Call 913 662 5000 <span aria-hidden="true">&rarr;</span></a>
-        <form class="vdp-form" data-apply method="post" novalidate>
-          <div class="field"><label for="vq-name">Name <span class="field__req" aria-hidden="true">*</span></label>
-            <input id="vq-name" name="name" autocomplete="name" required></div>
-          <div class="field"><label for="vq-email">Email <span class="field__req" aria-hidden="true">*</span></label>
-            <input id="vq-email" name="email" type="email" autocomplete="email" required></div>
-          <div class="field"><label for="vq-phone">Phone</label>
-            <input id="vq-phone" name="phone" type="tel" autocomplete="tel"></div>
-          <div class="field"><label for="vq-msg">Message</label>
-            <textarea id="vq-msg" name="message" rows="3">I would like to know more about stock MC-0952.</textarea></div>
-          <input type="hidden" name="vehicle" value="2021 Backdraft Racing RT4 Roadster, stock MC-0952">
-          <p class="vdp-form__note">Stock MC-0952 travels with the message.</p>
-          <button class="btn vdp-form__send" type="submit">Send to Evan <span aria-hidden="true">&rarr;</span></button>
-        </form>
-      </aside>
+    <div class="vdp-act">
+      <div class="vdp-act__left">
+        <p class="vdp-act__loc"><svg viewBox="0 0 12 15" width="12" height="15" aria-hidden="true" focusable="false"><path d="M6 .75c2.9 0 5.25 2.35 5.25 5.25 0 3.6-4.35 7.7-5.02 8.31a.34.34 0 0 1-.46 0C5.1 13.7.75 9.6.75 6 .75 3.1 3.1.75 6 .75Z" fill="none" stroke="currentColor" stroke-width="1.1"/><circle cx="6" cy="6" r="1.85" fill="currentColor"/></svg><span class="vdp-act__k">Location</span>
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=14510+Parallel+Lane+Basehor+Kansas+66007" target="_blank" rel="noopener noreferrer">Basehor, Kansas &mdash; 14510 Parallel Lane</a></p>
+        <a class="vdp-act__ship" href="#shipping">Estimate shipping <span aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="vdp-act__contact">
+        <a class="btn" href="tel:+19136625000">Call 913 662 5000</a>
+        <a class="btn" href="sms:+19136625000?&amp;body=Hi%20Evan,%20is%20the%202021%20Backdraft%20Racing%20RT4%20Roadster%20(stock%20MC-0952)%20still%20available?">Text Evan</a>
+        <a class="btn btn--solid" href="finance.html">Start financing <span aria-hidden="true">&rarr;</span></a>
+      </div>
     </div>
   </section>
 
-  <!-- Three more from the floor, the inventory's own cards. -->
+  <!-- THE RECORD, on bone: every part open, each its own card, with an index
+       beside them that holds while the cards scroll. -->
+  <section class="sect sect--bone vdp-record" id="record" data-ground="light" aria-labelledby="record-title">
+    <div class="vdp-record__grid">
+      <nav class="rec-nav" aria-labelledby="record-title">
+        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>The record</p>
+        <h2 class="rec-nav__title" id="record-title">MC-0952, in full.</h2>
+        <ol class="rec-nav__list" data-rec-nav>
+          <li><a class="rec-nav__link" href="#about-car"><span class="rec-nav__label">About this car</span></a></li>
+          <li><a class="rec-nav__link" href="#walkaround"><span class="rec-nav__label">Walkaround video</span><span class="rec-nav__val">Not filmed yet</span></a></li>
+          <li><a class="rec-nav__link" href="#ask"><span class="rec-nav__label">Ask about this car</span><span class="rec-nav__val">Evan &middot; 913 662 5000</span></a></li>
+          <li><a class="rec-nav__link" href="#finance"><span class="rec-nav__label">Financing &amp; payments</span><span class="rec-nav__val" data-rec-val>Est. $1,042 / mo</span></a></li>
+          <li><a class="rec-nav__link" href="#shipping"><span class="rec-nav__label">Shipping</span><span class="rec-nav__val">Enclosed transport</span></a></li>
+        </ol>
+        <div class="rec-nav__hold">
+          <p class="rec-nav__price">$64,500</p>
+          <a class="btn btn--solid" href="#ask" data-ask-msg="I would like to know more about stock MC-0952.">Enquire about this car <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </nav>
+      <div class="recs">
+      <article class="rec" id="about-car" aria-labelledby="about-car-title">
+        <header class="rec__head"><h3 class="rec__title" id="about-car-title">About this car</h3></header>
+          <div class="about">
+            <div class="about__text">
+              <p class="about__lead">Black, red pinstripe over black leather</p>
+              <p>A 2021 RT4 Roadster in black with a red pinstripe, over black leather. 3,860 miles.</p>
+              <h3 class="about__h">Highlights</h3>
+              <ul class="about__list">
+                <li>Red pinstripe over black</li>
+                <li>Ford Coyote 5.0L V8</li>
+                <li>Black leather</li>
+                <li>3,860 miles</li>
+              </ul>
+              <p class="about__fine">The price leaves out tax, title, registration and delivery. Mileage is as listed, and can change with test drives and transport. If anything on this page is wrong, tell us and it is corrected.</p>
+            </div>
+            <dl class="spec vdp-spec" aria-label="Specification">
+              <div><dt>Year</dt><dd>2021</dd></div>
+              <div><dt>Make</dt><dd>Backdraft Racing</dd></div>
+              <div><dt>Model</dt><dd>RT4 Roadster</dd></div>
+              <div><dt>Engine</dt><dd>Ford Coyote 5.0L V8</dd></div>
+              <div><dt>Transmission</dt><dd>Tremec TKX five-speed manual</dd></div>
+              <div><dt>Drivetrain</dt><dd>Rear-wheel drive</dd></div>
+              <div><dt>Exterior</dt><dd>Black, red pinstripe</dd></div>
+              <div><dt>Interior</dt><dd>Black leather</dd></div>
+              <div><dt>Mileage</dt><dd>3,860 mi</dd></div>
+              <div><dt>Stock</dt><dd>MC-0952</dd></div>
+              <div><dt>Condition</dt><dd>Pre-owned</dd></div>
+              <div><dt>Status</dt><dd>Available</dd></div>
+            </dl>
+          </div>
+      </article>
+      <article class="rec" id="walkaround" aria-labelledby="walkaround-title">
+        <header class="rec__head"><h3 class="rec__title" id="walkaround-title">Walkaround video</h3><p class="rec__val">Not filmed yet</p></header>
+          <div class="walk">
+            <img class="walk__poster" src="assets/img/vdp/mc-0952-1.jpg" alt="" width="762" height="556" loading="lazy" decoding="async">
+            <div class="walk__text">
+              <p>There is no walkaround of MC-0952 filmed yet. Ask, and Evan will film the car
+                on the floor and send it to you.</p>
+              <a class="btn" href="#ask" data-ask-msg="Could you film a walkaround of stock MC-0952 and send it to me?">Ask for a walkaround <span aria-hidden="true">&rarr;</span></a>
+            </div>
+          </div>
+      </article>
+      <article class="rec" id="ask" aria-labelledby="ask-title">
+        <header class="rec__head"><h3 class="rec__title" id="ask-title">Ask about this car</h3><p class="rec__val">Evan &middot; 913 662 5000</p></header>
+          <div class="rec__split">
+            <div class="rec__lead">
+              <p class="rec__text">The message goes to Evan with stock <span class="nobr">MC-0952</span> attached, so there is no need to say which car.</p>
+              <a class="rec__call" href="tel:+19136625000"><span class="rec__k">Or call</span>913 662 5000</a>
+            </div>
+            <div class="rec__tool">
+          <form class="ask" data-ask method="post" novalidate>
+            <input type="hidden" name="vehicle" value="2021 Backdraft Racing RT4 Roadster, stock MC-0952">
+            <div class="ask__grid">
+              <div class="field"><label for="a-first">First name <span class="field__req" aria-hidden="true">*</span></label>
+                <input id="a-first" name="first_name" autocomplete="given-name" required></div>
+              <div class="field"><label for="a-last">Last name</label>
+                <input id="a-last" name="last_name" autocomplete="family-name"></div>
+              <div class="field"><label for="a-email">Email <span class="field__req" aria-hidden="true">*</span></label>
+                <input id="a-email" name="email" type="email" autocomplete="email" required></div>
+              <div class="field"><label for="a-phone">Phone</label>
+                <input id="a-phone" name="phone" type="tel" autocomplete="tel"></div>
+            </div>
+            <fieldset class="ask__when">
+              <legend>Best time to reach you</legend>
+              <label class="ask__opt"><input type="radio" name="best_time" value="morning" checked> Morning</label>
+              <label class="ask__opt"><input type="radio" name="best_time" value="afternoon"> Afternoon</label>
+              <label class="ask__opt"><input type="radio" name="best_time" value="evening"> Evening</label>
+            </fieldset>
+            <div class="field"><label for="a-msg">Message</label>
+              <textarea id="a-msg" name="message" rows="4">I would like to know more about stock MC-0952.</textarea></div>
+            <div class="ask__send">
+              <button class="btn btn--solid" type="submit">Send to Evan <span aria-hidden="true">&rarr;</span></button>            </div>
+            <p class="ask__status" data-ask-status role="status" hidden></p>
+          </form>
+            </div>
+          </div>
+      </article>
+      <article class="rec" id="finance" aria-labelledby="finance-title">
+        <header class="rec__head"><h3 class="rec__title" id="finance-title">Financing &amp; payments</h3><p class="rec__val" data-rec-val>Est. $1,042 / mo</p></header>
+          <div class="rec__split">
+            <div class="rec__lead">
+              <p class="rec__text">Midwest Cobras works with lending partners on the cars it sells. The figure
+                is arithmetic on the numbers you set; the rate you are actually given depends on the lender and on you.</p>
+              <a class="btn" href="finance.html">Apply for financing <span aria-hidden="true">&rarr;</span></a>
+            </div>
+            <div class="rec__tool">
+          <form class="calc" data-calc>
+            <div class="calc__grid">
+              <div class="field"><label for="c-price">Price</label>
+                <input id="c-price" inputmode="numeric" value="64,500" data-calc-price></div>
+              <div class="field"><label for="c-down">Deposit</label>
+                <input id="c-down" inputmode="numeric" value="13,000" data-calc-down></div>
+              <div class="field"><label for="c-term">Term</label>
+                <select id="c-term" data-calc-term><option value="36">36 months</option><option value="48">48 months</option><option value="60" selected>60 months</option><option value="72">72 months</option><option value="84">84 months</option></select></div>
+              <div class="field"><label for="c-apr">Rate, APR %</label>
+                <input id="c-apr" inputmode="decimal" value="7.9" data-calc-apr></div>
+            </div>
+            <p class="calc__out"><span class="calc__k">Estimated monthly</span>
+              <output class="calc__figure" for="c-price c-down c-term c-apr" data-calc-out>$1,042 / mo</output></p>
+            <p class="rec__note">An estimate, nothing more: not an offer and not a quote, and it leaves out tax,
+              title and registration.</p>
+          </form>
+            </div>
+          </div>
+      </article>
+      <article class="rec" id="shipping" aria-labelledby="shipping-title">
+        <header class="rec__head"><h3 class="rec__title" id="shipping-title">Shipping</h3><p class="rec__val">Enclosed transport</p></header>
+          <div class="rec__split">
+            <div class="rec__lead">
+              <p class="rec__text">Enclosed transport to your door: the car does not arrive on an open trailer
+                behind somebody's pickup. MC-0952 is at the shop in Basehor, so the estimate is worked from there.</p>
+            </div>
+            <div class="rec__tool">
+          <form class="calc ship" data-ship>
+            <div class="calc__grid calc__grid--pair">
+              <div class="field"><label for="s-from">Shipping from</label>
+                <input id="s-from" value="Basehor, KS 66007" readonly></div>
+              <div class="field"><label for="s-to">Delivering to, ZIP</label>
+                <input id="s-to" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="60614" data-ship-zip></div>
+            </div>
+            <p class="calc__out"><span class="calc__k">Estimated enclosed transport</span>
+              <output class="calc__figure" for="s-to" data-ship-out>Enter a ZIP</output></p>
+            <p class="rec__note">An estimate, not a quote: a band for the region the ZIP is in, not a route.
+              The carrier prices the actual run. Call <a href="tel:+19136625000">913&nbsp;662&nbsp;5000</a> and we book it.</p>
+          </form>
+            </div>
+          </div>
+      </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- STANDARDS. What comes with buying any car here, so it is its own section
+       after the car's record rather than a part of it — as on the Chicago Motor
+       Cars VDP. Every line is the home page's own services copy. -->
+  <section class="sect sect--900 stds" aria-labelledby="stds-title">
+    <header class="stds__head">
+      <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Buying from Midwest Cobras</p>
+      <h2 class="sect__title" id="stds-title">What comes with the car.</h2>
+    </header>
+    <ul class="stds__grid">
+      <li class="stds__item"><h3 class="stds__k">Service in house</h3>
+        <p class="stds__v">Setup, carburetion, cooling, brakes and the annual going-over, done by the people who build the cars.</p></li>
+      <li class="stds__item"><h3 class="stds__k">Enclosed transport</h3>
+        <p class="stds__v">To your door, to an event, or back to the shop. Never an open trailer. <a class="stds__link" href="#shipping">Estimate shipping <span aria-hidden="true">&rarr;</span></a></p></li>
+      <li class="stds__item"><h3 class="stds__k">Financing</h3>
+        <p class="stds__v">Apply on the site and the application goes straight to Evan. <a class="stds__link" href="finance.html">Apply <span aria-hidden="true">&rarr;</span></a></p></li>
+      <li class="stds__item"><h3 class="stds__k">Forty years</h3>
+        <p class="stds__v">Forty years of experience with these cars, from the shop at 14510 Parallel Lane, Basehor.</p></li>
+    </ul>
+  </section>
+
+  <!-- Related cars, the inventory's own cards. -->
   <section class="sect sect--900 srp-page vdp-more" aria-labelledby="more-title">
     <div class="vdp-more__head">
       <div>

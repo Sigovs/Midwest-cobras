@@ -1,11 +1,13 @@
 /* vdp.js — a car's own page, vehicle-*.html. The page works without it: the
-   first photograph is shown, the specification and the enquiry are on the
-   page, Text is a message to the shop.
+   first photograph is shown, every panel is a native <details> that opens by
+   itself, the estimators show their starting figure, Text is a message to
+   the shop.
 
-   The gallery: the photograph at the top, its thumbnails, the arrows and
-   the photographs at the foot all move one stage. Save shares the
-   inventory's list in this browser; Share and Text are the inventory's menu
-   and panel, set for this one car. */
+   The stage: the photograph at the top, its thumbnails, the arrows and the
+   Gallery further down all move one stage. Save shares the inventory's list
+   in this browser; Share and Text are the inventory's menu and panel, set
+   for this one car. Then the record's panels: links that open them, the
+   financing and shipping estimates, and the question to Evan. */
 
 (function () {
   'use strict';
@@ -217,6 +219,128 @@
       tcPhone.removeAttribute('aria-invalid');
       tcStatus.setAttribute('data-state', 'sent');
       tcStatus.textContent = 'Sent. The link is on its way to ' + pretty(d) + '.';
+    });
+  }
+
+  /* ── the record's index ──────────────────────────────────────────────── */
+  /* Every part of the record is open on the page; the index beside it says
+     where the reader is. The part crossing a thin band a little above the
+     middle of the window is the current one. Without the observer the index
+     is plain links, which is all it needs to be. */
+  var recNav = document.querySelector('[data-rec-nav]');
+  if (recNav && 'IntersectionObserver' in window) {
+    var navLinks = [].slice.call(recNav.querySelectorAll('a[href^="#"]'));
+    var markCurrent = function (id) {
+      navLinks.forEach(function (a) {
+        if (a.getAttribute('href') === '#' + id) a.setAttribute('aria-current', 'location');
+        else a.removeAttribute('aria-current');
+      });
+    };
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) markCurrent(en.target.id); });
+    }, { rootMargin: '-35% 0px -60% 0px' });
+    navLinks.forEach(function (a) {
+      var card = document.getElementById(a.getAttribute('href').slice(1));
+      if (card) spy.observe(card);
+    });
+  }
+
+  /* "Ask for a walkaround" and Enquire carry their own opening line into the
+     message they lead to. */
+  var askMsg = document.querySelector('#a-msg');
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest && ev.target.closest('a[data-ask-msg]');
+    if (a && askMsg) askMsg.value = a.getAttribute('data-ask-msg');
+  });
+
+  var num = function (el) {
+    var v = parseFloat(String(el.value).replace(/[^\d.]/g, ''));
+    return isFinite(v) ? v : 0;
+  };
+
+  /* ── financing: an estimate on the reader's own numbers ──────────────── */
+  /* Standard amortisation on the four values the reader sets. A zero rate is
+     worked separately because the formula divides by it. The panel's head
+     carries the same figure, so it is readable closed. */
+  var calc = document.querySelector('[data-calc]');
+  if (calc) {
+    var cPrice = calc.querySelector('[data-calc-price]');
+    var cDown = calc.querySelector('[data-calc-down]');
+    var cTerm = calc.querySelector('[data-calc-term]');
+    var cApr = calc.querySelector('[data-calc-apr]');
+    var cOut = calc.querySelector('[data-calc-out]');
+    var cHeads = [].slice.call(document.querySelectorAll('[data-rec-val]'));
+    var runCalc = function () {
+      var principal = Math.max(0, num(cPrice) - num(cDown));
+      var n = parseInt(cTerm.value, 10) || 60;
+      var r = num(cApr) / 100 / 12;
+      var m = r > 0 ? principal * r / (1 - Math.pow(1 + r, -n)) : principal / n;
+      var ok = principal > 0 && isFinite(m);
+      var fig = '$' + Math.round(m).toLocaleString('en-US');
+      cOut.textContent = ok ? fig + ' / mo' : '—';
+      cHeads.forEach(function (h) { h.textContent = ok ? 'Est. ' + fig + ' / mo' : ''; });
+    };
+    /* Money fields keep their thousands separators as the reader types. */
+    [cPrice, cDown].forEach(function (el) {
+      el.addEventListener('blur', function () {
+        var v = Math.round(num(el));
+        el.value = v ? v.toLocaleString('en-US') : '';
+      });
+    });
+    calc.addEventListener('input', runCalc);
+    calc.addEventListener('change', runCalc);
+    calc.addEventListener('submit', function (ev) { ev.preventDefault(); runCalc(); });
+    runCalc();
+  }
+
+  /* ── shipping: a band from Basehor ───────────────────────────────────── */
+  /* THE CONSTANTS ARE PLACEHOLDERS, and the page says the figure is an
+     estimate. Midwest's carrier pricing is not something this build has; the
+     model is visible — a base plus road miles to the ZIP's region, enclosed —
+     so the real rates are two numbers here, not a rebuild. The first digit of
+     a US ZIP is its region, laid out east to west; Basehor is region 6. */
+  var ship = document.querySelector('[data-ship]');
+  if (ship) {
+    var BASE = 450;          // pickup, loading, admin
+    var PER_100_MILES = 78;  // enclosed transport
+    var MILES_BY_REGION = { 0: 1450, 1: 1150, 2: 1100, 3: 1150, 4: 650,
+                            5: 450, 6: 250, 7: 650, 8: 900, 9: 1700 };
+    var zip = ship.querySelector('[data-ship-zip]');
+    var sOut = ship.querySelector('[data-ship-out]');
+    var runShip = function () {
+      zip.value = zip.value.replace(/\D/g, '').slice(0, 5);
+      if (zip.value.length < 5) { sOut.textContent = 'Enter a ZIP'; return; }
+      var cost = BASE + (MILES_BY_REGION[zip.value[0]] / 100) * PER_100_MILES;
+      var lo = Math.round(cost * 0.9 / 25) * 25;
+      var hi = Math.round(cost * 1.1 / 25) * 25;
+      sOut.textContent = '$' + lo.toLocaleString('en-US') + ' – $' + hi.toLocaleString('en-US');
+    };
+    ship.addEventListener('input', runShip);
+    ship.addEventListener('submit', function (ev) { ev.preventDefault(); runShip(); });
+  }
+
+  /* ── ask: the question goes to Evan with the stock number ────────────── */
+  /* Design only: nothing is sent. The two fields Evan needs to answer are
+     checked, and the answer to the reader names where it went. */
+  var ask = document.querySelector('[data-ask]');
+  if (ask) {
+    var askStatus = ask.querySelector('[data-ask-status]');
+    ask.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var missing = [].slice.call(ask.querySelectorAll('[required]')).filter(function (el) {
+        var bad = !el.value.trim() || (el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()));
+        if (bad) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid');
+        return bad;
+      });
+      askStatus.hidden = false;
+      if (missing.length) {
+        askStatus.setAttribute('data-state', 'error');
+        askStatus.textContent = 'Add your first name and an email address, so Evan can answer.';
+        missing[0].focus();
+        return;
+      }
+      askStatus.setAttribute('data-state', 'sent');
+      askStatus.textContent = 'Sent. Evan has your message about ' + carName + '.';
     });
   }
 })();

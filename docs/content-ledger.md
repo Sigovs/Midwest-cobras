@@ -423,3 +423,29 @@ mileage and stock.
 | Social preview | `og:image` 1200×630 per car, `og:url` on the GitHub Pages address | **design only** | The address changes when the site moves to its own domain |
 | Home | Each lot's Full specification goes to that model's page | **design only** | |
 
+### The page rebuilt to the Chicago Motor Cars VDP, 2026-09-14
+
+Alex: "VDP, where is the rest? description, finance, shipping… and PHOTOS should
+be called Gallery", pointing at his own AAN_PPREVIEW_CHICAGOMOTORCARS/vdp.html.
+Its parts and order, in this site's grounds; then "not the whole screen wide —
+some inner size", then "a little wider", so every section holds one 85rem
+measure. Then "everything gets lost and blurry, bad UX UI" on closed panels:
+the record's parts are open cards, with an index that holds beside them.
+
+| Where | Claim | Status | Note |
+|---|---|---|---|
+| Panel, specification | "Drivetrain: Rear-wheel drive" | **simulated — true of every model listed** | Cobra, GT350, 911S, Corvette and Elva Mk V are all rear-wheel drive |
+| About | "Red, black stripes over black leather" and the Highlights lists | **simulated** | Restate each car's own simulated specification; the Black Out package lines are Backdraft's, sourced |
+| About | "The price leaves out tax, title, registration and delivery. Mileage is as listed…" | **unverified — client to confirm** | Replaces "The price excludes tax, title and delivery." |
+| Walkaround video | "There is no walkaround of MC-xxxx filmed yet. Ask, and Evan will film the car…" | **unverified — client to confirm** | No video exists for any car; the button fills the Ask message |
+| Ask about this car | Name, email, phone, best time, message; "Sent. Evan has your message about …" | **design only** | Connected to nothing, as finance.html |
+| Financing | "Midwest Cobras works with lending partners on the cars it sells." | **unverified — client to confirm** | The same partners finance.html's consent names, row "Finance — consent", a placeholder |
+| Financing | Deposit 20% of the price, 60 months, 7.9% APR, "Est. $x / mo" | **simulated — an estimator** | Arithmetic on the reader's own figures; the page says it is not an offer or a quote |
+| Shipping | Base $450 + $78 per 100 road miles to the ZIP's region from Basehor, shown as a ±10% band | **simulated — placeholder rates** | Chicago Motor Cars' placeholders, re-based on Basehor (ZIP region 6). Two constants in vdp.js when the carrier's rates arrive |
+| Shipping, standards | "Enclosed transport… the car does not arrive on an open trailer behind somebody's pickup" | **the home page's own copy** | index12 Services, 02. No open-transport option is offered for that reason |
+| Standards | "Service in house: Setup, carburetion, cooling, brakes and the annual going-over…" | **the home page's own copy** | index12 Services, 01 |
+| Standards | "Financing: Apply on the site and the application goes straight to Evan." | **the finance page's own copy** | Row "Finance — rewritten" |
+| Standards | "Forty years of experience with these cars" | **sourced** | Row 7 |
+| Action bar | "Basehor, Kansas — 14510 Parallel Lane", Call 913 662 5000, Text Evan | **sourced** | Row 10 |
+| Gallery | The photographs section is named Gallery | **as asked** | Alex, 2026-09-14 |
+

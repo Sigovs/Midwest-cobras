@@ -1,40 +1,53 @@
 /* vdp.css — a car's own page, vehicle-*.html.
    ---------------------------------------------------------------------------
    Loaded after srp.css, whose card actions, cards, Text panel, share menu and
-   dark fields it shares. Alex, 2026-09-14: "View details is a separate VDP
-   page" — and "Hinderer is not the model for the VDP". So the page is set as
-   this site sets a lot, in its own grounds: the car first and large on the
-   dark, with the lot line under it; the specification on bone, where
-   specifications live, beside a held card to ask Evan; every photograph on
-   the dark; three more cars from the floor. Values come from tokens.css. */
+   dark fields it shares. The parts and their order are Alex's own Chicago
+   Motor Cars VDP — Alex, 2026-09-14: "where is the rest? description,
+   finance, shipping… and PHOTOS should be called Gallery". The grounds are
+   this site's: the car, its price and its gallery on the dark; its record —
+   about, walkaround, ask, financing, shipping — on bone, where
+   specifications live; the standards on the raised dark; related cars.
+   Values come from tokens.css. */
 
-/* ── the bar: back to the inventory, and this car's actions ────────────────── */
-.vdp-bar {
+/* ── one inner measure for the whole page ──────────────────────────────────────
+   Alex, 2026-09-14: "not the whole screen wide — close it all into some inner
+   size, not narrow and not that wide", then "a little wider, within our
+   design". The grounds still run edge to edge; what stands on them keeps one
+   width, centred, on every section — inside the site's own --page. */
+.page-vehicle main > .sect > * { max-inline-size: min(85rem, var(--page)); margin-inline: auto; }
+
+/* ── the top: where the page is, and this car's actions ────────────────────── */
+.vdp-top {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
   gap: var(--sp-3) var(--sp-5); margin-block-end: var(--sp-5);
 }
-.vdp-back {
-  display: inline-flex; align-items: center; gap: var(--sp-3); min-block-size: 2.75rem;
+.crumbs {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-3); min-inline-size: 0;
   font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
-  color: var(--text); text-decoration: none;
+  color: var(--text-muted);
 }
-.vdp-back span { display: inline-block; transition: transform var(--dur-3) var(--ease-settle); }
-.vdp-back:is(:hover, :focus-visible) span { transform: translateX(calc(var(--sp-1) * -1)); }
-.vdp-back:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
-.vdp-bar__acts { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
-.vdp-bar__acts .car__act { border: var(--hairline) solid var(--rule); padding-inline: var(--sp-4); }
+.crumbs a { display: inline-block; padding-block: var(--sp-2); color: inherit; text-decoration: none; transition: color var(--dur-2) var(--ease-out); }
+.crumbs a:hover { color: var(--text); }
+.crumbs a:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--hairline); }
+.crumbs [aria-current] { color: var(--text); }
+.vdp-top__acts { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.vdp-top__acts .car__act { border: var(--hairline) solid var(--rule); padding-inline: var(--sp-4); }
 .vdp-save svg path { fill: none; transition: fill var(--dur-2) var(--ease-out); }
 .vdp-save[aria-pressed='true'] svg path { fill: currentColor; }
 
-/* ── the car, large ───────────────────────────────────────────────────────────
-   One photograph at the width of the page, as the home page shows a lot "at
-   the size you would stand in front of it". Upright photographs are shown
-   whole on the frame's own graphite rather than cut to the frame. */
+/* ── the summary: the gallery beside the panel ─────────────────────────────── */
+.vdp-sum {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(20rem, 26rem);
+  gap: var(--sp-6) var(--col-gap); align-items: start;
+}
+
+/* Upright photographs are shown whole on the frame's own graphite rather than
+   cut to the frame. */
 .stage { display: grid; gap: var(--sp-3); min-inline-size: 0; }
 .stage:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
 .stage__frame { position: relative; overflow: clip; border-radius: var(--radius-media); background: var(--graphite-900); }
 .stage__frame img {
-  display: block; inline-size: 100%; block-size: auto; aspect-ratio: 16 / 9; max-block-size: 72vh;
+  display: block; inline-size: 100%; block-size: auto; aspect-ratio: 3 / 2; max-block-size: 70vh;
   object-fit: cover;
 }
 .stage__frame img[data-portrait] { object-fit: contain; }
@@ -50,15 +63,21 @@
 .stage__nav:hover { background: rgb(var(--graphite-950-rgb) / 0.86); }
 .stage__nav:active { transform: scale(0.95); transition: transform var(--dur-1) var(--ease-press); }
 .stage__nav:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--hairline); }
-.stage__index {
-  position: absolute; inset-block-end: var(--sp-5); inset-inline-end: var(--sp-5); margin: 0;
-  padding: var(--sp-1) var(--sp-3); background: rgb(var(--graphite-950-rgb) / 0.62); color: var(--bone-050);
-  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); font-variant-numeric: tabular-nums;
+/* The way down to the Gallery, with where the stage is in it. */
+.stage__all {
+  position: absolute; inset-block-end: var(--sp-5); inset-inline-start: var(--sp-5);
+  display: inline-flex; align-items: center; gap: var(--sp-2); min-block-size: 2.75rem; padding: 0 var(--sp-4);
+  background: rgb(var(--graphite-950-rgb) / 0.62); color: var(--bone-050); text-decoration: none;
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  border-radius: var(--radius-control); transition: background-color var(--dur-2) var(--ease-out);
 }
+.stage__all span { font-variant-numeric: tabular-nums; color: var(--ink-on-dark-muted); }
+.stage__all:hover { background: rgb(var(--graphite-950-rgb) / 0.86); }
+.stage__all:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--hairline); }
 /* A strip, not a grid: small frames in one row that scrolls sideways when
    there are more than fit, so six photographs never take half a phone. */
 .thumbs {
-  display: grid; grid-auto-flow: column; grid-auto-columns: 7rem; gap: var(--sp-3);
+  display: grid; grid-auto-flow: column; grid-auto-columns: 6.5rem; gap: var(--sp-3);
   overflow-x: auto; padding: var(--sp-1); margin: calc(var(--sp-1) * -1);
   scrollbar-width: thin; scrollbar-color: var(--graphite-600) transparent;
 }
@@ -73,76 +92,214 @@
 .thumb[aria-current='true'] { opacity: 1; outline-color: var(--bone-050); }
 .thumb:focus-visible { opacity: 1; outline: var(--focus-w) solid var(--bone-050); }
 
-/* ── the lot line ─────────────────────────────────────────────────────────────
-   Under the photograph, as on the home page's lots: stock and status in mono,
-   the name in the display face at the section-title size, and on the right
-   the price and the one action. */
-.vdp-lot {
-  display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--sp-5) var(--sp-7);
-  margin-block-start: var(--sp-6); padding-block-start: var(--sp-6); border-block-start: var(--hairline) solid var(--rule);
-}
-.vdp-lot__name { display: grid; gap: var(--sp-3); min-inline-size: 0; max-inline-size: 48rem; }
-.vdp-lot__line {
+/* The panel: stock and status in the mono that records, the name, the price
+   at the size it is decided on, the rows a buyer reads first, and the ask. */
+.vdp-panel { display: grid; gap: var(--sp-5); align-content: start; min-inline-size: 0; }
+.vdp-panel__k {
   margin: 0; font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
   color: var(--text-muted);
 }
-.vdp-lot__title {
-  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--h2, var(--lot));
+.vdp-panel__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--lot);
   line-height: var(--lh-tight); letter-spacing: var(--ls-heading); color: var(--text); text-wrap: balance;
 }
-.vdp-lot__buy { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-5); }
-.vdp-lot__price {
+.vdp-panel__price { display: grid; gap: var(--sp-1); padding-block: var(--sp-4); border-block: var(--hairline) solid var(--rule); }
+.vdp-panel__figure {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--h2);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums; color: var(--text);
+}
+.vdp-panel__note { margin: 0; font-size: var(--fs-body-s); color: var(--text-muted); }
+.vdp-panel__specs { margin: 0; }
+.vdp-panel__specs > div { grid-template-columns: minmax(0, 8rem) minmax(0, 1fr); padding-block: var(--sp-3); }
+.vdp-panel__specs > div:first-child { border-block-start: 0; padding-block-start: 0; }
+.vdp-panel__specs dd { margin: 0; font-variant-numeric: tabular-nums; }
+.vdp-panel__cta { justify-content: space-between; }
+
+/* ── the action bar: where the car is, what it costs to bring home, and
+      three ways to reach Evan ───────────────────────────────────────────────── */
+.vdp-act {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4) var(--sp-6);
+  margin-block-start: var(--sp-6); padding-block-start: var(--sp-5); border-block-start: var(--hairline) solid var(--rule);
+}
+.vdp-act__left { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-6); min-inline-size: 0; }
+.vdp-act__loc { margin: 0; display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); color: var(--text); }
+.vdp-act__loc svg { flex: none; color: var(--text-muted); }
+.vdp-act__k {
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.vdp-act__loc a, .vdp-act__ship {
+  color: var(--text); text-decoration: underline; text-decoration-color: var(--graphite-600);
+  text-underline-offset: 0.3em; transition: text-decoration-color var(--dur-2) var(--ease-out);
+}
+.vdp-act__loc a:hover, .vdp-act__ship:hover { text-decoration-color: currentColor; }
+.vdp-act__ship { display: inline-flex; align-items: center; min-block-size: 2.75rem; }
+.vdp-act__loc a:focus-visible, .vdp-act__ship:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--hairline); }
+.vdp-act__contact { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+
+/* ── the record, on bone ──────────────────────────────────────────────────────
+   Alex, 2026-09-14, on closed hairline panels: "everything gets lost and
+   blurry, bad UX UI". So nothing is closed. Each part is its own card on the
+   raised bone — a separate object, with its title on a rule — and inside it
+   what the part is sits on the left, the thing to use on the right. An index
+   holds beside the cards: the parts, where the reader is, the price and the
+   ask. */
+/* The bone re-points --text, but a paragraph inherits the colour the body
+   already resolved on the dark — so the record states its own ink. */
+.vdp-record { color: var(--text); }
+.vdp-record__grid {
+  display: grid; grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+  gap: var(--sp-6) var(--col-gap); align-items: start;
+}
+
+.rec-nav {
+  position: sticky; inset-block-start: calc(var(--bar-h, var(--bar-clear)) + var(--sp-5));
+  display: grid; gap: var(--sp-4); justify-items: start; min-inline-size: 0;
+}
+.nobr { white-space: nowrap; }
+.rec-nav__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-lead);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-heading); color: var(--text);
+}
+.rec-nav__list { inline-size: 100%; margin: var(--sp-2) 0 0; padding: 0; list-style: none; border-block-end: var(--hairline) solid var(--rule); }
+.rec-nav__link {
+  display: grid; gap: var(--sp-1); padding: var(--sp-3) var(--sp-4);
+  border-block-start: var(--hairline) solid var(--rule);
+  border-inline-start: calc(var(--hairline) * 2) solid transparent;
+  color: var(--text-muted); text-decoration: none;
+  transition: color var(--dur-2) var(--ease-out), background-color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
+}
+.rec-nav__link:hover { color: var(--text); background: var(--surface); }
+.rec-nav__link[aria-current] { color: var(--text); background: var(--surface); border-inline-start-color: var(--ink-on-light); }
+.rec-nav__link:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: calc(var(--focus-w) * -1); }
+.rec-nav__label { font-family: var(--face); font-weight: 600; font-size: var(--fs-body); line-height: var(--lh-heading); }
+.rec-nav__val {
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
+  font-variant-numeric: tabular-nums; color: var(--text-muted);
+}
+.rec-nav__hold { display: grid; gap: var(--sp-3); inline-size: 100%; padding-block-start: var(--sp-2); }
+.rec-nav__price {
   margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--lot);
   line-height: var(--lh-tight); letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums; color: var(--text);
 }
+.rec-nav__hold .btn { justify-content: space-between; }
 
-/* ── the record ───────────────────────────────────────────────────────────── */
-.vdp-record__grid {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(20rem, 26rem);
-  gap: var(--sp-8) var(--col-gap); align-items: start;
-}
-.vdp-record__main { display: grid; gap: var(--sp-5); justify-items: start; min-inline-size: 0; }
-.vdp-record__main .lede { max-inline-size: 60ch; }
-.vdp-spec { inline-size: 100%; margin: var(--sp-3) 0 0; border-block-end: var(--hairline) solid var(--rule); }
-.vdp-spec > div { grid-template-columns: minmax(0, 10rem) minmax(0, 1fr); }
-.vdp-spec dd { margin: 0; font-variant-numeric: tabular-nums; }
-.vdp-record__note { margin: 0; font-size: var(--fs-body-s); line-height: var(--lh-body); color: var(--text-muted); max-inline-size: 60ch; }
-
-/* The held card: the raised bone, as the build page's summary — stock, the
-   question, the price, the call, and a short note to Evan. */
-.vdp-ask {
-  position: sticky; inset-block-start: calc(var(--bar-h, var(--bar-clear)) + var(--sp-5));
-  display: grid; gap: var(--sp-4); padding: var(--sp-6);
+.recs { display: grid; gap: var(--sp-5); min-inline-size: 0; }
+.rec {
+  display: grid; gap: var(--sp-6); padding: var(--sp-7);
   background: var(--surface); border: var(--hairline) solid var(--rule);
 }
-.vdp-ask__k {
+.rec__head {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--sp-2) var(--sp-5);
+  padding-block-end: var(--sp-5); border-block-end: var(--hairline) solid var(--rule);
+}
+.rec__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
+}
+.rec__val {
   margin: 0; font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
-  color: var(--text-muted);
+  font-variant-numeric: tabular-nums; color: var(--text-muted);
 }
-.vdp-ask__title { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--h3); line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text); }
-.vdp-ask__price {
-  margin: 0; padding-block-end: var(--sp-4); border-block-end: var(--hairline) solid var(--ink-on-light);
-  font-family: var(--face); font-weight: 600; font-size: var(--lot); line-height: var(--lh-tight);
-  letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums; color: var(--text);
+.rec__split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--sp-6) var(--sp-7); align-items: start; }
+.rec__lead { display: grid; gap: var(--sp-5); justify-items: start; }
+.rec__tool { min-inline-size: 0; }
+.rec__text { margin: 0; max-inline-size: 60ch; line-height: var(--lh-body); color: var(--text); }
+.rec__note { margin: 0; max-inline-size: 60ch; font-size: var(--fs-body-s); line-height: var(--lh-body); color: var(--text-muted); }
+.rec__note a { color: var(--text); text-underline-offset: 0.2em; }
+.rec__call {
+  display: grid; gap: var(--sp-1); color: var(--text); text-decoration: none;
+  font-family: var(--face); font-weight: 600; font-size: var(--lot); line-height: var(--lh-tight); font-variant-numeric: tabular-nums;
 }
-.vdp-ask__call { justify-content: space-between; }
-.vdp-form { display: grid; gap: var(--sp-4); padding-block-start: var(--sp-4); border-block-start: var(--hairline) solid var(--rule); }
-.vdp-form textarea { min-block-size: 5.5rem; }
-.vdp-form__note { margin: 0; font-size: var(--fs-body-s); color: var(--text-muted); }
-.vdp-form__send { justify-content: space-between; cursor: pointer; }
+.rec__call:hover { text-decoration: underline; text-underline-offset: 0.15em; text-decoration-thickness: var(--hairline); }
+.rec__call:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--focus-offset); }
+.rec__k {
+  font-family: var(--mono); font-weight: 400; font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
 
-/* ── every photograph ─────────────────────────────────────────────────────── */
-.vdp-photos__head { display: grid; gap: var(--sp-4); justify-items: start; margin-block-end: var(--sp-6); }
-.photos__grid { columns: 3 16rem; column-gap: var(--sp-4); }
-.photos__item {
+/* About: what the car is, in words, beside the full specification. */
+.about {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-7) var(--sp-7);
+  align-items: start; inline-size: 100%;
+}
+.about__text { display: grid; gap: var(--sp-4); justify-items: start; }
+.about__text > p { margin: 0; max-inline-size: 60ch; line-height: var(--lh-body); }
+.about__lead {
+  font-family: var(--face); font-weight: 600; font-size: var(--fs-lead);
+  line-height: var(--lh-heading); color: var(--text);
+}
+.about__h {
+  margin: var(--sp-3) 0 0; font-family: var(--mono); font-weight: 400; font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.about__list { inline-size: 100%; margin: 0; padding: 0; list-style: none; border-block-end: var(--hairline) solid var(--rule); }
+.about__list li { padding-block: var(--sp-3); border-block-start: var(--hairline) solid var(--rule); }
+.about__text > .about__fine { font-size: var(--fs-body-s); color: var(--text-muted); }
+.vdp-spec { inline-size: 100%; margin: 0; border-block-end: var(--hairline) solid var(--rule); }
+.vdp-spec > div { grid-template-columns: minmax(0, 8rem) minmax(0, 1fr); padding-block: var(--sp-3); }
+.vdp-spec > div:first-child { border-block-start: 0; padding-block-start: 0; }
+.vdp-spec dd { margin: 0; font-variant-numeric: tabular-nums; }
+
+/* Walkaround: nothing filmed, said plainly, beside the car it will be of. */
+.walk { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-6) var(--sp-7); align-items: center; }
+.walk__poster { display: block; inline-size: 100%; block-size: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius-media); }
+.walk__text { display: grid; gap: var(--sp-5); justify-items: start; }
+.walk__text p { margin: 0; max-inline-size: 46ch; line-height: var(--lh-body); }
+
+/* Ask, financing, shipping: v11's fields, as the finance application. */
+.ask, .calc { display: grid; gap: var(--sp-5); inline-size: 100%; }
+.ask__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-5); }
+.ask__when { margin: 0; padding: 0; border: 0; min-inline-size: 0; }
+.ask__when legend {
+  padding: 0; margin-block-end: var(--sp-2);
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.ask__opt { display: inline-flex; align-items: center; gap: var(--sp-2); min-block-size: 2.75rem; margin-inline-end: var(--sp-5); cursor: pointer; }
+.ask__opt input { inline-size: 1.125rem; block-size: 1.125rem; margin: 0; accent-color: var(--ink-on-light); }
+.ask__opt input:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--hairline); }
+.ask__send { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4) var(--sp-5); }
+.ask__send .btn { justify-content: space-between; cursor: pointer; }
+.ask__status { margin: 0; font-size: var(--fs-body-s); color: var(--text); }
+.ask__status[data-state='error'] { color: var(--oxblood); }          /* oxblood is text on light */
+
+.calc__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-5); }
+.calc .field input[readonly] { background-color: transparent; border-style: dashed; }
+/* The result sits on the one strong rule, as a total does. */
+.calc__out {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--sp-2) var(--sp-5);
+  margin: 0; padding-block: var(--sp-4); border-block: var(--hairline) solid var(--ink-on-light);
+}
+.calc__k {
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.calc__figure {
+  font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-heading); font-variant-numeric: tabular-nums; color: var(--text);
+}
+
+/* ── standards: the same on every car, so a different object from the rows ── */
+.stds__head { display: grid; gap: var(--sp-4); justify-items: start; margin-block-end: var(--sp-7); }
+.stds__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-4); margin: 0; padding: 0; list-style: none; }
+.stds__item {
+  display: grid; gap: var(--sp-3); align-content: start; padding: var(--sp-6);
+  background: var(--surface); border: var(--hairline) solid var(--rule);
+}
+.stds__k { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-lead); line-height: var(--lh-heading); color: var(--text); }
+.stds__v { margin: 0; font-size: var(--fs-body-s); line-height: var(--lh-body); color: var(--text-muted); }
+.stds__link { display: block; inline-size: fit-content; margin-block-start: var(--sp-2); color: var(--text); text-underline-offset: 0.25em; }
+.stds__link:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--hairline); }
+
+/* ── the gallery ──────────────────────────────────────────────────────────── */
+.gallery__head { display: grid; gap: var(--sp-4); justify-items: start; margin-block-end: var(--sp-6); }
+.gallery__grid { columns: 3 16rem; column-gap: var(--sp-4); }
+.gallery__item {
   display: block; inline-size: 100%; margin: 0 0 var(--sp-4); padding: 0; border: 0; cursor: zoom-in;
   overflow: clip; break-inside: avoid; background: var(--graphite-900); border-radius: var(--radius-media);
 }
-.photos__item img { display: block; inline-size: 100%; block-size: auto; transition: transform var(--dur-3) var(--ease-out); }
-.photos__item:hover img { transform: scale(1.03); }
-.photos__item:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+.gallery__item img { display: block; inline-size: 100%; block-size: auto; transition: transform var(--dur-3) var(--ease-out); }
+.gallery__item:hover img { transform: scale(1.03); }
+.gallery__item:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
 
-/* ── three more from the floor ────────────────────────────────────────────── */
+/* ── related cars ─────────────────────────────────────────────────────────── */
 .vdp-more__head {
   display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--sp-5);
   margin-block-end: var(--sp-6);
@@ -153,19 +310,40 @@
 
 .textcar__scan[hidden] { display: none; }
 
-@media (max-width: 61.99rem) {
-  .vdp-record__grid { grid-template-columns: minmax(0, 1fr); }
-  .vdp-ask { position: static; }
-  .vdp-more .results { grid-template-columns: minmax(0, 1fr); }
-  .stage__nav { inline-size: 2.75rem; block-size: 2.75rem; }
-  .thumbs { grid-auto-columns: 5.5rem; }
-  .stage__nav--prev { inset-inline-start: var(--sp-3); }
-  .stage__nav--next { inset-inline-end: var(--sp-3); }
-  .vdp-spec > div { grid-template-columns: minmax(0, 7rem) minmax(0, 1fr); }
+@media (max-width: 74.99rem) {
+  .stds__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rec__split, .about, .walk { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 74.99rem) and (min-width: 62rem) {
   .vdp-more .results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+/* One column: the index becomes a row of jump links above the cards. The
+   price and the ask it held are already in the panel at the top. */
+@media (max-width: 61.99rem) {
+  .vdp-sum, .vdp-record__grid { grid-template-columns: minmax(0, 1fr); }
+  .vdp-more .results { grid-template-columns: minmax(0, 1fr); }
+  .stage__frame img { aspect-ratio: 4 / 3; }
+  .stage__nav { inline-size: 2.75rem; block-size: 2.75rem; }
+  .stage__nav--prev { inset-inline-start: var(--sp-3); }
+  .stage__nav--next { inset-inline-end: var(--sp-3); }
+  .stage__all { inset-block-end: var(--sp-3); inset-inline-start: var(--sp-3); }
+  .thumbs { grid-auto-columns: 5.5rem; }
+  .vdp-panel__specs > div, .vdp-spec > div { grid-template-columns: minmax(0, 7rem) minmax(0, 1fr); }
+  .rec-nav { position: static; }
+  .rec-nav__list { display: flex; flex-wrap: wrap; gap: var(--sp-2); border: 0; }
+  .rec-nav__link { padding: var(--sp-2) var(--sp-4); border: var(--hairline) solid var(--rule); background: var(--surface); }
+  /* Above the cards rather than beside them, the index cannot say where the
+     reader is, so it does not claim to. */
+  .rec-nav__link[aria-current] { color: var(--text-muted); border-color: var(--rule); }
+  .rec-nav__link:hover { color: var(--text); border-color: var(--ink-on-light); }
+  .rec-nav__val, .rec-nav__hold { display: none; }
+}
+@media (max-width: 47.99rem) {
+  .stds__grid, .ask__grid { grid-template-columns: minmax(0, 1fr); }
+  .rec { padding: var(--sp-5); }
+  .vdp-act__contact { inline-size: 100%; }
+  .vdp-act__contact .btn { flex: 1 1 auto; justify-content: center; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .photos__item:hover img { transform: none; }
+  .gallery__item:hover img { transform: none; }
 }

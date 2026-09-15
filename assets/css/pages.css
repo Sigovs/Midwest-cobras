@@ -99,14 +99,15 @@
 
 /* ── about.html · the shop ────────────────────────────────────────────────────
    Alex, 2026-09-14: "under the hero, this part can be more compact, not the
-   whole screen's width". One block held to a measure and set at the left
-   edge, under Evan: the client's photograph, and beside it the address, the
-   opening with its count and the two ways there, stacked close. At any width
-   the four parts read as one thing instead of four stops across a field. */
+   whole screen's width", then "center the content". One block held to a
+   measure and centred on the page: the client's photograph, and beside it the
+   address, the opening with its count and the two ways there, stacked close.
+   At any width the four parts read as one thing instead of four stops across
+   a field. */
 .shop-strip {
   display: grid; grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
   gap: var(--sp-5) var(--sp-7); align-items: start;
-  max-inline-size: 62rem; margin-inline: 0;
+  max-inline-size: 62rem; margin-inline: auto;
 }
 .shop-strip__photo { grid-column: 1; grid-row: 1 / span 3; align-self: center; }
 .shop-strip__place { grid-column: 2; grid-row: 1; }

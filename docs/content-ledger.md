@@ -430,7 +430,10 @@ be called Gallery", pointing at his own AAN_PPREVIEW_CHICAGOMOTORCARS/vdp.html.
 Its parts and order, in this site's grounds; then "not the whole screen wide —
 some inner size", then "a little wider", so every section holds one 85rem
 measure. Then "everything gets lost and blurry, bad UX UI" on closed panels:
-the record's parts are open cards, with an index that holds beside them.
+the record's parts became open cards with an index beside them — and then,
+Alex 2026-09-14, "below the main section… an accordion at the bottom like
+Chicago Motor Cars": accordions again, each head a full row with a glyph, the
+open panel on the raised bone. No claim changed with either layout.
 
 | Where | Claim | Status | Note |
 |---|---|---|---|
@@ -441,11 +444,34 @@ the record's parts are open cards, with an index that holds beside them.
 | Ask about this car | Name, email, phone, best time, message; "Sent. Evan has your message about …" | **design only** | Connected to nothing, as finance.html |
 | Financing | "Midwest Cobras works with lending partners on the cars it sells." | **unverified — client to confirm** | The same partners finance.html's consent names, row "Finance — consent", a placeholder |
 | Financing | Deposit 20% of the price, 60 months, 7.9% APR, "Est. $x / mo" | **simulated — an estimator** | Arithmetic on the reader's own figures; the page says it is not an offer or a quote |
-| Shipping | Base $450 + $78 per 100 road miles to the ZIP's region from Basehor, shown as a ±10% band | **simulated — placeholder rates** | Chicago Motor Cars' placeholders, re-based on Basehor (ZIP region 6). Two constants in vdp.js when the carrier's rates arrive |
-| Shipping, standards | "Enclosed transport… the car does not arrive on an open trailer behind somebody's pickup" | **the home page's own copy** | index12 Services, 02. No open-transport option is offered for that reason |
+| Shipping | The Shipping panel, its estimate and every "Estimate shipping" link | **removed** | Alex, 2026-09-14: "remove it altogether, they have no shipping". The placeholder rates went with it |
+| Standards | "Enclosed transport: To your door, to an event, or back to the shop. Never an open trailer." | **the home page's own copy** | index12 Services, 02 — the transport service the home page already offers by phone |
 | Standards | "Service in house: Setup, carburetion, cooling, brakes and the annual going-over…" | **the home page's own copy** | index12 Services, 01 |
 | Standards | "Financing: Apply on the site and the application goes straight to Evan." | **the finance page's own copy** | Row "Finance — rewritten" |
 | Standards | "Forty years of experience with these cars" | **sourced** | Row 7 |
-| Action bar | "Basehor, Kansas — 14510 Parallel Lane", Call 913 662 5000, Text Evan | **sourced** | Row 10 |
+| Action bar | Call 913 662 5000, Text Evan, Start financing | **sourced** | Row 10. The Location line came out with shipping, Alex 2026-09-14 |
 | Gallery | The photographs section is named Gallery | **as asked** | Alex, 2026-09-14 |
 
+
+## service.html and about.html — their own pages, 2026-09-14
+
+Alex: "make two additional pages, SERVICE and ABOUT US". Both built only from
+copy and assets already on record; no claim is new. The navigation's Service and
+About, and the footer's About, Tune-Up / Service and Transportation, now open
+these pages on every current page (index12, inventory, build, consignment,
+finance, the ten car pages). The home page's own sections stay as they are.
+
+| Where | Claim | Status | Note |
+|---|---|---|---|
+| Service | "After it is yours." and "The people who build your Cobra are the ones who look after it…" | **proposal — client to decide** | The home page's Services heading and note, the draft the client is "still mulling over" |
+| Service, Tune-up | "These are not cars a general workshop sees twice a year." · Setup · Carburetion · Cooling · Brakes · The annual going-over · "Done by people with your car's own build sheet open in front of them." | **unverified — client to confirm** | The home page's Tune-up row, split into a list; nothing added |
+| Service, Tune-up | "Call 913 662 5000 to schedule" | **sourced** | The client: "the clickable button for Service should prompt them to call in to schedule their appointment". Number, row 10 |
+| Service, Transportation | "Enclosed transport to the shop, to an event, or to a new owner. The car does not arrive on an open trailer behind somebody's pickup." | **unverified — client to confirm** | The home page's Transportation row |
+| Service, Transportation | "Arrange transport →" | **restored — Alex, 2026-09-11** | As on the home page; the client had asked for no button here |
+| Service | `service-tune-up.png`, `service-transport.png` | **provenance not recorded** | The home page's two service pictures, as approved there. They read as generated; neither carries a `gen-` name or a sidecar (GI6). Recorded here so it is asked |
+| About | The four paragraphs, "Welcome to Midwest Cobras.", Evan's portrait | **sourced — the client's own copy; supplied portrait** | As on the home page, rows under "index12" |
+| About | "Owner" under Evan's name | **unverified — client to confirm** | As on the home page |
+| About, the shop | The photograph of the building with three cars | **the client's own photograph** | `hero-cover-day.jpg`, "cover photo" in the client folder; the same picture opens the home page |
+| About, the shop | 14510 Parallel Lane, Basehor, Kansas · 913 662 5000 | **sourced** | Row 10 |
+| About, the shop | Grand Opening, Sunday 27 September · 11:30 AM, and its countdown | **sourced** | As the home page's pinned news item |
+| About, contact panel | "Talk to Evan." panel, "Rather talk it through in person? Call 913 662 5000 to schedule an appointment in our shop." | **sourced / design only** | The home page's panel; the form is connected to nothing and no longer says "design preview" |

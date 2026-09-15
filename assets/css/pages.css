@@ -1,0 +1,97 @@
+/* pages.css — service.html and about.html.
+   ---------------------------------------------------------------------------
+   Alex, 2026-09-14: "make two additional pages, SERVICE and ABOUT US". Both
+   are built from what the system already has — the section head, the About
+   section with Evan and its light, the countdown, the button and the pill —
+   and this file only composes what those pages newly put side by side.
+   Values come from tokens.css. */
+
+/* ── service.html ─────────────────────────────────────────────────────────────
+   Two services on the record ground, not set as equals. Tune-up and service
+   leads: the larger picture, a list of what it covers, and the page's one
+   solid action. Transportation follows at a smaller picture, mirrored, with
+   the tertiary pill. The two cut-outs keep their own shapes (1:1 and 4:3) and
+   sit on the bone without a frame, as on the home page. */
+.svc-page .sect__head { margin-block-end: var(--sp-7); }
+.svc {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--sp-7) var(--col-gap); align-items: center;
+  padding-block: var(--sp-8);
+  border-block-start: var(--hairline) solid var(--rule);
+}
+.svc__shot { margin: 0; }
+.svc__shot img { display: block; inline-size: 100%; block-size: auto; }
+.svc--lead .svc__shot { grid-column: 1 / span 6; }
+.svc--lead .svc__body { grid-column: 8 / span 5; }
+.svc--second .svc__body { grid-column: 1 / span 5; grid-row: 1; }
+.svc--second .svc__shot { grid-column: 7 / span 5; grid-row: 1; }
+.svc--second { padding-block-end: 0; }
+
+.svc__body { display: grid; gap: var(--sp-5); justify-items: start; align-content: start; min-inline-size: 0; }
+.svc__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-heading); color: var(--text);
+}
+.svc__text { margin: 0; max-inline-size: 48ch; line-height: var(--lh-body); color: var(--text-muted); text-wrap: pretty; }
+.svc__k {
+  margin: var(--sp-2) 0 0; font-family: var(--mono); font-weight: 400; font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+/* What it covers, as rows: five parts of one job read down a rule faster than
+   along a sentence. */
+.svc__list {
+  inline-size: 100%; margin: 0; padding: 0; list-style: none;
+  border-block-end: var(--hairline) solid var(--rule);
+}
+.svc__list li {
+  padding-block: var(--sp-3); border-block-start: var(--hairline) solid var(--rule);
+  font-family: var(--face); font-weight: 600; font-size: var(--fs-lead); line-height: var(--lh-heading); color: var(--text);
+}
+.svc__act { margin: var(--sp-2) 0 0; }
+
+/* ── about.html · the shop ────────────────────────────────────────────────────
+   The client's photograph of the building beside what a visitor needs to get
+   there. The photograph is shown at its own 4:3, so nothing is cropped; the
+   record stands to its right and level with its middle. */
+.shop__grid {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--sp-7) var(--col-gap); align-items: center;
+}
+.shop__photo { grid-column: 1 / span 7; margin: 0; }
+.shop__photo img {
+  display: block; inline-size: 100%; block-size: auto; aspect-ratio: 4 / 3; object-fit: cover;
+  border-radius: var(--radius-media);
+}
+.shop__body { grid-column: 9 / span 4; display: grid; gap: var(--sp-5); justify-items: start; min-inline-size: 0; }
+.shop__body .tag { margin: 0; }
+.shop__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
+  max-inline-size: 18ch; text-wrap: balance;
+}
+.shop__open {
+  display: grid; gap: var(--sp-2); inline-size: 100%;
+  padding-block: var(--sp-5); border-block: var(--hairline) solid var(--rule);
+}
+.shop__k {
+  margin: 0; font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.shop__when { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-lead); color: var(--text); }
+/* The home page scopes the cells to the news item; the same cells here. */
+.shop .countdown { margin-block: var(--sp-3) 0; gap: var(--sp-6); }
+.shop .countdown__cell { display: grid; gap: var(--sp-2); margin: 0; }
+.shop .countdown__open { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-lead); color: var(--text); }
+.shop__acts { margin-block-start: 0; }
+
+@media (max-width: 61.99rem) {
+  .svc { grid-template-columns: minmax(0, 1fr); gap: var(--sp-6); }
+  .svc--lead .svc__shot, .svc--lead .svc__body,
+  .svc--second .svc__body, .svc--second .svc__shot { grid-column: 1; grid-row: auto; }
+  .svc--second .svc__shot { grid-row: 1; }
+  .svc__shot { max-inline-size: 30rem; }
+  /* One track, not twelve: twelve columns keep their eleven gaps at any width,
+     and at 390 the gaps alone were wider than the page. */
+  .shop__grid { grid-template-columns: minmax(0, 1fr); }
+  .shop__photo, .shop__body { grid-column: 1; }
+}

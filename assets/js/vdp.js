@@ -7,7 +7,7 @@
    Gallery further down all move one stage. Save shares the inventory's list
    in this browser; Share and Text are the inventory's menu and panel, set
    for this one car. Then the record's panels: links that open them, the
-   financing and shipping estimates, and the question to Evan. */
+   financing estimate, and the question to Evan. */
 
 (function () {
   'use strict';
@@ -222,36 +222,39 @@
     });
   }
 
-  /* ── the record's index ──────────────────────────────────────────────── */
-  /* Every part of the record is open on the page; the index beside it says
-     where the reader is. The part crossing a thin band a little above the
-     middle of the window is the current one. Without the observer the index
-     is plain links, which is all it needs to be. */
-  var recNav = document.querySelector('[data-rec-nav]');
-  if (recNav && 'IntersectionObserver' in window) {
-    var navLinks = [].slice.call(recNav.querySelectorAll('a[href^="#"]'));
-    var markCurrent = function (id) {
-      navLinks.forEach(function (a) {
-        if (a.getAttribute('href') === '#' + id) a.setAttribute('aria-current', 'location');
-        else a.removeAttribute('aria-current');
-      });
-    };
-    var spy = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) { if (en.isIntersecting) markCurrent(en.target.id); });
-    }, { rootMargin: '-35% 0px -60% 0px' });
-    navLinks.forEach(function (a) {
-      var card = document.getElementById(a.getAttribute('href').slice(1));
-      if (card) spy.observe(card);
-    });
-  }
-
-  /* "Ask for a walkaround" and Enquire carry their own opening line into the
-     message they lead to. */
+  /* ── the record's panels, and the links into them ────────────────────── */
+  /* A <details> does not open because a link points into it, so a link to a
+     closed panel — Enquire, Ask for a walkaround — opens it first, and a link
+     that carries an opening line puts it in the message. In-page links travel
+     rather than jump (Alex, 2026-09-14: "navigation from here must be smooth,
+     not jump"): the browser's own smooth scroll, landing under the bar by
+     html's scroll-padding; under reduced motion the plain jump, and a
+     modified click is left to the browser. A page arriving with #finance in
+     its address opens that panel too. */
+  var openPanel = function (el) {
+    var d = el.matches('details') ? el : el.closest('details');
+    if (d) d.open = true;
+  };
   var askMsg = document.querySelector('#a-msg');
   document.addEventListener('click', function (ev) {
-    var a = ev.target.closest && ev.target.closest('a[data-ask-msg]');
-    if (a && askMsg) askMsg.value = a.getAttribute('data-ask-msg');
+    var a = ev.target.closest && ev.target.closest('main a[href^="#"]');
+    if (!a || ev.defaultPrevented || ev.metaKey || ev.ctrlKey || ev.shiftKey) return;
+    var id = a.getAttribute('href').slice(1);
+    var el = id && document.getElementById(id);
+    if (!el) return;
+    ev.preventDefault();
+    openPanel(el);
+    if (askMsg && a.hasAttribute('data-ask-msg')) askMsg.value = a.getAttribute('data-ask-msg');
+    el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+    window.history.replaceState(null, '', '#' + id);
   });
+  if (window.location.hash.length > 1) {
+    var arrived = document.getElementById(window.location.hash.slice(1));
+    if (arrived) {
+      openPanel(arrived);
+      window.setTimeout(function () { arrived.scrollIntoView({ block: 'start' }); }, 60);
+    }
+  }
 
   var num = function (el) {
     var v = parseFloat(String(el.value).replace(/[^\d.]/g, ''));
@@ -293,31 +296,6 @@
     runCalc();
   }
 
-  /* ── shipping: a band from Basehor ───────────────────────────────────── */
-  /* THE CONSTANTS ARE PLACEHOLDERS, and the page says the figure is an
-     estimate. Midwest's carrier pricing is not something this build has; the
-     model is visible — a base plus road miles to the ZIP's region, enclosed —
-     so the real rates are two numbers here, not a rebuild. The first digit of
-     a US ZIP is its region, laid out east to west; Basehor is region 6. */
-  var ship = document.querySelector('[data-ship]');
-  if (ship) {
-    var BASE = 450;          // pickup, loading, admin
-    var PER_100_MILES = 78;  // enclosed transport
-    var MILES_BY_REGION = { 0: 1450, 1: 1150, 2: 1100, 3: 1150, 4: 650,
-                            5: 450, 6: 250, 7: 650, 8: 900, 9: 1700 };
-    var zip = ship.querySelector('[data-ship-zip]');
-    var sOut = ship.querySelector('[data-ship-out]');
-    var runShip = function () {
-      zip.value = zip.value.replace(/\D/g, '').slice(0, 5);
-      if (zip.value.length < 5) { sOut.textContent = 'Enter a ZIP'; return; }
-      var cost = BASE + (MILES_BY_REGION[zip.value[0]] / 100) * PER_100_MILES;
-      var lo = Math.round(cost * 0.9 / 25) * 25;
-      var hi = Math.round(cost * 1.1 / 25) * 25;
-      sOut.textContent = '$' + lo.toLocaleString('en-US') + ' – $' + hi.toLocaleString('en-US');
-    };
-    ship.addEventListener('input', runShip);
-    ship.addEventListener('submit', function (ev) { ev.preventDefault(); runShip(); });
-  }
 
   /* ── ask: the question goes to Evan with the stock number ────────────── */
   /* Design only: nothing is sent. The two fields Evan needs to answer are

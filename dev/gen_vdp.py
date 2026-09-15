@@ -5,7 +5,7 @@ Photographs are copied from Alex's projects into assets/img/vdp/, resized, and a
 
 The page follows Alex's own Chicago Motor Cars VDP (AAN_PPREVIEW_CHICAGOMOTORCARS/
 vdp.html) in order and in parts — the gallery beside the price and specification,
-an action bar, the car's own panels (about, walkaround, ask, financing, shipping),
+an action bar, the car's own panels (about, walkaround, ask, financing),
 the standards every car here comes with, the gallery, related cars — and sets
 each in this site's own grounds and components.
 """
@@ -98,13 +98,12 @@ CARS = [
 LABEL = {'new': 'New', 'just': 'Just in', 'sold': 'Sold', 'consign': 'Consignment', '': 'Available'}
 
 # The estimators' starting figures. SIMULATED, and the page says each is an
-# estimate: a rate and a deposit a reader changes, and a shipping band.
+# estimate: a rate and a deposit a reader changes.
 APR = 7.9
 TERM = 60
 DEPOSIT_SHARE = 0.2
 TERMS = [36, 48, 60, 72, 84]
 
-MAPS = 'https://www.google.com/maps/search/?api=1&amp;query=14510+Parallel+Lane+Basehor+Kansas+66007'
 
 
 def money(n):
@@ -155,32 +154,38 @@ footer = after_main[after_main.index('\n\n<footer'):]
 ICON_TEXT = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H10l-4 3v-3H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>'
 ICON_SHARE = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M12 15V4m0 0L8 8m4-4 4 4M6 12v7a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 ICON_SAVE = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M7 4h10a1 1 0 0 1 1 1v15l-6-4-6 4V5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>'
-ICON_PIN = '<svg viewBox="0 0 12 15" width="12" height="15" aria-hidden="true" focusable="false"><path d="M6 .75c2.9 0 5.25 2.35 5.25 5.25 0 3.6-4.35 7.7-5.02 8.31a.34.34 0 0 1-.46 0C5.1 13.7.75 9.6.75 6 .75 3.1 3.1.75 6 .75Z" fill="none" stroke="currentColor" stroke-width="1.1"/><circle cx="6" cy="6" r="1.85" fill="currentColor"/></svg>'
 ICON_GRID = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>'
 PREV = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 NEXT = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 ARROW = '<span aria-hidden="true">&rarr;</span>'
 
 
-NAV = []
+# One glyph per panel, in the set the page already uses: 24-unit box, 1.6 stroke.
+ACC_ICONS = {
+    'about-car': '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5.5M12 7.6v.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    'walkaround': '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.5 9.5v5l4-2.5-4-2.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+    'ask': '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H10l-4 3v-3H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+    'finance': '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><rect x="5" y="3.5" width="14" height="17" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 7.5h7M8.5 11.5h1.5M14 11.5h1.5M8.5 15.5h1.5M14 15.5h1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+}
 
 
-def rec(pid, label, value, body, tool=None):
-    """One part of the car's record, open, as its own card — Alex, 2026-09-14,
-    on closed panels: "everything gets lost and blurry, bad UX UI". What the
-    part is on the left, the thing to use on the right; each is listed in the
-    record's index beside the cards."""
+def acc(pid, label, value, body, tool=None, opened=False):
+    """One part of the car's record as a panel under the photograph and the
+    details — Alex, 2026-09-14: "below the main section, an accordion at the
+    bottom like Chicago Motor Cars". A native <details>, so it opens without
+    script and find-in-page reaches the closed ones. Inside, what the part is
+    on the left and the thing to use on the right."""
     va = ' data-rec-val' if pid == 'finance' else ''
-    val = '<span class="rec-nav__val"%s>%s</span>' % (va, value) if value else ''
-    NAV.append('          <li><a class="rec-nav__link" href="#%s"><span class="rec-nav__label">%s</span>%s</a></li>' % (pid, label, val))
-    head_val = '<p class="rec__val"%s>%s</p>' % (va, value) if value else ''
+    val = '<span class="acc__val"%s>%s</span>' % (va, value) if value else ''
     inner = body if tool is None else (
         '\n          <div class="rec__split">\n            <div class="rec__lead">%s\n            </div>\n'
         '            <div class="rec__tool">%s\n            </div>\n          </div>' % (body, tool))
     return f"""
-      <article class="rec" id="{pid}" aria-labelledby="{pid}-title">
-        <header class="rec__head"><h3 class="rec__title" id="{pid}-title">{label}</h3>{head_val}</header>{inner}
-      </article>"""
+      <details class="acc" id="{pid}"{' open' if opened else ''}>
+        <summary class="acc__sum"><span class="acc__ico">{ACC_ICONS[pid]}</span><span class="acc__label">{label}</span>{val}<span class="acc__mark" aria-hidden="true"></span></summary>
+        <div class="acc__body">{inner}
+        </div>
+      </details>"""
 
 
 for c in CARS:
@@ -216,8 +221,6 @@ for c in CARS:
     cta = 'Ask for one like it' if sold else 'Enquire about this car'
     price_note = 'Sold. Kept here as a record.' if sold else 'Plus tax, title and delivery.'
 
-    ship_link = '' if sold else f"""
-        <a class="vdp-act__ship" href="#shipping">Estimate shipping {ARROW}</a>"""
     fin_btn = '' if sold else f"""
         <a class="btn btn--solid" href="finance.html">Start financing {ARROW}</a>"""
 
@@ -289,10 +292,9 @@ for c in CARS:
     ask_lead = f"""
               <p class="rec__text">The message goes to Evan with stock <span class="nobr">{stock}</span> attached, so there is no need to say which car.</p>
               <a class="rec__call" href="tel:+19136625000"><span class="rec__k">Or call</span>913 662 5000</a>"""
-    NAV.clear()
-    panels = rec('about-car', 'About this car', '', about)
-    panels += rec('walkaround', 'Walkaround video', 'Not filmed yet', walk)
-    panels += rec('ask', 'Ask about this car', 'Evan &middot; 913 662 5000', ask_lead, ask)
+    panels = acc('about-car', 'About this car', '', about, opened=True)
+    panels += acc('walkaround', 'Walkaround video', 'Not filmed yet', walk)
+    panels += acc('ask', 'Ask about this car', 'Evan &middot; 913 662 5000', ask_lead, ask)
 
     if not sold:
         down = int(round(c['price'] * DEPOSIT_SHARE, -3))
@@ -319,30 +321,11 @@ for c in CARS:
             <p class="rec__note">An estimate, nothing more: not an offer and not a quote, and it leaves out tax,
               title and registration.</p>
           </form>"""
-        panels += rec('finance', 'Financing &amp; payments', 'Est. ${:,} / mo'.format(mo), fin_lead, finance)
-
-        ship_lead = f"""
-              <p class="rec__text">Enclosed transport to your door: the car does not arrive on an open trailer
-                behind somebody's pickup. {stock} is at the shop in Basehor, so the estimate is worked from there.</p>"""
-        shipping = f"""
-          <form class="calc ship" data-ship>
-            <div class="calc__grid calc__grid--pair">
-              <div class="field"><label for="s-from">Shipping from</label>
-                <input id="s-from" value="Basehor, KS 66007" readonly></div>
-              <div class="field"><label for="s-to">Delivering to, ZIP</label>
-                <input id="s-to" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="60614" data-ship-zip></div>
-            </div>
-            <p class="calc__out"><span class="calc__k">Estimated enclosed transport</span>
-              <output class="calc__figure" for="s-to" data-ship-out>Enter a ZIP</output></p>
-            <p class="rec__note">An estimate, not a quote: a band for the region the ZIP is in, not a route.
-              The carrier prices the actual run. Call <a href="tel:+19136625000">913&nbsp;662&nbsp;5000</a> and we book it.</p>
-          </form>"""
-        panels += rec('shipping', 'Shipping', 'Enclosed transport', ship_lead, shipping)
-
-    nav_list = '\n'.join(NAV)
+        panels += acc('finance', 'Financing &amp; payments', 'Est. ${:,} / mo'.format(mo), fin_lead, finance)
+        # No shipping panel — Alex, 2026-09-14: "remove it altogether, they
+        # have no shipping". Transport is arranged by phone, as on the home page.
 
     # ── standards: the same on every car ───────────────────────────────────
-    std_transport_link = '' if sold else f' <a class="stds__link" href="#shipping">Estimate shipping {ARROW}</a>'
     standards = f"""
 
   <!-- STANDARDS. What comes with buying any car here, so it is its own section
@@ -357,7 +340,7 @@ for c in CARS:
       <li class="stds__item"><h3 class="stds__k">Service in house</h3>
         <p class="stds__v">Setup, carburetion, cooling, brakes and the annual going-over, done by the people who build the cars.</p></li>
       <li class="stds__item"><h3 class="stds__k">Enclosed transport</h3>
-        <p class="stds__v">To your door, to an event, or back to the shop. Never an open trailer.{std_transport_link}</p></li>
+        <p class="stds__v">To your door, to an event, or back to the shop. Never an open trailer.</p></li>
       <li class="stds__item"><h3 class="stds__k">Financing</h3>
         <p class="stds__v">Apply on the site and the application goes straight to Evan. <a class="stds__link" href="finance.html">Apply {ARROW}</a></p></li>
       <li class="stds__item"><h3 class="stds__k">Forty years</h3>
@@ -409,7 +392,7 @@ for c in CARS:
        Alex, 2026-09-14: "VDP, where is the rest? description, finance,
        shipping… and PHOTOS should be called Gallery". The gallery beside the
        price and the specification; an action bar; the car's record in panels
-       (about, walkaround, ask, financing, shipping); the standards every car
+       (about, walkaround, ask, financing); the standards every car
        here comes with; the gallery; related cars. The parts are that page's,
        the grounds are this site's: the car on the dark, its record on bone.
 
@@ -451,10 +434,6 @@ for c in CARS:
     </div>
 
     <div class="vdp-act">
-      <div class="vdp-act__left">
-        <p class="vdp-act__loc">{ICON_PIN}<span class="vdp-act__k">Location</span>
-          <a href="{MAPS}" target="_blank" rel="noopener noreferrer">Basehor, Kansas &mdash; 14510 Parallel Lane</a></p>{ship_link}
-      </div>
       <div class="vdp-act__contact">
         <a class="btn" href="tel:+19136625000">Call 913 662 5000</a>
         <a class="btn" href="{sms}">Text Evan</a>{fin_btn}
@@ -462,23 +441,14 @@ for c in CARS:
     </div>
   </section>
 
-  <!-- THE RECORD, on bone: every part open, each its own card, with an index
-       beside them that holds while the cards scroll. -->
+  <!-- THE RECORD, on bone: the car's own panels under the photograph and the
+       details, as accordions, as on the Chicago Motor Cars VDP. About is open. -->
   <section class="sect sect--bone vdp-record" id="record" data-ground="light" aria-labelledby="record-title">
-    <div class="vdp-record__grid">
-      <nav class="rec-nav" aria-labelledby="record-title">
-        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>The record</p>
-        <h2 class="rec-nav__title" id="record-title">{stock}, in full.</h2>
-        <ol class="rec-nav__list" data-rec-nav>
-{nav_list}
-        </ol>
-        <div class="rec-nav__hold">
-          <p class="rec-nav__price">{price}</p>
-          <a class="btn btn--solid" href="#ask" data-ask-msg="{ask_msg}">{cta} {ARROW}</a>
-        </div>
-      </nav>
-      <div class="recs">{panels}
-      </div>
+    <header class="vdp-record__head">
+      <p class="tag"><span class="tag__dot" aria-hidden="true"></span>The record</p>
+      <h2 class="vdp-record__title" id="record-title">{stock}, in full.</h2>
+    </header>
+    <div class="accs">{panels}
     </div>
   </section>{standards}{gallery}
 

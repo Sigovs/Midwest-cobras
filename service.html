@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en" data-page="v10">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Service — Midwest Cobras</title>
+<meta name="description" content="Tune-up and service, and enclosed transport, for your Cobra — from Midwest Cobras in Basehor, Kansas. Call 913 662 5000 to schedule.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2308090b'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Allura&display=swap">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/v10.css">
+<!-- v11 is the client's September change request, as a layer over v10.
+     index10 stays exactly as the client last saw it. -->
+<link rel="stylesheet" href="assets/css/v11.css">
+<!-- v12 is the next round of client changes, as a layer over v11 — the same
+     rule one step on: index11 stays exactly as the client last saw it. -->
+<link rel="stylesheet" href="assets/css/v12.css">
+<!-- Service and About, the two pages the navigation now opens. -->
+<link rel="stylesheet" href="assets/css/pages.css">
+
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body class="page-service">
+
+<a class="skip" href="#service">Skip to the services</a>
+
+<!-- SERVICE HAS ITS OWN PAGE — Alex, 2026-09-14: "make two additional pages,
+     SERVICE and ABOUT US". Same shell as consignment.html — head, bar, footer,
+     the stylesheets in the same order. The Services section on the home page
+     stays; the navigation and the footer's two service links come here. -->
+<header class="site-head" id="site-head">
+  <a class="wordmark wordmark--solo" href="index12.html">
+    <span class="wordmark__mask" aria-hidden="true"></span>
+    <span class="wordmark__name">Midwest Cobras</span>
+  </a>
+  <nav class="site-nav" aria-label="Primary">
+    <ul>
+      <li><a href="index12.html">Home</a></li>
+      <li><a href="inventory.html">Inventory</a></li>
+      <li><a href="build.html">Build</a></li>
+      <li><a href="service.html" aria-current="page">Service</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="consignment.html">Consignment</a></li>
+      <li><a href="finance.html">Finance</a></li>
+      <li><a href="index12.html#gallery">Gallery</a></li>
+      <li class="site-nav__tel">
+        <a href="tel:+19136625000">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+            <path d="M6.4 3.5h3l1.5 3.7-1.9 1.4a11.5 11.5 0 0 0 5.4 5.4l1.4-1.9 3.7 1.5v3a1.6 1.6 0 0 1-1.7 1.6A14.6 14.6 0 0 1 4.8 5.2a1.6 1.6 0 0 1 1.6-1.7Z"
+                  fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg><span>913 662 5000</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       SERVICE — the record ground, as the design read puts service with the
+       finance and the configurator: one bone section, the home page's two
+       services, and nothing added to fill the page. Two services is the
+       honest content, so the page holds two, and they are not set as equals:
+       Tune-up and service leads, at the larger picture and with the page's
+       one solid action, because it is the one the client wants a call for —
+       "the clickable button for Service should prompt them to call in to
+       schedule their appointment". Transportation follows smaller, with the
+       tertiary pill Alex restored on 2026-09-11.
+
+       The copy is the home page's own, split only where a list reads better
+       than a sentence. The heading and its note are the draft the client is
+       "still mulling over". Content ledger, "service.html".
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--bone svc-page" id="service" data-ground="light" aria-labelledby="service-title">
+    <header class="sect__head sect__head--pair">
+      <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Service</p>
+      <h1 class="sect__title" id="service-title">After it is yours.</h1>
+      <p class="lede sect__note">The people who build your Cobra are the ones who
+        look after it — the tune-ups, the service, and getting it where it needs
+        to go.</p>
+    </header>
+
+    <article class="svc svc--lead" id="tune-up" aria-labelledby="tune-up-title">
+      <figure class="svc__shot">
+        <img src="assets/img/service-tune-up.png" width="1254" height="1254"
+             alt="A Cobra with its bonnet up beside a tool chest, a creeper and a tray of spanners">
+      </figure>
+      <div class="svc__body">
+        <h2 class="svc__title" id="tune-up-title">Tune-up and service</h2>
+        <p class="svc__text">These are not cars a general workshop sees twice a year.</p>
+        <h3 class="svc__k">What it covers</h3>
+        <ul class="svc__list">
+          <li>Setup</li>
+          <li>Carburetion</li>
+          <li>Cooling</li>
+          <li>Brakes</li>
+          <li>The annual going-over</li>
+        </ul>
+        <p class="svc__text">Done by people with your car's own build sheet open in front of them.</p>
+        <p class="svc__act">
+          <a class="btn btn--solid" href="tel:+19136625000">Call 913 662 5000 to schedule <span aria-hidden="true">&rarr;</span></a>
+        </p>
+      </div>
+    </article>
+
+    <!-- The picture on the right: the ramps run out to the left, into the
+         page and toward the words, rather than off its edge. -->
+    <article class="svc svc--second" id="transportation" aria-labelledby="transport-title">
+      <div class="svc__body">
+        <h2 class="svc__title" id="transport-title">Transportation</h2>
+        <p class="svc__text">Enclosed transport to the shop, to an event, or to a new
+          owner. The car does not arrive on an open trailer behind somebody's
+          pickup.</p>
+        <p class="svc__act">
+          <a class="link" href="tel:+19136625000">Arrange transport <span aria-hidden="true">&rarr;</span></a>
+        </p>
+      </div>
+      <figure class="svc__shot">
+        <img src="assets/img/service-transport.png" width="1448" height="1086"
+             alt="A Cobra strapped down inside an enclosed transporter, ramps still out" loading="lazy" decoding="async">
+      </figure>
+    </article>
+  </section>
+</main>
+
+<footer class="site-foot" id="contact">
+  <div class="site-foot__media" aria-hidden="true">
+    <img src="assets/img/footer.jpg" width="1920" height="960" alt="" loading="lazy" decoding="async">
+  </div>
+
+  <p class="site-foot__mark" aria-hidden="true">Cobras</p>
+
+  <div class="site-foot__grid">
+    <div class="site-foot__brand">
+      <p class="wordmark wordmark--foot wordmark--solo" aria-hidden="true"><span class="wordmark__mask"></span></p>
+      <p class="site-foot__line">Backdraft Cobras built,<br>sold, serviced and moved.</p>
+      <p class="mfr mfr--foot"><span class="mfr__k">Built by</span><img class="mfr__logo" src="assets/img/backdraft-racing.png" width="341" height="75" alt="Backdraft Racing"></p>
+    </div>
+
+    <nav class="site-foot__col" aria-label="The shop">
+      <p class="site-foot__k">The shop</p>
+      <ul>
+        <li><a href="index12.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="inventory.html">Inventory</a></li>
+        <li><a href="build.html">Build</a></li>
+        <li><a href="index12.html#gallery">Gallery</a></li>
+      </ul>
+    </nav>
+
+    <nav class="site-foot__col" aria-label="Services">
+      <p class="site-foot__k">Services</p>
+      <ul>
+        <li><a href="service.html#tune-up">Tune-Up / Service</a></li>
+        <li><a href="service.html#transportation">Transportation</a></li>
+        <li><a href="consignment.html">Consignment</a></li>
+        <li><a href="finance.html">Finance</a></li>
+      </ul>
+    </nav>
+    <nav class="site-foot__col" aria-label="Follow">
+      <p class="site-foot__k">Follow</p>
+      <ul>
+        <li><a href="https://www.instagram.com/midwestcobrasllc/" rel="noopener noreferrer" target="_blank">Instagram</a></li>
+        <li><a href="https://www.facebook.com/profile.php?id=61579691830492" rel="noopener noreferrer" target="_blank">Facebook</a></li>
+        <li><a href="https://www.youtube.com/@MidwestCobrasLLC" rel="noopener noreferrer" target="_blank">YouTube</a></li>
+        <li><a href="https://www.tiktok.com/@midwestcobrasllc" rel="noopener noreferrer" target="_blank">TikTok</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-foot__col">
+      <p class="site-foot__k">Contact</p>
+      <address>
+        <p>14510 Parallel Lane<br>Basehor, Kansas 66007</p>
+        <p><a href="tel:+19136625000">913 662 5000</a></p>
+        <p class="site-foot__who">Evan Kunard<br>
+          <a href="mailto:evan@midwestcobras.com">evan@midwestcobras.com</a></p>
+        <p class="site-foot__who">Kristi Kunard<br>
+          <a href="mailto:kristi@midwestcobras.com">kristi@midwestcobras.com</a></p>
+      </address>
+    </div>
+  </div>
+
+  <p class="site-foot__legal">
+    <span>&copy; 2026 Midwest Cobras, LLC</span>
+    <span>Powered by All Auto Network</span>
+  </p>
+
+</footer>
+
+<!-- v12.js FIRST: it marks the reveal elements before v10.js looks at them, so
+     v10's failsafe never owns them — the reason is at the top of v12.js. -->
+<script src="assets/js/v12.js" defer></script>
+<script src="assets/js/v10.js" defer></script>
+<script src="assets/js/v11.js" defer></script>
+</body>
+</html>

@@ -59,8 +59,8 @@
       <li><a href="index12.html">Home</a></li>
       <li><a href="inventory.html" aria-current="page">Inventory</a></li>
       <li><a href="build.html">Build</a></li>
-      <li><a href="index12.html#services">Service</a></li>
-      <li><a href="index12.html#about">About</a></li>
+      <li><a href="service.html">Service</a></li>
+      <li><a href="about.html">About</a></li>
       <li><a href="consignment.html">Consignment</a></li>
       <li><a href="finance.html">Finance</a></li>
       <li><a href="index12.html#gallery">Gallery</a></li>
@@ -87,7 +87,7 @@
        Alex, 2026-09-14: "VDP, where is the rest? description, finance,
        shipping… and PHOTOS should be called Gallery". The gallery beside the
        price and the specification; an action bar; the car's record in panels
-       (about, walkaround, ask, financing, shipping); the standards every car
+       (about, walkaround, ask, financing); the standards every car
        here comes with; the gallery; related cars. The parts are that page's,
        the grounds are this site's: the car on the dark, its record on bone.
 
@@ -135,10 +135,6 @@
     </div>
 
     <div class="vdp-act">
-      <div class="vdp-act__left">
-        <p class="vdp-act__loc"><svg viewBox="0 0 12 15" width="12" height="15" aria-hidden="true" focusable="false"><path d="M6 .75c2.9 0 5.25 2.35 5.25 5.25 0 3.6-4.35 7.7-5.02 8.31a.34.34 0 0 1-.46 0C5.1 13.7.75 9.6.75 6 .75 3.1 3.1.75 6 .75Z" fill="none" stroke="currentColor" stroke-width="1.1"/><circle cx="6" cy="6" r="1.85" fill="currentColor"/></svg><span class="vdp-act__k">Location</span>
-          <a href="https://www.google.com/maps/search/?api=1&amp;query=14510+Parallel+Lane+Basehor+Kansas+66007" target="_blank" rel="noopener noreferrer">Basehor, Kansas &mdash; 14510 Parallel Lane</a></p>
-      </div>
       <div class="vdp-act__contact">
         <a class="btn" href="tel:+19136625000">Call 913 662 5000</a>
         <a class="btn" href="sms:+19136625000?&amp;body=Hi%20Evan,%20is%20the%202019%20Backdraft%20Racing%20RT4%20Roadster%20(stock%20MC-0917)%20still%20available?">Text Evan</a>
@@ -146,26 +142,17 @@
     </div>
   </section>
 
-  <!-- THE RECORD, on bone: every part open, each its own card, with an index
-       beside them that holds while the cards scroll. -->
+  <!-- THE RECORD, on bone: the car's own panels under the photograph and the
+       details, as accordions, as on the Chicago Motor Cars VDP. About is open. -->
   <section class="sect sect--bone vdp-record" id="record" data-ground="light" aria-labelledby="record-title">
-    <div class="vdp-record__grid">
-      <nav class="rec-nav" aria-labelledby="record-title">
-        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>The record</p>
-        <h2 class="rec-nav__title" id="record-title">MC-0917, in full.</h2>
-        <ol class="rec-nav__list" data-rec-nav>
-          <li><a class="rec-nav__link" href="#about-car"><span class="rec-nav__label">About this car</span></a></li>
-          <li><a class="rec-nav__link" href="#walkaround"><span class="rec-nav__label">Walkaround video</span><span class="rec-nav__val">Not filmed yet</span></a></li>
-          <li><a class="rec-nav__link" href="#ask"><span class="rec-nav__label">Ask about this car</span><span class="rec-nav__val">Evan &middot; 913 662 5000</span></a></li>
-        </ol>
-        <div class="rec-nav__hold">
-          <p class="rec-nav__price">$58,900</p>
-          <a class="btn btn--solid" href="#ask" data-ask-msg="I would like one like the 2019 Backdraft Racing RT4 Roadster. Can you find one?">Ask for one like it <span aria-hidden="true">&rarr;</span></a>
-        </div>
-      </nav>
-      <div class="recs">
-      <article class="rec" id="about-car" aria-labelledby="about-car-title">
-        <header class="rec__head"><h3 class="rec__title" id="about-car-title">About this car</h3></header>
+    <header class="vdp-record__head">
+      <p class="tag"><span class="tag__dot" aria-hidden="true"></span>The record</p>
+      <h2 class="vdp-record__title" id="record-title">MC-0917, in full.</h2>
+    </header>
+    <div class="accs">
+      <details class="acc" id="about-car" open>
+        <summary class="acc__sum"><span class="acc__ico"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5.5M12 7.6v.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><span class="acc__label">About this car</span><span class="acc__mark" aria-hidden="true"></span></summary>
+        <div class="acc__body">
           <div class="about">
             <div class="about__text">
               <p class="about__lead">Grey, white stripes over black leather</p>
@@ -193,9 +180,11 @@
               <div><dt>Status</dt><dd>Sold</dd></div>
             </dl>
           </div>
-      </article>
-      <article class="rec" id="walkaround" aria-labelledby="walkaround-title">
-        <header class="rec__head"><h3 class="rec__title" id="walkaround-title">Walkaround video</h3><p class="rec__val">Not filmed yet</p></header>
+        </div>
+      </details>
+      <details class="acc" id="walkaround">
+        <summary class="acc__sum"><span class="acc__ico"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.5 9.5v5l4-2.5-4-2.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span><span class="acc__label">Walkaround video</span><span class="acc__val">Not filmed yet</span><span class="acc__mark" aria-hidden="true"></span></summary>
+        <div class="acc__body">
           <div class="walk">
             <img class="walk__poster" src="assets/img/vdp/mc-0917-1.jpg" alt="" width="1400" height="442" loading="lazy" decoding="async">
             <div class="walk__text">
@@ -204,9 +193,11 @@
               <a class="btn" href="#ask" data-ask-msg="Could you film a walkaround of stock MC-0917 and send it to me?">Ask for a walkaround <span aria-hidden="true">&rarr;</span></a>
             </div>
           </div>
-      </article>
-      <article class="rec" id="ask" aria-labelledby="ask-title">
-        <header class="rec__head"><h3 class="rec__title" id="ask-title">Ask about this car</h3><p class="rec__val">Evan &middot; 913 662 5000</p></header>
+        </div>
+      </details>
+      <details class="acc" id="ask">
+        <summary class="acc__sum"><span class="acc__ico"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H10l-4 3v-3H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span><span class="acc__label">Ask about this car</span><span class="acc__val">Evan &middot; 913 662 5000</span><span class="acc__mark" aria-hidden="true"></span></summary>
+        <div class="acc__body">
           <div class="rec__split">
             <div class="rec__lead">
               <p class="rec__text">The message goes to Evan with stock <span class="nobr">MC-0917</span> attached, so there is no need to say which car.</p>
@@ -239,8 +230,8 @@
           </form>
             </div>
           </div>
-      </article>
-      </div>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -424,7 +415,7 @@
       <p class="site-foot__k">The shop</p>
       <ul>
         <li><a href="index12.html">Home</a></li>
-        <li><a href="index12.html#about">About</a></li>
+        <li><a href="about.html">About</a></li>
         <li><a href="inventory.html">Inventory</a></li>
         <li><a href="build.html">Build</a></li>
         <li><a href="index12.html#gallery">Gallery</a></li>
@@ -434,8 +425,8 @@
     <nav class="site-foot__col" aria-label="Services">
       <p class="site-foot__k">Services</p>
       <ul>
-        <li><a href="index12.html#services">Tune-Up / Service</a></li>
-        <li><a href="index12.html#services">Transportation</a></li>
+        <li><a href="service.html#tune-up">Tune-Up / Service</a></li>
+        <li><a href="service.html#transportation">Transportation</a></li>
         <li><a href="consignment.html">Consignment</a></li>
         <li><a href="finance.html">Finance</a></li>
       </ul>

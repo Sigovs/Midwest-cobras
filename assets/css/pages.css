@@ -57,31 +57,45 @@
 .svc-row__act { margin: var(--sp-1) 0 0; }
 
 /* ── about.html · the person ──────────────────────────────────────────────────
-   Evan, his words and the way to reach him, in one row: the portrait holds the
-   left, the heading and the client's copy the middle, Contact me the right
-   foot. The section keeps its two shafts of light; the sheet sits above them. */
+   Alex, 2026-09-14, on the first cut of this row: "badly organised text,
+   header 3/10". The title and the bold lede under it were two heavy lines of
+   nearly one weight, and Contact me stood alone in a far column across an
+   empty field. Now it is one column that reads top to bottom — the title a
+   clear step above everything, the lede in the reading face at lead size, the
+   client's paragraphs at a reading measure, and Contact me directly under the
+   words it answers — with Evan holding the left, larger. The section keeps its
+   two shafts of light; the sheet sits above them. */
 .about-sheet {
   position: relative; z-index: 1;
   display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: var(--sp-5) var(--col-gap); align-items: start;
+  gap: var(--sp-6) var(--col-gap); align-items: start;
 }
-.about-sheet__who { grid-column: 1 / span 3; grid-row: 1 / span 2; margin: 0; display: grid; gap: var(--sp-3); }
-.about-sheet__cap { display: grid; gap: var(--sp-1); }
-.about-sheet__head { grid-column: 4 / span 6; grid-row: 1; display: grid; gap: var(--sp-4); justify-items: start; }
+/* Evan stands on the section's floor — Alex, 2026-09-14: "lower the portrait
+   to the edge of the grey section". The figure is anchored to the foot of the
+   row and runs through the section's bottom padding, so the fade of the shirt
+   meets the section's edge; his name sits beside him, level with the last of
+   the shirt, as on the home page. */
+.about-sheet__who {
+  grid-column: 1 / span 5; grid-row: 1 / span 3; align-self: end;
+  margin: 0 0 calc(var(--sp-8) * -1);
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--sp-5);
+}
+.about-sheet__cap { display: grid; gap: var(--sp-1); padding-block-end: var(--sp-8); }
+.about-sheet__head { grid-column: 7 / span 6; grid-row: 1; display: grid; gap: var(--sp-4); justify-items: start; }
 .about-sheet__head .tag { margin: 0; }
 .about-sheet__title {
-  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--lot);
-  line-height: var(--lh-tight); letter-spacing: var(--ls-heading); color: var(--text);
+  margin: 0; max-inline-size: 18ch; font-family: var(--face); font-weight: 600; font-size: calc(var(--h2) * 0.78);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-display); color: var(--text); text-wrap: balance;
 }
-.about-sheet__copy { grid-column: 4 / span 6; grid-row: 2; display: grid; gap: var(--sp-4); }
+.about-sheet__copy { grid-column: 7 / span 6; grid-row: 2; display: grid; gap: var(--sp-4); max-inline-size: 60ch; }
 .about-sheet__lede {
-  margin: 0; max-inline-size: 40ch; font-family: var(--face); font-weight: 600; font-size: var(--fs-lead);
-  line-height: var(--lh-heading); color: var(--text); text-wrap: balance;
+  margin: 0 0 var(--sp-2); font-family: var(--text-face); font-weight: 400; font-size: var(--fs-lead);
+  line-height: var(--lh-body); color: var(--text); text-wrap: pretty;
 }
 .about-sheet__copy > p:not(.about-sheet__lede) {
-  margin: 0; max-inline-size: 62ch; line-height: var(--lh-body); color: var(--text-muted); text-wrap: pretty;
+  margin: 0; line-height: var(--lh-body); color: var(--text-muted); text-wrap: pretty;
 }
-.about-sheet__side { grid-column: 10 / span 3; grid-row: 1 / span 2; align-self: end; display: grid; gap: var(--sp-4); justify-items: start; }
+.about-sheet__side { grid-column: 7 / span 6; grid-row: 3; display: grid; justify-items: start; padding-block-start: var(--sp-2); }
 
 /* ── about.html · the shop ────────────────────────────────────────────────────
    One strip: the client's photograph, the address, the opening and its count,
@@ -119,14 +133,13 @@
   .shop-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .shop-strip__photo { grid-row: 1 / span 3; align-self: start; }
   .shop-strip__acts { justify-items: start; }
-  .about-sheet__side { grid-column: 4 / span 9; grid-row: 3; align-self: start; }
-  .about-sheet__who { grid-row: 1 / span 3; }
 }
 @media (max-width: 61.99rem) {
   .svc-sheet, .about-sheet, .shop-strip { grid-template-columns: minmax(0, 1fr); }
   .svc-sheet > *, .about-sheet > *, .shop-strip > * { grid-column: 1; grid-row: auto; }
   .svc-row { grid-template-columns: minmax(0, 6.5rem) minmax(0, 1fr); gap: var(--sp-4); }
-  .about-sheet__who { max-inline-size: 18rem; }
+  .about-sheet__who { margin-block-end: 0; align-self: start; max-inline-size: 24rem; }
+  .about-sheet__cap { padding-block-end: var(--sp-5); }
 }
 /* On a phone the picture sits above its words, so the checks get the whole
    width and "The annual going-over" stays one item on one line. */

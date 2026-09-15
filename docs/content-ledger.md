@@ -475,5 +475,5 @@ finance, the ten car pages). The home page's own sections stay as they are.
 | About, the shop | 14510 Parallel Lane, Basehor, Kansas · 913 662 5000 | **sourced** | Row 10 |
 | About, the shop | Grand Opening, Sunday 27 September · 11:30 AM, and its countdown | **sourced** | As the home page's pinned news item |
 | Both pages | Recomposed as a specification sheet (variant B) | **design only** | Alex, 2026-09-14: "very bulky… run it through genjutsu", then "B". No claim changed; the Tune-up list now reads on one line |
-| About | "Talk to Evan — by phone, by email or at the shop." beside Contact me | **design only — the contact panel's own line, shortened** | The panel's lede: "Tell Evan what you have in mind and he will be in touch — by phone, by email or at the shop." |
+| About | ~~"Talk to Evan — by phone, by email or at the shop."~~ beside Contact me | **removed — Alex, 2026-09-14** | Was the contact panel's lede, shortened. Contact me stands alone |
 | About, contact panel | "Talk to Evan." panel, "Rather talk it through in person? Call 913 662 5000 to schedule an appointment in our shop." | **sourced / design only** | The home page's panel; the form is connected to nothing and no longer says "design preview" |

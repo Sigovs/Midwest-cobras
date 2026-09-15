@@ -82,7 +82,6 @@
   margin: 0; max-inline-size: 62ch; line-height: var(--lh-body); color: var(--text-muted); text-wrap: pretty;
 }
 .about-sheet__side { grid-column: 10 / span 3; grid-row: 1 / span 2; align-self: end; display: grid; gap: var(--sp-4); justify-items: start; }
-.about-sheet__note { margin: 0; max-inline-size: 28ch; line-height: var(--lh-body); color: var(--text-muted); }
 
 /* ── about.html · the shop ────────────────────────────────────────────────────
    One strip: the client's photograph, the address, the opening and its count,

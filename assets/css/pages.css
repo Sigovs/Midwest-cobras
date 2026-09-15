@@ -1,97 +1,138 @@
 /* pages.css — service.html and about.html.
    ---------------------------------------------------------------------------
-   Alex, 2026-09-14: "make two additional pages, SERVICE and ABOUT US". Both
-   are built from what the system already has — the section head, the About
-   section with Evan and its light, the countdown, the button and the pill —
-   and this file only composes what those pages newly put side by side.
-   Values come from tokens.css. */
+   Alex, 2026-09-14: "make two additional pages, SERVICE and ABOUT US", then
+   "very bulky, both of them — run it through genjutsu", and of the three
+   compact variants, "B". So both are set as a specification sheet: the page's
+   title, its note and its one action hold a narrow column, and what the page
+   is about stands beside it as compact rows — a small picture, the name, a
+   line, the action. Nothing is a screen tall any more; each page's action is
+   on the first screen. Built from what the system has — the tag, the button,
+   the pill, Evan's portrait treatment, the light on the About ground, the
+   countdown. Values come from tokens.css. */
 
-/* ── service.html ─────────────────────────────────────────────────────────────
-   Two services on the record ground, not set as equals. Tune-up and service
-   leads: the larger picture, a list of what it covers, and the page's one
-   solid action. Transportation follows at a smaller picture, mirrored, with
-   the tertiary pill. The two cut-outs keep their own shapes (1:1 and 4:3) and
-   sit on the bone without a frame, as on the home page. */
-.svc-page .sect__head { margin-block-end: var(--sp-7); }
-.svc {
-  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: var(--sp-7) var(--col-gap); align-items: center;
-  padding-block: var(--sp-8);
-  border-block-start: var(--hairline) solid var(--rule);
+/* ── both pages: the record scale ─────────────────────────────────────────────
+   The first section clears the bar by one step of air instead of a full
+   section's padding, and sections close on the same step. The inner pages are
+   records to read, not chapters to arrive at. */
+:is(.page-service, .page-about) main > .sect:first-of-type {
+  padding-block-start: calc(var(--bar-h, var(--bar-clear)) + var(--sp-7));
 }
-.svc__shot { margin: 0; }
-.svc__shot img { display: block; inline-size: 100%; block-size: auto; }
-.svc--lead .svc__shot { grid-column: 1 / span 6; }
-.svc--lead .svc__body { grid-column: 8 / span 5; }
-.svc--second .svc__body { grid-column: 1 / span 5; grid-row: 1; }
-.svc--second .svc__shot { grid-column: 7 / span 5; grid-row: 1; }
-.svc--second { padding-block-end: 0; }
+.page-service .svc-page,
+.page-about .about,
+.page-about .shop { padding-block-end: var(--sp-8); }
+.page-about .shop { padding-block-start: var(--sp-8); }
 
-.svc__body { display: grid; gap: var(--sp-5); justify-items: start; align-content: start; min-inline-size: 0; }
-.svc__title {
+/* ── service.html ─────────────────────────────────────────────────────────── */
+.svc-sheet {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--sp-7) var(--col-gap); align-items: start;
+}
+.svc-sheet__aside { grid-column: 1 / span 4; display: grid; gap: var(--sp-4); justify-items: start; }
+.svc-sheet__aside .tag { margin: 0; }
+.svc-sheet__title {
   margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--lot);
   line-height: var(--lh-tight); letter-spacing: var(--ls-heading); color: var(--text);
 }
-.svc__text { margin: 0; max-inline-size: 48ch; line-height: var(--lh-body); color: var(--text-muted); text-wrap: pretty; }
-.svc__k {
-  margin: var(--sp-2) 0 0; font-family: var(--mono); font-weight: 400; font-size: var(--micro);
-  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+.svc-sheet__note { margin: 0; max-inline-size: 36ch; line-height: var(--lh-body); color: var(--text-muted); text-wrap: pretty; }
+.svc-sheet__act { margin: var(--sp-2) 0 0; }
+
+.svc-rows { grid-column: 6 / span 7; border-block-end: var(--hairline) solid var(--rule); }
+.svc-row {
+  display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr);
+  gap: var(--sp-6); align-items: start;
+  padding-block: var(--sp-5); border-block-start: var(--hairline) solid var(--rule);
 }
-/* What it covers, as rows: five parts of one job read down a rule faster than
-   along a sentence. */
-.svc__list {
-  inline-size: 100%; margin: 0; padding: 0; list-style: none;
-  border-block-end: var(--hairline) solid var(--rule);
+.svc-row__shot { display: block; inline-size: 100%; block-size: auto; }
+.svc-row__body { display: grid; gap: var(--sp-3); justify-items: start; min-inline-size: 0; }
+.svc-row__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-lead);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
 }
-.svc__list li {
-  padding-block: var(--sp-3); border-block-start: var(--hairline) solid var(--rule);
-  font-family: var(--face); font-weight: 600; font-size: var(--fs-lead); line-height: var(--lh-heading); color: var(--text);
+.svc-row__text { margin: 0; max-inline-size: 58ch; line-height: var(--lh-body); color: var(--text-muted); text-wrap: pretty; }
+/* What it covers, on one mono line: five parts of one job, read as a record. */
+.svc-row__covers {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); margin: 0; padding: 0; list-style: none;
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase; color: var(--text);
 }
-.svc__act { margin: var(--sp-2) 0 0; }
+.svc-row__act { margin: var(--sp-1) 0 0; }
+
+/* ── about.html · the person ──────────────────────────────────────────────────
+   Evan, his words and the way to reach him, in one row: the portrait holds the
+   left, the heading and the client's copy the middle, Contact me the right
+   foot. The section keeps its two shafts of light; the sheet sits above them. */
+.about-sheet {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--sp-5) var(--col-gap); align-items: start;
+}
+.about-sheet__who { grid-column: 1 / span 3; grid-row: 1 / span 2; margin: 0; display: grid; gap: var(--sp-3); }
+.about-sheet__cap { display: grid; gap: var(--sp-1); }
+.about-sheet__head { grid-column: 4 / span 6; grid-row: 1; display: grid; gap: var(--sp-4); justify-items: start; }
+.about-sheet__head .tag { margin: 0; }
+.about-sheet__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-heading); color: var(--text);
+}
+.about-sheet__copy { grid-column: 4 / span 6; grid-row: 2; display: grid; gap: var(--sp-4); }
+.about-sheet__lede {
+  margin: 0; max-inline-size: 40ch; font-family: var(--face); font-weight: 600; font-size: var(--fs-lead);
+  line-height: var(--lh-heading); color: var(--text); text-wrap: balance;
+}
+.about-sheet__copy > p:not(.about-sheet__lede) {
+  margin: 0; max-inline-size: 62ch; line-height: var(--lh-body); color: var(--text-muted); text-wrap: pretty;
+}
+.about-sheet__side { grid-column: 10 / span 3; grid-row: 1 / span 2; align-self: end; display: grid; gap: var(--sp-4); justify-items: start; }
+.about-sheet__note { margin: 0; max-inline-size: 28ch; line-height: var(--lh-body); color: var(--text-muted); }
 
 /* ── about.html · the shop ────────────────────────────────────────────────────
-   The client's photograph of the building beside what a visitor needs to get
-   there. The photograph is shown at its own 4:3, so nothing is cropped; the
-   record stands to its right and level with its middle. */
-.shop__grid {
-  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: var(--sp-7) var(--col-gap); align-items: center;
+   One strip: the client's photograph, the address, the opening and its count,
+   and the two ways there. */
+.shop-strip {
+  display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 3fr) minmax(0, 3fr) auto;
+  gap: var(--sp-6) var(--col-gap); align-items: center;
 }
-.shop__photo { grid-column: 1 / span 7; margin: 0; }
-.shop__photo img {
+.shop-strip__photo { margin: 0; }
+.shop-strip__photo img {
   display: block; inline-size: 100%; block-size: auto; aspect-ratio: 4 / 3; object-fit: cover;
   border-radius: var(--radius-media);
 }
-.shop__body { grid-column: 9 / span 4; display: grid; gap: var(--sp-5); justify-items: start; min-inline-size: 0; }
-.shop__body .tag { margin: 0; }
-.shop__title {
-  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--h3);
+.shop-strip__place, .shop-strip__open { display: grid; gap: var(--sp-3); justify-items: start; min-inline-size: 0; }
+.shop-strip__place .tag { margin: 0; }
+.shop-strip__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-lead);
   line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
-  max-inline-size: 18ch; text-wrap: balance;
 }
-.shop__open {
-  display: grid; gap: var(--sp-2); inline-size: 100%;
-  padding-block: var(--sp-5); border-block: var(--hairline) solid var(--rule);
-}
-.shop__k {
+.shop-strip__k {
   margin: 0; font-family: var(--mono); font-size: var(--micro);
   letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
 }
-.shop__when { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-lead); color: var(--text); }
-/* The home page scopes the cells to the news item; the same cells here. */
-.shop .countdown { margin-block: var(--sp-3) 0; gap: var(--sp-6); }
-.shop .countdown__cell { display: grid; gap: var(--sp-2); margin: 0; }
-.shop .countdown__open { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-lead); color: var(--text); }
-.shop__acts { margin-block-start: 0; }
+.shop-strip__when { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-body); line-height: var(--lh-heading); color: var(--text); }
+/* The home page scopes the countdown's cells to its news item; the same cells
+   here, at the strip's scale. */
+.shop .countdown { margin: var(--sp-1) 0 0; gap: var(--sp-5); }
+.shop .countdown__cell { display: grid; gap: var(--sp-1); margin: 0; }
+.shop .countdown__n { font-size: var(--lot); }
+.shop .countdown__open { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-body); color: var(--text); }
+.shop-strip__acts { margin: 0; display: grid; gap: var(--sp-3); }
+.shop-strip__acts .btn { justify-content: space-between; }
 
+@media (max-width: 74.99rem) {
+  .shop-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shop-strip__photo { grid-row: 1 / span 3; align-self: start; }
+  .shop-strip__acts { justify-items: start; }
+  .about-sheet__side { grid-column: 4 / span 9; grid-row: 3; align-self: start; }
+  .about-sheet__who { grid-row: 1 / span 3; }
+}
 @media (max-width: 61.99rem) {
-  .svc { grid-template-columns: minmax(0, 1fr); gap: var(--sp-6); }
-  .svc--lead .svc__shot, .svc--lead .svc__body,
-  .svc--second .svc__body, .svc--second .svc__shot { grid-column: 1; grid-row: auto; }
-  .svc--second .svc__shot { grid-row: 1; }
-  .svc__shot { max-inline-size: 30rem; }
-  /* One track, not twelve: twelve columns keep their eleven gaps at any width,
-     and at 390 the gaps alone were wider than the page. */
-  .shop__grid { grid-template-columns: minmax(0, 1fr); }
-  .shop__photo, .shop__body { grid-column: 1; }
+  .svc-sheet, .about-sheet, .shop-strip { grid-template-columns: minmax(0, 1fr); }
+  .svc-sheet > *, .about-sheet > *, .shop-strip > * { grid-column: 1; grid-row: auto; }
+  .svc-row { grid-template-columns: minmax(0, 6.5rem) minmax(0, 1fr); gap: var(--sp-4); }
+  .about-sheet__who { max-inline-size: 18rem; }
+}
+/* On a phone the picture sits above its words, so the checks get the whole
+   width and "The annual going-over" stays one item on one line. */
+@media (max-width: 47.99rem) {
+  .svc-row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); }
+  .svc-row__shot { max-inline-size: 8rem; }
+  .svc-row__covers li { white-space: nowrap; }
 }

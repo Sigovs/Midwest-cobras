@@ -62,69 +62,55 @@
 <main id="top">
 
   <!-- ══════════════════════════════════════════════════════════════════════
-       SERVICE — the record ground, as the design read puts service with the
-       finance and the configurator: one bone section, the home page's two
-       services, and nothing added to fill the page. Two services is the
-       honest content, so the page holds two, and they are not set as equals:
-       Tune-up and service leads, at the larger picture and with the page's
-       one solid action, because it is the one the client wants a call for —
-       "the clickable button for Service should prompt them to call in to
-       schedule their appointment". Transportation follows smaller, with the
-       tertiary pill Alex restored on 2026-09-11.
-
-       The copy is the home page's own, split only where a list reads better
-       than a sentence. The heading and its note are the draft the client is
-       "still mulling over". Content ledger, "service.html".
+       SERVICE — a specification sheet on the record ground. Alex, 2026-09-14:
+       the first build was "very bulky"; of three compact variants he chose B.
+       The page's title, its note and its one action — the client's "the
+       clickable button for Service should prompt them to call in to schedule"
+       — hold the left column; the home page's two services stand beside it as
+       compact rows, each a small picture, the name, a line and, for transport,
+       the tertiary pill Alex restored on 2026-09-11. Two services is the honest
+       content and the page holds two. Content ledger, "service.html".
      ══════════════════════════════════════════════════════════════════════ -->
   <section class="sect sect--bone svc-page" id="service" data-ground="light" aria-labelledby="service-title">
-    <header class="sect__head sect__head--pair">
-      <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Service</p>
-      <h1 class="sect__title" id="service-title">After it is yours.</h1>
-      <p class="lede sect__note">The people who build your Cobra are the ones who
-        look after it — the tune-ups, the service, and getting it where it needs
-        to go.</p>
-    </header>
-
-    <article class="svc svc--lead" id="tune-up" aria-labelledby="tune-up-title">
-      <figure class="svc__shot">
-        <img src="assets/img/service-tune-up.png" width="1254" height="1254"
-             alt="A Cobra with its bonnet up beside a tool chest, a creeper and a tray of spanners">
-      </figure>
-      <div class="svc__body">
-        <h2 class="svc__title" id="tune-up-title">Tune-up and service</h2>
-        <p class="svc__text">These are not cars a general workshop sees twice a year.</p>
-        <h3 class="svc__k">What it covers</h3>
-        <ul class="svc__list">
-          <li>Setup</li>
-          <li>Carburetion</li>
-          <li>Cooling</li>
-          <li>Brakes</li>
-          <li>The annual going-over</li>
-        </ul>
-        <p class="svc__text">Done by people with your car's own build sheet open in front of them.</p>
-        <p class="svc__act">
+    <div class="svc-sheet">
+      <div class="svc-sheet__aside">
+        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Service</p>
+        <h1 class="svc-sheet__title" id="service-title">After it is yours.</h1>
+        <p class="svc-sheet__note">The people who build your Cobra are the ones who look
+          after it — the tune-ups, the service, and getting it where it needs to go.</p>
+        <p class="svc-sheet__act">
           <a class="btn btn--solid" href="tel:+19136625000">Call 913 662 5000 to schedule <span aria-hidden="true">&rarr;</span></a>
         </p>
       </div>
-    </article>
 
-    <!-- The picture on the right: the ramps run out to the left, into the
-         page and toward the words, rather than off its edge. -->
-    <article class="svc svc--second" id="transportation" aria-labelledby="transport-title">
-      <div class="svc__body">
-        <h2 class="svc__title" id="transport-title">Transportation</h2>
-        <p class="svc__text">Enclosed transport to the shop, to an event, or to a new
-          owner. The car does not arrive on an open trailer behind somebody's
-          pickup.</p>
-        <p class="svc__act">
-          <a class="link" href="tel:+19136625000">Arrange transport <span aria-hidden="true">&rarr;</span></a>
-        </p>
+      <div class="svc-rows">
+        <article class="svc-row" id="tune-up" aria-labelledby="tune-up-title">
+          <img class="svc-row__shot" src="assets/img/service-tune-up.png" width="1254" height="1254"
+               alt="A Cobra with its bonnet up beside a tool chest, a creeper and a tray of spanners">
+          <div class="svc-row__body">
+            <h2 class="svc-row__title" id="tune-up-title">Tune-up and service</h2>
+            <p class="svc-row__text">These are not cars a general workshop sees twice a year. Done by
+              people with your car's own build sheet open in front of them.</p>
+            <ul class="svc-row__covers" aria-label="What it covers">
+              <li>Setup</li><li>Carburetion</li><li>Cooling</li><li>Brakes</li><li>The annual going-over</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="svc-row" id="transportation" aria-labelledby="transport-title">
+          <img class="svc-row__shot" src="assets/img/service-transport.png" width="1448" height="1086"
+               alt="A Cobra strapped down inside an enclosed transporter, ramps still out" loading="lazy" decoding="async">
+          <div class="svc-row__body">
+            <h2 class="svc-row__title" id="transport-title">Transportation</h2>
+            <p class="svc-row__text">Enclosed transport to the shop, to an event, or to a new owner. The
+              car does not arrive on an open trailer behind somebody's pickup.</p>
+            <p class="svc-row__act">
+              <a class="link" href="tel:+19136625000">Arrange transport <span aria-hidden="true">&rarr;</span></a>
+            </p>
+          </div>
+        </article>
       </div>
-      <figure class="svc__shot">
-        <img src="assets/img/service-transport.png" width="1448" height="1086"
-             alt="A Cobra strapped down inside an enclosed transporter, ramps still out" loading="lazy" decoding="async">
-      </figure>
-    </article>
+    </div>
   </section>
 </main>
 

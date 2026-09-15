@@ -63,40 +63,36 @@
 <main id="top">
 
   <!-- ══════════════════════════════════════════════════════════════════════
-       ABOUT — two masses and no more, because that is what is true to say.
-       First the person: the home page's Who we are, as approved — Evan under
-       the heading, the client's four paragraphs, Contact me — on its own
-       graphite with the two shafts of light, now the page's h1. Then the
-       place, on bone: the client's own photograph of the building at 14510
-       Parallel Lane with three cars in front of it, beside the address, the
-       Grand Opening and the two ways to get there.
-
-       A third block of contact details was drafted and cut: it repeated the
-       footer that follows it, word for word, one screen apart. Content
-       ledger, "about.html".
+       ABOUT — a specification sheet in two masses. Alex, 2026-09-14: the first
+       build was "very bulky"; of three compact variants he chose B. The person
+       first, on the graphite with its two shafts of light: Evan's portrait,
+       the heading and the client's four paragraphs, and Contact me — in one
+       row. Then the place, on bone, as one strip: the client's own photograph
+       of the building, the address, the Grand Opening with its count, and the
+       two ways to get there. Content ledger, "about.html".
      ══════════════════════════════════════════════════════════════════════ -->
   <section class="sect sect--900 about" id="about" aria-labelledby="about-title">
     <div class="about__light" aria-hidden="true">
       <div class="about__beam"><span></span><span></span><span></span></div>
       <div class="about__beam"><span></span><span></span><span></span></div>
     </div>
-    <div class="about__grid">
-      <div>
+    <div class="about-sheet">
+      <header class="about-sheet__head">
         <p class="tag"><span class="tag__dot" aria-hidden="true"></span>About</p>
-        <h1 class="sect__title" id="about-title">Welcome to Midwest Cobras.</h1>
-        <figure class="who">
-          <div class="who__photo">
-            <img src="assets/img/about-evan.png" width="1000" height="1000"
-                 alt="Portrait of Evan Kunard" decoding="async">
-          </div>
-          <figcaption class="who__cap">
-            <span class="who__name">Evan Kunard</span>
-            <span class="who__role">Owner</span>
-          </figcaption>
-        </figure>
-      </div>
-      <div class="about__body">
-        <p class="lede about__lede">Everyone knows the iconic look of a Cobra. They turn heads everywhere they go.</p>
+        <h1 class="about-sheet__title" id="about-title">Welcome to Midwest Cobras.</h1>
+      </header>
+      <figure class="about-sheet__who">
+        <div class="who__photo">
+          <img src="assets/img/about-evan.png" width="1000" height="1000"
+               alt="Portrait of Evan Kunard" decoding="async">
+        </div>
+        <figcaption class="about-sheet__cap">
+          <span class="who__name">Evan Kunard</span>
+          <span class="who__role">Owner</span>
+        </figcaption>
+      </figure>
+      <div class="about-sheet__copy">
+        <p class="about-sheet__lede">Everyone knows the iconic look of a Cobra. They turn heads everywhere they go.</p>
         <p>Lifelong car enthusiast, Evan Kunard, has a deep passion for the classics.
           From frame-off restorations to owning his dream car, he now strives to
           help others make their dream car a reality!</p>
@@ -106,45 +102,45 @@
           aspirations.</p>
         <p>We look forward to building long-lasting relationships with our
           customers, who become part of our Cobra family.</p>
-        <p class="btn-row">
-          <a class="btn btn--solid" href="mailto:evan@midwestcobras.com?subject=Hello%20from%20the%20website" data-enquiry-open aria-haspopup="dialog">Contact me</a>
-        </p>
+      </div>
+      <div class="about-sheet__side">
+        <p class="about-sheet__note">Talk to Evan — by phone, by email or at the shop.</p>
+        <a class="btn btn--solid" href="mailto:evan@midwestcobras.com?subject=Hello%20from%20the%20website" data-enquiry-open aria-haspopup="dialog">Contact me</a>
       </div>
     </div>
   </section>
 
-  <!-- THE SHOP — the client's own photograph, "cover photo" in their folder:
-       the building, its number and three cars. Shown whole, at its own 4:3,
-       so nothing of the building or the cars is cropped. The countdown is the
-       home page's, bound by its data attributes; it hands over to "We're
-       open" by itself. -->
+  <!-- THE SHOP — one strip. The client's own photograph, "cover photo" in
+       their folder, at its own 4:3 so nothing of the building or the cars is
+       cropped. The countdown is the home page's, bound by its data attributes;
+       it hands over to "We're open" by itself. -->
   <section class="sect sect--bone shop" id="the-shop" data-ground="light" aria-labelledby="shop-title">
-    <div class="shop__grid">
-      <figure class="shop__photo">
+    <div class="shop-strip">
+      <figure class="shop-strip__photo">
         <img src="assets/img/hero-cover-day.jpg" width="1920" height="1440"
              alt="Three Backdraft Cobras parked in front of the Midwest Cobras building, number 14510, beside its garage door"
              loading="lazy" decoding="async">
       </figure>
-      <div class="shop__body">
+      <div class="shop-strip__place">
         <p class="tag"><span class="tag__dot" aria-hidden="true"></span>The shop</p>
-        <h2 class="shop__title" id="shop-title">14510 Parallel Lane, Basehor, Kansas.</h2>
-        <div class="shop__open">
-          <p class="shop__k">Grand Opening</p>
-          <p class="shop__when"><time datetime="2026-09-27T11:30-05:00">Sunday 27 September · 11:30 AM</time></p>
-          <div class="countdown" data-countdown="2026-09-27T11:30:00-05:00" role="timer"
-               aria-label="Time until the Grand Opening" hidden>
-            <p class="countdown__cell"><span class="countdown__n" data-cd="d">00</span><span class="countdown__u">Days</span></p>
-            <p class="countdown__cell"><span class="countdown__n" data-cd="h">00</span><span class="countdown__u">Hours</span></p>
-            <p class="countdown__cell"><span class="countdown__n" data-cd="m">00</span><span class="countdown__u">Minutes</span></p>
-          </div>
-          <p class="countdown__open" data-countdown-open hidden>We&rsquo;re open — come by.</p>
-        </div>
-        <p class="btn-row shop__acts">
-          <a class="btn btn--solid" href="https://www.google.com/maps/search/?api=1&amp;query=14510+Parallel+Lane+Basehor+Kansas+66007"
-             rel="noopener noreferrer" target="_blank">Get directions <span aria-hidden="true">&rarr;</span></a>
-          <a class="btn" href="tel:+19136625000">Call 913 662 5000</a>
-        </p>
+        <h2 class="shop-strip__title" id="shop-title">14510 Parallel Lane,<br>Basehor, Kansas.</h2>
       </div>
+      <div class="shop-strip__open">
+        <p class="shop-strip__k">Grand Opening</p>
+        <p class="shop-strip__when"><time datetime="2026-09-27T11:30-05:00">Sunday 27 September<br>11:30 AM</time></p>
+        <div class="countdown" data-countdown="2026-09-27T11:30:00-05:00" role="timer"
+             aria-label="Time until the Grand Opening" hidden>
+          <p class="countdown__cell"><span class="countdown__n" data-cd="d">00</span><span class="countdown__u">Days</span></p>
+          <p class="countdown__cell"><span class="countdown__n" data-cd="h">00</span><span class="countdown__u">Hours</span></p>
+          <p class="countdown__cell"><span class="countdown__n" data-cd="m">00</span><span class="countdown__u">Minutes</span></p>
+        </div>
+        <p class="countdown__open" data-countdown-open hidden>We&rsquo;re open — come by.</p>
+      </div>
+      <p class="shop-strip__acts">
+        <a class="btn btn--solid" href="https://www.google.com/maps/search/?api=1&amp;query=14510+Parallel+Lane+Basehor+Kansas+66007"
+           rel="noopener noreferrer" target="_blank">Get directions <span aria-hidden="true">&rarr;</span></a>
+        <a class="btn" href="tel:+19136625000">Call 913 662 5000</a>
+      </p>
     </div>
   </section>
 </main>

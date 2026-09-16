@@ -451,6 +451,7 @@ open panel on the raised bone. No claim changed with either layout.
 | Standards | "Forty years of experience with these cars" | **sourced** | Row 7 |
 | Action bar | Call 913 662 5000, Text Evan, Start financing | **sourced** | Row 10. The Location line came out with shipping, Alex 2026-09-14 |
 | Gallery | The photographs section is named Gallery | **as asked** | Alex, 2026-09-14 |
+| Under the photographs | "Show me the Carfax" badge, linking to carfax.com | **design only — placeholder link** | Alex, 2026-09-16. A real report link carries the car's VIN (Carfax's partner URL); these simulated cars have no VIN, so it opens Carfax's report page. Logo file taken from Alex's Chicago Motor Cars build; Carfax participation and its terms are the client's to confirm |
 
 
 ## service.html and about.html — their own pages, 2026-09-14

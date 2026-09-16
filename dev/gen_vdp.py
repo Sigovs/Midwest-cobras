@@ -215,6 +215,15 @@ for c in CARS:
             % ('true' if n == 0 else 'false', f, esc(name + ', ' + alt), f, n + 1, esc(alt), s[0], s[1])
             for n, (f, s, alt) in enumerate(files)) + '\n          </div>'
 
+    # Carfax under the photographs — Alex, 2026-09-16: "VDP page needs Carfax,
+    # below main image, the size of the Enquire button". A live report link
+    # carries the car's VIN; these simulated cars have none, so it opens
+    # Carfax's own report page until a VIN is on record. Content ledger.
+    carfax = """
+        <a class="vdp-cfx" href="https://www.carfax.com/vehicle-history-reports/" target="_blank" rel="noopener noreferrer">
+          <img src="assets/img/carfax.svg" width="253" height="60" alt="Show me the Carfax" decoding="async">
+        </a>"""
+
     panel_rows = [('Mileage', miles(c)), ('Engine', c['engine']), ('Transmission', c['trans']),
                   ('Drivetrain', 'Rear-wheel drive'), ('Exterior', c['ext']), ('Interior', c['int_']), ('Stock', stock)]
     panel_specs = '\n'.join('            <div><dt>%s</dt><dd>%s</dd></div>' % (k, esc(v)) for k, v in panel_rows)
@@ -416,7 +425,7 @@ for c in CARS:
       <div class="stage" data-stage tabindex="-1">
         <div class="stage__frame">
           <img src="{first_file}" alt="{esc(name + ', ' + first_alt)}" width="{first_size[0]}" height="{first_size[1]}" data-stage-img fetchpriority="high">{stage_nav}
-        </div>{thumbs}
+        </div>{thumbs}{carfax}
       </div>
 
       <div class="vdp-panel">

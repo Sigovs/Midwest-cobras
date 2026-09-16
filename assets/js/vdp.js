@@ -49,6 +49,7 @@
     if (prev) prev.addEventListener('click', function () { show(at - 1); });
     if (next) next.addEventListener('click', function () { show(at + 1); });
     stage.addEventListener('keydown', function (e) {
+      if (e.target.closest && e.target.closest('.vdp-cfx')) return;
       if (e.key === 'ArrowLeft') { show(at - 1); e.preventDefault(); }
       if (e.key === 'ArrowRight') { show(at + 1); e.preventDefault(); }
     });

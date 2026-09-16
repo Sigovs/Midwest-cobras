@@ -36,14 +36,17 @@
 .vdp-save[aria-pressed='true'] svg path { fill: currentColor; }
 
 /* ── the summary: the gallery beside the panel ─────────────────────────────── */
+/* The two columns stand to one height, so what closes each of them — Carfax
+   under the photographs, Enquire under the specification — sits on one line
+   (Alex, 2026-09-16: "align"). */
 .vdp-sum {
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(20rem, 26rem);
-  gap: var(--sp-6) var(--col-gap); align-items: start;
+  gap: var(--sp-6) var(--col-gap); align-items: stretch;
 }
 
 /* Upright photographs are shown whole on the frame's own graphite rather than
    cut to the frame. */
-.stage { display: grid; gap: var(--sp-3); min-inline-size: 0; }
+.stage { display: flex; flex-direction: column; gap: var(--sp-3); min-inline-size: 0; }
 .stage:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
 .stage__frame { position: relative; overflow: clip; border-radius: var(--radius-media); background: var(--graphite-900); }
 .stage__frame img {
@@ -99,7 +102,7 @@
    the two boxes stay equal if either token moves. */
 .vdp-cfx {
   display: flex; align-items: center; justify-content: center;
-  inline-size: min(100%, 26rem); padding: var(--sp-2) var(--sp-6);
+  inline-size: min(100%, 26rem); padding: var(--sp-2) var(--sp-6); margin-block-start: auto;
   background: var(--bone-050); border: var(--hairline) solid var(--bone-050);
   transition: background-color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
 }
@@ -109,7 +112,7 @@
 
 /* The panel: stock and status in the mono that records, the name, the price
    at the size it is decided on, the rows a buyer reads first, and the ask. */
-.vdp-panel { display: grid; gap: var(--sp-5); align-content: start; min-inline-size: 0; }
+.vdp-panel { display: flex; flex-direction: column; gap: var(--sp-5); min-inline-size: 0; }
 .vdp-panel__k {
   margin: 0; font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase;
   color: var(--text-muted);
@@ -128,7 +131,7 @@
 .vdp-panel__specs > div { grid-template-columns: minmax(0, 8rem) minmax(0, 1fr); padding-block: var(--sp-3); }
 .vdp-panel__specs > div:first-child { border-block-start: 0; padding-block-start: 0; }
 .vdp-panel__specs dd { margin: 0; font-variant-numeric: tabular-nums; }
-.vdp-panel__cta { justify-content: space-between; }
+.vdp-panel__cta { justify-content: space-between; margin-block-start: auto; }
 
 /* ── the action bar: three ways to reach Evan ─────────────────────────────────
    The location and "Estimate shipping" came out — Alex, 2026-09-14: "remove

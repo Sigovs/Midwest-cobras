@@ -95,19 +95,21 @@
 .thumb[aria-current='true'] { opacity: 1; outline-color: var(--bone-050); }
 .thumb:focus-visible { opacity: 1; outline: var(--focus-w) solid var(--bone-050); }
 
-/* Carfax, under the photographs — Alex, 2026-09-16: the size of the panel's
-   Enquire button. The same measure and the same bone fill and edge, and a
-   height built from the button's own parts: its line of text and its padding.
-   The mark takes the button's padding into its own height, so it reads, and
-   the two boxes stay equal if either token moves. */
+/* Carfax, under the photographs — Alex, 2026-09-16: the height of the panel's
+   Enquire button, on its line; then "align the Carfax logo to the left, remove
+   the white box". So no box: the mark alone, at the gallery's left edge, and
+   as tall as the button — its height built from the button's own parts (its
+   line of text, its padding top and bottom, its edge), so the mark's top and
+   bottom meet the button's top and bottom and stay there if a token moves. */
 .vdp-cfx {
-  display: flex; align-items: center; justify-content: center;
-  inline-size: min(100%, 26rem); padding: var(--sp-2) var(--sp-6); margin-block-start: auto;
-  background: var(--bone-050); border: var(--hairline) solid var(--bone-050);
-  transition: background-color var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
+  display: block; inline-size: fit-content; max-inline-size: 100%; margin-block-start: auto;
+  transition: opacity var(--dur-2) var(--ease-out);
 }
-.vdp-cfx img { display: block; block-size: calc(var(--micro) * var(--lh-body) + var(--sp-4)); inline-size: auto; }
-.vdp-cfx:hover { background: var(--bone-100); border-color: var(--bone-100); }
+.vdp-cfx img {
+  display: block; inline-size: auto; max-inline-size: 100%;
+  block-size: calc(var(--micro) * var(--lh-body) + var(--sp-4) * 2 + var(--hairline) * 2);
+}
+.vdp-cfx:hover { opacity: 0.85; }
 .vdp-cfx:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
 
 /* The panel: stock and status in the mono that records, the name, the price

@@ -107,3 +107,27 @@
 .enquiry[data-open] .enquiry__content {
   transition: opacity var(--dur-4) var(--ease-out) var(--dur-1);
 }
+
+/* ── the About portrait, replaced ─────────────────────────────────────────
+   Alex, 2026-10-09: the client's own picture of Evan goes in. It is a
+   different photograph in every way that the September treatment was tuned
+   to, so three things are re-taken here. index11 keeps the old picture and
+   the old rules; it loads no v12.
+
+   NOT MIRRORED. September's shot faced off the page's left edge and was
+   flipped to face into it. This one already looks into the page, and it is
+   a real polo with a real maker's mark on its left breast: flipping it puts
+   the mark on the wrong side and reverses the placket, which is a small lie
+   about a real person's clothes. One line, and the reason it existed is
+   gone with the photograph it was written for. */
+.who__photo img { scale: none; }
+
+/* AND THE LIGHT GOES. Alex, 2026-10-09: "either take it away or don't
+   crop it." It was cropped — the glow is a box behind the figure, and on a
+   3:4 frame inside a section that clips, its rim showed as a straight edge
+   across the ground. The rim could be chased; the light should not be here
+   at all. It was invented to put some warmth behind a flat September studio
+   shot. This photograph is lit, and a red wash behind a man in a pink polo
+   was fighting him for the only warm thing on the section. Gone, not
+   softened: index11 keeps it with the picture it was drawn for. */
+.who__photo::before { content: none; }

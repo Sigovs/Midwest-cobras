@@ -263,6 +263,13 @@
   }
   .bld-note__n { grid-row: span 2; margin: 0; font-size: var(--fs-body); color: var(--text-muted); }
   .bld-note__v { grid-column: 2; color: var(--text-muted); }
+  /* AND THE CAVEAT GOES IN THE SAME COLUMN AS THE WORDS — Alex, 2026-10-13,
+     with a screenshot of it: "eto tozhe nado pochinitj". It was never given
+     a column, so auto-placement dropped it into the first one, which is
+     2.25rem wide and holds a two-digit number. Five words at 14px mono in
+     40px of column is one word per line, five lines deep, under three of
+     the eleven parts. The number column is for the number. */
+  .bld-note__off { grid-column: 2; }
 }
 
 /* ── standard features ──────────────────────────────────────────────────────

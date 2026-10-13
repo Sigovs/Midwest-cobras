@@ -277,43 +277,79 @@
         <p class="step__n">01</p>
         <h3 class="step__h">Model</h3>
         <p>RT4 Classic or RT4B Black. Everything below follows from this one.</p>
-        <!-- The phone's copy of this step's frame; v12.css hides it above
-             62rem, where the stage above does the showing. -->
-        <img class="step__shot" src="assets/img/build-01.webp"
-             width="1600" height="900" loading="lazy" decoding="async"
-             alt="A Backdraft Cobra, the specification these five steps describe">
+        <!-- THE FRAME, AND ON A PHONE IT IS BEHIND A TAP — Alex, 2026-10-13:
+             "image by default toljko viden na 01, ostaljnije na touch".
+             Five cars stacked down a phone is five screens of scrolling to
+             read five sentences, so one is open and the rest are a line
+             you press. name= makes them exclusive: opening one shuts the
+             one before it, so there is never more than a car and a half on
+             the screen. Above 62rem the whole disclosure is display:none
+             and the stage at the top does the showing. -->
+        <details class="step__see" name="build-step" open>
+          <summary class="step__sum">
+            <span>See it<span class="v11-sr"> — Model</span></span>
+            <span class="step__mark" aria-hidden="true"></span>
+          </summary>
+          <img class="step__shot" src="assets/img/build-01.webp"
+               width="1600" height="900" loading="lazy" decoding="async"
+               alt="A Backdraft Cobra, the specification these five steps describe">
+        </details>
       </li>
       <li class="step" data-build-step="2" tabindex="0">
         <p class="step__n">02</p>
         <h3 class="step__h">Body and color</h3>
         <p>Paint, stripes, and whether the car wears them at all.</p>
-        <img class="step__shot" src="assets/img/build-02.webp"
-             width="1600" height="900" loading="lazy" decoding="async"
-             alt="" aria-hidden="true">
+        <details class="step__see" name="build-step">
+          <summary class="step__sum">
+            <span>See it<span class="v11-sr"> — Body and color</span></span>
+            <span class="step__mark" aria-hidden="true"></span>
+          </summary>
+          <img class="step__shot" src="assets/img/build-02.webp"
+               width="1600" height="900" loading="lazy" decoding="async"
+               alt="" aria-hidden="true">
+        </details>
       </li>
       <li class="step" data-build-step="3" tabindex="0">
         <p class="step__n">03</p>
         <h3 class="step__h">Wheels and stance</h3>
         <p>Eighteen-inch rims, matte black among them, and what sits under the arches.</p>
-        <img class="step__shot" src="assets/img/build-03.webp"
-             width="1600" height="900" loading="lazy" decoding="async"
-             alt="" aria-hidden="true">
+        <details class="step__see" name="build-step">
+          <summary class="step__sum">
+            <span>See it<span class="v11-sr"> — Wheels and stance</span></span>
+            <span class="step__mark" aria-hidden="true"></span>
+          </summary>
+          <img class="step__shot" src="assets/img/build-03.webp"
+               width="1600" height="900" loading="lazy" decoding="async"
+               alt="" aria-hidden="true">
+        </details>
       </li>
       <li class="step" data-build-step="4" tabindex="0">
         <p class="step__n">04</p>
         <h3 class="step__h">Pipes and roll bars</h3>
         <p>Ceramic-coated, side-exit. The two parts you hear and the two you grab.</p>
-        <img class="step__shot" src="assets/img/build-04.webp"
-             width="1600" height="900" loading="lazy" decoding="async"
-             alt="" aria-hidden="true">
+        <details class="step__see" name="build-step">
+          <summary class="step__sum">
+            <span>See it<span class="v11-sr"> — Pipes and roll bars</span></span>
+            <span class="step__mark" aria-hidden="true"></span>
+          </summary>
+          <img class="step__shot" src="assets/img/build-04.webp"
+               width="1600" height="900" loading="lazy" decoding="async"
+               alt="" aria-hidden="true">
+        </details>
       </li>
       <li class="step" data-build-step="5" tabindex="0">
         <p class="step__n">05</p>
         <h3 class="step__h">Interior</h3>
         <p>Upholstery, stitching, gauges, wheel. The part you are actually sitting in.</p>
-        <img class="step__shot" src="assets/img/build-05.webp"
-             width="1600" height="900" loading="lazy" decoding="async"
-             alt="" aria-hidden="true">
+        <details class="step__see" name="build-step">
+          <summary class="step__sum">
+            <span>See it<span class="v11-sr"> — Interior</span></span>
+            <span class="step__mark" aria-hidden="true"></span>
+          </summary>
+          <img class="step__shot" src="assets/img/build-05.webp"
+               width="1600" height="900" loading="lazy" decoding="async"
+               alt="" aria-hidden="true">
+        </details>
       </li>
     </ol>
   </section>

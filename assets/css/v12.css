@@ -300,14 +300,46 @@
    be left on the wrong frame. Same five files, same URLs — the pictures are
    not duplicated, only the elements that place them, and the ones that are
    not displayed at a given width are never fetched. */
-.step__shot { display: none; }
+.step__shot, .step__see { display: none; }
 
 @media (max-width: 61.99rem) {
   .build__stage { display: none; }
-  .step__shot {
-    display: block; margin-block-start: var(--sp-5);
-    inline-size: 100%; block-size: auto;
+  .step__shot { display: block; inline-size: 100%; block-size: auto; }
+
+  /* ONE OPEN, THE REST ON A TAP — Alex, 2026-10-13: "image by default
+     toljko viden na 01, ostaljnije na touch". Five frames down a phone is
+     five screens of scrolling for five sentences. The disclosures share a
+     name, so they are exclusive: opening one shuts the one before it, and
+     01 is the one that is open when the page arrives. Where name= is not
+     supported they simply all stay open, which is where this was an hour
+     ago — a worse menu, never a broken one. */
+  .step__see { display: block; margin-block-start: var(--sp-5); }
+  .step__sum {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--sp-4); min-block-size: var(--tap);
+    cursor: pointer; list-style: none;
+    font-family: var(--mono); font-size: var(--micro);
+    letter-spacing: var(--track); text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color var(--dur-2) var(--ease-out);
   }
+  .step__sum::-webkit-details-marker { display: none; }
+  .step__sum::marker { content: ''; }
+  .step__see[open] .step__sum { color: var(--text); }
+  .step__sum:focus-visible {
+    outline: var(--focus-w) solid currentColor; outline-offset: var(--focus-offset);
+  }
+  /* A plus that loses its upright and becomes a minus. The same move the
+     car-page accordions make, at the size of a line of mono. */
+  .step__mark { position: relative; flex: none; inline-size: var(--sp-4); block-size: var(--sp-4); }
+  .step__mark::before, .step__mark::after {
+    content: ''; position: absolute; inset-inline: 0; inset-block-start: 50%;
+    block-size: calc(var(--hairline) * 2); background: currentColor; translate: 0 -50%;
+    transition: rotate var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-out);
+  }
+  .step__mark::after { rotate: 90deg; }
+  .step__see[open] .step__mark::after { rotate: 0deg; opacity: 0; }
+  .step__see[open] .step__shot { margin-block-start: var(--sp-4); }
   /* The copy above no longer has a picture beside it, so the space under it
      is the gap between a paragraph and a list, not between two columns. */
   .build__top { margin-block-end: var(--sp-7); }

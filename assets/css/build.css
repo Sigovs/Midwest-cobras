@@ -27,7 +27,21 @@
    page rather than a margin fix on each block, which is how this got
    inconsistent in the first place — six of them were corrected and the rest
    were not. v10.css itself is untouched: index10 and index11 are frozen on
-   it. */
+   it.
+
+   THE LINE THEY START AT IS THE PAGE'S, NOT THE GUTTER'S — Alex, 2026-10-13:
+   "why has everything slid over? align it like the other pages". Flushing the
+   blocks to the gutter answered the drift but moved the whole page off the
+   line every other page keeps: a section's children are centred to --page, so
+   on a wide screen they begin where that column begins, under the wordmark,
+   while this page began at the gutter — 64px here against 73 there at 1905,
+   and the gap widens with the screen. So the column is centred once, on the
+   section, and the blocks are flush to its left edge: every block still
+   starts at one line, and that line is now the site's. Under --page plus its
+   gutters the two are the same number and nothing moves. */
+.page-build main > .sect {
+  padding-inline: max(var(--gutter), calc((100% - var(--page)) / 2));
+}
 .page-build main > .sect > * { margin-inline: 0 auto; }
 /* Section to section, the page is one argument, so the sections do not each
    open with a full --pad of their own. Everything after the first closes up

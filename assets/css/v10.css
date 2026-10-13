@@ -1,0 +1,1310 @@
+/* v10.css — the whole page. One file, flat names, tokens.css underneath it.
+   Grounds are named in the class: sect--950 is graphite-950, sect--900 is
+   graphite-900, sect--bone is the record surface and carries data-ground=light. */
+
+:root {
+  --face:  "Familjen Grotesk", system-ui, sans-serif;
+  --text-face: "Source Sans 3", system-ui, sans-serif;
+  --mono:  "JetBrains Mono", ui-monospace, monospace;
+  --script: "Allura", cursive;
+
+  --h1:   clamp(3.6rem, 7vw, 8.5rem);
+  --h2:   clamp(2.4rem, 3.9vw, 4.6rem);
+  --h3:   clamp(1.35rem, 1.7vw, 2rem);
+  --lot:  clamp(1.5rem, 2vw, 2.35rem);
+  --micro: 0.875rem;              /* 14px floor for functional text */
+  --nav:   1rem;                  /* 16 — the nav sits above the floor, not on it */
+  --news-h: clamp(1.15rem, 1.35vw, 1.4rem);
+  --track: 0.16em;
+  --pad:  clamp(5rem, 10vh, 9rem);
+  --page: 110rem;                 /* the mockup's 1920 less its gutters */
+  /* THE OUTER COLUMN, and the reason it has to be a token. A .sect centres its
+     child inside --page, so the child's edge is the gutter plus whatever the
+     centring adds. The header and the hero are full-bleed and have no child to
+     centre, so they were sitting on the raw gutter — identical up to 1920,
+     where the two numbers coincide, and a visible step apart above it. Same
+     number, one place. */
+  --edge: calc(var(--gutter) + max(0px,
+    ((100vw - var(--sbw, 0px)) - 2 * var(--gutter) - var(--page)) / 2));
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--graphite-950);
+  color: var(--text);
+  font-family: var(--text-face);
+  font-size: clamp(1.0625rem, 1.15vw, 1.3125rem);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p, dl, dd, blockquote, figure { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+/* ── shared ────────────────────────────────────────────────────────────── */
+.skip {
+  position: fixed; z-index: 100;
+  inset-block-start: var(--sp-4); inset-inline-start: var(--sp-4);
+  translate: 0 -300%;
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--bone-050); color: var(--ink-on-light);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; text-decoration: none;
+}
+.skip:focus-visible { translate: 0 0; outline: var(--focus-w) solid var(--ink-on-light); outline-offset: 2px; }
+
+.tag {
+  display: flex; align-items: center; gap: var(--sp-3);
+  margin-block-end: var(--sp-5);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text-muted);
+}
+/* Oxblood is fill on dark and text on light — it measures 2.18:1 on graphite
+   and 8.55:1 on bone, so on dark it is a square and never a word. */
+.tag__dot { flex: none; inline-size: 0.5rem; block-size: 0.5rem; background: var(--oxblood); }
+.tag--ig { gap: var(--sp-4); }
+.tag--ig svg { flex: none; }
+
+.lede { color: var(--text-muted); line-height: 1.6; max-inline-size: 56ch; text-wrap: pretty; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-6);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--text); text-decoration: none;
+  border: var(--hairline) solid var(--rule);
+  transition: background var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
+}
+.btn:hover { border-color: var(--text); }
+.btn:focus-visible { outline: var(--focus-w) solid var(--text); outline-offset: var(--focus-offset); }
+.btn--solid { background: var(--bone-050); color: var(--ink-on-light); border-color: var(--bone-050); }
+.btn--solid:hover { background: var(--bone-100); border-color: var(--bone-100); }
+[data-ground='light'] .btn--solid { background: var(--ink-on-light); color: var(--bone-050); border-color: var(--ink-on-light); }
+.btn-row { display: flex; flex-wrap: wrap; gap: var(--sp-4); margin-block-start: var(--sp-6); }
+
+/* THE TERTIARY ACTION IS AN OXBLOOD PILL WITH A BONE LABEL, on both grounds.
+   That is the project's own colour law rather than a departure from it:
+   CLAUDE.md says oxblood is text on light and FILL on dark, and a filled mark
+   with a --bone-050 label is exactly the dark-ground form. Keeping the same
+   object on the light ground costs nothing — bone on oxblood measures 8.99:1
+   there too — and it means one shape means one thing across the page.
+
+*/
+.link {
+  display: inline-flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-6);
+  border-radius: 999px;
+  background: var(--oxblood);
+  color: var(--bone-050);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase;
+  text-decoration: none;
+  transition: filter var(--dur-2) var(--ease-out);
+}
+.link:hover { filter: brightness(1.28); }
+.link:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+[data-ground='light'] .link:focus-visible { outline-color: var(--ink-on-light); }
+
+/* The frame is an empty picture that says what belongs in it. */
+.frame {
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  align-content: center; justify-items: center; gap: var(--sp-2);
+  padding-inline: var(--sp-5); text-align: center;
+  background:
+    repeating-linear-gradient(-45deg,
+      rgb(var(--bone-100-rgb) / 0.018) 0 2px, transparent 2px 9px),
+    var(--graphite-900);
+  border: var(--hairline) solid rgb(var(--bone-100-rgb) / 0.10);
+  overflow: hidden;
+}
+.frame__slug, .frame__sub {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase;
+  color: var(--bone-300); max-inline-size: 100%;
+}
+.frame__slug { opacity: 0.9; }
+.frame__sub  { opacity: 0.68; letter-spacing: 0.10em; }
+.frame--lot    { aspect-ratio: 3 / 2; }
+.frame--build  { aspect-ratio: 16 / 10; }
+.frame--wide   { aspect-ratio: 16 / 9; }
+.frame--square { aspect-ratio: 1 / 1; }
+.frame--shot   { aspect-ratio: 3 / 4; }
+[data-ground='light'] .frame { border-color: rgb(var(--graphite-950-rgb) / 0.14); }
+
+/* ── header ────────────────────────────────────────────────────────────── */
+/* The masthead is fixed, so without this every in-page anchor — and the skip
+   link, which is the one that matters — lands underneath it and the visitor
+   arrives at a heading they cannot read. scroll-padding on the scroller rather
+   than scroll-margin on eleven targets: one rule, and a new section inherits it
+   instead of being remembered. The value is the measured stuck height plus a
+   little air; it is deliberately generous, because landing slightly early reads
+   as correct and landing slightly late reads as broken. */
+html { scroll-padding-block-start: 9rem; }
+
+.site-head {
+  position: fixed; z-index: 50; inset-block-start: 0; inset-inline: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-7);
+  padding: var(--sp-6) var(--edge);
+  transition: background var(--dur-3) var(--ease-out), padding var(--dur-3) var(--ease-out);
+}
+/* THE GROUND IS THE DEFAULT AND THE HERO IS THE EXCEPTION, which is the way
+   round it has to be. It was written the other way — transparent until v10.js
+   said otherwise — and that makes the no-JS page unreadable: a fixed bar with
+   bone labels and no ground, sitting over §05's bone section, is white on
+   almost-white. The nav did not degrade, it disappeared.
+
+   So the bar always has a ground, and v10.js takes it away while the hero is on
+   screen. Scripts off: a ground over the hero too, which is a smaller loss than
+   an invisible navigation, and it is the only thing that changes.
+
+   The cost, named: the observer's first callback can land after the first
+   paint, so the ground may show over the hero for a frame. A frame of a visible
+   bar against a frame of no bar at all — the trade is not close. */
+.site-head {
+  background: rgb(var(--graphite-950-rgb) / 0.92);
+  backdrop-filter: blur(10px);
+  border-block-end: var(--hairline) solid var(--rule);
+}
+.site-head[data-stuck='false'] {
+  background: transparent;
+  backdrop-filter: none;
+  border-block-end-color: transparent;
+}
+.site-head[data-stuck='true'] { padding-block: var(--sp-4); }
+
+/* A GROUND UNDER THE MARK, AND ONLY WHERE IT HAS NONE. The burgundy logo is the
+   client's colour and it is dark; over the hero the bar is transparent by
+   design, so the mark was landing straight on a photograph of a dark shop wall
+   and losing its edges.
+
+   Fixed at the background layer, which is the only place this is allowed to be
+   fixed — weighting the mark or outlining it would be solving a ground problem
+   on the type.
+
+   Three things keep it from becoming a box. It fades to fully transparent well
+   inside its own edges, so there is no rim to catch; it is taller than the bar
+   so the falloff finishes below the bar's own line rather than against it; and
+   it is gone the moment the bar takes its solid ground back, where it would be a
+   dark smudge on an already dark surface. */
+.site-head::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: min(30rem, 42vw);
+  block-size: 210%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(115% 92% at 0% 0%,
+    rgb(var(--graphite-950-rgb) / 0.58) 0%,
+    rgb(var(--graphite-950-rgb) / 0.30) 40%,
+    rgb(var(--graphite-950-rgb) / 0) 74%);
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+.site-head[data-stuck='true']::before { opacity: 0; }
+
+/* ── THE MARK, AND THE TWO CANDIDATES ──────────────────────────────────────
+   Client review opened 2026-09-03. Two drawings are on the table and this page
+   carries both: ?mark=1 is assets/img/logo1.svg, ?mark=2 is logo2.svg, and the
+   attribute that chooses between them sits on <html>, so the header and the
+   footer cannot end up disagreeing about which logo this company has.
+
+   THE MASK IS GONE, AND IT HAD TO GO. What this replaces — the file used as a
+   CSS mask, painted with a token gradient and lit with a two-pass drop-shadow —
+   worked because the old logo.svg is a flat six-path silhouette with no colour
+   in it. Neither candidate is that. logo1.svg carries nine flat colours across
+   43 paths (white, four greys, a near-black, a navy) on top of the burgundy
+   gradient; a mask reads alpha and nothing else, so it would collapse all of
+   that into one burgundy blob and the drawing would simply be gone. Both
+   candidates are dropped in as real images instead.
+
+   What that costs, written down rather than discovered later: the marks no
+   longer take their colour from the page, so they cannot be re-pointed for the
+   light ground the way the masked silhouette could, and the burgundy-on-glass
+   argument recorded in the commits of 2026-09-03 does not apply to them — the
+   colour now lives in the client's own file, where the client put it. The
+   masked treatment is not commented out and not kept for later; it is in git,
+   one revert away, which is the only place a superseded decision belongs.
+
+   SIZED BY HEIGHT, NOT BY WIDTH, and that is the whole point of the exercise.
+   The candidates are 1.75:1 and 2.13:1 against the old mark's 1.45:1. Matching
+   their widths would draw the wider one smaller, and the client would answer a
+   question about sizing while believing they answered one about the drawing.
+   Equal height is equal presence.
+
+   TWO SIZES, BOUND TO THE BAR'S OWN STATE — not to a scroll position. The
+   header already has exactly one state change, [data-stuck], and the mark now
+   joins it rather than starting a second temporal idea beside it (MJ2). A
+   scroll-scrubbed size would also hand the visitor an infinite number of
+   in-between frames to stop on, every one of which would have to be a designed
+   frame (MJ4); two states have two, and both are drawn here.
+
+   THE CAR STAYS AT EVERY SIZE. A reduced lockup was built here and then taken
+   back out on Alex's instruction, 2026-09-04: the compact bar dropped the car
+   and showed the script alone. It is recorded rather than quietly deleted,
+   because the measurement that justified it is still true and someone will
+   propose it again.
+
+   What it was: in logo1 the car is 549 x 246 units across THIRTY-SEVEN paths,
+   and at the compact height it renders about 61 x 28px — some forty-six square
+   pixels per path. In logo2 it is a single path reaching past the script to the
+   right edge, so removing it also took 27% off the mark's width.
+
+   Note that the case had already weakened on its own. At the first compact
+   height the car rendered about 48 x 21px, roughly twenty-seven square pixels
+   per path, which is noise; the two size increases since then moved it close to
+   the size at which it starts to resolve. The instruction and the arithmetic
+   happen to agree.
+
+   The two generated files are gone with it — logo1-wordmark.svg and
+   logo2-wordmark.svg, the client's own artwork with the car paths dropped and
+   the viewBox pulled in to the script. They are in git at 915cdba if the idea
+   returns, and an unused asset does not sit in this tree waiting for that.
+
+   Heights carry the increases Alex asked for on 2026-09-03 and twice on
+   2026-09-04. */
+:root {
+  /* THE MARK AT REST — the page's introduction, over a transparent bar on a
+     full-bleed hero. It is allowed to be large here because nothing is
+     competing with it: the nav is a row of small caps and the headline is
+     four hundred pixels below. */
+  --mark-h:       clamp(5rem, 8vw, 7.5rem);
+  /* THE MARK IN THE COMPACT BAR — a wayfinding token, not an introduction.
+     Roughly seventy per cent of the resting height; the amplitude is deliberate,
+     because a change small enough to read as drift is a decision not taken. */
+  --mark-h-stuck: clamp(3.8rem, 5.6vw, 5.4rem);
+  --mark-h-foot:  clamp(4.8rem, 7.2vw, 7.68rem);
+}
+.wordmark { display: block; line-height: 0; text-decoration: none; }
+/* The intrinsic ratio comes off the width/height attributes in the markup, so
+   nothing reflows between the HTML parsing and the SVG arriving. */
+.wordmark__art {
+  display: none;
+  block-size: var(--mark-h); inline-size: auto;
+  transition: block-size var(--dur-3) var(--ease-out);
+}
+
+/* ── WHICH OF THE TWO IS PAINTED ───────────────────────────────────────────
+   One axis now: the candidate. Everything is off above and exactly one rule
+   switches one image on, so there is no specificity fight to lose later.
+
+   html:not([data-mark]) is the no-JS case — the attribute is set by the inline
+   script in <head>, and without it the page still gets a mark rather than
+   nothing. */
+:is(html[data-mark='1'], html:not([data-mark])) .wordmark__art--m1,
+html[data-mark='2'] .wordmark__art--m2 { display: block; }
+
+/* The size is the whole of the scroll behaviour. :not([data-stuck='true'])
+   is not needed here — the resting size is the default on .wordmark__art and
+   this only overrides it once the bar has taken its ground. */
+.site-head[data-stuck='true'] .wordmark__art { block-size: var(--mark-h-stuck); }
+
+/* The footer keeps the full lockup at the size the building is. It is not a
+   compact bar and it has no wayfinding job — nothing there is being scanned. */
+.wordmark--foot .wordmark__art { block-size: var(--mark-h-foot); }
+
+.wordmark__swap {
+  position: absolute; inline-size: 1px; block-size: 1px;
+  margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.wordmark:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+
+.site-nav ul { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+/* A pill, not an underline. It is darker than the bar rather than lighter, so
+   the label stays the brightest thing in it and the shape reads as a well the
+   word sits in. The padding is on the link at rest too — otherwise the row
+   reflows the moment a pointer touches it. */
+.site-nav a {
+  display: block;
+  padding: var(--sp-3) var(--sp-5);
+  border-radius: 999px;
+  font-family: var(--mono); font-size: var(--nav); letter-spacing: 0.05em;
+  color: var(--bone-050); text-decoration: none;
+  background: transparent;
+  transition: background var(--dur-2) var(--ease-out);
+}
+/* Hover is oxblood, and it is the one place on a dark ground the accent is
+   allowed: a FILL, never text. The label is already --bone-050, which measures
+   10.76:1 on it. Oxblood as text on graphite measures 2.18:1 and is banned. */
+.site-nav a:hover { background: var(--oxblood); }
+.site-nav a[aria-current='page'] { background: rgb(var(--graphite-950-rgb) / 0.55); }
+.site-nav a[aria-current='page']:hover { background: var(--oxblood); }
+/* The only nav item with a glyph in it, so the alignment lives here and not on
+   the shared pill. */
+.site-nav__tel a { display: flex; align-items: center; gap: var(--sp-2); }
+.site-nav__tel svg { flex: none; }
+.site-nav a:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: 2px; }
+/* Over the hero the bar has no ground of its own, so a graphite pill would be
+   invisible on the graphite-700 plate. There it is drawn at low alpha instead.
+   Keyed to 'false' and not to :not('true'), because with scripts off there is no
+   attribute at all and that bar DOES have a ground — it should get the solid
+   pill like every other grounded state. */
+.site-head[data-stuck='false'] .site-nav a:hover { background: var(--oxblood); }
+
+/* THE NUMBER IS FILLED AND EVERY OTHER ITEM IS NOT, which is the point of it:
+   seven items go somewhere on this page and one leaves it for a telephone, and
+   the pill says which is which before the word is read.
+
+   Hover EMPTIES it to an outline instead of deepening it, because there is
+   nowhere brighter for a bone pill to go — the fill is the resting state, so
+   the only move left is to take it away. The border is on the resting state
+   too, in the fill's own colour, or the box would grow 2px the moment a
+   pointer touched it and the whole row would step sideways.
+
+   Written after the two rules above and with a heavier selector, because both
+   set a background on the nav link's hover and one of them is oxblood — a red
+   pill where a white one is meant to empty out. */
+.site-head .site-nav__tel a {
+  background: var(--bone-050);
+  color: var(--ink-on-light);
+  border: var(--hairline) solid var(--bone-050);
+  transition: background var(--dur-2) var(--ease-out),
+              color var(--dur-2) var(--ease-out);
+}
+.site-head .site-nav__tel a:hover,
+.site-head[data-stuck='false'] .site-nav__tel a:hover {
+  background: transparent;
+  color: var(--bone-050);
+}
+
+/* ── 01 hero ───────────────────────────────────────────────────────────── */
+/* STICKY, SO THE PAGE SLIDES OVER IT RATHER THAN PUSHING IT OFF. The hero
+   holds at the top of the window and 02 rises across it — which only works
+   because every section below carries an opaque ground of its own. A section
+   that forgot its background would show the video through itself.
+
+   The stack is the other half: sticky alone still paints in source order, so
+   the hero would sit ON TOP of the thing scrolling up to cover it. z-index 0
+   here and 1 on the sections is what makes it the floor.
+
+   `overflow: clip` stays. It clips the hero's own children and does not create
+   a scroll container, so unlike `hidden` it does not kill the stickiness. */
+.hero {
+  position: sticky; inset-block-start: 0; z-index: 0;
+  display: grid; align-content: space-between; row-gap: var(--sp-6);
+  min-block-size: 100svh;
+  /* The 15svh is the drop, kept separate from the clearance so the two can be
+     tuned apart: the clamp is what keeps the headline out from under the fixed
+     bar, the 7svh is where it sits once it is clear of it. The band at the
+     bottom does not move — align-content pins it. */
+  padding: calc(clamp(8.5rem, 14vh, 11rem) + 7svh) var(--edge) var(--pad);
+  isolation: isolate;
+  overflow: clip;
+}
+.sect, .site-foot { position: relative; z-index: 1; }
+/* The video fills the frame at any shape. graphite-950 underneath, because a
+   16:9 file in a tall window shows its own background for the first frame
+   otherwise, and white is the one colour this page never starts on. */
+.hero__media { position: absolute; inset: 0; z-index: 0; background: var(--graphite-950); }
+.hero__video { inline-size: 100%; block-size: 100%; object-fit: cover; display: block; }
+
+/* A scrim, not a wash. The headline sits in the left third and the cars are
+   centred, so the gradient is horizontal and dies out before it reaches them —
+   darkening the whole frame to protect the type would throw away the thing the
+   type is standing in front of.
+
+   The stops are measured against the video, not guessed: the brightest pixel
+   under the lede is the lit floor at #6c6a66, and bone-050 on that is 3.4:1 —
+   under the 4.5 the body text needs. Under this scrim the same pixel is #191a1c
+   and the ratio is 12.9:1. */
+.hero::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgb(var(--graphite-950-rgb) / 0.92) 0%,
+    rgb(var(--graphite-950-rgb) / 0.86) 28%,
+    rgb(var(--graphite-950-rgb) / 0.45) 52%,
+    rgb(var(--graphite-950-rgb) / 0.12) 74%,
+    rgb(var(--graphite-950-rgb) / 0.12) 100%);
+}
+/* The seam into 02. Without it the lit floor at the bottom of the frame meets
+   graphite-950 as a hard edge across the full width. */
+.hero::after {
+  content: ''; position: absolute; inset-inline: 0; inset-block-end: 0; z-index: 1;
+  block-size: 26%; pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgb(var(--graphite-950-rgb) / 0) 0%,
+    rgb(var(--graphite-950-rgb) / 1) 100%);
+}
+/* Holds the headline alone now — the lede moved to .hero__foot — so this is
+   purely a wrap guard. Widened with the type so the display size is not
+   quietly capped by a box that was measured for smaller letters. */
+/* No measure on the headline. The break is authored — there is a <br> in the
+   markup — so the box must never add a second one of its own; at 134px a cap
+   of 62% was deciding where the line ended, not the author. */
+/* Centred, and the one place on this page symmetry is right: the headline is
+   a head-on announcement over a head-on shot of three cars, and that framing
+   is the point. Everything below it stays asymmetric. */
+.hero__copy {
+  position: relative; z-index: 2;
+  max-inline-size: none; justify-self: center; text-align: center;
+}
+.hero__title {
+  font-family: var(--face); font-weight: 600; font-size: var(--h1);
+  line-height: 0.98; letter-spacing: -0.028em; color: var(--bone-050);
+  /* Two lines, and exactly two: the only break is the one in the markup. */
+  white-space: nowrap;
+}
+
+/* ── the arrival ──────────────────────────────────────────────────────────
+   The headline steps in from the left a line at a time, then the band comes
+   up from below. Gentle on purpose: 1.5rem and 1.25rem, 520ms, and the whole
+   thing is over inside 1.04s — an entrance the first read has to sit through
+   is worse than no entrance at all.
+
+   These animate the SPANS and the band's CHILDREN, never .hero__copy or
+   .hero__foot themselves. Those two carry the scroll exit's transform, and a
+   filled animation on the same property would pin it at its last keyframe and
+   the hero would never leave. Two motion systems, kept off each other's
+   properties.
+
+   Pure CSS, and that matters: an animation always ends where it was told to.
+   Nothing here can leave the headline invisible the way a missed observer
+   can. */
+.hero__title span { display: block; }
+
+@keyframes hero-step {
+  from { opacity: 0; transform: translate3d(-1.5rem, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hero-rise {
+  from { opacity: 0; transform: translate3d(0, 1.25rem, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hero__title span,
+.hero__foot > * { animation: var(--dur-4) var(--ease-out) both; }
+.hero__title span { animation-name: hero-step; }
+.hero__foot > *  { animation-name: hero-rise; }
+
+.hero__title span:nth-child(1) { animation-delay: 140ms; }
+.hero__title span:nth-child(2) { animation-delay: 260ms; }
+.hero__foot > .lede            { animation-delay: 400ms; }
+.hero__foot > .btn-row         { animation-delay: 520ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Present, immediately. */
+  .hero__title span,
+  .hero__foot > * { animation: none; opacity: 1; transform: none; }
+}
+/* The lede and the buttons are a band across the bottom of the frame, not a
+   stack under the headline. The headline takes the top of the shot, the band
+   takes the bottom, and the video keeps the middle — which is where the cars
+   are. Distributed to the full width of the column, so the row has the same
+   two edges as every section below it. */
+/* THE EXIT. --hero-exit runs 0 -> 1 across the hero's own height and is set by
+   v10.js from the scroll position, so this is scroll-linked and has no duration
+   of its own: stop scrolling and it stops, scroll back and it comes back
+   exactly. The headline and the band leave together, upward and out of focus,
+   as the inventory arrives underneath them.
+
+   14vh and 14px are the whole of it. Further and the type is gone before the
+   next section has arrived, which reads as a gap rather than a handover. */
+.hero__copy,
+.hero__foot {
+  transform: translate3d(0, calc(var(--hero-exit, 0) * -14vh), 0);
+  filter: blur(calc(var(--hero-exit, 0) * 14px));
+  opacity: calc(1 - var(--hero-exit, 0));
+  will-change: transform, filter, opacity;
+}
+.hero__foot {
+  position: relative; z-index: 2;
+  display: flex; flex-wrap: wrap; align-items: flex-end;
+  justify-content: space-between; gap: var(--sp-6) var(--sp-7);
+}
+.hero__foot .lede { margin: 0; max-inline-size: 46ch; }
+.hero__foot .btn-row { margin: 0; }
+/* --rule is graphite-700 and this ground is a photograph, so a hairline in it
+   is either invisible or fighting whatever is behind it. Drawn from bone here. */
+.hero .btn { border-color: rgb(var(--bone-100-rgb) / 0.34); }
+.hero .btn:hover { border-color: var(--bone-050); }
+
+/* ── section shell ─────────────────────────────────────────────────────── */
+.sect { padding: var(--pad) var(--gutter); }
+.sect > * { max-inline-size: var(--page); margin-inline: auto; }
+.sect--950 { background: var(--graphite-950); }
+.sect--900 { background: var(--graphite-900); }
+.sect--bone { background: var(--ground); }
+/* Consignment sits directly under services and both are bone, so without this
+   they read as one very long light block. --surface is the next step up the
+   same ramp — bone-050 over bone-100, a 6% lift — which separates the two
+   without introducing a colour or a rule between them. The record stays one
+   ground; it just gains a seam. */
+.sect--bone-raised { background: var(--surface); }
+/* Two sections that are one statement: the seam between them closes. */
+.sect--tight-b { padding-block-end: var(--sp-7); }
+.sect--tight-t { padding-block-start: var(--sp-7); }
+
+.sect__title {
+  font-family: var(--face); font-weight: 600; font-size: var(--h2);
+  line-height: 1.02; letter-spacing: -0.028em; color: var(--text);
+  text-wrap: balance; max-inline-size: 20ch;
+}
+
+.sect__head {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-5) var(--col-gap); align-items: start;
+  margin-block-end: var(--sp-8);
+}
+.sect__head > .tag { grid-column: 1 / span 8; grid-row: 1; }
+.sect__head > .sect__title { grid-column: 1 / span 8; grid-row: 2; }
+.sect__action { grid-column: 10 / span 3; grid-row: 2; justify-self: end; }
+.sect__note { grid-column: 1 / span 6; grid-row: 3; }
+.sect__head--pair > .sect__title { grid-column: 1 / span 6; }
+.sect__head--pair .sect__note { grid-column: 8 / span 5; grid-row: 2; max-inline-size: 46ch; }
+.rail-btns { grid-column: 11 / span 2; grid-row: 2; justify-self: end; display: flex; gap: var(--sp-4); }
+/* 07 and 08 have arrows and no button; 02 has both, and they were landing in
+   the same cell on top of each other. Where there is a button the arrows drop
+   under it and sit on the note's row, still hard right. */
+.sect__head:has(.sect__action) .rail-btns { grid-row: 3; align-self: end; }
+
+/* ── the renders ───────────────────────────────────────────────────────────
+   Stills from the scene in scene/f9.js, off the purchased model whose licence
+   Alex confirmed on 2026-08-28. Same car, same room, same light as the hero —
+   which is the point: a page whose photographs and whose 3D disagree about the
+   light reads as two pages. They are not somebody else's property, which the
+   four images in assets/img/photo-*.jpg are. */
+.shot {
+  display: block; inline-size: 100%; block-size: auto;
+  background: var(--graphite-900);
+  border: var(--hairline) solid rgb(var(--bone-100-rgb) / 0.08);
+}
+/* Widescreen, not the 3:2 the render was shot at. At two thirds of the window a
+   3:2 frame is 832px tall and the card stops fitting on a laptop; this is the
+   proportion the prototype uses and it costs a strip of empty floor, which the
+   render has plenty of. */
+.shot--lot  { aspect-ratio: 16 / 9; object-fit: cover; }
+.shot--wide { aspect-ratio: 16 / 9; object-fit: cover; object-position: center 42%; }
+.shot--tall { aspect-ratio: 3 / 4;  object-fit: cover; }
+
+/* ── 08 the Instagram tiles ────────────────────────────────────────────────
+   The corner is rounded on the WRAPPER and not on the picture, because the
+   picture is what moves: a radius on a scaling element scales with it, and the
+   corner would swell as the photograph grows. Clipping on the parent keeps one
+   fixed corner with the image sliding underneath it.
+
+   The hairline moves up here for the same reason — scaled, it thickens. */
+.tile {
+  position: relative; display: block;
+  overflow: clip;
+  border-radius: var(--radius-media);
+  border: var(--hairline) solid rgb(var(--bone-100-rgb) / 0.08);
+  background: var(--graphite-900);
+}
+.tile .shot { border: 0; background: none; transition: transform var(--dur-3) var(--ease-out); }
+.tile:hover .shot,
+.tile:focus-visible .shot { transform: scale(1.06); }
+.tile:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+
+/* The mark sits in the corner the eye leaves the picture by, and it is over a
+   photograph whose brightness is not ours to choose — so it carries its own
+   ground rather than trusting the pixels under it. */
+.tile__ig {
+  position: absolute; inset-block-start: var(--sp-3); inset-inline-end: var(--sp-3);
+  display: grid; place-items: center;
+  inline-size: 2rem; block-size: 2rem;
+  border-radius: 999px;
+  background: rgb(var(--graphite-950-rgb) / 0.62);
+  color: var(--bone-050);
+  transition: background var(--dur-2) var(--ease-out);
+}
+.tile:hover .tile__ig { background: rgb(var(--graphite-950-rgb) / 0.86); }
+
+@media (prefers-reduced-motion: reduce) {
+  /* The durations already collapse to 1ms, which turns the zoom into a jump
+     rather than removing it. This removes it. */
+  .tile:hover .shot,
+  .tile:focus-visible .shot { transform: none; }
+}
+/* The two WHO WE ARE photographs are the client's own, shot on a phone in
+   portrait — 900 x 1200, so both are crops whatever happens here.
+   They share a HEIGHT and not a ratio: the columns are 5:7, so a single
+   aspect-ratio on both would force the widths back to equal. The row height is
+   the constant, each frame takes the width its column gives it. */
+.about__pair .shot {
+  aspect-ratio: auto;
+  block-size: clamp(17rem, 23vw, 27.5rem);
+  object-position: center 46%;
+}
+
+/* ── 02 inventory ──────────────────────────────────────────────────────────
+   A carousel like 07 and 08, and unlike them it is CENTRED and cut on both
+   edges. Two thirds of the window per card, because the section's own paragraph
+   promises *the size you would stand in front of it* — that sentence is what
+   sets this number, not the number of cars.
+
+   `--peek` is the strip of the neighbouring car left showing on each side. The
+   rail's inline padding is exactly that, so the first card lands centred with
+   nothing scrolled and the last one can still reach the middle. */
+.lot { display: block; min-inline-size: 0; }
+/* The photograph is the only thing in the card that moves, and it moves inside
+   its own frame — which is why the clipping box is this wrapper and not .lot.
+   Clip on .lot and a focus ring on the specification link gets cut off with it.
+   The hairline moves here too: left on the image it would scale with the zoom
+   and then be clipped, which reads as the border thickening and vanishing. */
+.lot__shot {
+  display: block; overflow: clip;
+  border-radius: var(--radius-media);
+  border: var(--hairline) solid rgb(var(--bone-100-rgb) / 0.08);
+}
+.lot__shot .shot { border: 0; transition: transform var(--dur-3) var(--ease-out); }
+.lot:hover .lot__shot .shot,
+.lot:focus-within .lot__shot .shot { transform: scale(1.045); }
+.lot__state {
+  margin-block: var(--sp-5) var(--sp-3);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.lot__name {
+  margin-block-end: var(--sp-5);
+  font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  letter-spacing: -0.02em; color: var(--text);
+}
+.spec > div {
+  display: grid; grid-template-columns: minmax(0, 5rem) minmax(0, 1fr);
+  gap: var(--sp-5); align-items: baseline;
+  padding-block: var(--sp-4);
+  border-block-start: var(--hairline) solid var(--rule);
+}
+.spec dt {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.spec dd { color: var(--text); }
+.lot .link { margin-block-start: var(--sp-7); }
+
+/* ── 03 build ──────────────────────────────────────────────────────────── */
+.build__top {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--sp-8); align-items: start; margin-block-end: var(--sp-8);
+}
+.build__copy { display: grid; gap: var(--sp-6); align-content: start; }
+/* The grid gap already spaces it; .btn-row's own top margin would double it.
+   Same reason .hero__foot zeroes it. */
+.build__copy .btn-row { margin: 0; justify-self: start; }
+
+/* ── the stage ──────────────────────────────────────────────────────────────
+   Five frames in one box, one visible. The box holds its own height from the
+   first image's aspect ratio, so nothing below it moves when the picture
+   changes — a stage that resizes on hover is a page that flinches. */
+/* THE GROUND IS NOT FLAT. The cars are cut-outs standing on nothing, and a car
+   on a flat rectangle of one colour has no floor and no room — it reads as a
+   sticker. A soft pool of light, centred where the car is and falling away to
+   the section's own black at the edges, is what puts it somewhere.
+
+   It is on the section rather than the stage: light that stops at the picture's
+   edge is a box, and the whole point is that there is no box. Two stops from the
+   same channel token, no new colour — graphite-900 in the middle at a third
+   strength, nothing at the rim. */
+.build {
+  background:
+    radial-gradient(115% 78% at 52% 46%,
+      rgb(var(--graphite-900-rgb) / 1) 0%,
+      rgb(var(--graphite-900-rgb) / 0.55) 38%,
+      rgb(var(--graphite-950-rgb) / 0) 72%),
+    var(--graphite-950);
+}
+
+/* The car images are cut out — PNG alpha, no background of their own — so the
+   stage paints nothing behind them and that pool shows through.
+   A box colour here would put a rectangle around a car that was masked
+   precisely so it would not have one. */
+.build__stage { position: relative; aspect-ratio: 16 / 9; background: none; }
+/* THE CROSSFADE, and why it is not one duration on one property.
+
+   Both frames animate at once, so a plain symmetric fade dips: halfway through,
+   the outgoing car is at 0.5 and the incoming car is at 0.5, and for a moment
+   the stage shows two half-cars and no whole one. The fix is to make the two
+   halves different — the outgoing one leaves quickly and early, the incoming one
+   arrives over the longer haul and slightly behind it. The dip closes because
+   the sum stays near one the whole way across.
+
+   `dur-4` is the entrance of a mass, which is what this is: a car, not a hover
+   state. ease-inout rather than ease-out, because a crossfade has no arrival to
+   land — it is a dissolve, and a curve that decelerates onto a stop makes the
+   last twenty percent of it visible as a stall.
+
+   The scale is a sixth of a percent per side and it exists to give the swap a
+   direction. Without it a dissolve between two cars of the same size in the same
+   place reads as a glitch in the image rather than a change of subject. */
+.build__shot {
+  position: absolute; inset: 0;
+  inline-size: 100%; block-size: 100%; object-fit: contain;
+  opacity: 0;
+  transform: scale(1.006);
+  /* leaving: quick, and no delay */
+  transition:
+    opacity var(--dur-3) var(--ease-inout),
+    transform var(--dur-3) var(--ease-inout);
+  will-change: opacity;
+}
+/* arriving: the long haul, a beat behind the one going out */
+.build:has(.step:hover) .build__shot,
+.build:has(.step:focus-within) .build__shot {
+  transition:
+    opacity var(--dur-4) var(--ease-inout) 60ms,
+    transform var(--dur-4) var(--ease-inout) 60ms;
+}
+.build__shot[data-build='1'] { opacity: 1; transform: scale(1); }
+
+/* THE SWAP IS CSS. The section asks which step is under the pointer and lights
+   the matching frame; no script, no state kept in two places, and it works with
+   JavaScript off. :focus-within is in every selector beside :hover so the
+   keyboard gets the same thing the mouse gets, not a note explaining it.
+
+   Reading it: while a step is hovered or focused, step 1's frame goes dark and
+   the matching one comes up. Written the other way round — light the match,
+   leave the default alone — both would be visible at once. */
+.build:has(.step:hover) .build__shot[data-build='1'],
+.build:has(.step:focus-within) .build__shot[data-build='1'] { opacity: 0; }
+
+.build:has([data-build-step='1']:hover) .build__shot[data-build='1'],
+.build:has([data-build-step='1']:focus-within) .build__shot[data-build='1'],
+.build:has([data-build-step='2']:hover) .build__shot[data-build='2'],
+.build:has([data-build-step='2']:focus-within) .build__shot[data-build='2'],
+.build:has([data-build-step='3']:hover) .build__shot[data-build='3'],
+.build:has([data-build-step='3']:focus-within) .build__shot[data-build='3'],
+.build:has([data-build-step='4']:hover) .build__shot[data-build='4'],
+.build:has([data-build-step='4']:focus-within) .build__shot[data-build='4'],
+.build:has([data-build-step='5']:hover) .build__shot[data-build='5'],
+.build:has([data-build-step='5']:focus-within) .build__shot[data-build='5'] { opacity: 1; transform: scale(1); }
+
+.steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--col-gap); }
+
+/* The rule over each step is the thing that says which one you are on. It is
+   the same mark the tag dot uses, so the section has one accent and not two. */
+.step {
+  border-block-start: var(--hairline) solid var(--rule);
+  padding-block-start: var(--sp-5);
+  position: relative; cursor: default;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.step::before {
+  content: ''; position: absolute; inset-block-start: calc(-1 * var(--hairline));
+  inset-inline: 0; block-size: 2px; background: var(--oxblood);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform var(--dur-3) var(--ease-out);
+}
+.step:hover::before, .step:focus-within::before { transform: scaleX(1); }
+/* Step 01 is what the stage shows at rest, so it carries the mark at rest —
+   until the pointer says otherwise. */
+.step[data-build-step='1']::before { transform: scaleX(1); }
+.steps:hover .step[data-build-step='1']::before,
+.steps:focus-within .step[data-build-step='1']::before { transform: scaleX(0); }
+.step[data-build-step='1']:hover::before,
+.step[data-build-step='1']:focus-within::before { transform: scaleX(1); }
+.step:focus-visible { outline: var(--focus-w) solid var(--ink-900, currentColor); outline-offset: var(--focus-offset); }
+.step__n {
+  margin-block-end: var(--sp-4);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); color: var(--oxblood);
+}
+.step__h {
+  margin-block-end: var(--sp-4);
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  letter-spacing: -0.015em; color: var(--text);
+}
+.step p { color: var(--text-muted); max-inline-size: 30ch; }
+
+/* ── 04 who we are ─────────────────────────────────────────────────────── */
+.about { position: relative; overflow: clip; }
+/* The numeral is ground, not text: graphite-700 on graphite-900, aria-hidden,
+   and it repeats the sentence in front of it. */
+.about__numeral {
+  position: absolute; z-index: 0; inset-block-start: 8%; inset-inline-start: -2%;
+  font-family: var(--face); font-weight: 700;
+  font-size: clamp(12rem, 26vw, 30rem); line-height: 0.78; letter-spacing: -0.05em;
+  color: var(--graphite-700); white-space: nowrap; pointer-events: none;
+}
+.about__grid, .about__pair { position: relative; z-index: 1; }
+.about__grid {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap); align-items: start; margin-block-end: var(--sp-8);
+}
+.about__grid > :first-child { grid-column: 1 / span 6; }
+/* align-content: start, and it is the whole fix. This column is a grid ITEM in a
+   taller row, so it stretches; without this its own two rows stretch with it and
+   the button drifts 136px below the paragraph it belongs to instead of the 32px
+   the gap actually says. The other two columns built this way get the same. */
+.about__body { grid-column: 8 / span 5; display: grid; gap: var(--sp-6); justify-items: start; align-content: start; }
+/* NOT two equal columns. The pair is 5:7 — the profile earns the wider frame
+   because it is the longer subject, and two identical rectangles side by side
+   are the card-wall read the page is trying not to be.
+   640 and 914 are the photographs' own widths at their shared height of 436,
+   so at any page width the columns hand each frame exactly its native ratio
+   and neither is cropped at all. */
+.about__pair { display: grid; grid-template-columns: minmax(0, 640fr) minmax(0, 914fr); gap: var(--col-gap); }
+
+/* ── 04 · the type travels too, and not at one rate ────────────────────────
+   Same device as the plates below it, applied up the section: the decorative
+   numeral is the furthest thing back and moves most, the argument moves less,
+   the body copy least. Three rates over one section is what stops a page of
+   text from arriving as one sheet.
+
+   Applied to the CONTAINERS, never to .sect__title itself — that heading
+   already carries the reveal's own transform, and two systems writing the
+   same property is how one of them silently wins. The reveal does opacity and
+   its slide; this moves the box the heading sits in. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .about__numeral,
+    .about__grid > :nth-child(1),
+    .about__grid > :nth-child(2) {
+      animation: linear both;
+      animation-timeline: view();
+      animation-range: entry 15% cover 50%;
+    }
+    .about__numeral            { animation-name: about-back;  }
+    .about__grid > :nth-child(1) { animation-name: about-mid;  }
+    .about__grid > :nth-child(2) { animation-name: about-near; }
+  }
+}
+@keyframes about-back { from { transform: translate3d(0, 7rem, 0);   } to { transform: none; } }
+@keyframes about-mid  { from { transform: translate3d(0, 3rem, 0);   } to { transform: none; } }
+@keyframes about-near { from { transform: translate3d(0, 1.5rem, 0); } to { transform: none; } }
+
+/* ── 04 · the pair moves as it is passed ───────────────────────────────────
+   The two plates do not travel at the same rate. That is the whole device:
+   two pictures rising together are one flat card, two rising at different
+   rates are two objects at different distances, and the section is about a
+   room full of cars rather than a layout. The narrow plate moves further
+   because it is the nearer subject — a fuel cap at arm's length against a
+   car seen down its whole flank.
+
+   Scroll-driven, through view(), so it is a function of position and has no
+   duration: it runs backwards on the way up and stops dead when the visitor
+   stops. No JS, and nothing here can hide content — the only property
+   animated is transform, so where view() is unsupported the pair simply sits
+   still. That is the point of the @supports.
+
+   entry 10% -> cover 55%: finished well before the plate reaches the middle
+   of the frame, so what the visitor actually looks at is a settled picture. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Two animations on one plate, on two properties and two ranges. The wipe
+       runs across the whole of the plate's entry, so it opens at the speed the
+       visitor is scrolling and never snaps; the rise finishes earlier, so the
+       picture has settled by the time it is actually being looked at. */
+    .about__pair .shot {
+      animation: plate-near linear both, plate-wipe linear both;
+      animation-timeline: view(), view();
+      animation-range: entry 10% cover 55%, entry 0% entry 100%;
+    }
+    .about__pair .shot:nth-child(2) { animation-name: plate-far, plate-wipe; }
+  }
+}
+@keyframes plate-near { from { transform: translate3d(0, 5rem, 0); } to { transform: none; } }
+@keyframes plate-far  { from { transform: translate3d(0, 2rem, 0); } to { transform: none; } }
+@keyframes plate-wipe {
+  from { clip-path: inset(0 0 0 100%); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* ── 05 services ───────────────────────────────────────────────────────── */
+/* Both service pictures are cutouts with real alpha, not framed photographs.
+   So they get no .frame: no border, no ground, no hatch — the object sits
+   straight on the bone and the section's own negative space is its frame. They
+   are also different shapes, 1:1 and 4:3, and that is left alone. Forcing a
+   square on the transporter would cut the trailer in half, and two identical
+   tiles is the card-wall read again. */
+.row__shot {
+  inline-size: 100%; block-size: auto;
+  align-self: center;
+}
+.row {
+  display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) auto;
+  gap: var(--sp-7); align-items: start;
+  padding-block: var(--sp-7);
+  border-block-start: var(--hairline) solid var(--rule);
+}
+.rows > .row:last-child { border-block-end: var(--hairline) solid var(--rule); }
+.row__body { display: grid; gap: var(--sp-4); }
+.row__h {
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  letter-spacing: -0.015em; color: var(--text);
+}
+.row__body p { color: var(--text-muted); max-inline-size: 68ch; }
+.row .link { align-self: center; }
+
+/* ── 06 consignment ────────────────────────────────────────────────────── */
+.consign {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap); align-items: start;
+}
+.consign > :first-child { grid-column: 1 / span 6; }
+.consign__body { grid-column: 8 / span 5; display: grid; gap: var(--sp-7); justify-items: start; align-content: start; }
+
+/* ── 07 / 08 rails ─────────────────────────────────────────────────────── */
+/* THE RAIL BLEEDS RIGHT. Its left edge stays on the section's own column so it
+   lines up with the heading above it; its right edge runs to the edge of the
+   screen, so the next card is cut by the window rather than by a container. That
+   cut is what says "there is more" without a dot or a counter.
+
+   The left margin is the same distance the centred column is already inset by,
+   and the right margin eats the gutter. --sbw is the scrollbar's width, measured
+   once in v10.js: without it, 100vw overshoots by that much and the whole page
+   gains a horizontal scrollbar. */
+.sect > .rail {
+  max-inline-size: none;
+  margin-inline:
+    max(0px, ((100vw - var(--sbw, 0px)) - 2 * var(--gutter) - var(--page)) / 2)
+    calc(-1 * var(--gutter));
+  padding-inline-end: var(--gutter);
+}
+
+.rail {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 30rem;
+  gap: var(--col-gap);
+  padding-block-end: var(--sp-5);
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  /* The bar itself is hidden and the affordance is not: the two arrows are on
+     screen whenever there is anything to scroll, the rail still takes a drag,
+     a wheel, the arrow keys and a screen reader, and the card cut off at the
+     window edge is the other half of saying there is more. */
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail > * { scroll-snap-align: start; }
+.rail:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
+.rail--shots { grid-auto-columns: 22rem; }
+
+/* After .rail, not before it: these are overrides and the two selectors weigh
+   the same, so the later one is the only one that wins. */
+/* Two cars whole and the third cut by the window, with the first one's left
+   edge on the same line as the heading above it. That line is what the eye
+   reads the section from; a card floated off it looks like a different section.
+
+   So the card is half the content column, gap included — which is why the still
+   mockup shows two cars side by side and the prototype shows a carousel, and
+   they are the same layout. It scrolls; it just starts where the grid would. */
+/* Exactly on the heading, not half a pixel off it. The shared bleed rule
+   nudges a rail in by (window - gutters - page)/2 to sit on the page column;
+   here the section's own content box already starts on that line, and the
+   sub-pixel remainder of that sum was showing as a 1px step against the
+   headline. Zero, and the two edges are the same edge. */
+.sect > .rail--lots { margin-inline-start: max(0px, (100% - var(--page)) / 2); }
+
+.rail--lots {
+  --col: min(var(--page), (100vw - var(--sbw, 0px)) - 2 * var(--gutter));
+  --card: calc((var(--col) - var(--col-gap)) / 2);
+  grid-auto-columns: var(--card);
+}
+
+.card {
+  display: grid; grid-template-rows: auto 1fr auto; gap: var(--sp-5);
+  padding: var(--sp-6);
+  background: var(--surface); border: var(--hairline) solid var(--rule);
+}
+.card blockquote p { font-size: 1.0625rem; line-height: 1.5; color: var(--text); text-wrap: pretty; }
+.card__by {
+  font-family: var(--mono); font-size: var(--micro); line-height: 1.7;
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.card--pending { border-style: dashed; }
+.card__pending {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--bone-300); opacity: 0.72;
+}
+
+.round {
+  inline-size: 3rem; block-size: 3rem;
+  display: grid; place-items: center;
+  border-radius: 50%; border: var(--hairline) solid var(--rule);
+  background: transparent; color: var(--text); font-size: 1rem; cursor: pointer;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.round:hover:not(:disabled) { border-color: var(--text); }
+/* WCAG 1.4.3 does not apply to inactive controls, but it still wants to be seen. */
+.round:disabled { opacity: 0.4; cursor: default; }
+.round:focus-visible { outline: var(--focus-w) solid var(--text); outline-offset: var(--focus-offset); }
+
+.gallery__follow { margin-block-start: var(--sp-7); }
+
+
+/* ── 05 · the rows assemble as they arrive ─────────────────────────────────
+   A service row is a band read left to right: the object, then what is done
+   to it, then how to ask for it. So it arrives that way — the cutout in from
+   the left, the argument in from the right to meet it, and the link last.
+   Two directions closing on each other, not three things fading up together.
+
+   Scroll-timed like 04, so it is tied to the wheel and cannot snap, and it
+   settles by cover 45% — well before the row is the thing being read. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .row__shot,
+    .row__body,
+    .row > .link {
+      animation: linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 45%;
+    }
+    .row__shot   { animation-name: row-in-left; }
+    .row__body   { animation-name: row-in-right; }
+    .row > .link { animation-name: row-in-right; animation-range: entry 20% cover 55%; }
+  }
+}
+@keyframes row-in-left {
+  from { opacity: 0; transform: translate3d(-3rem, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes row-in-right {
+  from { opacity: 0; transform: translate3d(2rem, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── 06 news and events ────────────────────────────────────────────────────
+   Three items, deliberately not three of the same tile. The lead is wider,
+   carries no photograph and gets the larger headline; the two beside it are
+   narrower and picture-led. Three identical cards would be the card wall. */
+.news__list {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap); align-items: start;
+}
+.news__item { display: grid; gap: var(--sp-4); align-content: start; }
+.news__item--lead { grid-column: 1 / span 5; }
+.news__list > :nth-child(2) { grid-column: 7 / span 3; }
+.news__list > :nth-child(3) { grid-column: 10 / span 3; }
+/* The two photographs are 900 x 1200 portrait originals; 16/9 through them
+   takes the top off the car, so the news tiles run 4/3 like the pair in 04. */
+.news__item .shot { aspect-ratio: 4 / 3; }
+.news__meta {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.news__h {
+  font-family: var(--face); font-weight: 600; font-size: var(--news-h);
+  line-height: 1.2; letter-spacing: -0.015em; color: var(--text);
+}
+.news__item--lead .news__h { font-size: var(--lot); }
+.news__item p { color: var(--text-muted); line-height: 1.55; }
+.news__item .link { justify-self: start; margin-block-start: var(--sp-3); }
+
+/* ── scroll reveal ─────────────────────────────────────────────────────────
+   One language, three roles, and it binds to roles rather than to elements —
+   a selector naming one heading animates nothing on the next page and raises
+   no error while failing.
+
+     title  slides in from the side
+     text   rises from below
+     media  wipes open from its left edge
+
+   Everything is gated on .js, so with scripts off the page is simply there.
+   The hero is deliberately excluded: the first read never waits for an
+   entrance. Distance is 3rem and 2rem rather than the 8px the interface scale
+   caps translation at — that cap governs hover, focus and press, where motion
+   sits under the pointer. An entrance that has to be seen from across a
+   section is a different job, and 8px is invisible at that range. */
+.js [data-reveal] {
+  transition:
+    opacity var(--dur-4) var(--ease-out),
+    transform var(--dur-4) var(--ease-out),
+    clip-path var(--dur-4) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js [data-reveal='title'] { opacity: 0; transform: translate3d(-3rem, 0, 0); }
+.js [data-reveal='text']  { opacity: 0; transform: translate3d(0, 2rem, 0); }
+.js [data-reveal='media'] { opacity: 0; clip-path: inset(0 0 0 100%); }
+.js [data-reveal][data-in] {
+  opacity: 1; transform: none; clip-path: inset(0 0 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Not a faster entrance — none. The content is simply present. */
+  .js [data-reveal],
+  .js [data-reveal][data-in] {
+    opacity: 1; transform: none; clip-path: none;
+    transition: none; transition-delay: 0ms;
+  }
+}
+
+/* ── footer ────────────────────────────────────────────────────────────── */
+.site-foot {
+  position: relative; isolation: isolate; overflow: clip;
+  /* A column, so the legal line can be pushed to the floor of the footer
+     rather than held off the columns by a margin that guesses the distance. */
+  display: flex; flex-direction: column;
+  /* The footer is as tall as its photograph is, so the picture is seen whole
+     rather than cropped to whatever height the columns happen to need.
+     footer.jpg is 1920 x 960 — exactly 2:1 — so its height is half the window
+     width, less the scrollbar, which is what --sbw is measured for. min- and
+     not a fixed size: if the content ever outgrows the picture it wins, and
+     the image goes back to filling the taller box. */
+  min-block-size: calc((100vw - var(--sbw, 0px)) / 2);
+  padding: var(--pad) var(--gutter);
+  background: var(--graphite-950);
+}
+.site-foot > * { position: relative; z-index: 2; max-inline-size: var(--page); margin-inline: auto; }
+
+/* The photograph, and the scrim that makes text on it legal. The scrim is a
+   composed element and not a reflex wash: it is heaviest where the columns sit
+   and clears toward the bottom right, where the picture is the point and there
+   is nothing to read. Measured on the rendered pixels, not on the token. */
+.site-foot__media {
+  position: absolute; inset: 0; z-index: 0;
+  max-inline-size: none; margin-inline: 0;
+}
+.site-foot__media img { inline-size: 100%; block-size: 100%; object-fit: cover; display: block; }
+.site-foot__media::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgb(var(--graphite-950-rgb) / 0.82) 0%,
+      rgb(var(--graphite-950-rgb) / 0.62) 42%,
+      rgb(var(--graphite-950-rgb) / 0.46) 100%);
+}
+
+/* The marque, oversized past both edges so it reads as a surface the page is
+   printed on rather than a word placed on it. Low enough in the ramp that it
+   is texture, not a heading — it must never compete with the legal line
+   sitting across it. */
+.site-foot__mark {
+  position: absolute; inset-inline: 0; inset-block-end: var(--pad); z-index: 1;
+  max-inline-size: none; margin: 0;
+  font-family: var(--face); font-weight: 700;
+  /* The width comes from the body size alone, no tracking. Six caps advance
+     about 4.3em in this face, so 24vw puts the word just past the window and
+     the C and the S run off both edges — which is the point, and .site-foot
+     clips it. */
+  font-size: 24vw;
+  line-height: 0.72; letter-spacing: -0.02em;
+  text-align: center; text-transform: uppercase; white-space: nowrap;
+  color: rgb(var(--bone-100-rgb) / 0.12);
+  pointer-events: none; user-select: none;
+}
+
+.site-foot__grid {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap); align-items: start;
+}
+.site-foot__brand { grid-column: 1 / span 5; display: grid; gap: var(--sp-6); }
+.site-foot__grid > :nth-child(2) { grid-column: 7 / span 2; }
+.site-foot__grid > :nth-child(3) { grid-column: 9 / span 2; }
+.site-foot__grid > :nth-child(4) { grid-column: 11 / span 2; }
+.site-foot__line {
+  font-family: var(--face); font-weight: 600;
+  font-size: clamp(1.15rem, 1.5vw, 1.6rem); line-height: 1.25;
+  letter-spacing: -0.015em; color: var(--text);
+}
+.site-foot__k {
+  margin-block-end: var(--sp-5);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.site-foot__col ul { display: grid; gap: var(--sp-4); }
+.site-foot__col a, .site-foot address a {
+  color: var(--text); text-decoration: none; white-space: nowrap;
+  border-block-end: var(--hairline) solid transparent;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.site-foot__col a:hover, .site-foot address a:hover { border-block-end-color: var(--text); }
+.site-foot__col a:focus-visible, .site-foot address a:focus-visible { outline: var(--focus-w) solid var(--text); outline-offset: var(--focus-offset); }
+.site-foot address { font-style: normal; display: grid; gap: var(--sp-4); color: var(--text); }
+.site-foot address p { line-height: 1.5; }
+.site-foot__legal {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-4) var(--sp-7);
+  /* auto, not a number. The footer is as tall as its photograph, the columns
+     are as tall as their content, and the gap between them is whatever is
+     left — so this line sits on the bottom of the frame at every width
+     instead of near it. */
+  margin-block-start: auto; padding-block-start: var(--sp-8);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+
+/* ── narrow ────────────────────────────────────────────────────────────── */
+@media (max-width: 61.99rem) {
+  :root { --h1: clamp(2.2rem, 9vw, 3.2rem); --h2: clamp(2rem, 8vw, 2.9rem); }
+
+  .site-head { flex-direction: column; align-items: stretch; gap: var(--sp-4); padding: var(--sp-5) var(--gutter); }
+  /* A strip that scrolls sideways, like the rails — and like them its own bar
+     is hidden. The default one renders as a bright white slab across the top of
+     a dark masthead, which is louder than anything else on the screen. The
+     clipped word at the right edge is the affordance. */
+  .site-nav ul {
+    flex-wrap: nowrap; overflow-x: auto; gap: var(--sp-5);
+    padding-block-end: var(--sp-2);
+    overscroll-behavior-x: contain;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .site-nav ul::-webkit-scrollbar { display: none; }
+  .site-nav a { white-space: nowrap; }
+
+  /* The bar is taller here — logo over nav rather than beside it. */
+  html { scroll-padding-block-start: 12rem; }
+
+  .hero { padding-block-start: clamp(11rem, 24vh, 15rem); }
+  .hero__copy { max-inline-size: none; }
+  /* A 16:9 frame in a portrait window is cropped to a slice, and the copy is on
+     top of the cars rather than beside them. So the scrim turns vertical: dark
+     where the words are, clear where the cars are. */
+  .hero::before {
+    background: linear-gradient(
+      to bottom,
+      rgb(var(--graphite-950-rgb) / 0.88) 0%,
+      rgb(var(--graphite-950-rgb) / 0.72) 46%,
+      rgb(var(--graphite-950-rgb) / 0.34) 72%,
+      rgb(var(--graphite-950-rgb) / 0.34) 100%);
+  }
+
+  .sect__head, .about__grid, .consign, .site-foot__grid { grid-template-columns: minmax(0, 1fr); }
+  .sect__head > .tag, .sect__head > .sect__title, .sect__action, .sect__note,
+  .sect__head--pair > .sect__title, .sect__head--pair .sect__note,
+  .about__grid > :first-child, .about__body,
+  .consign > :first-child, .consign__body,
+  .site-foot__brand, .site-foot__grid > :nth-child(2),
+  .site-foot__grid > :nth-child(3), .site-foot__grid > :nth-child(4) {
+    grid-column: 1; grid-row: auto; justify-self: start;
+  }
+  /* Released from row 2 as well as column 11, or the buttons land above the
+     heading they belong to. */
+  .rail-btns { grid-column: 1; grid-row: auto; justify-self: start; margin-block-start: var(--sp-5); }
+
+  .about__pair, .build__top, .steps { grid-template-columns: minmax(0, 1fr); }
+  /* One car fills the phone with a thumb's width of the next one showing. */
+  .rail--lots { --card: 86vw; }
+  .steps { gap: var(--sp-6); }
+  .row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
+  .frame--square { aspect-ratio: 16 / 9; }
+  .row .link { align-self: start; }
+
+  .rail { grid-auto-columns: 80vw; }
+  .rail--shots { grid-auto-columns: 58vw; }
+  .sect > .rail { margin-inline: 0 calc(-1 * var(--gutter)); }
+  .about__numeral { font-size: clamp(7rem, 42vw, 12rem); inset-block-start: 4%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail { scroll-behavior: auto; }
+  /* The hero simply scrolls away like any other block. */
+  .hero__copy, .hero__foot { transform: none; filter: none; opacity: 1; }
+  /* The picture still changes — that is the content, not the decoration. What
+     goes is the dissolve between the two. */
+  .build__shot { transition: none; }
+  /* A zoom that snaps is worse than no zoom. The picture simply holds still. */
+  .lot__shot .shot { transition: none; }
+  .lot:hover .lot__shot .shot,
+  .lot:focus-within .lot__shot .shot { transform: none; }
+  .step::before { transition: none; }
+}
+
+/* :has() is what drives the build stage. Where it is missing the section is the
+   one still image it used to be, which is the honest fallback: the five steps
+   already say in words what each frame shows. */
+@supports not selector(:has(*)) {
+  .build__shot:not([data-build='1']) { display: none; }
+  .step::before { display: none; }
+}
+
+/* The named contact sits under the switchboard number rather than beside it:
+   one is the company, the other is a person, and they are not the same rank. */
+.site-foot__who { margin-block-start: var(--sp-4); color: var(--text-muted); }
+.site-foot__who a { color: var(--text); }
+.site-foot__legal a { color: var(--text-muted); text-decoration: none; border-block-end: var(--hairline) solid transparent; }
+.site-foot__legal a:hover { border-block-end-color: var(--text-muted); }

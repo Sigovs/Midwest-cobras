@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en" data-page="v10">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Build your Cobra — Midwest Cobras</title>
+<meta name="description" content="What every Backdraft Cobra comes with as standard, and everything you choose after that — models, engines, transmission and interior. Evan goes through all of it with you.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2308090b'/></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Allura&display=swap">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/v10.css">
+<!-- v11 is the client's September change request, as a layer over v10.
+     index10 stays exactly as the client last saw it. -->
+<link rel="stylesheet" href="assets/css/v11.css">
+<!-- v12 is the next round of client changes, as a layer over v11 — the same
+     rule one step on: index11 stays exactly as the client last saw it. -->
+<link rel="stylesheet" href="assets/css/v12.css">
+<!-- The build page's own layer: the page is v12's shell, this is the build. -->
+<link rel="stylesheet" href="assets/css/build.css">
+
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body class="page-build">
+
+<a class="skip" href="#build">Skip to the build</a>
+
+<!-- BUILD YOUR COBRA — its own page, Alex, 2026-09-14: the mechanics of the
+     Build-your-own page on Hinderer Cobras (our project, the aandemo build),
+     in Midwest's design. Same shell as finance.html and index12 — head, bar,
+     footer, the stylesheets in the same order — with the configurator as the
+     whole of main. The Build section on the home page stays. -->
+<header class="site-head" id="site-head">
+  <!-- THE MARK IS WHITE AND HAS NO CAR — the client, 2026-09-10: "let's change
+       the logo back to white without the car silhouette like you originally
+       had it." That is the original logo.svg, drawn as a mask and painted
+       bone-050. The two candidates and the switch between them retire here;
+       both are in index10 and in git. -->
+  <a class="wordmark wordmark--solo" href="index.html">
+    <span class="wordmark__mask" aria-hidden="true"></span>
+    <span class="wordmark__name">Midwest Cobras</span>
+  </a>
+  <nav class="site-nav" aria-label="Primary">
+    <ul>
+      <!-- HOME, SAID IN WORDS — Evan, 2026-09-11: he would never have known
+           the logo goes back to the top, and neither will the "old guys" he
+           expects to be reading this. The mark keeps its link; this is the
+           same route with a name on it. -->
+      <li><a href="index.html">Home</a></li>
+      <li><a href="inventory.html">Inventory</a></li>
+      <li><a href="build.html" aria-current="page">Build</a></li>
+      <li><a href="service.html">Service</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="consignment.html">Consignment</a></li>
+      <li><a href="finance.html">Finance</a></li>
+      <li><a href="index.html#gallery">Gallery</a></li>
+      <!-- The number is the one nav item that is not navigation: it leaves the
+           page. Same pill, so it does not become a badge, but it carries the
+           handset because a bare string of digits in a nav row reads as a
+           label rather than something you can press. -->
+      <li class="site-nav__tel">
+        <a href="tel:+19136625000">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+            <path d="M6.4 3.5h3l1.5 3.7-1.9 1.4a11.5 11.5 0 0 0 5.4 5.4l1.4-1.9 3.7 1.5v3a1.6 1.6 0 0 1-1.7 1.6A14.6 14.6 0 0 1 4.8 5.2a1.6 1.6 0 0 1 1.6-1.7Z"
+                  fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg><span>913 662 5000</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       BUILD — A CONTENT PAGE, NOT A CONFIGURATOR. The client, 2026-10-12:
+       "only a content page for the build section. They don't want people
+       filling things out and selecting them online."
+
+       So the ten steps, the running total, the summary panel, the phone
+       total bar and the "Get your estimate" form are gone. What is here is
+       their own BUILD.pdf, set: what every car comes with, what is chosen,
+       and the promise that Evan walks the owner through it. Nothing on this
+       page is selectable.
+
+       The configurator is not deleted from the record — it is in git at
+       989bca7, markup, build.css and build.js together, and the ledger says
+       so. One commit brings it back if the client is ever talked round. Its
+       option photographs were Hinderer's and go with it.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--bone bld" id="build" data-ground="light" aria-labelledby="build-title">
+    <header class="bld__intro">
+      <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Build</p>
+      <h1 class="sect__title" id="build-title">Build your Cobra.</h1>
+    </header>
+
+    <!-- THE CAR, NAMED, AND IT IS THE FIRST THING ON THE PAGE — Alex,
+         2026-10-12. This is the client's own idea given our means. Her
+         BUILD.pdf carries a diagram of a Cobra with eleven parts labelled,
+         taken from Backdraft's page; the file was unusable (their type baked
+         into 1432px of pixels) but the thought was right, and a page about
+         what a car is made of should open by naming some of it.
+
+         The numbers are elements and the words are text, so they scale, they
+         translate and a screen reader says them — which is the whole reason
+         not to ship a picture of a diagram.
+
+         ALL ELEVEN OF HER LABELS, ALL PINNED — Alex, 2026-10-12: put the
+         missing ones roughly where the hidden part sits. Eight land on
+         something the frame shows. Three land on the place the part occupies
+         when this angle hides it: the hood scoop on the bonnet it lifts off
+         from, the gas cap on the rear deck round the shoulder, the quick
+         jacks under the tail. Those three are drawn hollow and their card
+         says "not visible from this angle", so the pin claims a location and
+         never an appearance — which is the line that matters. Numbering runs
+         1-11 across the frame with no gaps.
+
+         Mechanically it is four radios and :has() — no script, so it works
+         with scripts off, and a keyboard arrows through the parts the way it
+         arrows through any radio group. -->
+    <figure class="bld-hero">
+      <input class="bld-pick" type="radio" name="part" id="part-1" checked>
+      <input class="bld-pick" type="radio" name="part" id="part-2">
+      <input class="bld-pick" type="radio" name="part" id="part-3">
+      <input class="bld-pick" type="radio" name="part" id="part-4">
+      <input class="bld-pick" type="radio" name="part" id="part-5">
+      <input class="bld-pick" type="radio" name="part" id="part-6">
+      <input class="bld-pick" type="radio" name="part" id="part-7">
+      <input class="bld-pick" type="radio" name="part" id="part-8">
+      <input class="bld-pick" type="radio" name="part" id="part-9">
+      <input class="bld-pick" type="radio" name="part" id="part-10">
+      <input class="bld-pick" type="radio" name="part" id="part-11">
+
+      <div class="bld-hero__stage">
+        <!-- Both frames stacked, one opaque: the edition switch below crosses
+             between them, and nothing in the figure moves or reflows. The
+             pair was generated with one camera and one pose, so a pin holds
+             its part on either car. -->
+        <img class="bld-hero__img" src="assets/img/build/gen-build-hero-rt4b.jpg"
+             alt="A black Cobra roadster with blacked-out pipes and roll bar in a concrete hall"
+             width="2400" height="1018" decoding="async" data-ed="black">
+        <!-- The Classic carries the priority now: it is the frame the page
+             opens on, so it is the one the first screen waits for. -->
+        <img class="bld-hero__img" src="assets/img/build/gen-build-hero-rt4-classic.jpg"
+             alt="A navy Cobra roadster with white stripes and polished side pipes in a concrete hall"
+             width="2400" height="1018" fetchpriority="high" decoding="async" data-ed="classic">
+
+        <!-- The leader. One line per part, drawn in the frame's own
+             coordinates so it meets the card's edge and the pin exactly at
+             every width; only the chosen one is visible. -->
+        <svg class="bld-leads" viewBox="0 0 2400 1018" preserveAspectRatio="none"
+             aria-hidden="true" focusable="false">
+          <path class="bld-lead bld-lead--1" pathLength="1" fill="none" vector-effect="non-scaling-stroke"
+                d="M 816 500 Q 1092 436 1368 550" />
+          <path class="bld-lead bld-lead--2" pathLength="1" fill="none" vector-effect="non-scaling-stroke"
+                d="M 816 500 Q 1108 505 1399 708" />
+          <path class="bld-lead bld-lead--3" pathLength="1" fill="none" vector-effect="non-scaling-stroke"
+                d="M 816 500 Q 1168 388 1519 501" />
+          <path class="bld-lead bld-lead--4" pathLength="1" fill="none" vector-effect="non-scaling-stroke"
+                d="M 816 500 Q 1192 438 1567 620" />
+          <path class="bld-lead bld-lead--5" pathLength="1" fill="none" vector-effect="non-scaling-stroke"
+                d="M 816 500 Q 1198 494 1579 744" />
+          <path class="bld-lead bld-lead--6" pathLength="1" fill="none" vector-effect="non-scaling-stroke"
+                d="M 816 500 Q 1265 343 1714 473" />
+          <path class="bld-lead bld-lead--7" pathLength="1" fill="none" vector-effect="non-scaling-stroke"
+                d="M 816 500 Q 1279 467 1742 741" />
+          <path class="bld-lead bld-lead--8" pathLength="1" fill="none" vector-effect="non-scaling-stroke"
+                d="M 816 500 Q 1308 357 1800 530" />
+          <path class="bld-lead bld-lead--9" pathLength="1" fill="none" vector-effect="non-scaling-stroke"
+                d="M 816 500 Q 1337 308 1858 450" />
+          <path class="bld-lead bld-lead--10" pathLength="1" fill="none" vector-effect="non-scaling-stroke"
+                d="M 816 500 Q 1404 342 1992 560" />
+          <path class="bld-lead bld-lead--11" pathLength="1" fill="none" vector-effect="non-scaling-stroke"
+                d="M 816 500 Q 1464 411 2112 743" />
+        </svg>
+
+        <ul class="bld-pins">
+          <li class="bld-pins__i bld-pins__i--1" style="--x: 57%; --y: 54%">
+            <label class="bld-pin bld-pin--off" for="part-1">
+              <span aria-hidden="true">1</span><span class="vh">Removable hood scoop</span>
+            </label>
+          </li>
+          <li class="bld-pins__i bld-pins__i--2" style="--x: 58.3%; --y: 69.5%">
+            <label class="bld-pin" for="part-2">
+              <span aria-hidden="true">2</span><span class="vh">18 inch knock off wheels</span>
+            </label>
+          </li>
+          <li class="bld-pins__i bld-pins__i--3" style="--x: 63.3%; --y: 49.2%">
+            <label class="bld-pin" for="part-3">
+              <span aria-hidden="true">3</span><span class="vh">7 gauge dash included</span>
+            </label>
+          </li>
+          <li class="bld-pins__i bld-pins__i--4" style="--x: 65.3%; --y: 60.9%">
+            <label class="bld-pin" for="part-4">
+              <span aria-hidden="true">4</span><span class="vh">Stainless Steel side vent</span>
+            </label>
+          </li>
+          <li class="bld-pins__i bld-pins__i--5" style="--x: 65.8%; --y: 73.1%">
+            <label class="bld-pin" for="part-5">
+              <span aria-hidden="true">5</span><span class="vh">Stainless Steel side pipe</span>
+            </label>
+          </li>
+          <li class="bld-pins__i bld-pins__i--6" style="--x: 71.4%; --y: 46.5%">
+            <label class="bld-pin" for="part-6">
+              <span aria-hidden="true">6</span><span class="vh">Sunvisors and wind wings</span>
+            </label>
+          </li>
+          <li class="bld-pins__i bld-pins__i--7" style="--x: 72.6%; --y: 72.8%">
+            <label class="bld-pin" for="part-7">
+              <span aria-hidden="true">7</span><span class="vh">Exhaust heat shield</span>
+            </label>
+          </li>
+          <li class="bld-pins__i bld-pins__i--8" style="--x: 75%; --y: 52.1%">
+            <label class="bld-pin" for="part-8">
+              <span aria-hidden="true">8</span><span class="vh">Leather bucket seats</span>
+            </label>
+          </li>
+          <li class="bld-pins__i bld-pins__i--9" style="--x: 77.4%; --y: 44.2%">
+            <label class="bld-pin" for="part-9">
+              <span aria-hidden="true">9</span><span class="vh">Stainless Steel roll bar</span>
+            </label>
+          </li>
+          <li class="bld-pins__i bld-pins__i--10" style="--x: 83%; --y: 55%">
+            <label class="bld-pin bld-pin--off" for="part-10">
+              <span aria-hidden="true">10</span><span class="vh">Lemans style gas cap</span>
+            </label>
+          </li>
+          <li class="bld-pins__i bld-pins__i--11" style="--x: 88%; --y: 73%">
+            <label class="bld-pin bld-pin--off" for="part-11">
+              <span aria-hidden="true">11</span><span class="vh">Stainless Steel rear quick jacks</span>
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <!-- The editions, on the picture — Alex, 2026-10-12. They order
+           nothing and configure nothing: they change which of two
+           photographs is on screen, which is what a showroom does when you
+           ask to see the other one. Oxblood as a filled mark with a bone
+           label is the one way oxblood is allowed on a dark ground. -->
+      <div class="bld-editions">
+        <p class="bld-editions__k" id="editions-k">Two editions</p>
+        <div class="bld-editions__row" role="radiogroup" aria-labelledby="editions-k">
+        <label class="bld-edition">
+          <!-- The page opens on the Classic — the client, 2026-10-13: "right
+               now it defaults to the Blackout when you open it. Any chance it
+               can default to the Classic instead?" The picture follows the
+               checked edition, so this one attribute moves both. -->
+          <input type="radio" name="edition" value="classic" checked>
+          <span>RT4 Classic Edition</span>
+        </label>
+        <label class="bld-edition">
+          <input type="radio" name="edition" value="black">
+          <span>RT4B Black Edition</span>
+        </label>
+        </div>
+      </div>
+
+      <!-- The card, and on a phone the list. Same markup both ways: wide
+           enough and it is one plate on the picture showing the chosen part;
+           narrow and it is four rows under it, because a numbered dot the
+           size of a fingernail points at nothing a thumb can see. -->
+      <ol class="bld-notes">
+        <li class="bld-note">
+          <p class="bld-note__n">01</p>
+          <h3 class="bld-note__k">Removable hood scoop</h3>
+          <p class="bld-note__v">It lifts off, and it is off on this car — the bonnet here is the same one with the scoop fitted.</p>
+          <p class="bld-note__off">Not visible from this angle</p>
+        </li>
+        <li class="bld-note">
+          <p class="bld-note__n">02</p>
+          <h3 class="bld-note__k">18 inch knock off wheels</h3>
+          <p class="bld-note__v">A wheel comes off with a hammer, not a spanner.</p>
+        </li>
+        <li class="bld-note">
+          <p class="bld-note__n">03</p>
+          <h3 class="bld-note__k">7 gauge dash included</h3>
+          <p class="bld-note__v">Behind the wheel, under the cowl.</p>
+        </li>
+        <li class="bld-note">
+          <p class="bld-note__n">04</p>
+          <h3 class="bld-note__k">Stainless Steel side vent</h3>
+          <p class="bld-note__v">Through the front wing, where the engine bay breathes out.</p>
+        </li>
+        <li class="bld-note">
+          <p class="bld-note__n">05</p>
+          <h3 class="bld-note__k">Stainless Steel side pipe</h3>
+          <p class="bld-note__v">Polished on the Classic Edition, ceramic-coated black on the Black.</p>
+        </li>
+        <li class="bld-note">
+          <p class="bld-note__n">06</p>
+          <h3 class="bld-note__k">Sunvisors and wind wings</h3>
+          <p class="bld-note__v">Both standard, either side of the screen.</p>
+        </li>
+        <li class="bld-note">
+          <p class="bld-note__n">07</p>
+          <h3 class="bld-note__k">Exhaust heat shield</h3>
+          <p class="bld-note__v">Perforated, over the length of pipe you step past getting in.</p>
+        </li>
+        <li class="bld-note">
+          <p class="bld-note__n">08</p>
+          <h3 class="bld-note__k">Leather bucket seats</h3>
+          <p class="bld-note__v">With door panels to match and premium carpet, bound at the edges.</p>
+        </li>
+        <li class="bld-note">
+          <p class="bld-note__n">09</p>
+          <h3 class="bld-note__k">Stainless Steel roll bar</h3>
+          <p class="bld-note__v">Frame mounted, not bolted to the body.</p>
+        </li>
+        <li class="bld-note">
+          <p class="bld-note__n">10</p>
+          <h3 class="bld-note__k">Lemans style gas cap</h3>
+          <p class="bld-note__v">On the rear deck, round the far side of this shoulder.</p>
+          <p class="bld-note__off">Not visible from this angle</p>
+        </li>
+        <li class="bld-note">
+          <p class="bld-note__n">11</p>
+          <h3 class="bld-note__k">Stainless Steel rear quick jacks</h3>
+          <p class="bld-note__v">Under the tail, behind the rear wheels.</p>
+          <p class="bld-note__off">Not visible from this angle</p>
+        </li>
+      </ol>
+
+    </figure>
+
+    <p class="lede">A Cobra starts as a rolling chassis. Everything after that is
+      yours to decide &mdash; and Evan goes through every one of these with you,
+      in person or on the phone.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       WHAT EVERY CAR COMES WITH — the client's twenty standard features,
+       BUILD.pdf, set as written including their own capitals and the ″ mark.
+       A plate, not prose: this is a list of parts, and it is read by scanning
+       for one of them rather than by reading the lot.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--bone bld-std" data-ground="light" aria-labelledby="std-title">
+    <header class="bld-std__head">
+      <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Standard</p>
+      <h2 class="sect__title" id="std-title">What every car comes with.</h2>
+    </header>
+    <ul class="bld-std__list">
+        <li>Leather bucket seats and door panels</li>
+        <li>Premium carpet with bound edges</li>
+        <li>Base coat clear coat paint finish</li>
+        <li>18&Prime; inch alloy knock off wheels</li>
+        <li>17 gallon polypropylene fuel tank</li>
+        <li>Stainless steel expansion tank</li>
+        <li>Power disc brakes</li>
+        <li>Hydraulic clutch setup</li>
+        <li>Multi link independent rear suspension</li>
+        <li>Coil Over front struts</li>
+        <li>Stainless Steel engine compartment cladding</li>
+        <li>Battery Isolator Switch</li>
+        <li>Drivers side seat slider</li>
+        <li>Stainless Steel Drivers Roll Bar-Frame mounted</li>
+        <li>Lemans Style Fuel cap</li>
+        <li>Wind Wings and Sunvisors</li>
+        <li>Windshield Wipers</li>
+        <li>Trunk mounted battery</li>
+        <li>Steel floors with dropped footbox</li>
+        <li>Doorpads with Map Pockets</li>
+    </ul>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       WHAT IS CHOSEN — a screen of its own, Alex 2026-10-12: the argument and
+       the list on the left, the car on the right, nothing cut off at the
+       fold. Their own paragraphs, and the lists pulled out of the sentences
+       that named them ("RT4 or the GT model, Classic or Blackout",
+       "Prestige, Roush, Ford or Shelby engine; big block or small block;
+       carbureted or fuel injected"): a sentence is the wrong shape for a set
+       of alternatives. Their opening paragraph came out on 2026-10-12
+       (Alex): the heading and the list say it, and a paragraph restating
+       them twice over was the longest thing on a screen whose subject is
+       the list.
+
+       NO ARROWS AND NO THUMBNAILS, both of which were in Alex's drawing. An
+       arrow promises somewhere to go and there is nowhere — this page orders
+       nothing, by the client's instruction. The thumbnails would need seven
+       photographs of engines, gearboxes and interiors that this shop has not
+       taken; the twenty-six that used to sit here were another dealer's and
+       went with the configurator. A number and a rule carry the rhythm
+       instead.
+
+       The photograph is the Classic, the second of the generated pair. It is
+       the only car picture on the site not already spoken for: the two side
+       shots are jonathanmotorcars.com's photography and are parked in the
+       ledger pending written permission, and the front shots belong to the
+       inventory cards on the home page. The hero above shows the Black
+       Edition unless a reader switches it, so the two are not the same car
+       on screen at once — but they are the same car, and a photograph of a
+       real Midwest build would be better here than either.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--bone bld-choice" data-ground="light" aria-labelledby="choice-title">
+    <div class="bld-choice__grid">
+      <div class="bld-choice__lead">
+        <p class="tag"><span class="tag__dot" aria-hidden="true"></span>Yours to decide</p>
+        <h2 class="sect__title" id="choice-title">Then it becomes yours.</h2>
+        <ol class="bld-opts">
+        <li class="bld-opt">
+          <span class="bld-opt__n">01</span>
+          <span class="bld-opt__k">Model</span>
+          <span class="bld-opt__v">RT4 &middot; GT</span>
+        </li>
+        <li class="bld-opt">
+          <span class="bld-opt__n">02</span>
+          <span class="bld-opt__k">Edition</span>
+          <span class="bld-opt__v">Classic &middot; Blackout</span>
+        </li>
+        <li class="bld-opt">
+          <span class="bld-opt__n">03</span>
+          <span class="bld-opt__k">Engine</span>
+          <span class="bld-opt__v">Prestige &middot; Roush &middot; Ford &middot; Shelby</span>
+        </li>
+        <li class="bld-opt">
+          <span class="bld-opt__n">04</span>
+          <span class="bld-opt__k">Block</span>
+          <span class="bld-opt__v">Big block &middot; Small block</span>
+        </li>
+        <li class="bld-opt">
+          <span class="bld-opt__n">05</span>
+          <span class="bld-opt__k">Fuel</span>
+          <span class="bld-opt__v">Carbureted &middot; Fuel injected</span>
+        </li>
+        <li class="bld-opt">
+          <span class="bld-opt__n">06</span>
+          <span class="bld-opt__k">Transmission</span>
+          <span class="bld-opt__v">Manual &middot; Automatic</span>
+        </li>
+        <li class="bld-opt">
+          <span class="bld-opt__n">07</span>
+          <span class="bld-opt__k">Inside</span>
+          <span class="bld-opt__v">Air ducts &middot; Glove box &middot; Custom color shift knob &middot; Heater &middot; Audio system &middot; USB port</span>
+        </li>
+        </ol>
+      </div>
+      <!-- THE DETAIL, NOT THE CAR — Alex, 2026-10-12. Three car photographs
+           were tried in this slot and each was wrong for the same reason: a
+           whole car here repeats the hero, which is already a whole car with
+           eleven parts named on it. A macro of one finished detail says what
+           the list says — that this is a car built to a specification — and
+           says it in a register the hero does not use.
+
+           It is the Lemans cap, which is also row 10 on the picture above:
+           the thing the hero could only point at, here at arm's length.
+
+           Supplied by Alex in donot git/refference. 640 x 436 is all there
+           is of it, which is thin for this column; the ledger asks for the
+           original. -->
+      <figure class="bld-choice__shot">
+        <img src="assets/img/build/choice-cap.webp"
+             alt="Close-up of a polished Lemans-style fuel cap on the blue rear deck of a Cobra"
+             width="640" height="436" loading="lazy" decoding="async">
+      </figure>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       AND THE WAY IN. Their closing paragraph, and the two ways to reach
+       Evan. No form: the client asked for a page people read, not one they
+       fill in.
+     ══════════════════════════════════════════════════════════════════════ -->
+  <section class="sect sect--bone bld-close" data-ground="light" aria-labelledby="close-title">
+    <div class="bld-close__body">
+    <h2 class="sect__title" id="close-title">We go through it with you.</h2>
+    <p class="bld-close__text">At Midwest Cobras, LLC, we believe that building your
+      dream car should be a personalized and enjoyable experience. We will guide you
+      through each and every option in full detail, ensuring that your Cobra is
+      tailored to your specific desires.</p>
+    <p class="btn-row">
+      <a class="btn btn--solid" href="tel:+19136625000">Call 913 662 5000</a>
+      <a class="btn" href="mailto:evan@midwestcobras.com?subject=Building%20a%20Cobra">Email Evan</a>
+    </p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot" id="contact">
+  <!-- The photograph is the ground the footer stands on, not a band under it.
+       aria-hidden and no alt job: everything the footer says is in the text
+       above it, and the picture is the room that text is said in. -->
+  <div class="site-foot__media" aria-hidden="true">
+    <img src="assets/img/footer.jpg" width="1920" height="960" alt="" loading="lazy" decoding="async">
+  </div>
+
+  <!-- The marque at the size the building is. It is decoration and it is
+       already said by the wordmark, so it is hidden from the reader. -->
+  <p class="site-foot__mark" aria-hidden="true">Cobras</p>
+
+  <div class="site-foot__grid">
+    <div class="site-foot__brand">
+      <!-- The same mark as the header. Hidden from the reader here: the header
+           has already given the company its name. -->
+      <p class="wordmark wordmark--foot wordmark--solo" aria-hidden="true"><span class="wordmark__mask"></span></p>
+      <p class="site-foot__line">Backdraft Cobras built,<br>sold, serviced and moved.</p>
+      <p class="mfr mfr--foot"><span class="mfr__k">Built by</span><img class="mfr__logo" src="assets/img/backdraft-racing.png" width="341" height="75" alt="Backdraft Racing"></p>
+    </div>
+
+    <nav class="site-foot__col" aria-label="The shop">
+      <p class="site-foot__k">The shop</p>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="inventory.html">Inventory</a></li>
+        <li><a href="build.html">Build</a></li>
+        <li><a href="index.html#gallery">Gallery</a></li>
+      </ul>
+    </nav>
+
+    <nav class="site-foot__col" aria-label="Services">
+      <p class="site-foot__k">Services</p>
+      <ul>
+        <li><a href="service.html#tune-up">Tune-Up / Service</a></li>
+        <li><a href="service.html#transportation">Transportation</a></li>
+        <li><a href="consignment.html">Consignment</a></li>
+        <li><a href="finance.html">Finance</a></li>
+      </ul>
+    </nav>
+    <!-- The four accounts, from the links in the client's change request. -->
+    <nav class="site-foot__col" aria-label="Follow">
+      <p class="site-foot__k">Follow</p>
+      <ul>
+        <li><a href="https://www.instagram.com/midwestcobrasllc/" rel="noopener noreferrer" target="_blank">Instagram</a></li>
+        <li><a href="https://www.facebook.com/profile.php?id=61579691830492" rel="noopener noreferrer" target="_blank">Facebook</a></li>
+        <li><a href="https://www.youtube.com/@MidwestCobrasLLC" rel="noopener noreferrer" target="_blank">YouTube</a></li>
+        <li><a href="https://www.tiktok.com/@midwestcobrasllc" rel="noopener noreferrer" target="_blank">TikTok</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-foot__col">
+      <p class="site-foot__k">Contact</p>
+      <!-- One number, the shop's, and the two people by email — Evan first. The
+           client, 2026-09-10: "add Evan's name & email before mine and not
+           include cell numbers… our main number should be the only one shown." -->
+      <address>
+        <p>14510 Parallel Lane<br>Basehor, Kansas 66007</p>
+        <p><a href="tel:+19136625000">913 662 5000</a></p>
+        <p class="site-foot__who">Evan Kunard<br>
+          <a href="mailto:evan@midwestcobras.com">evan@midwestcobras.com</a></p>
+        <p class="site-foot__who">Kristi Kunard<br>
+          <a href="mailto:kristi@midwestcobras.com">kristi@midwestcobras.com</a></p>
+      </address>
+    </div>
+  </div>
+
+  <p class="site-foot__legal">
+    <span>&copy; 2026 Midwest Cobras, LLC</span>
+    <span>Powered by All Auto Network</span>
+  </p>
+
+</footer>
+
+<!-- v12.js FIRST: it marks the reveal elements before v10.js looks at them, so
+     v10's failsafe never owns them — the reason is at the top of v12.js. -->
+<script src="assets/js/v12.js" defer></script>
+<script src="assets/js/v10.js" defer></script>
+<script src="assets/js/v11.js" defer></script>
+<!-- No build.js: the configurator it ran went when Build became a content
+     page, and the file with it. The tag outlived both and 404'd on every
+     visit; the editions switch is CSS, so nothing here needs a script. -->
+</body>
+</html>

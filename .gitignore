@@ -1,0 +1,75 @@
+# ─── Client hand-off folder — never committed ────────────────────────────────
+# 284 MB of camera masters, a 20 MB OBJ and a 16 MB SketchUp file. The folder
+# name is the client's own instruction. Optimised derivatives under assets/ are
+# what ship; the masters stay on disk.
+donot git_from client/
+
+# Media masters anywhere else in the tree
+assets/video/_src/
+assets/model/_src/
+*.MOV
+*.mov
+*.obj
+*.skp
+*.mtl
+
+# Pre-optimisation originals
+.orig/
+
+# Pipeline intermediates. dev/model-pipeline.sh keeps the un-optimised export
+# next to the shipped one so a bad result can be diagnosed without re-running
+# Blender — the Shelby raw is 93 MB and has no business in git.
+assets/model/_raw-*.glb
+
+# Gate artefacts are computed against a build and are not sources.
+# declare.json IS a source — it states what the build committed to — so it stays.
+.gates/*
+!.gates/declare.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Deps & build output (none yet — here so the first person to add them doesn't forget)
+node_modules/
+dist/
+*.log
+
+# Browser-automation scratch
+.playwright-mcp/
+*-before.jpeg
+*-after.jpeg
+
+# Client masters. 48 MB of .skp / .obj / .stl — the derived glb under
+# assets/model/ is what ships, and it is the only version that should be here.
+cobra2/
+
+# Model conversion scratch: downloads and the intermediate stages between
+# spec-gloss and the committed asset. dev/README.md carries the commands.
+glb/
+
+# Anything the folder name already says to keep out.
+donot git/
+
+# Blender writes these next to the pipeline scripts
+dev/__pycache__/
+
+# ─── Working files, not part of the site ─────────────────────────────────────
+# Prepared for the dev team, 2026-10-13: the repo carries index.html and its
+# sub-pages and the assets they reference, and nothing else. These stay on
+# disk for the design work and are not part of the hand-off; every one of them
+# is still in git history if it is ever wanted back.
+CLAUDE.md
+docs/
+dev/
+.claude/
+.playwright-mcp/
+
+# The client's own change requests and source photographs. They are material
+# for the work, never part of the site, and they stay out of the repository.
+SEPTEMBER CHANGES/
+___CHANGES OCTOBER 2026/
+assets/img/build/build_hero.png

@@ -1,0 +1,335 @@
+/* build.css — the build page, build.html.
+   ---------------------------------------------------------------------------
+   Loaded after v12.css on one page. The shell (bar, footer, type, buttons,
+   the reveal) is v10–v12's; this file is the page itself.
+
+   IT WAS A CONFIGURATOR UNTIL 2026-10-12. Ten steps, a running total, a
+   summary that followed the choices and a form that sent them to Evan — the
+   Hinderer build's mechanics in Midwest's system. The client asked for "only
+   a content page… they don't want people filling things out and selecting
+   them online", so all of that is gone and this file lost about two thirds
+   of its length with it. It is in git at 989bca7, markup, styles and script
+   together, if it is ever wanted back.
+
+   What survived is the base: the picture and the card on it, which is the
+   one part the client marked to keep. Everything else here is new, and all
+   of it is a plate — this page is a specification, and the ground is bone
+   because on this site specification lives in the light. */
+
+/* ── the page ─────────────────────────────────────────────────────────────
+   EVERY BLOCK STARTS AT THE SAME LINE. v10 gives each direct child of a
+   section `max-inline-size: var(--page); margin-inline: auto`, which centres
+   each one on its own: a block that reaches --page sits at the left margin
+   and a narrower one drifts to the middle, so on a wide screen the heading
+   floated while the picture and the list stayed put (Alex, 2026-10-12).
+
+   The measure is right and the centring is what has to go. One rule for the
+   page rather than a margin fix on each block, which is how this got
+   inconsistent in the first place — six of them were corrected and the rest
+   were not. v10.css itself is untouched: index10 and index11 are frozen on
+   it. */
+.page-build main > .sect > * { margin-inline: 0 auto; }
+/* Section to section, the page is one argument, so the sections do not each
+   open with a full --pad of their own. Everything after the first closes up
+   to the rhythm of a list being read down. */
+/* THE FIRST SCREEN IS THE CAR. The top offset itself is v12.css's, shared
+   with every inner page; what is here is the rest of the closing-up — the
+   heading sits on the picture's shoulder rather than a section apart. */
+.bld__intro { display: grid; gap: var(--sp-3); justify-items: start; }
+.bld__intro .sect__title { margin-block-end: 0; }
+.bld-hero { margin-block-start: var(--sp-5); }
+.bld__intro .lede { max-inline-size: 58ch; }
+/* Anchored left, not centred: v10 centres every direct child of a section
+   to --page, and a child narrower than that drifts to the middle with it. */
+.bld-hero + .lede {
+  margin-block-start: var(--sp-6); margin-inline: 0 auto; max-inline-size: 70ch;
+}
+.bld-std, .bld-choice, .bld-close { padding-block-start: 0; }
+
+/* ── the hero: the car, named ───────────────────────────────────────────────
+   Alex's drawing, 2026-10-12: the picture full width at the top of the page,
+   the editions on it, a card holding the chosen part, and a leader from the
+   card to the pin. The client's PDF diagram done with elements instead of
+   pixels — the numbers scale, the words translate, a reader hears them.
+
+   Everything on the picture is positioned in PERCENTAGES of the frame, the
+   card included. That is what lets the leader, drawn in the frame's own
+   2400 x 1018 coordinates, meet the card's edge and the pin exactly at every
+   width with no measuring in script. */
+.bld-hero { position: relative; margin: var(--sp-6) 0 0; }
+.bld-hero__stage {
+  position: relative; display: grid; aspect-ratio: 2400 / 1018;
+  border-radius: var(--radius-media); overflow: clip; background: var(--graphite-900);
+}
+.bld-hero__img {
+  grid-area: 1 / 1; display: block; inline-size: 100%; block-size: 100%;
+  object-fit: cover; object-position: 64% 50%;
+}
+/* The crossfade the editions drive: one dissolve, no travel, no scale, at
+   --xfade — v11's duration for one photograph becoming another. Because the
+   pair was shot with one camera and one pose, every pin holds its part
+   across the swap and nothing on the picture has to move with it. */
+.bld-hero__img[data-ed] { opacity: 0; transition: opacity var(--xfade) var(--ease-inout); }
+.bld-hero:has(input[value='black']:checked)   .bld-hero__img[data-ed='black']   { opacity: 1; }
+.bld-hero:has(input[value='classic']:checked) .bld-hero__img[data-ed='classic'] { opacity: 1; }
+/* The picks, out of sight and still the thing that works. */
+.bld-pick, .bld-edition input, .vh {
+  position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.bld-pick, .bld-edition input { opacity: 0; }
+
+/* ── the editions, on the picture ───────────────────────────────────────────
+   A mono label over two pills. Oxblood is a fill on dark and never a text
+   colour there; bone-050 on it measures 10.76:1, which is the line in
+   tokens.css this is quoting. */
+.bld-editions {
+  position: absolute; z-index: 3; inset-block-start: 6%; inset-inline-start: 7%;
+  display: grid; justify-items: start; gap: var(--sp-3);
+}
+.bld-editions__k {
+  margin: 0; font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--ink-on-dark-muted);
+}
+.bld-editions__row { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.bld-edition {
+  position: relative; display: block;
+  padding: var(--sp-2) var(--sp-4); border-radius: 100vmax; cursor: pointer;
+  font-family: var(--face); font-weight: 600; font-size: var(--fs-body-s);
+  line-height: var(--lh-heading); color: var(--ink-on-dark);
+  transition: background-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out);
+}
+.bld-edition:not(:has(input:checked)) { color: var(--ink-on-dark-muted); }
+.bld-edition:hover { color: var(--ink-on-dark); }
+.bld-edition:has(input:checked) { background: var(--oxblood); color: var(--bone-050); }
+.bld-edition:has(input:focus-visible) { outline: var(--focus-w) solid var(--bone-050); outline-offset: 2px; }
+
+/* ── the leader ─────────────────────────────────────────────────────────────
+   One line per part, in the frame's coordinates; only the chosen one drawn.
+   Bone, because both ends of it sit on a dark picture. */
+.bld-leads {
+  position: absolute; inset: 0; z-index: 2;
+  inline-size: 100%; block-size: 100%; pointer-events: none;
+}
+/* The leader draws itself from the card out to the pin: pathLength="1" on
+   every path means one unit of dash covers the whole arc whatever its real
+   length, so the stylesheet can run them all on one number. --dur-5 is the
+   duration a panel crosses its own width; a thread finding a part is the
+   same kind of journey. */
+.bld-lead {
+  stroke: var(--bone-050); stroke-width: 1; opacity: 0;
+  stroke-dasharray: 1; stroke-dashoffset: -1;
+  transition: opacity var(--dur-2) var(--ease-out), stroke-dashoffset var(--dur-5) var(--ease-out);
+}
+.bld-hero:has(#part-1:checked) .bld-lead--1,
+.bld-hero:has(#part-2:checked) .bld-lead--2,
+.bld-hero:has(#part-3:checked) .bld-lead--3,
+.bld-hero:has(#part-4:checked) .bld-lead--4,
+.bld-hero:has(#part-5:checked) .bld-lead--5,
+.bld-hero:has(#part-6:checked) .bld-lead--6,
+.bld-hero:has(#part-7:checked) .bld-lead--7,
+.bld-hero:has(#part-8:checked) .bld-lead--8,
+.bld-hero:has(#part-9:checked) .bld-lead--9,
+.bld-hero:has(#part-10:checked) .bld-lead--10,
+.bld-hero:has(#part-11:checked) .bld-lead--11 { opacity: 0.55; stroke-dashoffset: 0; }
+
+/* Under reduced motion the thread is simply there: the drawing is the one
+   thing on this page that is motion for its own sake, and it is the first
+   thing to go. */
+@media (prefers-reduced-motion: reduce) {
+  .bld-lead { transition: opacity var(--dur-2) var(--ease-out); stroke-dashoffset: 0; }
+}
+
+/* ── the pins ───────────────────────────────────────────────────────────────
+   A tap target of its own around a mark that stays small: the dot is what is
+   seen, the 44px label is what is pressed. */
+.bld-pins { position: absolute; inset: 0; z-index: 3; margin: 0; padding: 0; list-style: none; }
+.bld-pins > li {
+  position: absolute; inset-inline-start: var(--x); inset-block-start: var(--y); translate: -50% -50%;
+}
+.bld-pin { display: grid; place-items: center; inline-size: 2.75rem; block-size: 2.75rem; cursor: pointer; }
+.bld-pin > span[aria-hidden] {
+  display: grid; place-items: center;
+  inline-size: 1.5rem; block-size: 1.5rem; border-radius: 50%;
+  background: var(--bone-050); color: var(--graphite-950);
+  box-shadow: 0 0 0 0.3rem rgb(var(--bone-100-rgb) / 0.2);
+  font-family: var(--mono); font-size: var(--micro); font-variant-numeric: tabular-nums; line-height: 1;
+  transition: background-color var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out), scale var(--dur-3) var(--ease-back);
+}
+.bld-pin:hover > span[aria-hidden] { scale: 1.12; }
+/* THE THREE THE ANGLE HIDES. The pin is on the place the part occupies — the
+   bonnet the scoop lifts off, the deck the cap sits in, the tail the jacks
+   sit under — so it claims a location and never an appearance. Hollow, so
+   the difference between "here it is" and "here is where it is" is visible
+   before the card is read. */
+.bld-pin--off > span[aria-hidden] {
+  background: none; color: var(--bone-050);
+  box-shadow: inset 0 0 0 var(--hairline) var(--bone-050), 0 0 0 0.3rem rgb(var(--graphite-950-rgb) / 0.35);
+}
+.bld-pins > li:has(:focus-visible) .bld-pin > span[aria-hidden] {
+  outline: var(--focus-w) solid var(--bone-050); outline-offset: 3px;
+}
+.bld-hero:has(#part-1:checked) .bld-pins__i--1 span[aria-hidden],
+.bld-hero:has(#part-2:checked) .bld-pins__i--2 span[aria-hidden],
+.bld-hero:has(#part-3:checked) .bld-pins__i--3 span[aria-hidden],
+.bld-hero:has(#part-4:checked) .bld-pins__i--4 span[aria-hidden],
+.bld-hero:has(#part-5:checked) .bld-pins__i--5 span[aria-hidden],
+.bld-hero:has(#part-6:checked) .bld-pins__i--6 span[aria-hidden],
+.bld-hero:has(#part-7:checked) .bld-pins__i--7 span[aria-hidden],
+.bld-hero:has(#part-8:checked) .bld-pins__i--8 span[aria-hidden],
+.bld-hero:has(#part-9:checked) .bld-pins__i--9 span[aria-hidden],
+.bld-hero:has(#part-10:checked) .bld-pins__i--10 span[aria-hidden],
+.bld-hero:has(#part-11:checked) .bld-pins__i--11 span[aria-hidden] {
+  background: var(--oxblood); color: var(--bone-050);
+  box-shadow: 0 0 0 0.45rem rgb(var(--oxblood-rgb) / 0.3);
+}
+
+/* ── the card ───────────────────────────────────────────────────────────────
+   One plate holding the chosen part. Its right edge is at 34% of the frame,
+   which is where every leader starts: the same decision written twice, once
+   in this file and once in the SVG. */
+.bld-notes {
+  position: absolute; z-index: 3; display: grid;
+  inset-inline-start: 7%; inline-size: 27%; min-inline-size: 15rem; inset-block-start: 30%;
+  margin: 0; padding: 0; list-style: none;
+}
+.bld-note {
+  grid-area: 1 / 1; z-index: 0;
+  padding: var(--sp-5); border-radius: var(--radius-media);
+  background: var(--bone-100); color: var(--ink-on-light);
+  opacity: 0; visibility: hidden;
+  transition: opacity var(--dur-3) var(--ease-out), visibility 0s linear var(--dur-3);
+}
+.bld-hero:has(#part-1:checked) .bld-note:nth-child(1),
+.bld-hero:has(#part-2:checked) .bld-note:nth-child(2),
+.bld-hero:has(#part-3:checked) .bld-note:nth-child(3),
+.bld-hero:has(#part-4:checked) .bld-note:nth-child(4),
+.bld-hero:has(#part-5:checked) .bld-note:nth-child(5),
+.bld-hero:has(#part-6:checked) .bld-note:nth-child(6),
+.bld-hero:has(#part-7:checked) .bld-note:nth-child(7),
+.bld-hero:has(#part-8:checked) .bld-note:nth-child(8),
+.bld-hero:has(#part-9:checked) .bld-note:nth-child(9),
+.bld-hero:has(#part-10:checked) .bld-note:nth-child(10),
+.bld-hero:has(#part-11:checked) .bld-note:nth-child(11) {
+  opacity: 1; visibility: visible; z-index: 1; transition-delay: 0s;
+}
+.bld-note__n {
+  margin: 0 0 var(--sp-3);
+  font-family: var(--face); font-weight: 700; font-size: var(--h3);
+  line-height: 0.9; letter-spacing: var(--ls-display); font-variant-numeric: tabular-nums;
+  color: var(--ink-on-light);
+}
+.bld-note__k { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-body); line-height: var(--lh-heading); }
+.bld-note__off {
+  margin: var(--sp-3) 0 0; padding-block-start: var(--sp-2);
+  border-block-start: var(--hairline) solid var(--rule);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--ink-on-light-muted);
+}
+.bld-note__v { margin: var(--sp-2) 0 0; font-size: var(--fs-body-s); line-height: var(--lh-body); color: var(--ink-on-light-muted); }
+
+/* UNDER 62rem EVERYTHING COMES OFF THE PICTURE. A pin is about 3mm of glass
+   there and the parts are a few pixels apart; a card at 24% of a phone holds
+   four words. So the picture goes back to being a picture and the parts
+   become the list they always were in the markup. */
+@media (max-width: 62rem) {
+  .bld-pins, .bld-leads { display: none; }
+  .bld-editions { position: static; margin-block-start: var(--sp-5); }
+  .bld-editions__k { color: var(--text-muted); }
+  .bld-edition { padding-inline: var(--sp-3); color: var(--text-muted); }
+  .bld-edition:hover { color: var(--text); }
+  .bld-edition:has(input:checked) { color: var(--bone-050); }
+  .bld-notes { position: static; inline-size: 100%; gap: 0; margin-block-start: var(--sp-6); }
+  .bld-note {
+    grid-area: auto; opacity: 1; visibility: visible; transition: none;
+    display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); gap: var(--sp-1) var(--sp-4);
+    padding: var(--sp-4) 0; border-radius: 0; background: none; color: var(--text);
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+  .bld-note__n { grid-row: span 2; margin: 0; font-size: var(--fs-body); color: var(--text-muted); }
+  .bld-note__v { grid-column: 2; color: var(--text-muted); }
+}
+
+/* ── standard features ──────────────────────────────────────────────────────
+   Twenty parts. Columns rather than one long list, because the reader is
+   scanning for one of them and a single column makes that a journey. Each
+   row keeps a hairline above it, so the columns read as a table of parts
+   rather than as two unrelated lists that happen to sit side by side. */
+.bld-std__head { display: grid; gap: var(--sp-4); justify-items: start; margin-block-end: var(--sp-7); }
+.bld-std__list {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 var(--col-gap);
+  margin: 0; padding: 0; list-style: none;
+}
+.bld-std__list li {
+  padding-block: var(--sp-4);
+  border-block-start: var(--hairline) solid var(--rule);
+  line-height: var(--lh-body); color: var(--text); text-wrap: pretty;
+}
+@media (min-width: 48rem) { .bld-std__list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 80rem) { .bld-std__list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* ── what is chosen ─────────────────────────────────────────────────────────
+   A screen of its own: the argument and the list on the left, the car on the
+   right, nothing cut off at the fold. svh rather than vh, because on a phone
+   vh is the window with the browser's bars pretending not to be there, and a
+   section sized to that lie loses its last row. */
+.bld-choice { display: grid; align-content: center; min-block-size: 100svh; }
+/* TIGHTER — Alex, 2026-10-12. With the paragraph gone the screen holds a
+   heading, seven rows and a picture, and at the old scale they drifted apart
+   in it. The whole block is held to a measure and the rows close up: the
+   list is the subject, so it should read as one object rather than as seven
+   lines spread across a page. */
+.bld-choice__grid { max-inline-size: 86rem; }
+.bld-choice__grid {
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-7) var(--col-gap); align-items: stretch;
+}
+.bld-choice__lead { display: grid; justify-items: start; gap: var(--sp-4); }
+/* A number, a key and the set on one rule — the three-column row every
+   specification on this site uses. The difference is that these are
+   alternatives rather than facts, so the set runs on one line with middots
+   and no box: a box around each word would be seven rows of buttons that
+   cannot be pressed. */
+.bld-opts {
+  inline-size: 100%; margin: var(--sp-2) 0 0; padding: 0; list-style: none;
+  display: grid; gap: 0;
+}
+.bld-opt {
+  display: grid; grid-template-columns: 2.5rem minmax(6rem, 9rem) minmax(0, 1fr);
+  gap: var(--sp-1) var(--sp-4); align-items: baseline;
+  padding-block: var(--sp-2);
+  border-block-start: var(--hairline) solid var(--rule);
+}
+.bld-opt:last-child { border-block-end: var(--hairline) solid var(--rule); }
+.bld-opt__n, .bld-opt__k {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.bld-opt__n { font-variant-numeric: tabular-nums; }
+.bld-opt__v { color: var(--text); line-height: var(--lh-body); text-wrap: pretty; }
+.bld-choice__shot img {
+  display: block; inline-size: 100%; block-size: 100%;
+  object-fit: cover; object-position: 50% 50%;
+  border-radius: var(--radius-media); background: var(--graphite-900);
+}
+/* Two columns only where the list keeps its measure beside a picture worth
+   looking at. The car takes the taller crop there: it is the subject and the
+   list is the caption, and a 4:5 frame is what stands beside a column of
+   type without either of them looking stranded. */
+@media (min-width: 68rem) {
+  .bld-choice__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 6fr); }
+}
+
+/* ── the close ──────────────────────────────────────────────────────────────
+   One measure and two ways to reach Evan. There is no form on this page, by
+   the client's instruction, so the call is the page's only action and it is
+   given the room an only action gets. */
+/* Not a grid: .sect > * is already centred to --page by v10, and a grid's
+   justify-items would fight that margin on every child. Plain flow, spaced
+   by the elements themselves. */
+.bld-close__text {
+  max-inline-size: 58ch; margin: var(--sp-5) 0 0;
+  font-size: var(--fs-lead); line-height: var(--lh-body); color: var(--text); text-wrap: pretty;
+}
+.bld-close .btn-row { margin-block-start: var(--sp-3); }

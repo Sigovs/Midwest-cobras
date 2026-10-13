@@ -1,0 +1,152 @@
+/* pages.css — service.html and about.html.
+   ---------------------------------------------------------------------------
+   Alex, 2026-09-14: "make two additional pages, SERVICE and ABOUT US", then
+   "very bulky, both of them — run it through genjutsu", and of the three
+   compact variants, "B". So both are set as a specification sheet: the page's
+   title, its note and its one action hold a narrow column, and what the page
+   is about stands beside it as compact rows — a small picture, the name, a
+   line, the action. Nothing is a screen tall any more; each page's action is
+   on the first screen. Built from what the system has — the tag, the button,
+   the pill, Evan's portrait treatment, the light on the About ground, the
+   countdown. Values come from tokens.css. */
+
+/* ── both pages: the record scale ─────────────────────────────────────────────
+   The first section's offset under the bar is v12.css's now, shared with every
+   inner page (Alex, 2026-10-12: it differed from page to page). Sections close
+   on the same step it uses. */
+.page-service .svc-page,
+.page-about .about,
+.page-about .shop { padding-block-end: var(--sp-8); }
+.page-about .shop { padding-block-start: var(--sp-8); }
+
+/* ── service.html ─────────────────────────────────────────────────────────── */
+.svc-sheet {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--sp-7) var(--col-gap); align-items: start;
+}
+.svc-sheet__aside { grid-column: 1 / span 4; display: grid; gap: var(--sp-4); justify-items: start; }
+.svc-sheet__aside .tag { margin: 0; }
+.svc-sheet__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-heading); color: var(--text);
+}
+.svc-sheet__note { margin: 0; max-inline-size: 36ch; line-height: var(--lh-body); color: var(--text-muted); text-wrap: pretty; }
+.svc-sheet__act { margin: var(--sp-2) 0 0; }
+
+.svc-rows { grid-column: 6 / span 7; border-block-end: var(--hairline) solid var(--rule); }
+.svc-row {
+  display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr);
+  gap: var(--sp-6); align-items: start;
+  padding-block: var(--sp-5); border-block-start: var(--hairline) solid var(--rule);
+}
+.svc-row__shot { display: block; inline-size: 100%; block-size: auto; }
+.svc-row__body { display: grid; gap: var(--sp-3); justify-items: start; min-inline-size: 0; }
+.svc-row__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-lead);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
+}
+.svc-row__text { margin: 0; max-inline-size: 58ch; line-height: var(--lh-body); color: var(--text-muted); text-wrap: pretty; }
+/* What it covers, on one mono line: five parts of one job, read as a record. */
+.svc-row__covers {
+  display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); margin: 0; padding: 0; list-style: none;
+  font-family: var(--mono); font-size: var(--micro); letter-spacing: var(--track); text-transform: uppercase; color: var(--text);
+}
+.svc-row__act { margin: var(--sp-1) 0 0; }
+
+/* ── about.html · the person ──────────────────────────────────────────────────
+   Alex, 2026-09-14, on the first cut of this row: "badly organised text,
+   header 3/10". The title and the bold lede under it were two heavy lines of
+   nearly one weight, and Contact me stood alone in a far column across an
+   empty field. Now it is one column that reads top to bottom — the title a
+   clear step above everything, the lede in the reading face at lead size, the
+   client's paragraphs at a reading measure, and Contact me directly under the
+   words it answers — with Evan holding the left, larger. The section keeps its
+   two shafts of light; the sheet sits above them. */
+.about-sheet {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--sp-6) var(--col-gap); align-items: start;
+}
+/* Evan stands on the section's floor — Alex, 2026-09-14: "lower the portrait
+   to the edge of the grey section". The figure is anchored to the foot of the
+   row and runs through the section's bottom padding, so the fade of the shirt
+   meets the section's edge; his name sits beside him, level with the last of
+   the shirt, as on the home page. */
+.about-sheet__who {
+  grid-column: 1 / span 5; grid-row: 1 / span 3; align-self: end;
+  margin: 0 0 calc(var(--sp-8) * -1);
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--sp-5);
+}
+.about-sheet__cap { display: grid; gap: var(--sp-1); padding-block-end: var(--sp-8); }
+.about-sheet__head { grid-column: 7 / span 6; grid-row: 1; display: grid; gap: var(--sp-4); justify-items: start; }
+.about-sheet__head .tag { margin: 0; }
+.about-sheet__title {
+  margin: 0; max-inline-size: 18ch; font-family: var(--face); font-weight: 600; font-size: calc(var(--h2) * 0.78);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-display); color: var(--text); text-wrap: balance;
+}
+.about-sheet__copy { grid-column: 7 / span 6; grid-row: 2; display: grid; gap: var(--sp-4); max-inline-size: 60ch; }
+.about-sheet__lede {
+  margin: 0 0 var(--sp-2); font-family: var(--text-face); font-weight: 400; font-size: var(--fs-lead);
+  line-height: var(--lh-body); color: var(--text); text-wrap: pretty;
+}
+.about-sheet__copy > p:not(.about-sheet__lede) {
+  margin: 0; line-height: var(--lh-body); color: var(--text-muted); text-wrap: pretty;
+}
+.about-sheet__side { grid-column: 7 / span 6; grid-row: 3; display: grid; justify-items: start; padding-block-start: var(--sp-2); }
+
+/* ── about.html · the shop ────────────────────────────────────────────────────
+   Alex, 2026-09-14: "under the hero, this part can be more compact, not the
+   whole screen's width", then "center the content". One block held to a
+   measure and centred on the page: the client's photograph, and beside it the
+   address, the opening with its count and the two ways there, stacked close.
+   At any width the four parts read as one thing instead of four stops across
+   a field. */
+.shop-strip {
+  display: grid; grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
+  gap: var(--sp-5) var(--sp-7); align-items: start;
+  max-inline-size: 62rem; margin-inline: auto;
+}
+.shop-strip__photo { grid-column: 1; grid-row: 1 / span 3; align-self: center; }
+.shop-strip__place { grid-column: 2; grid-row: 1; }
+.shop-strip__open {
+  grid-column: 2; grid-row: 2; inline-size: 100%;
+  padding-block: var(--sp-4); border-block: var(--hairline) solid var(--rule);
+}
+.shop-strip__acts { grid-column: 2; grid-row: 3; }
+.shop-strip__photo { margin: 0; }
+.shop-strip__photo img {
+  display: block; inline-size: 100%; block-size: auto; aspect-ratio: 4 / 3; object-fit: cover;
+  border-radius: var(--radius-media);
+}
+.shop-strip__place, .shop-strip__open { display: grid; gap: var(--sp-3); justify-items: start; min-inline-size: 0; }
+.shop-strip__place .tag { margin: 0; }
+.shop-strip__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-lead);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
+}
+.shop-strip__k {
+  margin: 0; font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.shop-strip__when { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-body); line-height: var(--lh-heading); color: var(--text); }
+/* The home page scopes the countdown's cells to its news item; the same cells
+   here, at the strip's scale. */
+.shop .countdown { margin: var(--sp-1) 0 0; gap: var(--sp-5); }
+.shop .countdown__cell { display: grid; gap: var(--sp-1); margin: 0; }
+.shop .countdown__n { font-size: var(--lot); }
+.shop .countdown__open { margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--fs-body); color: var(--text); }
+.shop-strip__acts { margin: 0; display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+@media (max-width: 61.99rem) {
+  .svc-sheet, .about-sheet, .shop-strip { grid-template-columns: minmax(0, 1fr); }
+  .svc-sheet > *, .about-sheet > *, .shop-strip > * { grid-column: 1; grid-row: auto; }
+  .svc-row { grid-template-columns: minmax(0, 6.5rem) minmax(0, 1fr); gap: var(--sp-4); }
+  .about-sheet__who { margin-block-end: 0; align-self: start; max-inline-size: 24rem; }
+  .about-sheet__cap { padding-block-end: var(--sp-5); }
+}
+/* On a phone the picture sits above its words, so the checks get the whole
+   width and "The annual going-over" stays one item on one line. */
+@media (max-width: 47.99rem) {
+  .svc-row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); }
+  .svc-row__shot { max-inline-size: 8rem; }
+  .svc-row__covers li { white-space: nowrap; }
+}

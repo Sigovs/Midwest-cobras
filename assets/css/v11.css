@@ -1,0 +1,889 @@
+/* v11.css — the client's September change request, as a layer over v10.
+   ---------------------------------------------------------------------------
+   index10 stays exactly as the client last saw it, so nothing in v10.css is
+   edited: v10 loads first and everything that changed lives here. Values come
+   from tokens.css and v10's own :root; the few numbers this file adds are
+   named at the top rather than typed where they are used. */
+
+:root {
+  /* One picture becoming another. Longer than any interface duration on the
+     site because it is not interface — at --dur-4 a dissolve between two
+     photographs reads as a cut with a smear on it. */
+  --xfade: 1.6s;
+
+  /* THE MARK, BACK TO THE ORIGINAL — white, no car, as the client asked on
+     2026-09-10. Sized to the original too. The heights v10 carries were raised
+     three times for the two candidates, and both of those had a car taking
+     half their height; the script alone at those heights would be nearly twice
+     the lettering the client ever saw, which is a different logo. These are
+     the original's 104–138px width expressed as heights. */
+  --mark11-h:       clamp(4.5rem, 5vw, 6rem);
+  --mark11-h-stuck: clamp(3.2rem, 3.5vw, 4.2rem);
+  --mark11-h-foot:  clamp(4.8rem, 6vw, 6.8rem);
+
+  /* Evan's figure in 04 — about half the heading column, so the heading stays
+     the widest thing in it. 520px at 1920, as Alex drew it. */
+  --who-w: clamp(17rem, 27vw, 32.5rem);
+
+  /* THE COPY IN 04 STARTS LEVEL WITH THE HEADING — Alex, 2026-09-10: "lower
+     the text, align it to Welcome to Midwest Cobras". Level by the tops of the
+     letters, not of the boxes: the heading is set tight and large, the lede
+     looser and smaller, so boxes aligned put the lede's letters higher.
+     Three numbers go into it, named here:
+       --title-lh    v10's .sect__title line-height, repeated so the sum can use it
+       --lede-lh     the lede's line-height, used by .about__lede itself
+       --face-rise   how far Familjen Grotesk's ascenders sit below the middle
+                     of the line, in em — measured off the render at 1440
+                     (heading 56px, lede 24.5px: both gave 0.26–0.28) */
+  --title-lh: 1.02;
+  --lede-lh:  1.25;
+  --face-rise: 0.27;
+
+  /* The build enquiry's form, at the width it had when the panel was only as
+     wide as the form. The panel now takes half the window (Alex, 2026-09-10:
+     "half the screen for the background, the form itself as it is, aligned
+     left"), and the form keeps this. */
+  --enquiry-w: 24rem;
+
+  /* THE LIGHT IN 04 — two shafts across the ground, Alex, 2026-09-11.
+       --beam-tilt    off vertical; light from a high door, not a spotlight
+       --beam-w       the nearer band's width; the far one is set wider below
+       --beam-a       the nearer band at its brightest, bone on graphite-900.
+                      Nothing is read over it. The far band is set dimmer
+                      below, at 0.07, because the copy column crosses it:
+                      that leaves ink-on-dark at 12:1 and the muted copy at
+                      5.5:1 over the light, measured on the composite
+       --beam-blur    three radii; the band is sharp where it enters and each
+                      layer takes over further down it (masks in .about__beam)
+       --beam-travel  how far the nearer band drifts sideways over the
+                      section's whole time on screen; the far one moves half */
+  --beam-tilt:   -18deg;
+  --beam-w:      16vw;
+  --beam-a:      0.10;
+  --beam-blur-1: 0.375rem;
+  --beam-blur-2: 1.5rem;
+  --beam-blur-3: 3.5rem;
+  --beam-travel: 10vw;
+}
+
+/* ── the mark ─────────────────────────────────────────────────────────────── */
+.wordmark--solo { color: var(--bone-050); }
+.wordmark--solo .wordmark__mask { display: none; }
+/* The fallback where masks are unsupported: the name, set in the script face. */
+.wordmark--solo .wordmark__name {
+  font-family: var(--script); font-size: clamp(1.9rem, 2.2vw, 2.6rem); line-height: 1.05;
+}
+@supports (mask-image: url('')) or (-webkit-mask-image: url('')) {
+  .wordmark--solo .wordmark__mask {
+    display: block;
+    block-size: var(--mark11-h);
+    aspect-ratio: 1496 / 1031;
+    background: currentColor;
+    -webkit-mask: url('../img/logo.svg') no-repeat center / contain;
+            mask: url('../img/logo.svg') no-repeat center / contain;
+    transition: block-size var(--dur-3) var(--ease-out);
+  }
+  .site-head[data-stuck='true'] .wordmark--solo .wordmark__mask { block-size: var(--mark11-h-stuck); }
+  .wordmark--foot.wordmark--solo .wordmark__mask { block-size: var(--mark11-h-foot); }
+  .wordmark--solo .wordmark__name {
+    position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+}
+/* The soft ground v10 put behind the mark existed for the burgundy, which was
+   losing its edges on the shop wall. A white mark does not need it, and the
+   original never had it. */
+.site-head::before { content: none; }
+
+/* ── 01 · the sequence ────────────────────────────────────────────────────
+   Every frame is stacked in the same box and only the current one is opaque,
+   so a change is a dissolve and nothing in the hero moves or reflows. */
+.hero__slide {
+  position: absolute; inset: 0;
+  inline-size: 100%; block-size: 100%;
+  object-fit: cover; object-position: var(--pos, 50% 50%);
+  opacity: 0;
+  transition: opacity var(--xfade) var(--ease-inout);
+}
+.hero__slide.is-on { opacity: 1; }
+/* The day shot is the only frame not taken in a dark room. Brought down a
+   little so it belongs to the same sequence rather than flashing the page. */
+.hero__slide--day { filter: brightness(0.84) saturate(0.94); }
+/* A slow settle on each still while it holds: the frame is alive and the
+   picture goes nowhere. Four per cent across the whole hold sits under the
+   point at which anyone reads it as a zoom. */
+@media (prefers-reduced-motion: no-preference) {
+  img.hero__slide.is-on { animation: hero-settle var(--hold, 7s) linear both; }
+}
+@keyframes hero-settle { from { transform: scale(1.04); } to { transform: none; } }
+
+/* The sequence's controls. Below the hero's bottom band, centred, and they
+   leave with the headline as the page is scrolled. */
+.hero__dots {
+  position: absolute; z-index: 3;
+  inset-inline: var(--edge); inset-block-end: calc(var(--pad) * 0.34);
+  display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  opacity: calc(1 - var(--hero-exit, 0));
+}
+.hero__track { display: flex; gap: var(--sp-1); margin: 0; padding: 0; list-style: none; }
+.hero__dot, .hero__pause {
+  position: relative; display: block;
+  inline-size: 2.75rem; block-size: 2.75rem;     /* 44 — the tap target */
+  padding: 0; border: 0; background: none; cursor: pointer;
+  color: var(--bone-050);
+}
+.hero__dot::before, .hero__dot::after {
+  content: ''; position: absolute;
+  inset-inline: var(--sp-1); inset-block-start: 50%;
+  block-size: calc(var(--hairline) * 2); margin-block-start: calc(var(--hairline) * -1);
+  background: rgb(var(--bone-100-rgb) / 0.28);
+}
+.hero__dot::after { background: var(--bone-050); transform: scaleX(0); transform-origin: left; }
+.hero__dot[aria-current='true']::after { animation: dot-fill var(--hold, 7s) linear both; }
+.hero__dots[data-paused] .hero__dot[aria-current='true']::after { animation-play-state: paused; }
+@keyframes dot-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.hero__pause svg { position: absolute; inset: 0; margin: auto; }
+.hero__i-play { display: none; }
+.hero__pause[aria-pressed='true'] .hero__i-pause { display: none; }
+.hero__pause[aria-pressed='true'] .hero__i-play { display: block; }
+.hero__dot:focus-visible, .hero__pause:focus-visible {
+  outline: var(--focus-w) solid var(--bone-050); outline-offset: calc(var(--focus-offset) * -1);
+}
+
+/* ── 01 · the maker's credit ──────────────────────────────────────────────
+   The lede and the Backdraft logo share the left of the bottom band. The
+   group takes the lede's place in the arrival, so the band still rises in the
+   order it did in v10. */
+.hero__left { display: grid; gap: var(--sp-5); justify-items: start; }
+.hero__foot > .hero__left { animation-delay: 400ms; }
+.mfr { display: inline-flex; align-items: center; gap: var(--sp-4); margin: 0; }
+.mfr__k {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+/* The lettering in this logo is a fifth of its height, so the height is set by
+   the lettering: below about 2.6rem "BACKDRAFT RACING" stops being words. */
+.mfr__logo { display: block; block-size: clamp(2.6rem, 3.2vw, 3.4rem); inline-size: auto; }
+
+/* ── 04 · who we are ─────────────────────────────────────────────────────
+   The client's own four paragraphs. The first is their opening line, set as a
+   statement in the display face; the rest are body. */
+.about__body > p:not(.about__lede) {
+  color: var(--text-muted); line-height: 1.6; max-inline-size: 52ch; text-wrap: pretty;
+}
+.about__lede {
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  line-height: var(--lede-lh); letter-spacing: -0.015em; color: var(--text);
+  max-inline-size: 26ch;
+}
+/* The copy column drops by the tag and its gap, then by the difference
+   between where each first line's letters begin. Two columns only — on a
+   phone the copy follows the portrait and needs none of it. */
+@media (min-width: 62rem) {
+  .about__body {
+    margin-block-start: calc(
+      var(--micro) * var(--lh-body) + var(--sp-5)
+      + (var(--h2) * var(--title-lh) - var(--h3) * var(--lede-lh)) / 2
+      - (var(--h2) - var(--h3)) * var(--face-rise)
+    );
+  }
+}
+/* EVAN, UNDER THE HEADING — Alex's layout, 2026-09-10. The long horizontal
+   pair goes and the section becomes a person and his words: heading and
+   portrait on the left, the client's copy on the right.
+
+   A cut-out on the section's own ground rather than a framed photograph, so
+   he stands in the room with the type instead of hanging on its wall. One low
+   oxblood light behind him — the only warm thing on this graphite, and a fill
+   on dark, the one way oxblood is allowed there. The shirt dissolves into the
+   ground below rather than stopping at an edge, which also takes care of the
+   shoulders, cut off by the photograph's own frame.
+
+   The figure sits inside the heading's column, so it rides that column's
+   scroll rate (about-mid in v10) with the heading rather than moving on its
+   own. */
+.about__grid { margin-block-end: 0; }          /* it spaced the pair, which is gone */
+
+/* TWO SHAFTS OF LIGHT — Alex, 2026-09-11. The section is a room, and light
+   comes into it from above: two tilted bands on the ground, behind the grid,
+   clipped by the section (v10's overflow: clip on .about). Cinematic-industrial
+   doing the one job it owns here — light on the canvas — and nothing else: it
+   sets no type and touches no control.
+
+   Progressive blur, built honestly: three copies of the band, each blurred
+   more than the last, each masked to its own stretch of the band's length so
+   the light is sharp where it enters and has dissolved by the floor. One
+   blurred layer with a soft mask reads as a glow; the hand-over between three
+   reads as distance.
+
+   The band itself is a gradient across its width — there is no edge to blur
+   into a ring. The blurs are filters on the layers, not on .about__beam,
+   because a filter on the parent would blur all three the same.
+
+   The tilt is the individual `rotate` property and the drift is `translate`,
+   so the scroll animation writes one property and never overwrites the
+   other. */
+.about__light {
+  position: absolute; inset: 0; z-index: 0; overflow: clip; pointer-events: none;
+}
+.about__beam {
+  /* Well past the section both ways: the box is rotated, so its top edge is
+     a diagonal, and it has to start far enough up that the diagonal — and the
+     blur that bleeds past it — never enters the frame. */
+  position: absolute; inset-block: -30% -30%;
+  inline-size: var(--beam-w);
+  rotate: var(--beam-tilt);
+}
+/* The nearer band stands over the heading's column; the far one, wider and
+   dimmer, behind the copy. Their rest positions are the middle of the drift,
+   so the still page and the reduced-motion page get the composed frame. */
+.about__beam:nth-child(1) { inset-inline-start: 22%; }
+.about__beam:nth-child(2) {
+  inset-inline-start: 54%;
+  inline-size: calc(var(--beam-w) * 1.5);
+  --beam-a: 0.07;
+  --beam-travel: 5vw;
+}
+.about__beam > span {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right,
+    transparent,
+    rgb(var(--bone-100-rgb) / var(--beam-a)) 38% 62%,
+    transparent);
+}
+.about__beam > :nth-child(1) {
+  filter: blur(var(--beam-blur-1));
+  -webkit-mask-image: linear-gradient(to bottom, var(--graphite-950) 25%, transparent 45%);
+          mask-image: linear-gradient(to bottom, var(--graphite-950) 25%, transparent 45%);
+}
+.about__beam > :nth-child(2) {
+  filter: blur(var(--beam-blur-2));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 25%, var(--graphite-950) 45%, var(--graphite-950) 60%, transparent 78%);
+          mask-image: linear-gradient(to bottom, transparent 25%, var(--graphite-950) 45%, var(--graphite-950) 60%, transparent 78%);
+}
+.about__beam > :nth-child(3) {
+  filter: blur(var(--beam-blur-3));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 60%, var(--graphite-950) 78%, var(--graphite-950) 90%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 60%, var(--graphite-950) 78%, var(--graphite-950) 90%, transparent 100%);
+}
+/* The drift — a function of scroll position, like everything else that moves
+   in 04 (v10's three rates). Still whenever the reader is, which is what
+   lets it sit behind copy: DM9 forbids the perpetual loop, not the parallax.
+   Over the section's whole passage, not the entry, so it never finishes
+   while the section is still on screen. Not at all under reduced motion, and
+   not at all where view() is unsupported: the bands stand at rest. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .about__beam {
+      animation: beam-drift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+  }
+}
+@keyframes beam-drift {
+  from { translate: calc(-1 * var(--beam-travel)) 0; }
+  to   { translate: var(--beam-travel) 0; }
+}
+/* On a phone the section is a column three times taller than it is wide, and
+   a band sized to the width becomes a thread. Wider there — the same two
+   shafts, re-cut for the frame rather than shrunk with it. And both at the
+   far band's brightness: in one column the copy crosses either of them, and
+   0.07 is the value that was measured for copy. */
+@media (max-width: 62rem) {
+  .about__beam { --beam-w: 32vw; --beam-a: 0.07; }
+}
+.who {
+  display: grid; grid-template-columns: minmax(0, var(--who-w)) auto;
+  align-items: end; gap: var(--sp-6);
+  margin: var(--sp-6) 0 0;
+}
+.who__photo { position: relative; isolation: isolate; }
+.who__photo::before {
+  content: ''; position: absolute; z-index: -1; pointer-events: none;
+  /* Wider on the left: the photograph is mirrored (below), and the light sits
+     behind the back of his head — before the flip that was the right. */
+  inset: -14% -14% 2% -30%;
+  /* Eased rather than straight: a falloff that goes to nothing in a straight
+     line stops dead at its rim, and on graphite the rim draws itself as a
+     ring. Five stops on a curve leave nothing to see where it ends. */
+  background: radial-gradient(closest-side at 50% 44%,
+    rgb(var(--oxblood-rgb) / 0.52) 0%,
+    rgb(var(--oxblood-rgb) / 0.36) 22%,
+    rgb(var(--oxblood-rgb) / 0.19) 46%,
+    rgb(var(--oxblood-rgb) / 0.07) 70%,
+    rgb(var(--oxblood-rgb) / 0.02) 86%,
+    rgb(var(--oxblood-rgb) / 0) 100%);
+}
+.who__photo img {
+  display: block; inline-size: 100%; block-size: auto;
+  /* Two fades, intersected: the shirt goes into the ground at the bottom, and
+     at the sides, where the photograph's own frame cut the shoulders off
+     straight. The side fade only has shirt to act on — the head is well
+     inside it. */
+  -webkit-mask-image:
+    linear-gradient(to bottom, var(--graphite-950) 58%, transparent 94%),
+    linear-gradient(to right, transparent 0%, var(--graphite-950) 9%, var(--graphite-950) 91%, transparent 100%);
+  -webkit-mask-composite: source-in;
+          mask-image:
+    linear-gradient(to bottom, var(--graphite-950) 58%, transparent 94%),
+    linear-gradient(to right, transparent 0%, var(--graphite-950) 9%, var(--graphite-950) 91%, transparent 100%);
+          mask-composite: intersect;
+  /* One tile, exactly the image. Masks repeat by default, and at a fractional
+     height the top of the next tile — opaque — showed as a hairline of shirt
+     under the fade. */
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;   mask-size: 100% 100%;
+  /* And the outermost two pixels trimmed. The figure's width is fluid, so the
+     image ends on a fraction of a pixel; the mask is snapped to whole pixels
+     and the last half-row of the photograph was left outside it — measured
+     as one row of shirt at 28,34,43 on a ground of 26,29,33. That band is
+     already transparent under both fades, so nothing visible goes with it. */
+  clip-path: inset(calc(var(--hairline) * 2));
+}
+/* Mirrored on Alex's direction, 2026-09-10, so Evan faces into the page —
+   toward his name and the copy — rather than off its left edge. Done here
+   rather than in the file, so the supplied photograph stays as supplied and
+   the choice is one line to undo. The fades and the trim are symmetrical, so
+   they flip with it unchanged. */
+.who__photo img { scale: -1 1; }
+/* The name sits beside the fade, level with the last of the shirt — close
+   enough to belong to him, clear of the pixels it would otherwise cross. */
+.who__cap { display: grid; gap: var(--sp-1); margin: 0; padding-block-end: var(--sp-7); }
+.who__name {
+  font-family: var(--text-face); font-weight: 600; font-size: var(--fs-body);
+  line-height: var(--lh-label); color: var(--text);
+}
+.who__role {
+  font-family: var(--text-face); font-size: var(--micro);
+  line-height: var(--lh-label); color: var(--text-muted);
+}
+
+/* ── 06 · news and events ────────────────────────────────────────────────── */
+.news__item .event__pin { margin: 0; }
+.event__pin span {
+  display: inline-block; padding: var(--sp-1) var(--sp-3);
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase;
+  background: var(--oxblood); color: var(--bone-050);   /* oxblood is fill on dark */
+}
+.countdown { display: flex; flex-wrap: wrap; gap: var(--sp-7); margin-block: var(--sp-4) var(--sp-2); }
+.news__item .countdown__cell { display: grid; gap: var(--sp-2); margin: 0; }
+.countdown__n {
+  font-family: var(--mono); font-weight: 500;
+  font-size: clamp(2.4rem, 3.6vw, 4rem); line-height: 1;
+  font-variant-numeric: tabular-nums; color: var(--text);
+}
+.countdown__u {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.news__item .countdown__open {
+  font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  line-height: 1.2; color: var(--text);
+}
+
+/* ── 08 · finance ────────────────────────────────────────────────────────
+   The record ground, and a form built as one: labels in the mono voice that
+   records, fields on the raised bone surface, and the title staying in view
+   while the application is worked through. */
+.finance__grid {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: var(--sp-8) var(--col-gap); align-items: start;
+}
+.finance__intro {
+  grid-column: 1 / span 4;
+  display: grid; gap: var(--sp-5); justify-items: start; align-self: start;
+  position: sticky; inset-block-start: 9rem;       /* clears the compact bar */
+}
+.finance__note { font-family: var(--mono); font-size: var(--micro); color: var(--text-muted); }
+.apply { grid-column: 6 / span 7; display: grid; gap: var(--sp-8); }
+.apply__group { margin: 0; padding: 0; border: 0; min-inline-size: 0; }
+.apply__legend {
+  display: flex; align-items: baseline; gap: var(--sp-4);
+  padding: 0 0 var(--sp-5);
+  font-family: var(--face); font-weight: 600; font-size: var(--h3);
+  letter-spacing: -0.015em; color: var(--text);
+}
+.apply__legend span {
+  font-family: var(--mono); font-weight: 400; font-size: var(--micro);
+  letter-spacing: var(--track); color: var(--text-muted);
+}
+.apply__fields {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-5) var(--sp-6);
+  padding-block-start: var(--sp-5);
+  border-block-start: var(--hairline) solid var(--rule);
+}
+.field { display: grid; gap: var(--sp-2); align-content: start; }
+.field--wide { grid-column: 1 / -1; }
+.field label {
+  font-family: var(--mono); font-size: var(--micro);
+  letter-spacing: var(--track); text-transform: uppercase; color: var(--text-muted);
+}
+.field__req { color: var(--oxblood); }                  /* oxblood is text on light */
+/* The border is ink-muted rather than the hairline token: a field's edge is a
+   control boundary and has to clear 3:1 against the ground, and bone-200 on
+   bone is about 1.2:1 — a field you cannot see is a field you cannot find. */
+.field input, .field select, .field textarea {
+  inline-size: 100%; min-block-size: 2.75rem;
+  padding: var(--sp-3) var(--sp-4);
+  font: inherit; color: var(--text);
+  background-color: var(--surface);
+  border: var(--hairline) solid var(--ink-on-light-muted);
+  border-radius: var(--radius-control);
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.field input::placeholder, .field textarea::placeholder { color: var(--ink-on-light-muted); opacity: 1; }
+.field input:hover, .field select:hover, .field textarea:hover { border-color: var(--ink-on-light); }
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible {
+  outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--hairline);
+  border-color: var(--ink-on-light);
+}
+.field textarea { min-block-size: 7.5rem; resize: vertical; line-height: var(--lh-body); }
+.field select {
+  appearance: none; -webkit-appearance: none;
+  padding-inline-end: var(--sp-8);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ink-on-light-muted) 50%),
+    linear-gradient(135deg, var(--ink-on-light-muted) 50%, transparent 50%);
+  background-position: calc(100% - 1.3rem) 50%, calc(100% - 0.95rem) 50%;
+  background-size: 0.35rem 0.35rem, 0.35rem 0.35rem;
+  background-repeat: no-repeat;
+}
+.apply__consent {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--sp-4); align-items: start;
+  padding-block-start: var(--sp-6); border-block-start: var(--hairline) solid var(--rule);
+}
+.apply__consent input {
+  inline-size: 1.25rem; block-size: 1.25rem; margin: 0.2rem 0 0;
+  accent-color: var(--ink-on-light);
+}
+.apply__consent label { color: var(--text-muted); line-height: 1.55; max-inline-size: 64ch; }
+.apply__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-5); margin: 0; }
+.apply .btn { cursor: pointer; }
+.apply__status { color: var(--text); line-height: 1.55; max-inline-size: 60ch; }
+
+/* ── the build enquiry ────────────────────────────────────────────────────
+   Both "Build yours" buttons open a short form in a panel from the right edge.
+   Alex, 2026-09-10: a contact form rather than the email link the client
+   suggested, "as a slide-in from the side — we have done this before". That
+   is the Sports Car Rescue drawer, and its behaviour carries over whole: a
+   layer over the page, a scrim, a panel entering from the edge it belongs to,
+   and three ways out — the ×, the scrim, Escape.
+
+   Built as a native <dialog> opened with showModal(): the top layer above the
+   sticky bar, the page behind it inert, Tab kept inside and focus handed back
+   to the button that opened it. The dialog is a transparent full-window box;
+   the scrim and the panel are ours, so both can be timed.
+
+   THE PANEL IS A NOTE, NOT A FORM TO FILL IN. Five questions to Evan, so it is
+   set like one: the raised bone surface, type at a fixed reading size rather
+   than the page's scaling body, fields drawn as a single rule under the answer
+   instead of a box around it, and the page's own section tag at the top. The
+   first cut boxed every field in a dark outline at twenty-one pixels and read
+   as paperwork; Alex called it clumsy, and it was.
+
+   The rule under each field is ink-muted — 4.97:1 on bone, over the 3:1 a
+   control's boundary needs, so the fields still read as places to type. On
+   focus it goes to full ink, doubles, and the field's label darkens with it.
+
+   MOTION. The one translate on this site larger than --travel; the reason is
+   beside that token. In: --dur-5 on --ease-panel, the Sports Car Rescue
+   drawer's own 720ms and curve — quick off the mark and a long soft settle,
+   so it arrives rather than lands. Out: --dur-4 on --ease-in, one step faster
+   and accelerating gently away. The form inside settles by --travel while the
+   panel is finishing, so the type is never read at speed. Under reduced
+   motion every duration is 1ms and --travel is zero: the panel is simply there. */
+.enquiry {
+  position: fixed; inset: 0;
+  inline-size: 100%; block-size: 100%;
+  max-inline-size: none; max-block-size: none;
+  margin: 0; padding: 0; border: 0;
+  background: transparent; color: var(--text);
+  overflow: hidden;
+}
+.enquiry::backdrop { background: transparent; }
+/* The page does not scroll behind the panel, and does not jump sideways when
+   its scrollbar goes. v11.js measures the scrollbar just before locking and
+   the page is padded by exactly that much — the fixed bar as well, which is
+   out of the flow and would otherwise widen under the scrim. Released only
+   once the panel has gone, so nothing moves while it leaves.
+
+   A permanently reserved gutter was tried first and failed twice: nothing can
+   paint over a reserved gutter, so a dark strip stood beside the panel, and
+   v10's own scrollbar measure read it as zero after a resize. */
+html[data-locked] { overflow: hidden; padding-inline-end: var(--lock-gap, 0); }
+html[data-locked] .site-head { inset-inline-end: var(--lock-gap, 0); }
+
+.enquiry__scrim {
+  position: absolute; inset: 0;
+  background: rgb(var(--graphite-950-rgb) / 0.6);
+  opacity: 0;
+  transition: opacity var(--dur-4) var(--ease-in);
+}
+.enquiry__panel {
+  position: absolute; inset-block: 0; inset-inline-end: 0;
+  /* Half the window, never narrower than the form needs, the whole width on
+     a phone. The form inside keeps its own width and sits on the left. */
+  inline-size: min(max(30rem, 50%), 100%);
+  overflow-y: auto; overscroll-behavior: contain;
+  display: grid; align-content: start; gap: var(--sp-6);
+  padding-block: var(--sp-4) var(--sp-7); padding-inline: var(--sp-7);
+  background: var(--surface); color: var(--text);
+  font-size: var(--fs-body); line-height: var(--lh-body);
+  scrollbar-width: thin; scrollbar-color: var(--bone-300) transparent;
+  transform: translateX(100%);
+  transition: transform var(--dur-4) var(--ease-in);
+}
+.enquiry[data-open] .enquiry__scrim { opacity: 1; transition: opacity var(--dur-5) var(--ease-out); }
+.enquiry[data-open] .enquiry__panel { transform: none; transition: transform var(--dur-5) var(--ease-panel); }
+
+.enquiry__top {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4);
+  margin-inline-end: calc(var(--sp-3) * -1);        /* the ×'s glyph, not its box, on the edge */
+}
+.enquiry__top .tag { margin: 0; }
+.enquiry__close {
+  display: grid; place-items: center;
+  inline-size: 2.75rem; block-size: 2.75rem;         /* 44 — the tap target */
+  padding: 0; border: 0; background: none; cursor: pointer;
+  color: var(--text-muted);
+  transition: color var(--dur-2) var(--ease-out);
+}
+.enquiry__close:hover { color: var(--text); }
+.enquiry__close:focus-visible {
+  outline: var(--focus-w) solid var(--ink-on-light); outline-offset: calc(var(--focus-offset) * -1);
+}
+
+/* The form arrives with the panel — a beat behind it and in the same
+   direction: --travel of extra movement to the left, fading up from the
+   panel's first tenth. The first cut held it back 200ms and then raised it
+   vertically, so an empty slab slid in and the words surfaced afterwards,
+   moving at a right angle to the thing that carried them. */
+.enquiry__content {
+  display: grid; gap: var(--sp-6);
+  inline-size: 100%; max-inline-size: var(--enquiry-w); justify-self: start;
+  opacity: 0; transform: translateX(var(--travel));
+  transition: opacity var(--dur-2) var(--ease-in), transform var(--dur-2) var(--ease-in);
+}
+.enquiry[data-open] .enquiry__content {
+  opacity: 1; transform: none;
+  transition: opacity var(--dur-4) var(--ease-out) var(--dur-1),
+              transform var(--dur-5) var(--ease-panel) var(--dur-1);
+}
+.enquiry__head { display: grid; gap: var(--sp-3); }
+/* Focus lands here when the panel opens, so a reader hears what opened. It is
+   not a control, so it draws no ring. */
+.enquiry__title {
+  margin: 0; font-family: var(--face); font-weight: 600; font-size: var(--lot);
+  line-height: var(--lh-heading); letter-spacing: var(--ls-heading); color: var(--text);
+}
+.enquiry__title:focus { outline: none; }
+.enquiry__lede { margin: 0; color: var(--text-muted); max-inline-size: 38ch; }
+
+.enquiry__form { display: grid; gap: var(--sp-6); }
+.enquiry__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-5); }
+.enquiry .field { gap: var(--sp-1); }
+.enquiry .field label { transition: color var(--dur-2) var(--ease-out); }
+.enquiry .field:focus-within label { color: var(--text); }
+.enquiry .field :is(input, select, textarea) {
+  min-block-size: 2.75rem;
+  padding: var(--sp-2) 0;
+  background-color: transparent;
+  border: 0; border-block-end: var(--hairline) solid var(--ink-on-light-muted);
+  border-radius: 0;
+  transition: border-color var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+}
+.enquiry .field :is(input, select, textarea):hover { border-block-end-color: var(--ink-on-light); }
+/* One indicator, the rule itself, for the mouse and the keyboard alike — the
+   shared field's outline box would bring back exactly what this panel drops. */
+.enquiry .field :is(input, select, textarea):focus,
+.enquiry .field :is(input, select, textarea):focus-visible {
+  outline: none;
+  border-block-end-color: var(--ink-on-light);
+  box-shadow: 0 var(--hairline) 0 0 var(--ink-on-light);
+}
+.enquiry .field select {
+  padding-inline-end: var(--sp-6);
+  background-position: calc(100% - 0.6rem) 55%, calc(100% - 0.25rem) 55%;
+}
+.enquiry .field textarea {
+  min-block-size: 5.5rem; max-block-size: 12rem;
+  resize: none; field-sizing: content;      /* grows with the message; fixed where unsupported */
+}
+/* Unchosen, the select reads as a prompt like the empty fields beside it,
+   not as an answer. */
+.enquiry .field select:has(option[value='']:checked) { color: var(--ink-on-light-muted); }
+/* Autofill paints its own box behind a field; on a field drawn as a single
+   rule that box is the whole look, so it is painted over in the surface. */
+.enquiry .field :is(input, textarea):-webkit-autofill {
+  -webkit-text-fill-color: var(--text);
+  box-shadow: inset 0 0 0 100vmax var(--surface);
+}
+.enquiry .field :is(input, textarea):-webkit-autofill:focus {
+  box-shadow: inset 0 0 0 100vmax var(--surface), 0 var(--hairline) 0 0 var(--ink-on-light);
+}
+
+.enquiry__form .apply__actions { margin: 0; }
+.enquiry__form .btn { display: flex; justify-content: center; inline-size: 100%; }
+.enquiry__alt {
+  margin: 0; padding-block-start: var(--sp-5);
+  border-block-start: var(--hairline) solid var(--rule);
+  font-size: var(--fs-body-s); color: var(--text-muted);
+}
+.enquiry__alt a {
+  color: var(--text); text-decoration: none;
+  border-block-end: var(--hairline) solid currentColor;
+  transition: color var(--dur-2) var(--ease-out);
+}
+.enquiry__alt a:hover { color: var(--oxblood); }                 /* oxblood is text on light */
+.enquiry__alt a:focus-visible { outline: var(--focus-w) solid var(--ink-on-light); outline-offset: var(--focus-offset); }
+
+/* A shorter window — a laptop browser with its bars on — tightens the rhythm
+   before it resorts to scrolling the panel. */
+@media (max-height: 56rem) and (min-width: 40rem) {
+  .enquiry__panel { gap: var(--sp-5); padding-block: var(--sp-3) var(--sp-6); }
+  .enquiry__content, .enquiry__form { gap: var(--sp-5); }
+  .enquiry__fields { gap: var(--sp-4) var(--sp-5); }
+  .enquiry .field textarea { min-block-size: 4rem; }
+}
+@media (max-width: 39.99rem) {
+  .enquiry__panel { padding-inline: var(--sp-5); }
+  .enquiry__fields { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ── footer ───────────────────────────────────────────────────────────────
+   Five columns now: the mark, the shop, services, the four social accounts
+   and contact. Contact takes three tracks, not two — it is the only column
+   carrying a line that cannot wrap, and at two tracks an email address is
+   wider than its column. Placed only at widths that have them; below that,
+   v10's single column already stacks every child in order.
+
+   The explicit width is load-bearing. v10 centres every footer child with
+   auto margins, which sizes the grid to its content; v10's five-track brand
+   column happened to fill the page, and these narrower columns do not, so the
+   whole grid shrank into the middle. */
+.site-foot__grid { inline-size: 100%; }
+@media (min-width: 62rem) {
+  .site-foot__brand { grid-column: 1 / span 3; }
+  .site-foot__grid > :nth-child(2) { grid-column: 4 / span 2; }
+  .site-foot__grid > :nth-child(3) { grid-column: 6 / span 2; }
+  .site-foot__grid > :nth-child(4) { grid-column: 8 / span 2; }
+  .site-foot__grid > :nth-child(5) { grid-column: 10 / span 3; }
+}
+.site-foot__who + .site-foot__who { margin-block-start: var(--sp-3); }
+/* Stacked here: the brand column is three tracks, and the label and the logo
+   side by side are wider than that. */
+.mfr--foot { display: grid; justify-items: start; gap: var(--sp-3); margin-block-start: var(--sp-2); }
+
+/* ── narrow ────────────────────────────────────────────────────────────────── */
+@media (max-width: 61.99rem) {
+  .finance__grid { grid-template-columns: minmax(0, 1fr); }
+  .finance__intro, .apply { grid-column: 1; position: static; }
+  .apply__fields { grid-template-columns: minmax(0, 1fr); }
+  /* One column: the portrait at a size a phone can hold, the name under it. */
+  .who { grid-template-columns: minmax(0, 20rem); gap: var(--sp-3); }
+  .who__cap { padding-block-end: 0; }
+  .hero__dots { inset-block-end: var(--sp-3); }
+
+  /* v10 never collapsed the news grid, so on a phone its three items kept
+     their twelve-column placements and the last one hung off the right edge.
+     Inherited, not introduced here — fixed here because this is the version
+     going to the client. */
+  .news__list { grid-template-columns: minmax(0, 1fr); row-gap: var(--sp-8); }
+  .news__item--lead, .news__list > :nth-child(2), .news__list > :nth-child(3) { grid-column: 1; }
+
+  /* The service rows slide in sideways as they enter (v10's row-in), and before
+     they enter they sit at their starting offset — past the edge of a phone,
+     which gave the whole page a sideways scroll. Clipped on the list, so the
+     motion is untouched and still arrives from the edge. */
+  .rows { overflow-x: clip; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__slide { transition: none; }
+  .hero__dot[aria-current='true']::after { animation: none; transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   VARIANT C — "GREEN FLAG". Chosen by Alex on 2026-09-10 from three variants
+   performed side by side (the genjutsu cast thesis). A Cobra answers the
+   throttle, and the page does too: sections arrive with travel and a firm
+   stop, everything under the hand gives when pressed, and three places speak
+   Cobra — the cars roll onto the floor, the Grand Opening counts on an
+   odometer, and twin Le Mans stripes chart how far down the page you are.
+
+   Roles, not instances: headings by the reveal's 'title' role, photographs
+   by a 'photo' role, controls by what they are. The hero is untouched — its
+   headline already arrives in two lines, and a second move there would
+   compete with the first. Cut, and why, is in the thesis: no counting prices
+   up, no magnetic buttons, no custom cursor, no letters splitting, no
+   parallax on every picture.
+
+   Yield, stated: motion-taste D1 keeps travel to 8px and avoids side-entries.
+   It yields here to Alex's explicit "bolder on scroll". The reduced-motion
+   floor does not yield: every piece below has a still path.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── headings leave the line ──────────────────────────────────────────────
+   v11.js cuts a revealed heading into its rendered lines once the fonts are
+   in; each line rises out of its own mask, a step apart. The heading element
+   itself no longer slides — its lines do. Padding inside each mask, cancelled
+   by a negative margin, keeps descenders and cap tops out of the clip without
+   moving a pixel of layout. When the heading has landed the script puts the
+   plain text back, so it rewraps with the window like any other text. */
+.js [data-reveal='title'].is-split { opacity: 1; transform: none; }
+.is-split .ln {
+  display: block; overflow: clip;
+  padding-block: 0.08em 0.16em; margin-block: -0.08em -0.16em;
+}
+.is-split .ln > span { display: block; transform: translateY(110%); }
+.is-split[data-in] .ln > span {
+  transform: none;
+  transition: transform var(--dur-6) var(--ease-settle);
+  transition-delay: calc(var(--reveal-delay, 0ms) + var(--i, 0) * var(--dur-1));
+}
+
+/* ── photographs open ─────────────────────────────────────────────────────
+   The 'photo' role (news pictures): a wipe from the left edge, the picture
+   settling from 1.14 to its size, sharpening out of a blur as it goes. The
+   wrapper already clips, so the scale never spills. */
+.js [data-reveal='photo'] .shot {
+  clip-path: inset(0 0 0 100%); transform: scale(1.14); filter: blur(0.5rem);
+}
+.js [data-reveal='photo'][data-in] .shot {
+  clip-path: inset(0 0 0 0); transform: none; filter: none;
+  transition:
+    clip-path var(--dur-6) var(--ease-settle),
+    transform calc(var(--dur-6) * 1.35) var(--ease-settle),
+    filter var(--dur-6) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* ── the cars roll onto the floor ─────────────────────────────────────────
+   The inventory rail drives in from the right as the section comes up, and
+   stops on the settle curve — most of the distance early, a long firm brake
+   at the end. Tied to scroll, not to a clock: scroll back and the cars back
+   out, stop and they stop. Sharp by the time they are half-way home. The
+   section clips sideways so the cars waiting off-stage never widen the page. */
+.rail--lots { --roll-from: 70vw; --roll-blur: 0.25rem; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sect:has(> .rail--lots) { overflow-x: clip; }
+    .rail--lots {
+      animation: lots-roll var(--ease-settle) both, lots-sharpen linear both;
+      animation-timeline: view(), view();
+      animation-range: entry 0% cover 42%, entry 0% cover 24%;
+    }
+  }
+}
+@keyframes lots-roll    { from { transform: translate3d(var(--roll-from), 0, 0); } to { transform: none; } }
+@keyframes lots-sharpen { from { filter: blur(var(--roll-blur)); } to { filter: none; } }
+
+/* ── the odometer ─────────────────────────────────────────────────────────
+   Each figure of the countdown is two drums of 0–9. A drum turns to its digit
+   on the settle curve, the second a step after the first, like a mechanical
+   counter; the first turn waits until the count is on screen, after that
+   only the minute moves. The reading itself is a hidden span beside the
+   drums, so a screen reader hears "16", not a column of digits. */
+.countdown__n { display: inline-flex; }
+.odo { display: inline-flex; }
+.odo__dg { display: block; block-size: 1em; inline-size: 1ch; overflow: clip; }
+.odo__dg > span {
+  display: grid;
+  transform: translateY(calc(var(--n, 0) * -1em));
+  transition: transform var(--dur-7) var(--ease-settle);
+  transition-delay: calc(var(--k, 0) * var(--dur-1));
+}
+.odo__dg b { display: block; block-size: 1em; line-height: 1; font-weight: inherit; text-align: center; }
+.v11-sr {
+  position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ── twin stripes ─────────────────────────────────────────────────────────
+   Two stripes at the left edge, as on a Cobra's bonnet, filling with the
+   page's scroll one to one — no duration of their own, so there is nothing
+   to reduce. Drawn in difference mode, so the same bone stripe reads light
+   on graphite and dark on bone. Out of the way of everything: a few pixels
+   in the gutter, beneath any open panel, never catching the pointer. Where
+   scroll timelines are missing they are not drawn at all. */
+.stripes {
+  position: fixed; z-index: 60; pointer-events: none;
+  inset-block: var(--sp-5); inset-inline-start: var(--sp-2);
+  display: flex; gap: var(--sp-1);
+  mix-blend-mode: difference;
+}
+.stripes i { inline-size: var(--sp-1); background: rgb(var(--bone-100-rgb) / 0.16); position: relative; overflow: clip; }
+.stripes i::after {
+  content: ''; position: absolute; inset: 0; background: var(--bone-050);
+  transform-origin: top; transform: scaleY(0);
+  animation: stripe-fill linear both; animation-timeline: scroll(root block);
+}
+@keyframes stripe-fill { to { transform: scaleY(1); } }
+@supports not (animation-timeline: scroll()) { .stripes { display: none; } }
+
+/* ── everything under the hand gives ─────────────────────────────────────
+   Press: 0.95 the instant a control is held. Release: back on the overshoot
+   curve. v10's own transitions are repeated beside the new one, because a
+   transition list replaces rather than adds. Revealed controls carry the
+   reveal's transition as well, so they get the same list at a specificity
+   that outranks it; the entrance of a revealed button now lands with the
+   same small overshoot, which is the variant. */
+.btn   { transition: background var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out), transform var(--dur-3) var(--ease-back); }
+.link  { transition: filter var(--dur-2) var(--ease-out), transform var(--dur-3) var(--ease-back); }
+.round { transition: border-color var(--dur-2) var(--ease-out), transform var(--dur-3) var(--ease-back); }
+.js :is(.btn, .link)[data-reveal][data-in] {
+  transition:
+    opacity var(--dur-4) var(--ease-out), transform var(--dur-3) var(--ease-back),
+    background var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out),
+    filter var(--dur-2) var(--ease-out);
+}
+:is(.btn, .link, .round:not(:disabled)):active,
+.js :is(.btn, .link)[data-reveal][data-in]:active {
+  transform: scale(0.95);
+  transition: transform var(--dur-1) var(--ease-press);
+}
+/* The arrow in a button or a pill steps toward where it goes. */
+:is(.btn, .link) span[aria-hidden='true'] { display: inline-block; transition: transform var(--dur-3) var(--ease-settle); }
+:is(.btn, .link):is(:hover, :focus-visible) span[aria-hidden='true'] { transform: translateX(var(--sp-1)); }
+
+/* A car photograph leans toward you: v10's zoom, plus the picture following a
+   fine pointer inside its frame and lifting a shade. Three signals, one
+   gesture. The pan stays inside the zoom's spare edge (1.6% against 2.25%),
+   so no frame edge ever shows. Mouse and trackpad only — v11.js sets the
+   position, and only there. */
+.lot__shot .shot { transition: transform var(--dur-3) var(--ease-out), translate var(--dur-4) var(--ease-settle), filter var(--dur-3) var(--ease-out); }
+.lot:is(:hover, :focus-within) .lot__shot .shot {
+  translate: calc(var(--px, 0) * -1.6%) calc(var(--py, 0) * -1.6%);
+  filter: brightness(1.05);
+}
+
+@media (max-width: 61.99rem) {
+  .rail--lots { --roll-from: 30vw; --roll-blur: 0rem; }
+  .stripes { gap: calc(var(--sp-1) / 2); inset-inline-start: var(--sp-1); }
+  .stripes i { inline-size: calc(var(--sp-1) / 2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .odo__dg > span { transition: none; }
+  .lot:is(:hover, :focus-within) .lot__shot .shot { translate: none; filter: none; }
+  :is(.btn, .link) span[aria-hidden='true'] { transition: none; }
+}
+
+/* ── the footer marque assembles ──────────────────────────────────────────
+   v11.js cuts COBRAS into letters and runs them through the face's other
+   glyphs before each one lands (Alex, 2026-09-11). The spans are inline-block
+   so the jitter has a box to move; the word loses its kerning pairs for it,
+   which at 24vw and twelve per cent nobody will measure. A letter still in
+   noise is a little dimmer than one that has landed, so the word visibly
+   fills in from the left. No transition on the landing: the snap is the
+   point. */
+.site-foot__glyph { display: inline-block; text-align: center; }
+.site-foot__glyph.is-noise { opacity: 0.55; }
+/* Only a pointer can hover, and only then does the marque take one. Touch
+   devices keep v10's pointer-events: none, so a thumb over the word still
+   scrolls the page. */
+@media (hover: hover) and (pointer: fine) {
+  .js .site-foot__mark { pointer-events: auto; }
+}

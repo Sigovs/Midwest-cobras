@@ -862,8 +862,14 @@ html[data-locked] .site-head { inset-inline-end: var(--lock-gap, 0); }
 
 @media (max-width: 61.99rem) {
   .rail--lots { --roll-from: 30vw; --roll-blur: 0rem; }
-  .stripes { gap: calc(var(--sp-1) / 2); inset-inline-start: var(--sp-1); }
-  .stripes i { inline-size: calc(var(--sp-1) / 2); }
+  /* THE STRIPES COME OFF THE PHONE ENTIRELY — Alex, 2026-10-13: "uberi
+     sboku na mobile s levoj storoni etu polosku". They were already halved
+     here, which was the wrong move twice over: at 2px a stripe is not a
+     bonnet stripe, it is a scratch down the edge of the screen, and it sits
+     in the one strip of gutter a thumb reaches from. A progress hint is not
+     worth that on a screen where the scrollbar is the browser's own. The
+     wide window keeps them. */
+  .stripes { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .odo__dg > span { transition: none; }

@@ -315,6 +315,12 @@ html[data-mark='2'] .wordmark__art--m2 { display: block; }
 }
 .wordmark:focus-visible { outline: var(--focus-w) solid var(--bone-050); outline-offset: var(--focus-offset); }
 
+/* The list and the telephone are siblings now, not a list with the telephone
+   as its last item — on a phone one of them folds away and the other does
+   not. The row reads the same at any width above 62rem: the nav's own gap is
+   the list's gap, so the number sits off the last link by exactly what the
+   links sit off each other. */
+.site-nav { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); }
 .site-nav ul { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
 /* A pill, not an underline. It is darker than the bar rather than lighter, so
    the label stays the brightest thing in it and the shape reads as a well the
@@ -1222,22 +1228,19 @@ html[data-mark='2'] .wordmark__art--m2 { display: block; }
 @media (max-width: 61.99rem) {
   :root { --h1: clamp(2.2rem, 9vw, 3.2rem); --h2: clamp(2rem, 8vw, 2.9rem); }
 
-  .site-head { flex-direction: column; align-items: stretch; gap: var(--sp-4); padding: var(--sp-5) var(--gutter); }
-  /* A strip that scrolls sideways, like the rails — and like them its own bar
-     is hidden. The default one renders as a bright white slab across the top of
-     a dark masthead, which is louder than anything else on the screen. The
-     clipped word at the right edge is the affordance. */
-  .site-nav ul {
-    flex-wrap: nowrap; overflow-x: auto; gap: var(--sp-5);
-    padding-block-end: var(--sp-2);
-    overscroll-behavior-x: contain;
-    scrollbar-width: none; -ms-overflow-style: none;
-  }
-  .site-nav ul::-webkit-scrollbar { display: none; }
+  /* THE BAR STAYS ONE ROW — Alex, 2026-10-13: "monile menu!!!". It used to
+     break to logo-over-nav with the list as a strip that scrolled sideways,
+     and the affordance for the seven items off the right edge was a clipped
+     word. Both are gone: the list folds into a panel and the bar holds the
+     mark, the number and the one control that opens it. The panel itself is
+     in v12.css, where the decision was taken. */
+  .site-head { gap: var(--sp-4); padding: var(--sp-4) var(--gutter); }
   .site-nav a { white-space: nowrap; }
 
-  /* The bar is taller here — logo over nav rather than beside it. */
-  html { scroll-padding-block-start: 12rem; }
+  /* One row rather than two, so the clearance an anchor needs is a row's
+     worth. --bar-clear in v12.css carries the same number for the pages that
+     pad themselves. */
+  html { scroll-padding-block-start: 7rem; }
 
   .hero { padding-block-start: clamp(11rem, 24vh, 15rem); }
   .hero__copy { max-inline-size: none; }

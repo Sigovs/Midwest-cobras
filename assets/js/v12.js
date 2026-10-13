@@ -8,7 +8,8 @@
 
    1 · the bar's height, for finance.html, which starts under it
    2 · the reveal, re-timed: the failsafe runs from the first scroll, not
-       from load */
+       from load
+   3 · closing the mobile menu — only closing it; CSS opens it */
 
 (function () {
   'use strict';
@@ -121,9 +122,51 @@
     seen.forEach(function (el) { late.observe(el); });
   }
 
+  /* ── 3 · the mobile menu, closed ────────────────────────────────────────
+     The checkbox in the bar opens the panel on its own, in CSS, and that is
+     deliberate: with scripts off the menu still works. What a script is
+     genuinely needed for is the ways a menu should close that have no CSS
+     equivalent — Escape, a link taken, a tap on the page behind it, and the
+     window coming back to a width where the panel is not the navigation any
+     more. Nothing here ever sets checked = true. */
+  function menu() {
+    var cb = document.getElementById('site-menu');
+    if (!cb) return;
+    var nav = cb.closest('.site-nav');
+
+    function close() { cb.checked = false; }
+
+    /* A link inside the panel. Most of them leave the page and the new one
+       arrives with the menu shut anyway; the ones that do not are the
+       in-page anchors, and those are exactly the case this is for. */
+    nav.addEventListener('click', function (e) {
+      if (e.target.closest('a')) close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape' || !cb.checked) return;
+      close();
+      /* Escape with focus inside the panel would otherwise leave it on an
+         element that is now display:none, and the next Tab starts from the
+         top of the document. */
+      cb.focus();
+    });
+
+    document.addEventListener('click', function (e) {
+      if (cb.checked && !e.target.closest('.site-nav')) close();
+    });
+
+    /* Past 62rem the list is a row again and the panel's rules stop
+       applying — but the checkbox would still be ticked, so the menu would
+       be open the moment the window came back. */
+    var wide = window.matchMedia('(min-width: 62rem)');
+    wide.addEventListener('change', function (e) { if (e.matches) close(); });
+  }
+
   function boot() {
     barHeight();
     reveal();
+    menu();
   }
 
   if (document.readyState === 'loading') {

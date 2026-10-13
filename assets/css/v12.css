@@ -14,8 +14,11 @@
      site's own measure of "past the bar", not a new one. */
   --bar-clear: 9rem;
 }
+/* 12rem until 2026-10-13: the bar broke to logo-over-nav on a phone and was
+   two rows tall. It is one row now — the menu took the list off it — so the
+   fallback is a row's worth again, and it matches v10's scroll-padding. */
 @media (max-width: 62rem) {
-  :root { --bar-clear: 12rem; }
+  :root { --bar-clear: 7rem; }
 }
 
 /* ── 08 · finance, without its form ───────────────────────────────────────
@@ -131,3 +134,186 @@
    was fighting him for the only warm thing on the section. Gone, not
    softened: index11 keeps it with the picture it was drawn for. */
 .who__photo::before { content: none; }
+
+/* ── the mobile menu ──────────────────────────────────────────────────────
+   Alex, 2026-10-13: "monile menu!!!". Under 62rem the eight pills were one
+   nowrap row with overflow-x: auto — seven of them off the right edge, the
+   eighth cut mid-word, and nothing on the screen saying the row moved. The
+   row folds into a panel and the bar keeps three things: the mark, the
+   number, and the control that opens it.
+
+   MECHANICALLY IT IS A CHECKBOX AND A SIBLING SELECTOR. Not :has(), not a
+   script: the input sits before the list in the markup, so ~ reaches it in
+   every engine that has ever shipped, and the menu opens with scripts off
+   exactly as it does with them. v12.js only ever CLOSES it.
+
+   The panel is display:none when shut, which is the point of doing it this
+   way round: a link that is not displayed is not in the tab order, so a
+   closed menu cannot be tabbed into. */
+.site-menu__cb, .site-menu__btn { display: none; }
+
+@media (max-width: 61.99rem) {
+  /* The control itself. The checkbox stays in the page — clipped, not
+     hidden — because it is what the keyboard focuses and what a screen
+     reader reads the state from; the label is the thing with a size. */
+  .site-menu__cb {
+    display: block; position: absolute;
+    inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+  .site-menu__btn {
+    display: flex; align-items: center; gap: var(--sp-3);
+    min-block-size: var(--tap); padding: var(--sp-3) var(--sp-4);
+    border: var(--hairline) solid var(--rule); border-radius: 100vmax;
+    font-family: var(--mono); font-size: var(--micro);
+    letter-spacing: var(--track); text-transform: uppercase;
+    color: var(--bone-050); cursor: pointer;
+    transition: background var(--dur-2) var(--ease-out),
+                border-color var(--dur-2) var(--ease-out);
+  }
+  .site-menu__cb:checked + .site-menu__btn { background: var(--oxblood); border-color: var(--oxblood); }
+  .site-menu__cb:focus-visible + .site-menu__btn {
+    outline: var(--focus-w) solid var(--bone-050); outline-offset: 2px;
+  }
+
+  /* Three bars that fold into a cross. currentColor, so they are the label's
+     own colour on either ground and there is no second decision about it. */
+  .site-menu__bars { display: grid; gap: var(--sp-1); inline-size: var(--sp-5); }
+  .site-menu__bars i {
+    display: block; block-size: calc(var(--hairline) * 2); background: currentColor;
+    transition: rotate var(--dur-2) var(--ease-out),
+                translate var(--dur-2) var(--ease-out),
+                opacity var(--dur-1) var(--ease-out);
+  }
+  .site-menu__cb:checked + .site-menu__btn .site-menu__bars i:first-child {
+    translate: 0 calc(var(--sp-1) + var(--hairline) * 2); rotate: 45deg;
+  }
+  .site-menu__cb:checked + .site-menu__btn .site-menu__bars i:nth-child(2) { opacity: 0; }
+  .site-menu__cb:checked + .site-menu__btn .site-menu__bars i:last-child {
+    translate: 0 calc((var(--sp-1) + var(--hairline) * 2) * -1); rotate: -45deg;
+  }
+
+  /* The bar: mark, then the number and the control, hard right. */
+  .site-head { flex-wrap: nowrap; }
+  .site-nav { flex-wrap: nowrap; gap: var(--sp-3); }
+
+  /* OVER THE HERO THE BAR HAS NO GROUND, and that is right until the menu is
+     open: a panel with a ground hanging off a bar without one reads as two
+     objects, and the mark ends up on a photograph with a wall of links
+     underneath it. While it is open the bar takes the same ground the panel
+     has. Where :has() is missing nothing happens, which is the state this
+     was in before — the panel is still legible, the bar is still
+     transparent. */
+  .site-head[data-stuck='false']:has(.site-menu__cb:checked) {
+    background: var(--graphite-950);
+    backdrop-filter: none;
+    border-block-end-color: var(--rule);
+  }
+
+  /* THE PANEL. Absolute against the bar — .site-head is fixed, so it is the
+     containing block — and the full width of it, dropping from its bottom
+     edge. It carries the bar's own ground rather than a new one, because it
+     IS the bar while it is open. */
+  .site-menu__cb ~ ul {
+    display: none; position: absolute; inset-inline: 0; inset-block-start: 100%;
+    flex-direction: column; gap: 0;
+    padding: 0 var(--gutter) var(--sp-4);
+    /* SOLID, where the bar itself is 0.92 and blurred. The bar is a strip
+       with a word or two in it and the picture behind it is part of the
+       page; a menu is eight lines of text that have to be read over
+       whatever the page happens to be showing. At 0.97 over the hero the
+       headline still came through the panel as a grey ghost behind the
+       links — three percent of a very bright word is still a word. */
+    background: var(--graphite-950);
+    border-block-end: var(--hairline) solid var(--rule);
+    opacity: 0; translate: 0 calc(var(--sp-2) * -1);
+    /* A phone on its side has about 320px of window. Eight rows do not fit
+       in that, and a menu that runs off the bottom of the screen is a menu
+       with items nobody can reach — the bug this whole block replaced. The
+       percentage is the bar's own height, because that is the containing
+       block. */
+    max-block-size: calc(100svh - 100%);
+    overflow-y: auto; overscroll-behavior: contain;
+    transition: opacity var(--dur-2) var(--ease-out),
+                translate var(--dur-2) var(--ease-out),
+                display var(--dur-2) allow-discrete;
+  }
+  .site-menu__cb:checked ~ ul { display: flex; opacity: 1; translate: 0 0; }
+  /* Without this it arrives already in place: a discrete property has no
+     start value to transition from unless one is given. */
+  @starting-style {
+    .site-menu__cb:checked ~ ul { opacity: 0; translate: 0 calc(var(--sp-2) * -1); }
+  }
+
+  /* Rows, not pills. A pill is a shape for a word among other words in a
+     line; down a panel the same shape reads as eight separate buttons, and
+     the hairline is how the rest of this site separates rows anyway. */
+  .site-menu__cb ~ ul li { display: block; }
+  .site-menu__cb ~ ul a {
+    display: flex; align-items: center; min-block-size: var(--tap);
+    padding: var(--sp-3) var(--sp-2); border-radius: var(--radius-control);
+    border-block-start: var(--hairline) solid var(--rule);
+  }
+  /* The page you are on is the filled row. Oxblood is a fill on dark and
+     never a text colour there — tokens.css, and --bone-050 on it is 10.76:1.
+     The graphite well the wide bar uses would be invisible on this ground. */
+  .site-menu__cb ~ ul a[aria-current='page'] { background: var(--oxblood); }
+
+  /* PAST A PHONE IT IS A DROPDOWN, not a sheet. At 834 the full-width panel
+     is eight short words down the left of an empty 800px field, which reads
+     as a page that has lost its layout rather than as a menu. It hangs off
+     the end of the bar instead, under the control that opened it, and the
+     hairline becomes a full edge because it is an object on the page now
+     rather than an extension of the bar. */
+  @media (min-width: 30rem) {
+    .site-menu__cb ~ ul {
+      inset-inline: auto var(--gutter);
+      inline-size: 20rem;
+      padding: 0 var(--sp-4) var(--sp-3);
+      border: var(--hairline) solid var(--rule);
+    }
+  }
+
+  /* The number stays in the bar, as the glyph alone. The digits are still in
+     the markup and still the link's accessible name — they are clipped, not
+     deleted, so what a screen reader announces does not change with width. */
+  .site-nav__tel a { gap: 0; padding: var(--sp-3); border-radius: 100vmax; }
+  .site-nav__tel span {
+    position: absolute; inline-size: 1px; block-size: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+}
+
+/* ── §03's frames, on a phone ─────────────────────────────────────────────
+   Alex, 2026-10-13, with a screenshot of the section at 390: "image dolzhen
+   tut otkrivajtsja tam gde etoto tab. ne vse vremja sverhu."
+
+   He is describing a bug, not a preference. The stage swaps frames on
+   :hover and :focus-within — and a phone has neither, so the picture was
+   nailed to frame 01 for ever and the other four were unreachable bytes
+   sitting at the top of the section while five steps scrolled past under
+   them. One stage shared by five steps only works where a pointer can say
+   which step it is looking at.
+
+   So below 62rem the shared stage goes and each step carries its own frame,
+   under its own words. Nothing to hover, nothing to tap, nothing that can
+   be left on the wrong frame. Same five files, same URLs — the pictures are
+   not duplicated, only the elements that place them, and the ones that are
+   not displayed at a given width are never fetched. */
+.step__shot { display: none; }
+
+@media (max-width: 61.99rem) {
+  .build__stage { display: none; }
+  .step__shot {
+    display: block; margin-block-start: var(--sp-5);
+    inline-size: 100%; block-size: auto;
+  }
+  /* The copy above no longer has a picture beside it, so the space under it
+     is the gap between a paragraph and a list, not between two columns. */
+  .build__top { margin-block-end: var(--sp-7); }
+  /* A step is a block with a picture in it now, and the rule over each one
+     has to read as the lid of that block rather than as a line between two
+     paragraphs. */
+  .steps { gap: var(--sp-7); }
+  .step p { max-inline-size: none; }
+}

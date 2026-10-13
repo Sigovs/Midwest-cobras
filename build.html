@@ -44,6 +44,22 @@
     <span class="wordmark__name">Midwest Cobras</span>
   </a>
   <nav class="site-nav" aria-label="Primary">
+    <!-- THE MENU, AND IT IS A CHECKBOX ON PURPOSE — Alex, 2026-10-13:
+         "monile menu!!!". Under 62rem the row of eight pills had become a
+         strip that scrolled sideways, so seven items sat behind a gesture
+         nobody is told about and the eighth was cut in half. A checkbox and
+         its label open a panel in CSS alone, which is the whole reason for
+         the pattern: it works with scripts off exactly as it does with them.
+         v12.js never opens it — it only closes it, on Escape, on a link
+         taken, and when the width goes back to a desktop.
+
+         Above 62rem the pair is display:none and the list is the row it
+         always was: nothing about the wide bar changes. -->
+    <input class="site-menu__cb" type="checkbox" id="site-menu">
+    <label class="site-menu__btn" for="site-menu">
+      <span class="site-menu__bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="site-menu__word">Menu</span>
+    </label>
     <ul>
       <!-- HOME, SAID IN WORDS — Evan, 2026-09-11: he would never have known
            the logo goes back to the top, and neither will the "old guys" he
@@ -57,19 +73,20 @@
       <li><a href="consignment.html">Consignment</a></li>
       <li><a href="finance.html">Finance</a></li>
       <li><a href="index.html#gallery">Gallery</a></li>
-      <!-- The number is the one nav item that is not navigation: it leaves the
-           page. Same pill, so it does not become a badge, but it carries the
-           handset because a bare string of digits in a nav row reads as a
-           label rather than something you can press. -->
-      <li class="site-nav__tel">
-        <a href="tel:+19136625000">
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
-            <path d="M6.4 3.5h3l1.5 3.7-1.9 1.4a11.5 11.5 0 0 0 5.4 5.4l1.4-1.9 3.7 1.5v3a1.6 1.6 0 0 1-1.7 1.6A14.6 14.6 0 0 1 4.8 5.2a1.6 1.6 0 0 1 1.6-1.7Z"
-                  fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-          </svg><span>913 662 5000</span>
-        </a>
-      </li>
     </ul>
+
+    <!-- The number is the one nav item that is not navigation: it leaves the
+         page. Same pill, so it does not become a badge, but it carries the
+         handset because a bare string of digits in a nav row reads as a
+         label rather than something you can press. -->
+    <div class="site-nav__tel">
+      <a href="tel:+19136625000">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+          <path d="M6.4 3.5h3l1.5 3.7-1.9 1.4a11.5 11.5 0 0 0 5.4 5.4l1.4-1.9 3.7 1.5v3a1.6 1.6 0 0 1-1.7 1.6A14.6 14.6 0 0 1 4.8 5.2a1.6 1.6 0 0 1 1.6-1.7Z"
+                fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        </svg><span>913 662 5000</span>
+      </a>
+    </div>
   </nav>
 </header>
 
